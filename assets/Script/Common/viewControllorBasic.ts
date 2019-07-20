@@ -1,6 +1,5 @@
 
 const { ccclass, property } = cc._decorator;
-// import PlayerService from "../Common/Player/playerService";
 import toolsBasics from "../Tools/toolsBasics";
 import settingBasic from "../Setting/settingBasic";
 
@@ -8,7 +7,7 @@ const leveList = settingBasic.setting.level
 
 @ccclass
 export abstract class ViewControllorBasic extends cc.Component {
- 
+
     @property({ type: cc.Enum(leveList), displayName: "关卡设定" })
     public level = leveList.lv1;
 
@@ -19,17 +18,16 @@ export abstract class ViewControllorBasic extends cc.Component {
     boxShadowPerfab: cc.Prefab = null;
     @property(cc.Node)
     brotherNode: cc.Node = null;
-    
+
     //Brother Move 
     minX: number = 0;
     minY: number = 0;
     maxX: number = 0;
     maxY: number = 0;
-    // playerService: PlayerService = null;
-    
+
     boxShadow: cc.Node = null;
     camera: cc.Camera = null;
-    canvasSize: cc.Size = null;
+    BackgroundSize: cc.Size = null;
     public toolsBasics = toolsBasics;
     public settingBasic = settingBasic;
     public stateType = settingBasic.setting.stateType;
@@ -46,29 +44,25 @@ export abstract class ViewControllorBasic extends cc.Component {
         // //开启碰撞检测
         cc.director.getCollisionManager().enabled = true;
 
-        // this.playerService = new PlayerService(this);
-
-        // //初始化动作 播放Player动画
-        // this.node.on(cc.Node.EventType.TOUCH_START, this.playerService.touchStart, this.playerService);
-        // this.node.on(cc.Node.EventType.TOUCH_MOVE, this.playerService.touchMove, this.playerService);
-        // this.node.on(cc.Node.EventType.TOUCH_END, this.playerService.touchEnd, this.playerService);
-
-        // 自定义事件 控制游戏状态
+        // 自定义事件 控制游戏状态 
         this.node.on(settingBasic.gameEvent.gameStateEvent, this.changeGameState, this);
         this.node.on(settingBasic.gameEvent.gameStepEvent, this.gameStep, this);
         this.node.on(settingBasic.gameEvent.gameMoveStep, this.moveStep, this);
         this.node.on(settingBasic.gameEvent.setCurrGameStep, this.setCurrGameStep, this);
 
-        //Camera
-        this.canvasSize = this.node.getContentSize();
+        //------Camera-------
+        //获取背景大小
+        let Background = this.node.getChildByName("Background");
+        this.BackgroundSize = Background.getContentSize();
+        //camera 和canvas size一样
+        let cameraSize = this.node.getContentSize();
+        //以世界坐标作参考
+        this.minX = cameraSize.width / 2 - (this.BackgroundSize.width - cameraSize.width) / 2;
+        this.minY = cameraSize.height / 2 - (this.BackgroundSize.height - cameraSize.height) / 2;
+        this.maxX = (this.BackgroundSize.width - cameraSize.width) / 2 + cameraSize.width/2;
+        this.maxY = (this.BackgroundSize.height - cameraSize.height) / 2 + cameraSize.height/2;
 
-        // this.minX = this.canvasSize.width / 4;
-        // this.minY = this.canvasSize.height / 4;
-        // this.maxX = this.canvasSize.width * 3 / 4;
-        // this.maxY = this.canvasSize.height * 3 / 4;
-        
-
-        // //设置初始camera位置
+        // 设置初始camera位置
         // this.cameraNode.setPosition(
         //     this.node.convertToNodeSpaceAR(cc.v2(this.minX, this.minY)));
 
@@ -76,32 +70,30 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_START, this.playerMove, this)
         this.node.on(cc.Node.EventType.TOUCH_END, this.playerStop, this)
 
-        //Box
-        
-        //Box
+        //Box 触摸事件
         this.node.on(cc.Node.EventType.TOUCH_START, this.thouchStart, this)
         this.node.on(cc.Node.EventType.TOUCH_MOVE, this.thouchMove, this)
         this.node.on(cc.Node.EventType.TOUCH_END, this.thouchEnd, this)
-
+        this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.thouchEnd, this)
 
     };
 
     start() {
         // cc.view.getDesignResolutionSize();
         // cc.view.getFrameSize();
- 
+
         this.node.emit(settingBasic.gameEvent.gameStateEvent, this.stateType.START);
     };
 
     update(dt) {
-        // this.cameraControllor();
+        this.cameraControllor();
         this.toUpdate();
     };
 
     cameraControllor() {
         //限定相机移动区域 防止越界
         let cameraPos = this.cameraNode.convertToWorldSpace(cc.v2(0, 0))
-        let movePos = cc.v2(0, 0);
+        let movePos = this.cameraNode.position;
         //X
         let broPosWorld = this.brotherNode.convertToWorldSpace(cc.v2(0, 0))
         if (cameraPos.x >= this.minX && cameraPos.x <= this.maxX) {
