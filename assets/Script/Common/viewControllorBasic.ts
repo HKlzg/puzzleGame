@@ -33,6 +33,12 @@ export abstract class ViewControllorBasic extends cc.Component {
     public stateType = settingBasic.setting.stateType;
 
     public stepList: Array<string> = [];
+    public RoleType = settingBasic.setting.roleType
+    public currRole = settingBasic.setting.roleType.leadingRole;
+
+    //镜头移动方向
+    cameraMoveDirection: string = "";
+
     onLoad() {
         console.log("=========SCENE: " + this.level + " ==========")
         //加载子包资源
@@ -56,16 +62,15 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.BackgroundSize = Background.getContentSize();
         //camera 和canvas size一样
         let cameraSize = this.node.getContentSize();
-        //以世界坐标作参考
+        //以世界坐标作参考 镜头移动的界限坐标
         this.minX = cameraSize.width / 2 - (this.BackgroundSize.width - cameraSize.width) / 2;
         this.minY = cameraSize.height / 2 - (this.BackgroundSize.height - cameraSize.height) / 2;
-        this.maxX = (this.BackgroundSize.width - cameraSize.width) / 2 + cameraSize.width/2;
-        this.maxY = (this.BackgroundSize.height - cameraSize.height) / 2 + cameraSize.height/2;
+        this.maxX = (this.BackgroundSize.width - cameraSize.width) / 2 + cameraSize.width / 2;
+        this.maxY = (this.BackgroundSize.height - cameraSize.height) / 2 + cameraSize.height / 2;
 
         // 设置初始camera位置
-        // this.cameraNode.setPosition(
-        //     this.node.convertToNodeSpaceAR(cc.v2(this.minX, this.minY)));
-
+        this.cameraNode.setPosition(cc.v2(0, 0));
+        this.camera = this.cameraNode.getComponent(cc.Camera);
         //控制player移动
         this.node.on(cc.Node.EventType.TOUCH_START, this.playerMove, this)
         this.node.on(cc.Node.EventType.TOUCH_END, this.playerStop, this)
@@ -75,6 +80,9 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.node.on(cc.Node.EventType.TOUCH_MOVE, this.thouchMove, this)
         this.node.on(cc.Node.EventType.TOUCH_END, this.thouchEnd, this)
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.thouchEnd, this)
+
+        //切换角色事件
+        this.node.on(settingBasic.gameEvent.gameRoleEvent, this.changeRole, this);
 
     };
 
@@ -86,7 +94,19 @@ export abstract class ViewControllorBasic extends cc.Component {
     };
 
     update(dt) {
-        this.cameraControllor();
+        if (this.currRole == this.RoleType.leadingRole) {
+            this.cameraControllor();
+        } else if(this.boxShadow) {
+            //角色2
+            let cameraWorldPos = this.cameraNode.convertToWorldSpace(cc.v2(0, 0))
+
+            if (this.cameraMoveDirection == "L") {
+                cameraWorldPos.x > this.minX ? this.cameraNode.x -= 1 : null;
+            } else if (this.cameraMoveDirection == "R") {
+                cameraWorldPos.x < this.maxX ? this.cameraNode.x += 1 : null;
+            } 
+
+        }
         this.toUpdate();
     };
 
@@ -218,12 +238,17 @@ export abstract class ViewControllorBasic extends cc.Component {
     }
 
     //-------------------------------player -----------------------------
+    changeRole(role) {
+        this.currRole = role;
+        // console.log("=============role="+role)
+    }
 
     playerMove(event) {
+        if (this.currRole != this.RoleType.leadingRole) return
+
         let playerPos = this.brotherNode.convertToWorldSpace(cc.v2(0, 0));
         let touchPos = event.touch.getLocation();
         //将当前camera坐标下的event 坐标转换到世界坐标
-        this.camera = this.cameraNode.getComponent(cc.Camera);
         this.camera.getCameraToWorldPoint(touchPos, touchPos)
 
         // console.log("===========playerPos=" + playerPos + "======touchPos==" + touchPos);
@@ -267,6 +292,8 @@ export abstract class ViewControllorBasic extends cc.Component {
     }
 
     playerStop(event) {
+        if (this.currRole != this.RoleType.leadingRole) return
+
         let playerPos = cc.v2(0, 0);
         let touchPos = this.node.convertToNodeSpaceAR(event.touch.getLocation());
         let order: { direction: string, action: string } = null;
@@ -285,20 +312,41 @@ export abstract class ViewControllorBasic extends cc.Component {
     //-------------------------------Box -----------------------------
 
     thouchStart(event) {
+        if (this.currRole == this.RoleType.leadingRole) return
         let touchPos = event.touch.getLocation();
+        this.camera.getCameraToWorldPoint(touchPos, touchPos)
         this.boxShadow = cc.instantiate(this.boxShadowPerfab)
         touchPos = this.node.convertToNodeSpaceAR(touchPos);
         this.boxShadow.setPosition(touchPos);
         this.boxShadow.parent = this.node;
 
+
     }
     thouchMove(event) {
+        if (this.currRole == this.RoleType.leadingRole) return
+
         if (!this.boxShadow) return;
         let touchPos = event.touch.getLocation();
+        this.camera.getCameraToWorldPoint(touchPos, touchPos)
         touchPos = this.node.convertToNodeSpaceAR(touchPos);
         this.boxShadow.setPosition(touchPos);
+
+        //boxShadow到边缘时移动镜头
+        let cameraSize = this.node.getContentSize();
+        //向左移动
+        if (this.boxShadow.x - this.boxShadow.width / 2 <= this.cameraNode.x - cameraSize.width / 2) {
+            this.cameraMoveDirection = "L"
+        } else if (this.boxShadow.x + this.boxShadow.width / 2 >= this.cameraNode.x + cameraSize.width / 2) {
+            //向右移动
+            this.cameraMoveDirection = "R"
+        }else{
+            this.cameraMoveDirection = "S"
+        }
+
     }
     thouchEnd(event) {
+        if (this.currRole == this.RoleType.leadingRole) return
+
         if (!this.boxShadow) return;
         this.boxShadow.emit(settingBasic.gameEvent.instanceBoxEvent, "");
         this.boxShadow = null;

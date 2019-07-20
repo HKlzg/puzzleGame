@@ -18,8 +18,13 @@ let settingBasic = {
             RESUME: 4,
             OVER: 5
         }),
+        //角色枚举值
+        roleType: cc.Enum({
+            leadingRole: 1,
+            assistant: 2
+        }),
         //设定每关箭的数量
-        arrowNum: {
+        boxNum: {
             lv1: 10,
             lv2: 50,
             lv3: 50,
@@ -45,8 +50,8 @@ let settingBasic = {
 
 
     fun: {
-        getArrowNumByLv(lv) {
-            let setting = settingBasic.setting.arrowNum;
+        getBoxNumByLv(lv) {
+            let setting = settingBasic.setting.boxNum;
             let num = setting["lv" + lv];
             // console.log("===========setting " + lv + " num =" + num)
 
@@ -57,13 +62,15 @@ let settingBasic = {
     //当前游戏运行状态 全局
     game: {
         State: 1,
-        currLevel: 0
+        currLevel: 0,
+        currRole: 1
     },
 
     //自定义事件
     gameEvent: {
         //----游戏状态事件------viewControllorBasic------------------------
         gameStateEvent: "gameStateEvent",
+        gameRoleEvent:"gameRoleEvent",
         //----游戏关卡开启步骤
         gameStepEvent: "gameStepEvent",
         gameMoveStep: "brotherMoveStep",
@@ -88,8 +95,8 @@ let settingBasic = {
         bearActionEvent: "bearActionEvent",
 
         //Box
-        instanceBoxEvent:"instanceBoxEvent",
-     }
+        instanceBoxEvent: "instanceBoxEvent",
+    }
 
 
 };
