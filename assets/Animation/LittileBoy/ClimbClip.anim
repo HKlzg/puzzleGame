@@ -1,0 +1,228 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "ClimbClip",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": "2",
+  "curveData": {
+    "props": {
+      "rotation": [],
+      "position": []
+    },
+    "paths": {
+      "back_leg_2": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -5
+            },
+            {
+              "frame": 0.5,
+              "value": -37
+            },
+            {
+              "frame": 1,
+              "value": -5
+            }
+          ]
+        }
+      },
+      "back_leg_2/back_leg_1": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 6
+            },
+            {
+              "frame": 0.5,
+              "value": 128
+            },
+            {
+              "frame": 1,
+              "value": 6
+            }
+          ]
+        }
+      },
+      "back_leg_2 copy": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 62
+            },
+            {
+              "frame": 0.5,
+              "value": 7
+            },
+            {
+              "frame": 1,
+              "value": 62
+            }
+          ]
+        }
+      },
+      "back_leg_2 copy/back_leg_1": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 115
+            },
+            {
+              "frame": 0.5,
+              "value": 5
+            },
+            {
+              "frame": 1,
+              "value": 115
+            }
+          ]
+        }
+      },
+      "back_foot_front": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 147
+            },
+            {
+              "frame": 0.5,
+              "value": 7
+            },
+            {
+              "frame": 1,
+              "value": 147
+            }
+          ]
+        }
+      },
+      "back_foot_front/back_foot_1": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 47
+            },
+            {
+              "frame": 0.5,
+              "value": 168
+            },
+            {
+              "frame": 1,
+              "value": 47
+            }
+          ]
+        }
+      },
+      "back_foot_front/back_foot_1/back_foot": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0.5,
+              "value": 356
+            }
+          ]
+        }
+      },
+      "back_foot_front copy": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -21
+            },
+            {
+              "frame": 0.5,
+              "value": -127
+            },
+            {
+              "frame": 1,
+              "value": -6
+            }
+          ]
+        }
+      },
+      "back_foot_front copy/back_foot_1": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 133
+            },
+            {
+              "frame": 0.5,
+              "value": 67
+            },
+            {
+              "frame": 1,
+              "value": 157
+            }
+          ]
+        }
+      },
+      "back_foot_front copy/back_foot_1/back_foot": {
+        "props": {
+          "rotation": []
+        }
+      },
+      "back_body": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 3
+            },
+            {
+              "frame": 1,
+              "value": 3
+            }
+          ]
+        }
+      },
+      "back_qun": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 6
+            },
+            {
+              "frame": 0.5,
+              "value": -3
+            },
+            {
+              "frame": 1,
+              "value": 6
+            }
+          ]
+        }
+      },
+      "back_head": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": 26
+            },
+            {
+              "frame": 0.5,
+              "value": -17
+            },
+            {
+              "frame": 1,
+              "value": 26
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}
