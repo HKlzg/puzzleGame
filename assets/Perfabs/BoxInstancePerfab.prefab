@@ -143,18 +143,18 @@
     "tag": 0,
     "_density": 1,
     "_sensor": false,
-    "_friction": 0.2,
+    "_friction": 0.5,
     "_restitution": 0,
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",
-      "x": 0,
+      "x": 0.3,
       "y": 0
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 130,
-      "height": 130
+      "width": 126.9,
+      "height": 128.2
     },
     "_id": ""
   },

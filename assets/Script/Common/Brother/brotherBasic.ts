@@ -11,6 +11,7 @@ export class BrotherBasic extends cc.Component {
 
     brotherAnimation: cc.Animation = null;
     isMove: boolean = false;
+    collider: cc.PhysicsBoxCollider = null;
     //方向 L/R/U/D 
     //动作 WAIT/WALK/CLIMB
     order: { direction: string, action: string } = null;
@@ -23,17 +24,17 @@ export class BrotherBasic extends cc.Component {
         //初始状态
         this.brotherWalkNode.active = true;
         this.brotherClimbNode.active = false;
+
+        this.collider = this.node.getComponent(cc.PhysicsBoxCollider);
+
     }
 
     start() {
-
     }
 
     //更新动作
     brotherAction(msg: { direction: string, action: string }) {
         this.order = msg;
-
-        // this.order.direction = this.order.direction ? (this.order.direction == "R" ? "R" : "L") : "L";
 
         this.node.scaleX = this.order.direction == "L" ? -1 : 1;
 
@@ -67,7 +68,6 @@ export class BrotherBasic extends cc.Component {
     update(dt) {
         //更新位置
         if (this.isMove) {
-            // console.log("============this.order.direction="+this.order.direction)
             switch (this.order.action.toUpperCase()) {
                 case "WAIT":
 
@@ -83,7 +83,7 @@ export class BrotherBasic extends cc.Component {
                 default:
                     break;
             }
-
+            this.collider ? this.collider.apply() : null;
         }
     }
 }

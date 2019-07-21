@@ -18,7 +18,8 @@ export abstract class ViewControllorBasic extends cc.Component {
     boxShadowPerfab: cc.Prefab = null;
     @property(cc.Node)
     brotherNode: cc.Node = null;
-
+    @property(cc.Node)
+    background: cc.Node = null;
     //Brother Move 
     minX: number = 0;
     minY: number = 0;
@@ -38,7 +39,9 @@ export abstract class ViewControllorBasic extends cc.Component {
 
     //镜头移动方向
     cameraMoveDirection: string = "";
-
+    //切换角色之前的镜头坐标
+    lastCameraPos: cc.Vec2 = cc.v2(0, 0);
+    isMoveCamera: boolean = false;
     onLoad() {
         console.log("=========SCENE: " + this.level + " ==========")
         //加载子包资源
@@ -47,6 +50,9 @@ export abstract class ViewControllorBasic extends cc.Component {
         //开启物理系统 ----------必须写在onLoad 里面
         cc.director.getPhysicsManager().enabled = true;
 
+        // //绘制碰撞区域
+        // var draw = cc.PhysicsManager.DrawBits;
+        // cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
         // //开启碰撞检测
         cc.director.getCollisionManager().enabled = true;
 
@@ -58,8 +64,9 @@ export abstract class ViewControllorBasic extends cc.Component {
 
         //------Camera-------
         //获取背景大小
-        let Background = this.node.getChildByName("Background");
-        this.BackgroundSize = Background.getContentSize();
+        this.camera = this.cameraNode.getComponent(cc.Camera);
+        // let Background = this.background;
+        this.BackgroundSize = this.background.getContentSize();
         //camera 和canvas size一样
         let cameraSize = this.node.getContentSize();
         //以世界坐标作参考 镜头移动的界限坐标
@@ -68,18 +75,23 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.maxX = (this.BackgroundSize.width - cameraSize.width) / 2 + cameraSize.width / 2;
         this.maxY = (this.BackgroundSize.height - cameraSize.height) / 2 + cameraSize.height / 2;
 
-        // 设置初始camera位置
-        this.cameraNode.setPosition(cc.v2(0, 0));
-        this.camera = this.cameraNode.getComponent(cc.Camera);
+        // 设置初始camera位置 
+
+        let pos = this.node.convertToNodeSpaceAR(cc.v2(this.minX, this.minY))
+        this.cameraNode.setPosition(pos);
+        this.lastCameraPos = this.cameraNode.position;
+
+        //使用background 注册事件,是为了 防止点击canvas区域之外时无效的情况
         //控制player移动
-        this.node.on(cc.Node.EventType.TOUCH_START, this.playerMove, this)
-        this.node.on(cc.Node.EventType.TOUCH_END, this.playerStop, this)
+        this.background.on(cc.Node.EventType.TOUCH_START, this.playerMove, this)
+        this.background.on(cc.Node.EventType.TOUCH_END, this.playerStop, this)
+        this.background.on(cc.Node.EventType.TOUCH_CANCEL, this.playerStop, this)
 
         //Box 触摸事件
-        this.node.on(cc.Node.EventType.TOUCH_START, this.thouchStart, this)
-        this.node.on(cc.Node.EventType.TOUCH_MOVE, this.thouchMove, this)
-        this.node.on(cc.Node.EventType.TOUCH_END, this.thouchEnd, this)
-        this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.thouchEnd, this)
+        this.background.on(cc.Node.EventType.TOUCH_START, this.thouchStart, this)
+        this.background.on(cc.Node.EventType.TOUCH_MOVE, this.thouchMove, this)
+        this.background.on(cc.Node.EventType.TOUCH_END, this.thouchEnd, this)
+        this.background.on(cc.Node.EventType.TOUCH_CANCEL, this.thouchEnd, this)
 
         //切换角色事件
         this.node.on(settingBasic.gameEvent.gameRoleEvent, this.changeRole, this);
@@ -94,17 +106,26 @@ export abstract class ViewControllorBasic extends cc.Component {
     };
 
     update(dt) {
+        let moveSpeed = 4;
         if (this.currRole == this.RoleType.leadingRole) {
-            this.cameraControllor();
-        } else if(this.boxShadow) {
+            if (!this.isMoveCamera) {
+                this.cameraControllor();
+                // this.lastCameraPos = this.cameraNode.position;
+            } else if (!this.cameraNode.position.equals(this.lastCameraPos)) {
+                if (this.cameraNode.runAction(cc.moveTo(0.5, this.lastCameraPos)).isDone) {
+                    this.isMoveCamera = false;
+                    this.lastCameraPos = this.cameraNode.position;
+                }
+            }
+        } else if (this.boxShadow) {
             //角色2
             let cameraWorldPos = this.cameraNode.convertToWorldSpace(cc.v2(0, 0))
 
             if (this.cameraMoveDirection == "L") {
-                cameraWorldPos.x > this.minX ? this.cameraNode.x -= 1 : null;
+                cameraWorldPos.x > this.minX + moveSpeed ? this.cameraNode.runAction(cc.moveBy(0, cc.v2(-moveSpeed, this.cameraNode.y))) : null;
             } else if (this.cameraMoveDirection == "R") {
-                cameraWorldPos.x < this.maxX ? this.cameraNode.x += 1 : null;
-            } 
+                cameraWorldPos.x < this.maxX - moveSpeed ? this.cameraNode.runAction(cc.moveBy(0, cc.v2(moveSpeed, this.cameraNode.y))) : null;
+            }
 
         }
         this.toUpdate();
@@ -225,8 +246,7 @@ export abstract class ViewControllorBasic extends cc.Component {
     abstract gameStep(setp: string);
     //人物移动步骤
     abstract moveStep(setp: number);
-
-    //检测是否包含 步骤
+    //检测是否包含*步骤
     isContainsStep(step: string): boolean {
         // console.log("============stepList =" + this.stepList.toString()+"   step="+step);
         for (let index = 0; index < this.stepList.length; index++) {
@@ -237,13 +257,19 @@ export abstract class ViewControllorBasic extends cc.Component {
         return false;
     }
 
-    //-------------------------------player -----------------------------
+    //-------------------------------player Event-----------------------------
     changeRole(role) {
+        if (role == this.RoleType.leadingRole) {
+            this.isMoveCamera = true;
+        } else if (role == this.RoleType.assistant) {
+            this.lastCameraPos = this.cameraNode.position; //记录
+        }
         this.currRole = role;
-        // console.log("=============role="+role)
+
     }
 
     playerMove(event) {
+        // console.log("==playerMove start==")
         if (this.currRole != this.RoleType.leadingRole) return
 
         let playerPos = this.brotherNode.convertToWorldSpace(cc.v2(0, 0));
@@ -251,7 +277,6 @@ export abstract class ViewControllorBasic extends cc.Component {
         //将当前camera坐标下的event 坐标转换到世界坐标
         this.camera.getCameraToWorldPoint(touchPos, touchPos)
 
-        // console.log("===========playerPos=" + playerPos + "======touchPos==" + touchPos);
         let order: { direction: string, action: string } = { direction: "R", action: "WAIT" };
         let direction = "S";
 
@@ -268,6 +293,7 @@ export abstract class ViewControllorBasic extends cc.Component {
         //     direction = "D"
         // }
 
+        // console.log("==direction=" + direction + "===========playerPos=" + playerPos + "======touchPos==" + touchPos);
         switch (direction) {
             case "S":
                 order = { direction: "R", action: "WAIT" };
@@ -309,10 +335,11 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
     }
 
-    //-------------------------------Box -----------------------------
+    //-------------------------------Box Event----------------------------
 
     thouchStart(event) {
         if (this.currRole == this.RoleType.leadingRole) return
+
         let touchPos = event.touch.getLocation();
         this.camera.getCameraToWorldPoint(touchPos, touchPos)
         this.boxShadow = cc.instantiate(this.boxShadowPerfab)
@@ -339,7 +366,7 @@ export abstract class ViewControllorBasic extends cc.Component {
         } else if (this.boxShadow.x + this.boxShadow.width / 2 >= this.cameraNode.x + cameraSize.width / 2) {
             //向右移动
             this.cameraMoveDirection = "R"
-        }else{
+        } else {
             this.cameraMoveDirection = "S"
         }
 

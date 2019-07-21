@@ -9,5 +9,9 @@ export default class NewClass extends cc.Component {
 
     }
 
-    // update (dt) {}
+    update (dt) {
+        if(this.node.y<-1500){
+            this.node.removeFromParent()
+        }
+    }
 }
