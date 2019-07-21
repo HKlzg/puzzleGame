@@ -15,7 +15,17 @@
     "subContext": ""
   },
   "encryptJs": false,
-  "excludeScenes": [],
+  "excludeScenes": [
+    "f44b10bf-1938-4331-813e-8df8662bed09",
+    "6835e761-f07e-469a-b0c2-eaaa03e2dbd8",
+    "644e6570-8773-41d7-bdba-30785609dc18",
+    "b6a9a030-0537-473d-b823-9ae35f0f8d7c",
+    "b910f171-433c-4a08-b700-0307c70a9d6e",
+    "3166713c-f0b2-46ff-b59e-7309159ae77e",
+    "85c4fb99-c687-4d5e-ae77-8eae2a6f1845",
+    "fc0f81b5-b60a-48a1-8938-b182de936641",
+    "63de23e8-5d1f-4818-9c1f-2ed0b34e403b"
+  ],
   "fb-instant-games": {},
   "includeSDKBox": false,
   "inlineSpriteFrames": false,
@@ -35,7 +45,7 @@
     "orientation": "portrait",
     "zip": false
   },
-  "startScene": "63de23e8-5d1f-4818-9c1f-2ed0b34e403b",
+  "startScene": "7e1ea30a-a1e2-4d12-a2a1-e428e8bb4206",
   "title": "rescue_the_princess",
   "webOrientation": "auto",
   "wechatgame": {

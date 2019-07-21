@@ -106,25 +106,28 @@ export abstract class ViewControllorBasic extends cc.Component {
     };
 
     update(dt) {
-        let moveSpeed = 4;
+
         if (this.currRole == this.RoleType.leadingRole) {
+            //角色1
             if (!this.isMoveCamera) {
                 this.cameraControllor();
-                // this.lastCameraPos = this.cameraNode.position;
             } else if (!this.cameraNode.position.equals(this.lastCameraPos)) {
-                if (this.cameraNode.runAction(cc.moveTo(0.5, this.lastCameraPos)).isDone) {
-                    this.isMoveCamera = false;
-                    this.lastCameraPos = this.cameraNode.position;
-                }
+
+                cc.tween(this.cameraNode).to(0.3, { position: this.lastCameraPos }).start();
+                this.isMoveCamera = false;
             }
         } else if (this.boxShadow) {
             //角色2
-            let cameraWorldPos = this.cameraNode.convertToWorldSpace(cc.v2(0, 0))
+            let moveSpeed = 5;
+            let cameraWorldPos = this.cameraNode.convertToWorldSpace(cc.v2(0, 0));
 
             if (this.cameraMoveDirection == "L") {
-                cameraWorldPos.x > this.minX + moveSpeed ? this.cameraNode.runAction(cc.moveBy(0, cc.v2(-moveSpeed, this.cameraNode.y))) : null;
+                cameraWorldPos.x > this.minX + moveSpeed * 5 ?
+                    this.cameraNode.runAction(cc.moveBy(0, cc.v2(-moveSpeed, this.cameraNode.y))) : null;
+
             } else if (this.cameraMoveDirection == "R") {
-                cameraWorldPos.x < this.maxX - moveSpeed ? this.cameraNode.runAction(cc.moveBy(0, cc.v2(moveSpeed, this.cameraNode.y))) : null;
+                cameraWorldPos.x < this.maxX - moveSpeed * 5 ?
+                    this.cameraNode.runAction(cc.moveBy(0, cc.v2(moveSpeed, this.cameraNode.y))) : null;
             }
 
         }

@@ -14,46 +14,52 @@ export default class NewClass extends cc.Component {
 
     isOK: boolean = true; //是否能实例化
     sprite: cc.Sprite = null;
-    isShadow: boolean = true; //是否为虚影状态
 
     body: cc.RigidBody = null;
-    clider: cc.PhysicsBoxCollider = null;
+    clider: cc.BoxCollider = null;
+    isContact: boolean = false;
     start() {
         this.node.on(setting.gameEvent.instanceBoxEvent, this.changePic, this);
         this.body = this.node.getComponent(cc.RigidBody);
-        this.clider = this.node.getComponent(cc.PhysicsBoxCollider);
+        this.clider = this.node.getComponent(cc.BoxCollider);
         this.sprite = this.node.getComponent(cc.Sprite);
 
+        this.clider.enabled = true;
+        cc.director.getCollisionManager().enabled = true
     }
 
-    onBeginContact(contact, self, other) {
-        if (this.isShadow && this.isOK) {
-            this.isOK = false
-            this.sprite.spriteFrame = this.boxShadowRed;
-        }
+    onCollisionEnter(contact, self, other){
+        this.isContact = true
+    }
+    onCollisionStay(contact, self, other) {
+        this.isContact = true
+    }
+    onCollisionExit(contact, self, other) {
+        this.isContact = false
     }
 
-    onEndContact(contact, self, other) {
-        if (this.isShadow && !this.isOK) {
-            this.isOK = true;
-            this.sprite.spriteFrame = this.boxShadow;
-        }
-    }
 
-  
     changePic(msg) {
-        if (this.isShadow && this.isOK) {
-            this.isShadow = false;
-
+        if (this.isOK) {
             let box = cc.instantiate(this.boxInstancePerfab)
             this.node.parent.addChild(box);
             box.setPosition(this.node.position);
-
-        } else {
         }
 
         this.node.removeFromParent();
     }
 
+    update() {
+        if (this.isContact) {
+            this.isOK = false
+            this.sprite.spriteFrame != this.boxShadowRed ?
+                this.sprite.spriteFrame = this.boxShadowRed : null;
+        } else {
+            this.isOK = true;
+            this.sprite.spriteFrame != this.boxShadow ?
+                this.sprite.spriteFrame = this.boxShadow : null;
+
+        }
+    }
 
 }
