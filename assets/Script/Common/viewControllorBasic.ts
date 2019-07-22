@@ -42,6 +42,8 @@ export abstract class ViewControllorBasic extends cc.Component {
     //切换角色之前的镜头坐标
     lastCameraPos: cc.Vec2 = cc.v2(0, 0);
     isMoveCamera: boolean = false;
+
+    preTouchId: number;
     onLoad() {
         console.log("=========SCENE: " + this.level + " ==========")
         //加载子包资源
@@ -272,8 +274,11 @@ export abstract class ViewControllorBasic extends cc.Component {
     }
 
     playerMove(event) {
-        // console.log("==playerMove start==")
+        // console.log("==playerMove start== getID=" + event.getID())
         if (this.currRole != this.RoleType.leadingRole) return
+        //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
+        if (this.preTouchId && event.getID() != this.preTouchId) return
+
 
         let playerPos = this.brotherNode.convertToWorldSpace(cc.v2(0, 0));
         let touchPos = event.touch.getLocation();
@@ -323,6 +328,9 @@ export abstract class ViewControllorBasic extends cc.Component {
     playerStop(event) {
         if (this.currRole != this.RoleType.leadingRole) return
 
+        //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
+        if (this.preTouchId && event.getID() != this.preTouchId) return
+
         let playerPos = cc.v2(0, 0);
         let touchPos = this.node.convertToNodeSpaceAR(event.touch.getLocation());
         let order: { direction: string, action: string } = null;
@@ -342,6 +350,10 @@ export abstract class ViewControllorBasic extends cc.Component {
 
     thouchStart(event) {
         if (this.currRole == this.RoleType.leadingRole) return
+        //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
+        if (this.preTouchId && event.getID() != this.preTouchId) return
+        
+        this.boxShadow?this.boxShadow.removeFromParent():null;
 
         let touchPos = event.touch.getLocation();
         this.camera.getCameraToWorldPoint(touchPos, touchPos)
@@ -354,6 +366,8 @@ export abstract class ViewControllorBasic extends cc.Component {
     }
     thouchMove(event) {
         if (this.currRole == this.RoleType.leadingRole) return
+        //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
+        if(this.preTouchId && event.getID() != this.preTouchId) return
 
         if (!this.boxShadow) return;
         let touchPos = event.touch.getLocation();
