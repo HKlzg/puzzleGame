@@ -1,0 +1,108 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "MagicClip",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "props": {
+      "rotation": []
+    },
+    "paths": {
+      "thethigh_left": {
+        "props": {
+          "rotation": []
+        }
+      },
+      "thethigh_left/thecafe": {
+        "props": {
+          "rotation": []
+        }
+      },
+      "thethigh_right": {
+        "props": {
+          "rotation": []
+        }
+      },
+      "thethigh_right/thecafe": {
+        "props": {
+          "rotation": []
+        }
+      },
+      "arm_right": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -81
+            }
+          ]
+        }
+      },
+      "arm_right/smallarms": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -72
+            }
+          ]
+        }
+      },
+      "arm_right/smallarms/hand": {
+        "props": {
+          "rotation": []
+        }
+      },
+      "body": {
+        "props": {
+          "rotation": []
+        }
+      },
+      "body/thebelly": {
+        "props": {
+          "rotation": []
+        }
+      },
+      "head": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -14
+            }
+          ]
+        }
+      },
+      "arm_left": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -58
+            }
+          ]
+        }
+      },
+      "arm_left/smallarms": {
+        "props": {
+          "rotation": [
+            {
+              "frame": 0,
+              "value": -82
+            }
+          ]
+        }
+      },
+      "arm_left/smallarms/hand": {
+        "props": {
+          "rotation": []
+        }
+      }
+    }
+  },
+  "events": []
+}

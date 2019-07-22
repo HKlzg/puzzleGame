@@ -137,8 +137,8 @@
   "group-list": [
     "default",
     "绳子",
-    "箭",
-    "障碍物(箭能射中)",
+    "箱子",
+    "河水",
     "地面",
     "非碰撞物",
     "人物",
@@ -154,6 +154,5 @@
     "width": 960
   },
   "use-customize-simulator": true,
-  "use-project-simulator-setting": false,
-  "start-scene": "current"
+  "use-project-simulator-setting": false
 }
