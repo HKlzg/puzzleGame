@@ -19,9 +19,10 @@ let settingBasic = {
             OVER: 5
         }),
         //角色枚举值
-        roleType: cc.Enum({
-            leadingRole: 1,
-            assistant: 2
+        roleState: cc.Enum({
+            Stop: 0,
+            Moving: 1,
+            LongTouch: 2
         }),
         //设定每关箭的数量
         boxNum: {
@@ -63,14 +64,12 @@ let settingBasic = {
     game: {
         State: 1,
         currLevel: 0,
-        currRole: 1
     },
 
     //自定义事件
     gameEvent: {
         //----游戏状态事件------viewControllorBasic------------------------
         gameStateEvent: "gameStateEvent",
-        gameRoleEvent:"gameRoleEvent",
         //----游戏关卡开启步骤
         gameStepEvent: "gameStepEvent",
         gameMoveStep: "brotherMoveStep",
