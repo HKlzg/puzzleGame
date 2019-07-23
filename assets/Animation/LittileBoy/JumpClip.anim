@@ -9,24 +9,6 @@
   "wrapMode": "2",
   "curveData": {
     "props": {
-      "rotation": [
-        {
-          "frame": 0,
-          "value": 0
-        },
-        {
-          "frame": 0.16666666666666666,
-          "value": 15
-        },
-        {
-          "frame": 0.4166666666666667,
-          "value": -22
-        },
-        {
-          "frame": 0.8333333333333334,
-          "value": 2
-        }
-      ],
       "position": [
         {
           "frame": 0,
@@ -63,138 +45,68 @@
             -31
           ]
         }
+      ],
+      "angle": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 0.16666666666666666,
+          "value": -15
+        },
+        {
+          "frame": 0.4166666666666667,
+          "value": 22
+        },
+        {
+          "frame": 0.8333333333333334,
+          "value": -2
+        }
       ]
     },
     "paths": {
       "thethigh_left": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -11
+              "value": 11
             },
             {
               "frame": 0.16666666666666666,
-              "value": -54
+              "value": 54
             },
             {
               "frame": 0.4166666666666667,
-              "value": -108
+              "value": 108
             },
             {
               "frame": 0.75,
-              "value": -47
+              "value": 47
             },
             {
               "frame": 0.8333333333333334,
-              "value": -16
+              "value": 16
             }
           ]
         }
       },
       "thethigh_left/thecafe": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 9
+              "value": -9
             },
             {
               "frame": 0.16666666666666666,
-              "value": 122
+              "value": -122
             },
             {
               "frame": 0.4166666666666667,
-              "value": -8
+              "value": 8
             },
-            {
-              "frame": 0.75,
-              "value": 22
-            }
-          ]
-        }
-      },
-      "thethigh_right": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 4
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": -68
-            },
-            {
-              "frame": 0.4166666666666667,
-              "value": -83
-            },
-            {
-              "frame": 0.75,
-              "value": -20
-            },
-            {
-              "frame": 0.8333333333333334,
-              "value": -7
-            }
-          ]
-        }
-      },
-      "thethigh_right/thecafe": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": -1
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": 85
-            },
-            {
-              "frame": 0.4166666666666667,
-              "value": -7
-            },
-            {
-              "frame": 0.75,
-              "value": 16
-            },
-            {
-              "frame": 0.8333333333333334,
-              "value": 3
-            }
-          ]
-        }
-      },
-      "arm_right": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 7
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": 81
-            },
-            {
-              "frame": 0.4166666666666667,
-              "value": -128
-            },
-            {
-              "frame": 0.75,
-              "value": -30
-            },
-            {
-              "frame": 0.8333333333333334,
-              "value": -6
-            }
-          ]
-        }
-      },
-      "arm_right/smallarms": {
-        "props": {
-          "rotation": [
             {
               "frame": 0.75,
               "value": -22
@@ -202,105 +114,193 @@
           ]
         }
       },
-      "arm_right/smallarms/hand": {
+      "thethigh_right": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 36
+              "value": -4
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 68
+            },
+            {
+              "frame": 0.4166666666666667,
+              "value": 83
             },
             {
               "frame": 0.75,
-              "value": 13
+              "value": 20
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": 7
+            }
+          ]
+        }
+      },
+      "thethigh_right/thecafe": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 1
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -85
+            },
+            {
+              "frame": 0.4166666666666667,
+              "value": 7
+            },
+            {
+              "frame": 0.75,
+              "value": -16
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": -3
+            }
+          ]
+        }
+      },
+      "arm_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -7
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -81
+            },
+            {
+              "frame": 0.4166666666666667,
+              "value": 128
+            },
+            {
+              "frame": 0.75,
+              "value": 30
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": 6
+            }
+          ]
+        }
+      },
+      "arm_right/smallarms": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0.75,
+              "value": 22
+            }
+          ]
+        }
+      },
+      "arm_right/smallarms/hand": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -36
+            },
+            {
+              "frame": 0.75,
+              "value": -13
             }
           ]
         }
       },
       "body": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0.16666666666666666,
-              "value": 2
+              "value": -2
             }
           ]
         }
       },
       "thebelly": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0.16666666666666666,
-              "value": 4
+              "value": -4
             }
           ]
         }
       },
       "head": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 8
+              "value": -8
             },
             {
               "frame": 0.16666666666666666,
-              "value": 34
+              "value": -34
             },
             {
               "frame": 0.4166666666666667,
-              "value": 7
+              "value": -7
             }
           ]
         }
       },
       "arm_left": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -3
+              "value": 3
             },
             {
               "frame": 0.16666666666666666,
-              "value": 121
+              "value": -121
             },
             {
               "frame": 0.4166666666666667,
-              "value": -111
+              "value": 111
             },
             {
               "frame": 0.75,
-              "value": -56
+              "value": 56
             },
             {
               "frame": 0.8333333333333334,
-              "value": -7
+              "value": 7
             }
           ]
         }
       },
       "arm_left/smallarms": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -18
+              "value": 18
             },
             {
               "frame": 0.16666666666666666,
-              "value": -30
+              "value": 30
             },
             {
               "frame": 0.8333333333333334,
-              "value": -4
+              "value": 4
             }
           ]
         }
       },
       "arm_left/smallarms/hand": {
         "props": {
-          "rotation": []
+          "angle": []
         }
       }
     }

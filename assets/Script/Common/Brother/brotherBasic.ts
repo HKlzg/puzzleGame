@@ -55,9 +55,21 @@ export class BrotherBasic extends cc.Component {
                 break;
 
             case "CLIMB":
-                this.brotherAnimation.play("ClimbClip");
                 this.brotherWalkNode.active = false;
                 this.brotherClimbNode.active = true;
+                this.brotherAnimation.play("ClimbClip");
+                this.isMove = true;
+                break;
+            case "JUMP":
+                this.brotherWalkNode.active = true;
+                this.brotherClimbNode.active = false;
+                this.brotherAnimation.play("JumpClip");
+                this.isMove = true;
+                break;
+            case "MAGIC":
+                this.brotherWalkNode.active = true;
+                this.brotherClimbNode.active = false;
+                this.brotherAnimation.play("MagicClip");
                 this.isMove = true;
                 break;
             default:
@@ -80,6 +92,14 @@ export class BrotherBasic extends cc.Component {
                 case "CLIMB":
                     this.order.direction == "U" ? this.node.y += 2 : this.node.y -= 2;
                     break;
+                    
+                case "JUMP":
+
+                    break;
+                case "MAGIC":
+
+                    break;
+
                 default:
                     break;
             }

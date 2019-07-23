@@ -9,128 +9,128 @@
   "wrapMode": 1,
   "curveData": {
     "props": {
-      "rotation": [
+      "position": [],
+      "angle": [
         {
           "frame": 0,
-          "value": 2
+          "value": -2
         }
-      ],
-      "position": []
+      ]
     },
     "paths": {
       "leg_down": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -29
+              "value": 29
             },
             {
               "frame": 0.3333333333333333,
-              "value": -74
+              "value": 74
             }
           ]
         }
       },
       "leg_down/leg_down": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 49
+              "value": -49
             }
           ]
         }
       },
       "leg_2_down": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -34
+              "value": 34
             },
             {
               "frame": 0.3333333333333333,
-              "value": -70
+              "value": 70
             }
           ]
         }
       },
       "leg_2_down/leg_2_down": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 43
+              "value": -43
             }
           ]
         }
       },
       "body": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.3333333333333333,
-              "value": 2
+              "value": -2
             }
           ]
         }
       },
       "head": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.3333333333333333,
-              "value": 2
+              "value": -2
             }
           ]
         }
       },
       "head/nose": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 31
+              "value": -31
             }
           ]
         }
       },
       "head/ear_right": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 14
+              "value": -14
             }
           ]
         }
       },
       "head/ear_left": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 19
+              "value": -19
             },
             {
               "frame": 0.3333333333333333,
-              "value": 22
+              "value": -22
             }
           ]
         }
       },
       "head/eye": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
@@ -140,7 +140,7 @@
       },
       "head/sai": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
@@ -150,66 +150,66 @@
       },
       "tail": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 27
+              "value": -27
             },
             {
               "frame": 0.3333333333333333,
-              "value": 13
+              "value": -13
             }
           ]
         }
       },
       "leg_2_up": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
             },
             {
               "frame": 0.3333333333333333,
-              "value": -34
+              "value": 34
             }
           ]
         }
       },
       "leg_2_up/leg_2_down": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -11
+              "value": 11
             }
           ]
         }
       },
       "leg_up": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 22
+              "value": -22
             },
             {
               "frame": 0.3333333333333333,
-              "value": -33
+              "value": 33
             }
           ]
         }
       },
       "leg_up/leg_down": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -14
+              "value": 14
             },
             {
               "frame": 0.3333333333333333,
-              "value": -33
+              "value": 33
             }
           ]
         }

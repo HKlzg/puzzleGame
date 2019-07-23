@@ -9,151 +9,151 @@
   "wrapMode": "2",
   "curveData": {
     "props": {
-      "rotation": [
+      "angle": [
         {
           "frame": 0,
-          "value": 2
+          "value": -2
         }
       ]
     },
     "paths": {
       "leg_down": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -55
+              "value": 55
             },
             {
               "frame": 0.5,
-              "value": 5
+              "value": -5
             },
             {
               "frame": 0.7166666666666667,
-              "value": -22
+              "value": 22
             },
             {
               "frame": 0.9166666666666666,
-              "value": -55
+              "value": 55
             }
           ]
         }
       },
       "leg_down/leg_down": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 49
+              "value": -49
             }
           ]
         }
       },
       "leg_2_down": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -18
+              "value": 18
             },
             {
               "frame": 0.5,
-              "value": -54
+              "value": 54
             },
             {
               "frame": 0.9166666666666666,
-              "value": -18
+              "value": 18
             }
           ]
         }
       },
       "leg_2_down/leg_2_down": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 43
+              "value": -43
             },
             {
               "frame": 0.25,
-              "value": 77
+              "value": -77
             },
             {
               "frame": 0.5,
-              "value": 39
+              "value": -39
             }
           ]
         }
       },
       "body": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -1
-            },
-            {
-              "frame": 0.5,
               "value": 1
             },
             {
-              "frame": 0.9166666666666666,
+              "frame": 0.5,
               "value": -1
+            },
+            {
+              "frame": 0.9166666666666666,
+              "value": 1
             }
           ]
         }
       },
       "head": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -6
+              "value": 6
             },
             {
               "frame": 0.5,
-              "value": 2
+              "value": -2
             },
             {
               "frame": 0.9166666666666666,
-              "value": -6
+              "value": 6
             }
           ]
         }
       },
       "head/nose": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 31
+              "value": -31
             }
           ]
         }
       },
       "head/ear_right": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 14
+              "value": -14
             }
           ]
         }
       },
       "head/ear_left": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 19
+              "value": -19
             }
           ]
         }
       },
       "head/eye": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
@@ -163,7 +163,7 @@
       },
       "head/sai": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
@@ -173,110 +173,110 @@
       },
       "tail": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 21
+              "value": -21
             },
             {
               "frame": 0.5,
-              "value": 25
+              "value": -25
             },
             {
               "frame": 0.9166666666666666,
-              "value": 21
+              "value": -21
             }
           ]
         }
       },
       "leg_2_up": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -30
+              "value": 30
             },
             {
               "frame": 0.5,
-              "value": 5
+              "value": -5
             },
             {
               "frame": 0.9166666666666666,
-              "value": -30
+              "value": 30
             }
           ]
         }
       },
       "leg_2_up/leg_2_down": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -1
+              "value": 1
             },
             {
               "frame": 0.25,
-              "value": 42
+              "value": -42
             },
             {
               "frame": 0.5,
-              "value": 15
+              "value": -15
             },
             {
               "frame": 0.7166666666666667,
-              "value": 52
+              "value": -52
             },
             {
               "frame": 0.9166666666666666,
-              "value": 22
+              "value": -22
             }
           ]
         }
       },
       "leg_up": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 31
+              "value": -31
             },
             {
               "frame": 0.5,
-              "value": -24
+              "value": 24
             },
             {
               "frame": 0.7166666666666667,
-              "value": 12
+              "value": -12
             },
             {
               "frame": 0.9166666666666666,
-              "value": 36
+              "value": -36
             }
           ]
         }
       },
       "leg_up/leg_down": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 13
+              "value": -13
             },
             {
               "frame": 0.25,
-              "value": 32
+              "value": -32
             },
             {
               "frame": 0.5,
-              "value": 10
+              "value": -10
             },
             {
               "frame": 0.7166666666666667,
-              "value": 7
+              "value": -7
             },
             {
               "frame": 0.9166666666666666,
-              "value": 21
+              "value": -21
             }
           ]
         }

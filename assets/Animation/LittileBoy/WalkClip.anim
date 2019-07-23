@@ -11,166 +11,36 @@
     "paths": {
       "head": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 10
+              "value": -10
             },
             {
               "frame": 0.16666666666666666,
-              "value": -1
+              "value": 1
             },
             {
               "frame": 0.35,
-              "value": 10
+              "value": -10
             },
             {
               "frame": 0.5,
-              "value": -1
+              "value": 1
             },
             {
               "frame": 0.6666666666666666,
-              "value": 10
+              "value": -10
             }
           ]
         }
       },
       "thethigh_left": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 6
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": 21
-            },
-            {
-              "frame": 0.35,
-              "value": -32
-            },
-            {
-              "frame": 0.5,
-              "value": -42
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": 6
-            }
-          ]
-        }
-      },
-      "thethigh_left/thecafe": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 13
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": 42
-            },
-            {
-              "frame": 0.35,
-              "value": 100
-            },
-            {
-              "frame": 0.5,
-              "value": 4
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": 13
-            }
-          ]
-        }
-      },
-      "thethigh_right": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": -34
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": -20
-            },
-            {
-              "frame": 0.35,
-              "value": 3
-            },
-            {
-              "frame": 0.5,
-              "value": 0
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": -34
-            }
-          ]
-        }
-      },
-      "thethigh_right/thecafe": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": 35
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": -3
-            },
-            {
-              "frame": 0.35,
-              "value": 8
-            },
-            {
-              "frame": 0.5,
-              "value": 64
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": 35
-            }
-          ]
-        }
-      },
-      "arm_right": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": -29
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": -44
-            },
-            {
-              "frame": 0.35,
-              "value": 17
-            },
-            {
-              "frame": 0.5,
-              "value": 42
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": -29
-            }
-          ]
-        }
-      },
-      "arm_right/smallarms": {
-        "props": {
-          "rotation": [
-            {
-              "frame": 0,
-              "value": -8
+              "value": -6
             },
             {
               "frame": 0.16666666666666666,
@@ -178,32 +48,162 @@
             },
             {
               "frame": 0.35,
-              "value": -37.5
+              "value": 32
             },
             {
               "frame": 0.5,
-              "value": -54
+              "value": 42
             },
             {
               "frame": 0.6666666666666666,
+              "value": -6
+            }
+          ]
+        }
+      },
+      "thethigh_left/thecafe": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -13
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -42
+            },
+            {
+              "frame": 0.35,
+              "value": -100
+            },
+            {
+              "frame": 0.5,
+              "value": -4
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -13
+            }
+          ]
+        }
+      },
+      "thethigh_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 34
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 20
+            },
+            {
+              "frame": 0.35,
+              "value": -3
+            },
+            {
+              "frame": 0.5,
+              "value": 0
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 34
+            }
+          ]
+        }
+      },
+      "thethigh_right/thecafe": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -35
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 3
+            },
+            {
+              "frame": 0.35,
               "value": -8
+            },
+            {
+              "frame": 0.5,
+              "value": -64
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -35
+            }
+          ]
+        }
+      },
+      "arm_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 29
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 44
+            },
+            {
+              "frame": 0.35,
+              "value": -17
+            },
+            {
+              "frame": 0.5,
+              "value": -42
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 29
+            }
+          ]
+        }
+      },
+      "arm_right/smallarms": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 8
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 21
+            },
+            {
+              "frame": 0.35,
+              "value": 37.5
+            },
+            {
+              "frame": 0.5,
+              "value": 54
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 8
             }
           ]
         }
       },
       "arm_right/smallarms/hand": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 10
+              "value": -10
             }
           ]
         }
       },
       "body": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
               "value": 0
@@ -213,24 +213,24 @@
       },
       "thebelly": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 3
+              "value": -3
             }
           ]
         }
       },
       "arm_left": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 38
+              "value": -38
             },
             {
               "frame": 0.16666666666666666,
-              "value": 53
+              "value": -53
             },
             {
               "frame": 0.35,
@@ -238,75 +238,53 @@
             },
             {
               "frame": 0.5,
-              "value": -22
+              "value": 22
             },
             {
               "frame": 0.6666666666666666,
-              "value": 38
+              "value": -38
             }
           ]
         }
       },
       "arm_left/smallarms": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -40
+              "value": 40
             },
             {
               "frame": 0.16666666666666666,
-              "value": -35.53719008264463
+              "value": 35.53719008264463
             },
             {
               "frame": 0.35,
-              "value": -16
+              "value": 16
             },
             {
               "frame": 0.5,
-              "value": -34
+              "value": 34
             },
             {
               "frame": 0.6666666666666666,
-              "value": -40
+              "value": 40
             }
           ]
         }
       },
       "arm_left/smallarms/hand": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 1
+              "value": -1
             }
           ]
         }
       }
     },
     "props": {
-      "rotation": [
-        {
-          "frame": 0,
-          "value": 3.5939849624060147
-        },
-        {
-          "frame": 0.16666666666666666,
-          "value": 1
-        },
-        {
-          "frame": 0.35,
-          "value": 5
-        },
-        {
-          "frame": 0.5,
-          "value": 9
-        },
-        {
-          "frame": 0.6666666666666666,
-          "value": 3.5939849624060147
-        }
-      ],
       "position": [
         {
           "frame": 0,
@@ -342,6 +320,28 @@
             0,
             0
           ]
+        }
+      ],
+      "angle": [
+        {
+          "frame": 0,
+          "value": -3.5939849624060147
+        },
+        {
+          "frame": 0.16666666666666666,
+          "value": -1
+        },
+        {
+          "frame": 0.35,
+          "value": -5
+        },
+        {
+          "frame": 0.5,
+          "value": -9
+        },
+        {
+          "frame": 0.6666666666666666,
+          "value": -3.5939849624060147
         }
       ]
     }

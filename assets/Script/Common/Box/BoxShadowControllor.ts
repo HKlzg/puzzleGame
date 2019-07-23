@@ -18,6 +18,7 @@ export default class NewClass extends cc.Component {
     body: cc.RigidBody = null;
     clider: cc.BoxCollider = null;
     isContact: boolean = false;
+    maskNode: cc.Node = null;
     start() {
         this.node.on(setting.gameEvent.instanceBoxEvent, this.changePic, this);
         this.body = this.node.getComponent(cc.RigidBody);
@@ -28,7 +29,7 @@ export default class NewClass extends cc.Component {
         cc.director.getCollisionManager().enabled = true
     }
 
-    onCollisionEnter(contact, self, other){
+    onCollisionEnter(contact, self, other) {
         this.isContact = true
     }
     onCollisionStay(contact, self, other) {
@@ -42,8 +43,11 @@ export default class NewClass extends cc.Component {
     changePic(msg) {
         if (this.isOK) {
             let box = cc.instantiate(this.boxInstancePerfab)
-            this.node.parent.addChild(box);
-            box.setPosition(this.node.position);
+            this.maskNode = this.node.parent;
+            if (this.maskNode) {
+                this.maskNode.addChild(box);
+                box.setPosition(this.node.position);
+            }
         }
 
         this.node.removeFromParent();

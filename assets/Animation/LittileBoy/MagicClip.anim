@@ -9,97 +9,97 @@
   "wrapMode": 1,
   "curveData": {
     "props": {
-      "rotation": []
+      "angle": []
     },
     "paths": {
       "thethigh_left": {
         "props": {
-          "rotation": []
+          "angle": []
         }
       },
       "thethigh_left/thecafe": {
         "props": {
-          "rotation": []
+          "angle": []
         }
       },
       "thethigh_right": {
         "props": {
-          "rotation": []
+          "angle": []
         }
       },
       "thethigh_right/thecafe": {
         "props": {
-          "rotation": []
+          "angle": []
         }
       },
       "arm_right": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -81
+              "value": 81
             }
           ]
         }
       },
       "arm_right/smallarms": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -72
+              "value": 72
             }
           ]
         }
       },
       "arm_right/smallarms/hand": {
         "props": {
-          "rotation": []
+          "angle": []
         }
       },
       "body": {
         "props": {
-          "rotation": []
+          "angle": []
         }
       },
       "body/thebelly": {
         "props": {
-          "rotation": []
+          "angle": []
         }
       },
       "head": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -14
+              "value": 14
             }
           ]
         }
       },
       "arm_left": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -58
+              "value": 58
             }
           ]
         }
       },
       "arm_left/smallarms": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -82
+              "value": 82
             }
           ]
         }
       },
       "arm_left/smallarms/hand": {
         "props": {
-          "rotation": []
+          "angle": []
         }
       }
     }

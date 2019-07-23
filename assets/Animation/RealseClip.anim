@@ -11,70 +11,70 @@
     "paths": {
       "right_hand_font": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 40
+              "value": -40
             },
             {
               "frame": 0.15,
-              "value": -34
+              "value": 34
             }
           ]
         }
       },
       "right_hand_font/right_hand_down": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -112
+              "value": 112
             },
             {
               "frame": 0.15,
-              "value": -84
+              "value": 84
             }
           ]
         }
       },
       "left_hand_font": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": 139
+              "value": -139
             },
             {
               "frame": 0.15,
-              "value": 156
+              "value": -156
             }
           ]
         }
       },
       "left_hand_font/left_hand_down": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -10
+              "value": 10
             },
             {
               "frame": 0.15,
-              "value": -10
+              "value": 10
             }
           ]
         }
       },
       "head": {
         "props": {
-          "rotation": [
+          "angle": [
             {
               "frame": 0,
-              "value": -1
+              "value": 1
             },
             {
               "frame": 0.15,
-              "value": -12
+              "value": 12
             }
           ]
         }

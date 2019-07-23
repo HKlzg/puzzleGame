@@ -29,7 +29,7 @@ export abstract class ViewControllorBasic extends cc.Component {
     boxShadow: cc.Node = null;
     camera: cc.Camera = null;
     BackgroundSize: cc.Size = null;
-    public boxParent:cc.Node = null;
+    public boxParent: cc.Node = null;
     public toolsBasics = toolsBasics;
     public settingBasic = settingBasic;
     public stateType = settingBasic.setting.stateType;
@@ -38,22 +38,21 @@ export abstract class ViewControllorBasic extends cc.Component {
     public RoleType = settingBasic.setting.roleType
     public currRole = settingBasic.setting.roleType.leadingRole;
 
-    public  startpos:cc.Vec2 = null;
-    public endpos:cc.Vec2 = null;
+    public startpos: cc.Vec2 = null;
+    public endpos: cc.Vec2 = null;
 
     //镜头移动方向
     cameraMoveDirection: string = "";
-    //切换角色之前的镜头坐标
-    lastCameraPos: cc.Vec2 = cc.v2(0, 0);
-    isMoveCamera: boolean = false;
+    // //切换角色之前的镜头坐标
+    // lastCameraPos: cc.Vec2 = cc.v2(0, 0);
+    // isMoveCamera: boolean = false;
 
-    public time:number = 0;
-
-    public startTime:boolean = false;
-
-
+    isPlayerMove: boolean = false;
+    isLongTouch: boolean = false;
+    longTouchStartPos: cc.Vec2 = null;
     //#region onload
     preTouchId: number;
+    prePlayerOrder: { direction: string, action: string } = null;
     onLoad() {
         console.log("=========SCENE: " + this.level + " ==========")
         //加载子包资源
@@ -62,12 +61,12 @@ export abstract class ViewControllorBasic extends cc.Component {
         //开启物理系统 ----------必须写在onLoad 里面
         cc.director.getPhysicsManager().enabled = true;
 
-        // //绘制碰撞区域
+        // // //绘制碰撞区域
         // var draw = cc.PhysicsManager.DrawBits;
         // cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
         // //开启碰撞检测
         cc.director.getCollisionManager().enabled = true;
-        this.boxParent = this.node.getChildByName("Mask");
+
         // 自定义事件 控制游戏状态 
         this.node.on(settingBasic.gameEvent.gameStateEvent, this.changeGameState, this);
         this.node.on(settingBasic.gameEvent.gameStepEvent, this.gameStep, this);
@@ -75,9 +74,8 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.node.on(settingBasic.gameEvent.setCurrGameStep, this.setCurrGameStep, this);
 
         //------Camera-------
-        //获取背景大小
         this.camera = this.cameraNode.getComponent(cc.Camera);
-        // let Background = this.background;
+        //获取背景大小
         this.BackgroundSize = this.background.getContentSize();
         //camera 和canvas size一样
         let cameraSize = this.node.getContentSize();
@@ -88,25 +86,24 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.maxY = (this.BackgroundSize.height - cameraSize.height) / 2 + cameraSize.height / 2;
 
         // 设置初始camera位置 
-
-        let pos = this.node.convertToNodeSpaceAR(cc.v2(this.minX, this.minY))
+        let pos = this.node.convertToNodeSpaceAR(cc.v2(this.minX + this.brotherNode.width / 2, this.minY))
         this.cameraNode.setPosition(pos);
-        this.lastCameraPos = this.cameraNode.position;
+        // this.lastCameraPos = this.cameraNode.position;
 
         //使用background 注册事件,是为了 防止点击canvas区域之外时无效的情况
         //控制player移动
-        this.background.on(cc.Node.EventType.TOUCH_START, this.playerMove, this)
+        this.background.on(cc.Node.EventType.TOUCH_START, this.playerStart, this)
+        this.background.on(cc.Node.EventType.TOUCH_MOVE, this.playerMove, this)
         this.background.on(cc.Node.EventType.TOUCH_END, this.playerStop, this)
         this.background.on(cc.Node.EventType.TOUCH_CANCEL, this.playerStop, this)
 
         //Box 触摸事件
-        this.background.on(cc.Node.EventType.TOUCH_START, this.thouchStart, this)
-        this.background.on(cc.Node.EventType.TOUCH_MOVE, this.thouchMove, this)
-        this.background.on(cc.Node.EventType.TOUCH_END, this.thouchEnd, this)
-        this.background.on(cc.Node.EventType.TOUCH_CANCEL, this.thouchEnd, this)
+        this.boxParent = this.node.getChildByName("Mask");
+        this.background.on(cc.Node.EventType.TOUCH_START, this.boxTouchStart, this)
+        this.background.on(cc.Node.EventType.TOUCH_MOVE, this.boxTouchMove, this)
+        this.background.on(cc.Node.EventType.TOUCH_END, this.boxTouchEnd, this)
+        this.background.on(cc.Node.EventType.TOUCH_CANCEL, this.boxTouchEnd, this)
 
-        //切换角色事件
-        this.node.on(settingBasic.gameEvent.gameRoleEvent, this.changeRole, this);
 
     };
     //#endregion
@@ -115,46 +112,40 @@ export abstract class ViewControllorBasic extends cc.Component {
     start() {
         // cc.view.getDesignResolutionSize();
         // cc.view.getFrameSize();
-
         this.node.emit(settingBasic.gameEvent.gameStateEvent, this.stateType.START);
     };
     //#endregion
     update(dt) {
 
-        if(this.startTime){
-                this.time+=0.1;
-                // console.log(this.endpos+"this.endpos+++++++++++++++++++++++++");
-            if (this.endpos==null&&this.time>=3) {
-                console.log("长按");
-                   this.startTime = false;                   
-            }
-        }
-
-
-        if (this.currRole == this.RoleType.leadingRole) {
+        if (!this.isLongTouch) {
             //角色1
-            if (!this.isMoveCamera) {
-                this.cameraControllor();
-            } else if (!this.cameraNode.position.equals(this.lastCameraPos)) {
-
-                cc.tween(this.cameraNode).to(0.3, { position: this.lastCameraPos }).start();
-                this.isMoveCamera = false;
-            }
-        } else if (this.boxShadow) {
-            //角色2
-            let moveSpeed = 5;
-            let cameraWorldPos = this.cameraNode.convertToWorldSpace(cc.v2(0, 0));
-
-            if (this.cameraMoveDirection == "L") {
-                cameraWorldPos.x > this.minX + moveSpeed * 5 ?
-                    this.cameraNode.runAction(cc.moveBy(0, cc.v2(-moveSpeed, this.cameraNode.y))) : null;
-
-            } else if (this.cameraMoveDirection == "R") {
-                cameraWorldPos.x < this.maxX - moveSpeed * 5 ?
-                    this.cameraNode.runAction(cc.moveBy(0, cc.v2(moveSpeed, this.cameraNode.y))) : null;
-            }
-
+            // if (!this.isMoveCamera) {
+            this.cameraControllor();
+            // } else if (!this.cameraNode.position.equals(this.lastCameraPos)) {
+            //相机归位
+            //     cc.tween(this.cameraNode).to(0.3, { position: this.lastCameraPos }).start();
+            //     this.isMoveCamera = false;
+            // }
         }
+        //  else if (this.boxShadow) {
+        //     //放置箱子
+        //     let moveSpeed = 5;
+        //     let cameraWorldPos = this.cameraNode.convertToWorldSpace(cc.v2(0, 0));
+
+        //     if (this.cameraMoveDirection == "L") {
+        //         cameraWorldPos.x > this.minX + moveSpeed * 5 ?
+        //             this.cameraNode.runAction(cc.moveBy(0, cc.v2(-moveSpeed, this.cameraNode.y))) : null;
+
+        //     } else if (this.cameraMoveDirection == "R") {
+        //         cameraWorldPos.x < this.maxX - moveSpeed * 5 ?
+        //             this.cameraNode.runAction(cc.moveBy(0, cc.v2(moveSpeed, this.cameraNode.y))) : null;
+        //     }
+        // }
+
+        if (this.isLongTouch && !this.boxShadow && !this.isPlayerMove) {
+            this.createBoxShadow()
+        }
+
         this.toUpdate();
     };
 
@@ -285,19 +276,17 @@ export abstract class ViewControllorBasic extends cc.Component {
     }
 
     //-------------------------------player Event-----------------------------
-    changeRole(role) {
-        if (role == this.RoleType.leadingRole) {
-            this.isMoveCamera = true;
-        } else if (role == this.RoleType.assistant) {
-            this.lastCameraPos = this.cameraNode.position; //记录
-        }
-        this.currRole = role;
-
+    playerStart(event) {
+        if (this.isLongTouch) return
+        //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
+        if (this.preTouchId && event.getID() != this.preTouchId) return
+        this.startpos = event.touch.getLocation();
     }
 
     playerMove(event) {
         // console.log("==playerMove start== getID=" + event.getID())
-        if (this.currRole != this.RoleType.leadingRole) return
+        if (this.isLongTouch) return
+        this.isPlayerMove = true;
         //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
         if (this.preTouchId && event.getID() != this.preTouchId) return
 
@@ -310,52 +299,67 @@ export abstract class ViewControllorBasic extends cc.Component {
         let order: { direction: string, action: string } = { direction: "R", action: "WAIT" };
         let direction = "S";
 
-        if (playerPos.x < touchPos.x) {
-            direction = "R"
+        /******滑动方向检测 */
+        this.endpos = event.touch.getLocation();
+        let currpos = cc.v2(this.endpos.x - this.startpos.x, this.endpos.y - this.startpos.y);
+        let distance = toolsBasics.distanceVector(this.startpos, this.endpos);
+
+        if (distance > 10) {
+            let angle = toolsBasics.vectorsToDegress(currpos);
+
+            if (angle >= -45 && angle < 45) {
+                direction = "R";
+            } else if (angle > -135 && angle <= -45) {
+                direction = "U";
+            } else if ((angle > -180 && angle <= -135) || (angle > 135 && angle <= 180)) {
+                direction = "L";
+            }
         }
-        if (playerPos.x > touchPos.x) {
-            direction = "L"
-        }
-        // if (playerPos.y < touchPos.y) {
-        //     direction = "U"
-        // }
-        // if (playerPos.y > touchPos.y) {
-        //     direction = "D"
-        // }
 
         // console.log("==direction=" + direction + "===========playerPos=" + playerPos + "======touchPos==" + touchPos);
         switch (direction) {
             case "S":
                 order = { direction: "R", action: "WAIT" };
                 break;
-            case "U":
-                order = { direction: "U", action: "CLIMB" };
+
+            case "U": //向上
+                order = { direction: "U", action: "JUMP" };
                 break;
-            case "D":
+            case "D": //向下
                 order = { direction: "D", action: "CLIMB" };
                 break;
-            case "L":
+            case "L"://向左
                 order = { direction: "L", action: "WALK" };
                 break;
-            case "R":
+            case "R"://向右
                 order = { direction: "R", action: "WALK" };
                 break;
             default:
                 break;
         }
-        // console.log("=======direction=" + direction)
-        this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
+        if (direction != "S") {
+            if (!this.prePlayerOrder || (this.prePlayerOrder.direction != order.direction
+                || this.prePlayerOrder.direction != order.direction)) {
+                this.prePlayerOrder = order
+                console.log("=======direction=" + direction + "   distance= " + distance)
+                this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
+            }
+        }
     }
 
     playerStop(event) {
-        if (this.currRole != this.RoleType.leadingRole) return
-
+        //放置箱子时不能移动
+        if (this.isLongTouch) return
+        console.log("=======playerStop===")
+        this.endpos = null;
+        this.prePlayerOrder = null;
+        this.isPlayerMove = false;
         //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
-        if (this.preTouchId && event.getID() != this.preTouchId) return
+        // if (this.preTouchId && event.getID() != this.preTouchId) return
 
         let playerPos = cc.v2(0, 0);
-        let touchPos = this.node.convertToNodeSpaceAR(event.touch.getLocation());
-
+        let touchPos = event.touch.getLocation();
+        this.camera.getCameraToWorldPoint(touchPos, touchPos)
 
         let order: { direction: string, action: string } = null;
         let direction = "R";
@@ -371,89 +375,79 @@ export abstract class ViewControllorBasic extends cc.Component {
     }
 
     //-------------------------------Box Event----------------------------
+    //开启长按
+    longTouch(dt) {
+        if(this.isPlayerMove)return
+        console.log("================longtouch==========")
+        this.isLongTouch = true;
+    }
 
-    thouchStart(event) {
-        this.startTime = true;
-        this.startpos = event.touch.getLocation();
-
-        if (this.currRole == this.RoleType.leadingRole) return
-        //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
-        if (this.preTouchId && event.getID() != this.preTouchId) return
-        
-        this.boxShadow?this.boxShadow.removeFromParent():null;
-
-        let touchPos = event.touch.getLocation();
-        this.camera.getCameraToWorldPoint(touchPos, touchPos)
-        this.boxShadow = cc.instantiate(this.boxShadowPerfab)
-        touchPos = this.node.convertToNodeSpaceAR(touchPos);
-        this.boxShadow.setPosition(touchPos);
-        this.boxShadow.parent = this.boxParent;
-        
-        // let time = this.startpos.equals(this.endpos);
-
-
-        // console.log(time.toString()+"angle-------------------------------------------------------");
+    // 产生箱子
+    createBoxShadow() {
+        {
+            this.isLongTouch = true;
+            this.boxShadow ? this.boxShadow.removeFromParent() : null;
+            let touchPos = this.longTouchStartPos;
+            this.camera.getCameraToWorldPoint(touchPos, touchPos)
+            this.boxShadow = cc.instantiate(this.boxShadowPerfab)
+            this.boxShadow.parent = this.boxParent;
+            touchPos = this.boxParent.convertToNodeSpaceAR(touchPos);
+            this.boxShadow.setPosition(touchPos);
+        }
 
     }
 
-    thouchMove(event) {
-
-        this.endpos = event.touch.getLocation();
-        let currpos = cc.v2( this.endpos.x-this.startpos.x, this.endpos.y-this.startpos.y);
-        let distance = toolsBasics.distanceVector(this.startpos, this.endpos);
-        let angle =  toolsBasics.vectorsToDegress(currpos);
-
-        if(distance>10){
-            if(angle>=-45&&angle<45){
-                console.log("向右")
-            }else if(angle>-135&&angle<=-45){
-                console.log("向上")
-            }else if((angle>-180&&angle<=-135)||(angle>135&&angle<=180)){
-                console.log("向左")
-            }
-        }
-
-
-        let touchPos = event.touch.getLocation();
-        
-
-        if (this.currRole == this.RoleType.leadingRole) return
+    boxTouchStart(event) {
         //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
-        if(this.preTouchId && event.getID() != this.preTouchId) return
+        if (this.preTouchId && event.getID() != this.preTouchId) return
+        //人物移动时不能触发
+        if (this.isPlayerMove) return
 
+        this.longTouchStartPos = event.touch.getLocation();
+        //长按0.5秒开启
+        // this.scheduleOnce(this.longTouch, 0.5)
+        this.unschedule(this.longTouch)
+        this.schedule(this.longTouch, 0.5, 0)
+
+    }
+
+    boxTouchMove(event) {
+        if (!this.isLongTouch) return
+        //人物移动时不能触发
+        if (this.isPlayerMove) return
+        //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
+        if (this.preTouchId && event.getID() != this.preTouchId) return
         if (!this.boxShadow) return;
 
+        let touchPos = event.touch.getLocation();
         this.camera.getCameraToWorldPoint(touchPos, touchPos)
-        touchPos = this.node.convertToNodeSpaceAR(touchPos);
+        touchPos = this.boxParent.convertToNodeSpaceAR(touchPos);
         this.boxShadow.setPosition(touchPos);
 
         //boxShadow到边缘时移动镜头
-        let cameraSize = this.node.getContentSize();
+        // let cameraSize = this.node.getContentSize();
         //向左移动
-        if (this.boxShadow.x - this.boxShadow.width / 2 <= this.cameraNode.x - cameraSize.width / 2) {
-            this.cameraMoveDirection = "L"
-        } else if (this.boxShadow.x + this.boxShadow.width / 2 >= this.cameraNode.x + cameraSize.width / 2) {
-            //向右移动
-            this.cameraMoveDirection = "R"
-        } else {
-            this.cameraMoveDirection = "S"
-        }
+        // if (this.boxShadow.x - this.boxShadow.width / 2 <= this.cameraNode.x - cameraSize.width / 2) {
+        //     this.cameraMoveDirection = "L"
+        // } else if (this.boxShadow.x + this.boxShadow.width / 2 >= this.cameraNode.x + cameraSize.width / 2) {
+        //     //向右移动
+        //     this.cameraMoveDirection = "R"
+        // } else {
+        //     this.cameraMoveDirection = "S"
+        // }
 
-        let touchendpos = event.touch.getLocation();
     }
-    thouchEnd(event) {
+    boxTouchEnd(event) {
 
-        //#region 
-        this.endpos = null;
-        this.startTime = false;
-        this.time = 0;
-        //#endregion
-
-        if (this.currRole == this.RoleType.leadingRole) return
-
-        if (!this.boxShadow) return;
-        this.boxShadow.emit(settingBasic.gameEvent.instanceBoxEvent, "");
+        this.isLongTouch = false;
+        //撤销定时器
+        this.unschedule(this.longTouch)
+        if (this.boxShadow) {
+            this.boxShadow.emit(settingBasic.gameEvent.instanceBoxEvent, "");
+        }
         this.boxShadow = null;
 
     }
+
+
 }
