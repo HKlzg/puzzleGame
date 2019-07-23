@@ -133,11 +133,12 @@ export abstract class ViewControllorBasic extends cc.Component {
             //     this.isMoveCamera = false;
             // }
         }
-        if (this.isLongTouchBegin && this.playerState == this.playerStateType.Stop) {
+        if (this.isLongTouchBegin /*&& this.playerState == this.playerStateType.Stop*/) {
             this.longTouchTime++;
 
-            if (this.longTouchTime > 20 && this.playerState != this.playerStateType.LongTouch) {
+            if (this.startpos.equals(this.endpos) && this.longTouchTime > 20) {
 
+                this.isLongTouchBegin = false;
                 this.playerState = this.playerStateType.LongTouch;
 
                 //产生boxShadow
@@ -277,15 +278,22 @@ export abstract class ViewControllorBasic extends cc.Component {
 
     //-------------------------------player Event-----------------------------
     playerStart(event) {
+
+
         if (this.playerState == this.playerStateType.LongTouch) return
         //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
         if (this.preTouchId && event.getID() != this.preTouchId) return
         this.startpos = event.touch.getLocation();
+        this.endpos = event.touch.getLocation();
     }
 
     playerMove(event) {
+
+        this.endpos = event.touch.getLocation();
+        // console.log(this.endpos+"this endpos move");
         // console.log("==playerMove start== getID=" + event.getID())
         if (this.playerState == this.playerStateType.LongTouch) return
+        //手机一直触发此事件
         this.playerState = this.playerStateType.Moving;
 
         //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
@@ -301,7 +309,7 @@ export abstract class ViewControllorBasic extends cc.Component {
         let direction = "S";
 
         /******滑动方向检测 */
-        this.endpos = event.touch.getLocation();
+
         let currpos = cc.v2(this.endpos.x - this.startpos.x, this.endpos.y - this.startpos.y);
         let distance = toolsBasics.distanceVector(this.startpos, this.endpos);
 
@@ -342,7 +350,7 @@ export abstract class ViewControllorBasic extends cc.Component {
             if (!this.prePlayerOrder || (this.prePlayerOrder.direction != order.direction
                 || this.prePlayerOrder.direction != order.direction)) {
                 this.prePlayerOrder = order
-                console.log("=======direction=" + direction + "   distance= " + distance)
+                console.log("=======direction=" + direction  )
                 this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
             }
         }
@@ -413,10 +421,10 @@ export abstract class ViewControllorBasic extends cc.Component {
     }
 
     boxTouchMove(event) {
-
         if (this.playerState == this.playerStateType.Moving) return
         //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
         if (this.preTouchId && event.getID() != this.preTouchId) return
+
         this.isLongTouchBegin = false;
 
 
