@@ -40,6 +40,11 @@ export abstract class ViewControllorBasic extends cc.Component {
 
     //镜头移动方向
     cameraMoveDirection: string = "";
+
+    line:cc.Node = null;
+
+    rDis:number =  400;
+
     // //切换角色之前的镜头坐标
     // lastCameraPos: cc.Vec2 = cc.v2(0, 0);
     // isMoveCamera: boolean = false;
@@ -72,6 +77,8 @@ export abstract class ViewControllorBasic extends cc.Component {
         // cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
         // //开启碰撞检测
         cc.director.getCollisionManager().enabled = true;
+
+        this.line = this.node.getChildByName("Line");
 
         // 自定义事件 控制游戏状态 
         this.node.on(settingBasic.gameEvent.gameStateEvent, this.changeGameState, this);
@@ -121,8 +128,36 @@ export abstract class ViewControllorBasic extends cc.Component {
         // cc.view.getFrameSize();
         this.node.emit(settingBasic.gameEvent.gameStateEvent, this.stateType.START);
     };
+
+    boxToDistanceBoY(): cc.Vec2 {
+        let vector = null;
+        //拿到borther和box的位置求距离来限制箱子生成的范围
+        let bortherpos = this.brotherNode.convertToWorldSpace(cc.v2(0, 0));
+        let boxpos = this.camera.getCameraToWorldPoint(this.endpos, this.endpos);
+        let dis = toolsBasics.distanceVector(bortherpos, boxpos);
+        console.log(dis+"dis+++++++++++++++++++++++++++++");
+        if (dis >= this.rDis) {
+            vector = boxpos.sub(bortherpos);
+            vector = vector.normalize().mul(900);
+        }else{
+            vector = boxpos;
+        }
+        let gra = this.line.getComponent(cc.Graphics);
+        gra.clear();
+        gra.moveTo(bortherpos.x, bortherpos.y);
+        gra.lineTo(vector.x, vector.y);
+        gra.stroke();
+        return this.boxParent.convertToNodeSpaceAR(vector);
+    }
+
+
+
+
     //#endregion
     update(dt) {
+
+
+
         if (this.playerState != this.playerStateType.LongTouch) {
 
             // if (!this.isMoveCamera) {
@@ -137,7 +172,6 @@ export abstract class ViewControllorBasic extends cc.Component {
             this.longTouchTime++;
 
             if (this.startpos.equals(this.endpos) && this.longTouchTime > 20) {
-
                 this.isLongTouchBegin = false;
                 this.playerState = this.playerStateType.LongTouch;
 
@@ -398,12 +432,13 @@ export abstract class ViewControllorBasic extends cc.Component {
             this.boxShadow.runAction(cc.scaleTo(0.1, 1, 1));
 
             touchPos = this.boxParent.convertToNodeSpaceAR(touchPos);
-            this.boxShadow.setPosition(touchPos);
+            this.boxShadow.setPosition(this.boxToDistanceBoY());
 
             //切换动作
             let dire = touchPos.x >= this.brotherNode.x ? "R" : "L";
             let order: { direction: string, action: string } = { direction: dire, action: "MAGIC" }
             this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
+            
         }
 
     }
@@ -432,8 +467,7 @@ export abstract class ViewControllorBasic extends cc.Component {
         let touchPos = event.touch.getLocation();
         this.camera.getCameraToWorldPoint(touchPos, touchPos)
         touchPos = this.boxParent.convertToNodeSpaceAR(touchPos);
-        this.boxShadow.setPosition(touchPos);
-
+        this.boxShadow.setPosition(this.boxToDistanceBoY());
         //boxShadow到边缘时移动镜头
         // let cameraSize = this.node.getContentSize();
         //向左移动
@@ -452,7 +486,7 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.playerState = this.playerStateType.Stop
         this.isLongTouchBegin = false;
         this.longTouchTime = 0;
-
+        this.line.getComponent(cc.Graphics).clear();
         if (this.boxShadow) {
             this.boxShadow.emit(settingBasic.gameEvent.instanceBoxEvent, "");
         }

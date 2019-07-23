@@ -12,13 +12,15 @@ export class BrotherBasic extends cc.Component {
     brotherAnimation: cc.Animation = null;
     isMove: boolean = false;
     collider: cc.PhysicsBoxCollider = null;
+    @property(cc.Node)
+    Circerl:cc.Node = null;
+
     //方向 L/R/U/D 
     //动作 WAIT/WALK/CLIMB
     order: { direction: string, action: string } = null;
 
     onLoad() {
         this.brotherAnimation = this.brotherWalkNode.getComponent(cc.Animation);
-
         this.node.on(settingBasic.gameEvent.brotherActionEvent, this.brotherAction, this);
         this.order = { direction: "L", action: "WAIT" };
         //初始状态
@@ -45,6 +47,7 @@ export class BrotherBasic extends cc.Component {
                 this.brotherClimbNode.active = false;
                 this.brotherAnimation.play("WaitClip");
                 this.isMove = false;
+                this.Circerl.active = false;
 
                 break;
             case "WALK":
@@ -52,6 +55,7 @@ export class BrotherBasic extends cc.Component {
                 this.brotherClimbNode.active = false;
                 this.brotherAnimation.play("WalkClip");
                 this.isMove = true;
+                this.Circerl.active = false;
                 break;
 
             case "CLIMB":
@@ -59,17 +63,21 @@ export class BrotherBasic extends cc.Component {
                 this.brotherClimbNode.active = true;
                 this.brotherAnimation.play("ClimbClip");
                 this.isMove = true;
+                this.Circerl.active = false;
                 break;
             case "JUMP":
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
                 this.brotherAnimation.play("JumpClip");
                 this.isMove = true;
+                this.Circerl.active = false;
                 break;
             case "MAGIC":
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
                 this.brotherAnimation.play("MagicClip");
+                this.Circerl.setPosition(this.Circerl.parent.convertToNodeSpaceAR((this.node.convertToWorldSpace(cc.v2(0,0)))));
+                this.Circerl.active = true;
                 this.isMove = true;
                 break;
             default:
