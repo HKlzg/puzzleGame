@@ -15,6 +15,8 @@ export class BrotherBasic extends cc.Component {
     @property(cc.Node)
     Circerl:cc.Node = null;
 
+    anmstate = null;
+
     //方向 L/R/U/D 
     //动作 WAIT/WALK/CLIMB
     order: { direction: string, action: string } = null;
@@ -28,7 +30,6 @@ export class BrotherBasic extends cc.Component {
         this.brotherClimbNode.active = false;
 
         this.collider = this.node.getComponent(cc.PhysicsBoxCollider);
-
     }
 
     start() {
@@ -38,14 +39,14 @@ export class BrotherBasic extends cc.Component {
     brotherAction(msg: { direction: string, action: string }) {
         this.order = msg;
 
-        this.node.scaleX = this.order.direction == "L" ? -1 : 1;
+        this.node.scaleX = (this.order.direction == "L" || this.order.direction == "LU") ? -1 : 1;
 
 
         switch (this.order.action.toUpperCase()) {
             case "WAIT":
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
-                this.brotherAnimation.play("WaitClip");
+                this.anmstate= this.brotherAnimation.play("WaitClip");
                 this.isMove = false;
                 this.Circerl.active = false;
 
@@ -53,7 +54,7 @@ export class BrotherBasic extends cc.Component {
             case "WALK":
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
-                this.brotherAnimation.play("WalkClip");
+                this.anmstate= this.brotherAnimation.play("WalkClip");
                 this.isMove = true;
                 this.Circerl.active = false;
                 break;
@@ -61,21 +62,21 @@ export class BrotherBasic extends cc.Component {
             case "CLIMB":
                 this.brotherWalkNode.active = false;
                 this.brotherClimbNode.active = true;
-                this.brotherAnimation.play("ClimbClip");
+                this.anmstate= this.brotherAnimation.play("ClimbClip");
                 this.isMove = true;
                 this.Circerl.active = false;
                 break;
             case "JUMP":
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
-                this.brotherAnimation.play("JumpClip");
+                this.anmstate= this.brotherAnimation.play("JumpClip");
                 this.isMove = true;
                 this.Circerl.active = false;
                 break;
             case "MAGIC":
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
-                this.brotherAnimation.play("MagicClip");
+                this.anmstate = this.brotherAnimation.play("MagicClip");
                 this.Circerl.setPosition(this.Circerl.parent.convertToNodeSpaceAR((this.node.convertToWorldSpace(cc.v2(0,0)))));
                 this.Circerl.active = true;
                 this.isMove = true;

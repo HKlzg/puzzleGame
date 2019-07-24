@@ -41,9 +41,9 @@ export abstract class ViewControllorBasic extends cc.Component {
     //镜头移动方向
     cameraMoveDirection: string = "";
 
-    line:cc.Node = null;
-
-    rDis:number =  400;
+    //显示圈范围
+    line: cc.Node = null;
+    rDis: number = 300;
 
     // //切换角色之前的镜头坐标
     // lastCameraPos: cc.Vec2 = cc.v2(0, 0);
@@ -130,34 +130,39 @@ export abstract class ViewControllorBasic extends cc.Component {
     };
 
     boxToDistanceBoY(): cc.Vec2 {
-        let vector = null;
+        let vector = cc.Vec2.ZERO;
         //拿到borther和box的位置求距离来限制箱子生成的范围
         let bortherpos = this.brotherNode.convertToWorldSpace(cc.v2(0, 0));
         let boxpos = this.camera.getCameraToWorldPoint(this.endpos, this.endpos);
+
         let dis = toolsBasics.distanceVector(bortherpos, boxpos);
-        console.log(dis+"dis+++++++++++++++++++++++++++++");
+
         if (dis >= this.rDis) {
-            vector = boxpos.sub(bortherpos);
-            vector = vector.normalize().mul(900);
-        }else{
+            let angle = boxpos.sub(bortherpos).angle(cc.v2(this.rDis, 0));
+            vector.x = bortherpos.x + this.rDis * Math.cos(angle);
+            vector.y = bortherpos.y <= boxpos.y ?
+                bortherpos.y + this.rDis * Math.sin(angle) :
+                bortherpos.y - this.rDis * Math.sin(angle);
+        } else {
             vector = boxpos;
         }
         let gra = this.line.getComponent(cc.Graphics);
         gra.clear();
         gra.moveTo(bortherpos.x, bortherpos.y);
         gra.lineTo(vector.x, vector.y);
+
+        // gra.moveTo(0, 0);
+        // gra.lineTo(bortherpos.x, bortherpos.y);
+
+        // gra.moveTo(0, 0);
+        // gra.lineTo(boxpos.x, boxpos.y);
+
         gra.stroke();
         return this.boxParent.convertToNodeSpaceAR(vector);
     }
 
-
-
-
     //#endregion
     update(dt) {
-
-
-
         if (this.playerState != this.playerStateType.LongTouch) {
 
             // if (!this.isMoveCamera) {
@@ -178,9 +183,7 @@ export abstract class ViewControllorBasic extends cc.Component {
                 //产生boxShadow
                 this.createBoxShadow()
             }
-
         }
-
         this.toUpdate();
     };
 
@@ -202,6 +205,7 @@ export abstract class ViewControllorBasic extends cc.Component {
         } else {
             if (cameraPos.x < this.minX) {
                 movePos = this.node.convertToNodeSpaceAR(cc.v2(this.minX, cameraPos.y));
+                movePos = cc.v2(movePos.x - this.brotherNode.width / 2, movePos.y);
             }
             if (cameraPos.x > this.maxX) {
                 movePos = this.node.convertToNodeSpaceAR(cc.v2(this.maxX, cameraPos.y));
@@ -229,7 +233,6 @@ export abstract class ViewControllorBasic extends cc.Component {
         }
         // console.log("======cameraPos=" + cameraPos + "        movePos ==" + movePos)
         this.cameraNode.setPosition(movePos);
-
     }
 
     abstract toUpdate();
@@ -352,9 +355,12 @@ export abstract class ViewControllorBasic extends cc.Component {
 
             if (angle >= -45 && angle < 45) {
                 direction = "R";
-            } else if (angle > -135 && angle <= -45) {
-                direction = "U";
-            } else if ((angle > -180 && angle <= -135) || (angle > 135 && angle <= 180)) {
+            } else if (angle > -90 && angle <= -45) {
+                direction = "RU";
+            } else if (angle <= -90 && angle >= -135) {
+                direction = "LU";
+            }
+            else if ((angle > -180 && angle <= -135) || (angle > 135 && angle <= 180)) {
                 direction = "L";
             }
         }
@@ -365,8 +371,11 @@ export abstract class ViewControllorBasic extends cc.Component {
                 order = { direction: "R", action: "WAIT" };
                 break;
 
-            case "U": //向上
-                order = { direction: "U", action: "JUMP" };
+            case "LU": //向上
+                order = { direction: "LU", action: "JUMP" };
+                break;
+            case "RU": //向上
+                order = { direction: "RU", action: "JUMP" };
                 break;
             case "D": //向下
                 order = { direction: "D", action: "CLIMB" };
@@ -377,6 +386,7 @@ export abstract class ViewControllorBasic extends cc.Component {
             case "R"://向右
                 order = { direction: "R", action: "WALK" };
                 break;
+
             default:
                 break;
         }
@@ -384,8 +394,9 @@ export abstract class ViewControllorBasic extends cc.Component {
             if (!this.prePlayerOrder || (this.prePlayerOrder.direction != order.direction
                 || this.prePlayerOrder.direction != order.direction)) {
                 this.prePlayerOrder = order
-                console.log("=======direction=" + direction  )
+                console.log("=======direction=" + direction)
                 this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
+                this.brotherNode.getChildByName("Brother_Walk").emit(settingBasic.gameEvent.brotherActionEvent, order);
             }
         }
     }
@@ -438,7 +449,6 @@ export abstract class ViewControllorBasic extends cc.Component {
             let dire = touchPos.x >= this.brotherNode.x ? "R" : "L";
             let order: { direction: string, action: string } = { direction: dire, action: "MAGIC" }
             this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
-            
         }
 
     }
@@ -482,7 +492,6 @@ export abstract class ViewControllorBasic extends cc.Component {
 
     }
     boxTouchEnd(event) {
-
         this.playerState = this.playerStateType.Stop
         this.isLongTouchBegin = false;
         this.longTouchTime = 0;
@@ -491,7 +500,6 @@ export abstract class ViewControllorBasic extends cc.Component {
             this.boxShadow.emit(settingBasic.gameEvent.instanceBoxEvent, "");
         }
         this.boxShadow = null;
-
     }
 
 
