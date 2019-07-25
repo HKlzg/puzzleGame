@@ -20,7 +20,7 @@ export default class NewClass extends cc.Component {
     isContact: boolean = false;
     maskNode: cc.Node = null;
     start() {
-        this.node.on(setting.gameEvent.instanceBoxEvent, this.changePic, this);
+        this.node.on(setting.gameEvent.instanceBoxEvent, this.instantBox, this);
         this.body = this.node.getComponent(cc.RigidBody);
         this.clider = this.node.getComponent(cc.BoxCollider);
         this.sprite = this.node.getComponent(cc.Sprite);
@@ -40,7 +40,7 @@ export default class NewClass extends cc.Component {
     }
 
 
-    changePic(msg) {
+    instantBox(msg) {
         if (this.isOK) {
             let box = cc.instantiate(this.boxInstancePerfab)
             this.maskNode = this.node.parent;
@@ -49,7 +49,6 @@ export default class NewClass extends cc.Component {
                 box.setPosition(this.node.position);
             }
         }
-
         this.node.removeFromParent();
     }
 
