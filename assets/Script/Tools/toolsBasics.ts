@@ -201,10 +201,42 @@ var toolsBasics = {
         return dirVec;
     },
     //求两点之间的距离
-    distanceVector:function(start,end){
+    distanceVector: function (start, end) {
         let distance = start.sub(end).mag();
         return distance;
+    },
+
+    /**
+     * 根据点击的坐标 计算出 箱子 在指定半径的圆上显示 的位置 ,用于限定箱子的范围
+     * @param centerPos 世界坐标 圆心
+     * @param boxPos 世界坐标 点击的坐标
+     * @param rDis 圆的半径
+     * @param grap 
+     * @param targetNode 箱子的父节点
+     */
+    calcBoxPosFromCircle(centerPos: cc.Vec2, touchPos: cc.Vec2, rDis: number, grap: cc.Graphics, targetNode: cc.Node): cc.Vec2 {
+        //转换为 世界坐标计算
+        let vector = cc.Vec2.ZERO;
+        let dis = toolsBasics.distanceVector(centerPos, touchPos);
+
+        if (dis >= rDis) {
+            let angle = touchPos.sub(centerPos).angle(cc.v2(rDis, 0));
+            vector.x = centerPos.x + rDis * Math.cos(angle);
+            vector.y = centerPos.y <= touchPos.y ?
+                centerPos.y + rDis * Math.sin(angle) :
+                centerPos.y - rDis * Math.sin(angle);
+        } else {
+            vector = touchPos;
+        }
+
+        grap.clear();
+        grap.moveTo(centerPos.x, centerPos.y);
+        grap.lineTo(vector.x, vector.y);
+
+        grap.stroke();
+        return targetNode.convertToNodeSpaceAR(vector);
     }
+
 };
 //导出 
 export default toolsBasics;
