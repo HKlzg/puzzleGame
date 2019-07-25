@@ -13,12 +13,10 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class NewClass extends cc.Component {
 
-    @property(cc.Label)
-    label: cc.Label = null;
-
-    @property
-    text: string = 'hello';
-
+    @property(Number)
+    angle = 1;
+    @property(Number)
+    speed = 1;
     // LIFE-CYCLE CALLBACKS:
 
     // onLoad () {}
@@ -28,6 +26,9 @@ export default class NewClass extends cc.Component {
     }
 
     update(dt) {
-        this.node.angle += 0.1;
+        if(this.angle==1)
+        this.node.angle +=this.speed;
+        else
+        this.node.angle -= this.speed;
     }
 }
