@@ -1,6 +1,8 @@
-const { ccclass, property } = cc._decorator;
 import toolsBasics from "../../Tools/toolsBasics";
 import settingBasic from "../../Setting/settingBasic";
+const { ccclass, property } = cc._decorator;
+const actionType = settingBasic.setting.actionType;
+const actionDirection = settingBasic.setting.actionDirection;
 
 @ccclass
 export default class NewClass extends cc.Component {
@@ -55,8 +57,8 @@ export default class NewClass extends cc.Component {
 
         this.node.setPosition(vec);
 
-        let dire = touchPos.x >= centerPos.x ? "R" : "L";
-        let order: { direction: string, action: string } = { direction: dire, action: "MAGIC" }
+        let dire = touchPos.x >= centerPos.x ? actionDirection.Right : actionDirection.Left;
+        let order: { direction: number, action: number } = { direction: dire, action: actionType.MAGIC }
         this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
     }
 

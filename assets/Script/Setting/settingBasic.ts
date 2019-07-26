@@ -46,6 +46,23 @@ let settingBasic = {
             lv7: 7,
             lv8: 8,
         }),
+        //人物动作枚举值
+        actionType: cc.Enum({
+            Wait: 1,
+            Walk: 2,
+            Jump: 3,
+            Climb: 4,
+            MAGIC: 5,
+        }),
+        //人物动作方向
+        actionDirection:cc.Enum({
+            Left:1,
+            Right:2,
+            Up:3,
+            Down:4,
+            Up_Left:5,
+            Up_Right:6,
+        }),
     },
 
 

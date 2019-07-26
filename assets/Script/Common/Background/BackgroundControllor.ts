@@ -3,6 +3,9 @@ const { ccclass, property } = cc._decorator;
 import toolsBasics from "../../Tools/toolsBasics";
 import settingBasic from "../../Setting/settingBasic";
 
+const actionType = settingBasic.setting.actionType;
+const actionDirection = settingBasic.setting.actionDirection;
+
 @ccclass
 export class BackgroundControllor extends cc.Component {
 
@@ -18,7 +21,7 @@ export class BackgroundControllor extends cc.Component {
     @property(cc.Node)
     circular: cc.Node = null;
     @property(cc.Node)
-    boxParent:cc.Node = null;
+    boxParent: cc.Node = null;
 
     //Brother Move 
     minX: number = 0;
@@ -49,10 +52,10 @@ export class BackgroundControllor extends cc.Component {
     isLongTouchBegin: boolean = false;
     longTouchStartPos: cc.Vec2 = null;
     preTouchId: number;
-    prePlayerOrder: { direction: string, action: string } = null;
+    prePlayerOrder: { direction: number, action: number } = null;
 
     canvas: cc.Node = null;
-    
+
 
     onLoad() {
         //------Camera-------
@@ -85,7 +88,7 @@ export class BackgroundControllor extends cc.Component {
         //显示圆圈参数
         this.drawline = this.circular.getChildByName("DrawLine");
         this.rDis = this.circular.width / 2;
-      
+
 
     };
 
@@ -210,8 +213,8 @@ export class BackgroundControllor extends cc.Component {
         //将当前camera坐标下的event 坐标转换到世界坐标
         this.camera.getCameraToWorldPoint(touchPos, touchPos)
 
-        let order: { direction: string, action: string } = { direction: "R", action: "WAIT" };
-        let direction = "S";
+        let order: { direction: number, action: number } = { direction: actionDirection.Right, action: actionType.Wait };
+        let direction = actionDirection.Right;
 
         /******滑动方向检测 */
         let currpos = cc.v2(this.endpos.x - this.startpos.x, this.endpos.y - this.startpos.y);
@@ -221,54 +224,54 @@ export class BackgroundControllor extends cc.Component {
             let angle = toolsBasics.vectorsToDegress(currpos);
 
             if (angle >= -45 && angle < 45) {
-                direction = "R";
+                direction = actionDirection.Right;
+
             } else if (angle > -90 && angle <= -45) {
-                direction = "RU";
+                direction = actionDirection.Up_Right;
+
             } else if (angle <= -90 && angle >= -135) {
-                direction = "LU";
+                direction = actionDirection.Up_Left;
+
             }
             else if ((angle > -180 && angle <= -135) || (angle > 135 && angle <= 180)) {
-                direction = "L";
+                direction = actionDirection.Left;
             }
         }
 
         switch (direction) {
-            case "S":
-                order = { direction: "R", action: "WAIT" };
-                break;
 
-            case "LU": //向上
-                order = { direction: "LU", action: "JUMP" };
+            case actionDirection.Up_Left: //向左上
+                order = { direction: direction, action: actionType.Jump };
                 break;
-            case "RU": //向上
-                order = { direction: "RU", action: "JUMP" };
+            case actionDirection.Up_Right: //向右上
+                order = { direction: direction, action: actionType.Jump };
                 break;
-            case "D": //向下
-                order = { direction: "D", action: "CLIMB" };
+            case actionDirection.Down: //向下
+                order = { direction: direction, action: actionType.Climb };
                 break;
-            case "L"://向左
-                order = { direction: "L", action: "WALK" };
+            case actionDirection.Left://向左
+                order = { direction: direction, action: actionType.Walk };
                 break;
-            case "R"://向右
-                order = { direction: "R", action: "WALK" };
+            case actionDirection.Right://向右
+                order = { direction: direction, action: actionType.Walk };
                 break;
 
             default:
                 break;
         }
-        if (direction != "S") {
-            if (!this.prePlayerOrder || (this.prePlayerOrder.direction != order.direction
-                || this.prePlayerOrder.direction != order.direction)) {
-                this.prePlayerOrder = order
-                // console.log("=======direction=" + direction)
-                this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
-                this.brotherNode.getChildByName("Brother_Walk").emit(settingBasic.gameEvent.brotherActionEvent, order);
-            }
+
+        if (!this.prePlayerOrder || (this.prePlayerOrder.direction != order.direction
+            || this.prePlayerOrder.direction != order.direction)) {
+            this.prePlayerOrder = order
+            // console.log("=======direction=" + direction)
+            this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
+            this.brotherNode.getChildByName("Brother_Walk").emit(settingBasic.gameEvent.brotherActionEvent, order);
         }
+
     }
 
     playerStop(event) {
-        console.log("=======playerStop===")
+        // console.log("=======playerStop===")
         this.endpos = null;
         this.prePlayerOrder = null;
         this.playerState = this.playerStateType.Stop
@@ -279,16 +282,16 @@ export class BackgroundControllor extends cc.Component {
         let touchPos = event.touch.getLocation();
         this.camera.getCameraToWorldPoint(touchPos, touchPos)
 
-        let order: { direction: string, action: string } = null;
-        let direction = "R";
+        let order: { direction: number, action: number } = null;
+        let direction = actionDirection.Right;
 
         if (playerPos.x < touchPos.x) {
-            direction = "R"
+            direction = actionDirection.Right
         }
         if (playerPos.x > touchPos.x) {
-            direction = "L"
+            direction = actionDirection.Left
         }
-        order = { direction: direction, action: "WAIT" }
+        order = { direction: direction, action: actionType.Wait }
         this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
     }
 
@@ -299,13 +302,13 @@ export class BackgroundControllor extends cc.Component {
         let bortherpos = this.brotherNode.convertToWorldSpace(cc.v2(0, 0));
         let boxpos = this.camera.getCameraToWorldPoint(this.endpos, this.endpos);
         let gra = this.drawline.getComponent(cc.Graphics);
- 
-         //切换动作
-         let dire = boxpos.x >= bortherpos.x ? "R" : "L";
-         let order: { direction: string, action: string } = { direction: dire, action: "MAGIC" }
-         this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
 
-        vector = toolsBasics.calcBoxPosFromCircle(bortherpos,boxpos,this.rDis,gra,this.boxParent);
+        //切换动作
+        let dire = boxpos.x >= bortherpos.x ? actionDirection.Right : actionDirection.Left;
+        let order: { direction: number, action: number } = { direction: dire, action: actionType.MAGIC }
+        this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
+
+        vector = toolsBasics.calcBoxPosFromCircle(bortherpos, boxpos, this.rDis, gra, this.boxParent);
         return vector;
     }
 
@@ -324,7 +327,7 @@ export class BackgroundControllor extends cc.Component {
             touchPos = this.boxParent.convertToNodeSpaceAR(touchPos);
             this.boxShadow.setPosition(this.boxToDistanceBoY());
 
-           
+
         }
 
     }

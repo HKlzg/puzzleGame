@@ -2,110 +2,126 @@
 const { ccclass, property } = cc._decorator;
 import settingBasic from "../../Setting/settingBasic";
 
+const actionType = settingBasic.setting.actionType;
+const actionDirection = settingBasic.setting.actionDirection;
+
 @ccclass
 export class BrotherBasic extends cc.Component {
     @property(cc.Node)
     brotherWalkNode: cc.Node = null;
     @property(cc.Node)
     brotherClimbNode: cc.Node = null;
+    @property(cc.Node)
+    Circerl: cc.Node = null;
 
     brotherAnimation: cc.Animation = null;
     isMove: boolean = false;
+    rigidBody: cc.RigidBody = null;
     collider: cc.PhysicsBoxCollider = null;
-    @property(cc.Node)
-    Circerl:cc.Node = null;
 
     anmstate = null;
 
     //方向 L/R/U/D 
     //动作 WAIT/WALK/CLIMB
-    order: { direction: string, action: string } = null;
+    order: { direction: number, action: number } = null;
+    isPlaying: boolean = false;
 
     onLoad() {
         this.brotherAnimation = this.brotherWalkNode.getComponent(cc.Animation);
         this.node.on(settingBasic.gameEvent.brotherActionEvent, this.brotherAction, this);
-        this.order = { direction: "L", action: "WAIT" };
+        this.order = { direction: actionDirection.Left, action: actionType.Wait };
         //初始状态
         this.brotherWalkNode.active = true;
         this.brotherClimbNode.active = false;
 
         this.collider = this.node.getComponent(cc.PhysicsBoxCollider);
+        this.rigidBody = this.node.getComponent(cc.RigidBody);
+
+        //注册事件
+        this.brotherAnimation.on(cc.Animation.EventType.FINISHED, this.animationStop, this);
+        this.brotherAnimation.on(cc.Animation.EventType.PLAY, this.animationPlay, this);
+
+        this.rigidBody.linearDamping = 12;
+
     }
 
     start() {
     }
 
     //更新动作
-    brotherAction(msg: { direction: string, action: string }) {
+    brotherAction(msg: { direction: number, action: number }) {
         this.order = msg;
 
-        this.node.scaleX = (this.order.direction == "L" || this.order.direction == "LU") ? -1 : 1;
+        this.node.scaleX =
+            (this.order.direction == actionDirection.Left || this.order.direction == actionDirection.Up_Left) ? -1 : 1;
 
-
-        switch (this.order.action.toUpperCase()) {
-            case "WAIT":
+        switch (this.order.action) {
+            case actionType.Wait:
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
-                this.anmstate= this.brotherAnimation.play("WaitClip");
+                this.anmstate = this.brotherAnimation.play("WaitClip");
                 this.isMove = false;
                 this.Circerl.active = false;
 
                 break;
-            case "WALK":
+            case actionType.Walk:
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
-                this.anmstate= this.brotherAnimation.play("WalkClip");
+                this.anmstate = this.brotherAnimation.play("WalkClip");
                 this.isMove = true;
                 this.Circerl.active = false;
                 break;
 
-            case "CLIMB":
+            case actionType.Climb:
                 this.brotherWalkNode.active = false;
                 this.brotherClimbNode.active = true;
-                this.anmstate= this.brotherAnimation.play("ClimbClip");
+                this.anmstate = this.brotherAnimation.play("ClimbClip");
                 this.isMove = true;
                 this.Circerl.active = false;
                 break;
-            case "JUMP":
+            case actionType.Jump:
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
-                this.anmstate= this.brotherAnimation.play("JumpClip");
+                this.anmstate = this.brotherAnimation.play("JumpClip");
                 this.isMove = true;
                 this.Circerl.active = false;
                 break;
-            case "MAGIC":
+            case actionType.MAGIC:
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
                 this.anmstate = this.brotherAnimation.play("MagicClip");
-                this.Circerl.setPosition(this.Circerl.parent.convertToNodeSpaceAR((this.node.convertToWorldSpace(cc.v2(0,0)))));
+
+                this.Circerl.setPosition(this.Circerl.parent.convertToNodeSpaceAR((this.node.convertToWorldSpace(cc.v2(0, 0)))));
                 this.Circerl.active = true;
                 this.isMove = true;
                 break;
             default:
                 break;
         }
+        
     }
 
     update(dt) {
         //更新位置
         if (this.isMove) {
-            switch (this.order.action.toUpperCase()) {
-                case "WAIT":
+            switch (this.order.action) {
+                case actionType.Wait:
 
                     break;
-                case "WALK":
+                case actionType.Walk:
                     this.node.scaleX > 0 ? this.node.x += 2
                         : this.node.x -= 2;
 
                     break;
-                case "CLIMB":
-                    this.order.direction == "U" ? this.node.y += 2 : this.node.y -= 2;
+                case actionType.Climb:
+                    this.order.direction == actionDirection.Up ? this.node.y += 2 : this.node.y -= 2;
                     break;
-                    
-                case "JUMP":
 
+                case actionType.Jump:
+                    let speedVec = this.rigidBody.linearVelocity;
+                    this.rigidBody.linearVelocity = cc.v2(speedVec.x,speedVec.y+30);
                     break;
-                case "MAGIC":
+                case actionType.MAGIC:
 
                     break;
 
@@ -115,4 +131,29 @@ export class BrotherBasic extends cc.Component {
             this.collider ? this.collider.apply() : null;
         }
     }
+
+    //-------------Animation--Event---------
+    animationPlay(event) {
+        if (this.order.action != actionType.Wait) {
+            this.isPlaying = true;
+            // console.log("=====1===animationPlay isPlaying= " + this.isPlaying);
+        }
+    }
+
+    animationStop(event) {
+        if (this.order.action != actionType.Wait) {
+            this.isPlaying = false;
+            // console.log("=====2===Finish isPlaying= " + this.isPlaying);
+            switch (this.order.action) {
+                case actionType.Jump:
+                    this.brotherAction( { direction: this.order.direction, action: actionType.Wait })
+                    break;
+            
+                default:
+                    break;
+            }
+        }
+    }
+
+
 }

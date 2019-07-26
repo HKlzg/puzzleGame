@@ -3977,7 +3977,7 @@
     "_type": 2,
     "_allowSleep": true,
     "_gravityScale": 5,
-    "_linearDamping": 0,
+    "_linearDamping": 10,
     "_angularDamping": 0,
     "_linearVelocity": {
       "__type__": "cc.Vec2",
@@ -4712,8 +4712,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -156.546,
-      "y": 0,
+      "x": -30.083,
+      "y": 2.49,
       "z": 0
     },
     "_scale": {
@@ -5033,7 +5033,7 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 2288,
+      "width": 2609,
       "height": 298
     },
     "_id": "0amyA+EehOB7S1Ah8HOwgV"
@@ -5116,7 +5116,7 @@
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 2288,
+      "width": 2609,
       "height": 298
     },
     "_id": "61eBqe1f5FT5S0va3LnOn2"
