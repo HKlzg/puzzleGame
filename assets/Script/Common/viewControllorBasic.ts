@@ -112,8 +112,6 @@ export abstract class ViewControllorBasic extends cc.Component {
                 break;
             case this.stateType.OVER:
                 console.log("==========GAME OVER==========")
-
-
                 //注销事件
                 // this.node.off(cc.Node.EventType.TOUCH_START, this.playerService.touchStart, this.playerService);
                 // this.node.off(cc.Node.EventType.TOUCH_MOVE, this.playerService.touchMove, this.playerService);

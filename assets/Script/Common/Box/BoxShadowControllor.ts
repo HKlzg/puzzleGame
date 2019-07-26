@@ -18,9 +18,9 @@ export default class NewClass extends cc.Component {
     body: cc.RigidBody = null;
     clider: cc.BoxCollider = null;
     isContact: boolean = false;
-    maskNode: cc.Node = null;
+    boxParent: cc.Node = null;
     start() {
-        this.node.on(setting.gameEvent.instanceBoxEvent, this.instantBox, this);
+        this.node.on(setting.gameEvent.instanceBoxEvent, this.changePic, this);
         this.body = this.node.getComponent(cc.RigidBody);
         this.clider = this.node.getComponent(cc.BoxCollider);
         this.sprite = this.node.getComponent(cc.Sprite);
@@ -40,15 +40,16 @@ export default class NewClass extends cc.Component {
     }
 
 
-    instantBox(msg) {
+    changePic(msg) {
         if (this.isOK) {
             let box = cc.instantiate(this.boxInstancePerfab)
-            this.maskNode = this.node.parent;
-            if (this.maskNode) {
-                this.maskNode.addChild(box);
+            this.boxParent = this.node.parent;
+            if (this.boxParent) {
+                this.boxParent.addChild(box);
                 box.setPosition(this.node.position);
             }
         }
+
         this.node.removeFromParent();
     }
 

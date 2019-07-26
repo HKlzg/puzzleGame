@@ -1,4 +1,3 @@
-
 const { ccclass, property } = cc._decorator;
 import toolsBasics from "../../Tools/toolsBasics";
 import settingBasic from "../../Setting/settingBasic";
@@ -24,8 +23,8 @@ export default class NewClass extends cc.Component {
     spriteFrame: cc.SpriteFrame = null;
     start() {
 
-        this.maskNode = this.node.parent;
-        this.canvas = this.maskNode.parent;
+        this.canvas = cc.find("Canvas");
+        this.maskNode = this.canvas.getChildByName("Mask");
         this.camera = this.canvas.getChildByName("Camera").getComponent(cc.Camera);
         this.brotherNode = this.maskNode.getChildByName("Brother");
         this.circular = this.canvas.getChildByName("Circular");
@@ -52,7 +51,7 @@ export default class NewClass extends cc.Component {
         let centerPos = this.brotherNode.convertToWorldSpace(cc.Vec2.ZERO);
         let rDis = this.circular.width / 2;
         let vec: cc.Vec2 = cc.Vec2.ZERO;
-        vec = toolsBasics.calcBoxPosFromCircle(centerPos, touchPos, rDis, this.grap, this.maskNode);
+        vec = toolsBasics.calcBoxPosFromCircle(centerPos, touchPos, rDis, this.grap, this.node.parent);
 
         this.node.setPosition(vec);
 

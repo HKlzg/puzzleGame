@@ -17,6 +17,8 @@ export class BackgroundControllor extends cc.Component {
     Mask: cc.Node = null;
     @property(cc.Node)
     circular: cc.Node = null;
+    @property(cc.Node)
+    boxParent:cc.Node = null;
 
     //Brother Move 
     minX: number = 0;
@@ -50,6 +52,8 @@ export class BackgroundControllor extends cc.Component {
     prePlayerOrder: { direction: string, action: string } = null;
 
     canvas: cc.Node = null;
+    
+
     onLoad() {
         //------Camera-------
         this.camera = this.cameraNode.getComponent(cc.Camera);
@@ -81,6 +85,8 @@ export class BackgroundControllor extends cc.Component {
         //显示圆圈参数
         this.drawline = this.circular.getChildByName("DrawLine");
         this.rDis = this.circular.width / 2;
+      
+
     };
 
     start() {
@@ -299,7 +305,7 @@ export class BackgroundControllor extends cc.Component {
          let order: { direction: string, action: string } = { direction: dire, action: "MAGIC" }
          this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
 
-        vector = toolsBasics.calcBoxPosFromCircle(bortherpos,boxpos,this.rDis,gra,this.Mask);
+        vector = toolsBasics.calcBoxPosFromCircle(bortherpos,boxpos,this.rDis,gra,this.boxParent);
         return vector;
     }
 
@@ -312,10 +318,10 @@ export class BackgroundControllor extends cc.Component {
             this.camera.getCameraToWorldPoint(touchPos, touchPos)
             this.boxShadow = cc.instantiate(this.boxShadowPerfab)
             this.boxShadow.scale = 0.1
-            this.boxShadow.parent = this.Mask;
+            this.boxShadow.parent = this.boxParent;
             this.boxShadow.runAction(cc.scaleTo(0.1, 1, 1));
 
-            touchPos = this.Mask.convertToNodeSpaceAR(touchPos);
+            touchPos = this.boxParent.convertToNodeSpaceAR(touchPos);
             this.boxShadow.setPosition(this.boxToDistanceBoY());
 
            
@@ -340,7 +346,7 @@ export class BackgroundControllor extends cc.Component {
         if (!this.boxShadow) return;
         let touchPos = event.touch.getLocation();
         this.camera.getCameraToWorldPoint(touchPos, touchPos)
-        touchPos = this.Mask.convertToNodeSpaceAR(touchPos);
+        touchPos = this.boxParent.convertToNodeSpaceAR(touchPos);
         this.boxShadow.setPosition(this.boxToDistanceBoY());
     }
 
