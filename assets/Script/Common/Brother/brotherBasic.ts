@@ -124,7 +124,6 @@ export class BrotherBasic extends cc.Component {
                 case actionType.MAGIC:
 
                     break;
-
                 default:
                     break;
             }
