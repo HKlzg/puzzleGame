@@ -36,6 +36,8 @@ export abstract class ViewControllorBasic extends cc.Component {
  
     onLoad() {
         console.log("=========SCENE: " + this.level + " ==========")
+        settingBasic.game.currLevel = this.level;
+        
         //加载子包资源
         this.loadSubPackageDefualt();
 

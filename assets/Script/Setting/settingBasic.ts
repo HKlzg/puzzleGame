@@ -24,13 +24,13 @@ let settingBasic = {
             Moving: 1,
             LongTouch: 2
         }),
-        //设定每关箭的数量
+        //设定每关箱子的数量
         boxNum: {
-            lv1: 10,
-            lv2: 50,
-            lv3: 50,
-            lv4: 50,
-            lv5: 50,
+            lv1: 2,
+            lv2: 3,
+            lv3: 3,
+            lv4: 3,
+            lv5: 3,
             lv6: 50,
             lv7: 50,
             lv8: 50,

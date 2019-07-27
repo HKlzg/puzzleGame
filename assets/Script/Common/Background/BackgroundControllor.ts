@@ -29,6 +29,7 @@ export class BackgroundControllor extends cc.Component {
     maxX: number = 0;
     maxY: number = 0;
 
+    boxMaxNum: number = 0; //最大箱子个数
     camera: cc.Camera = null;
     boxShadow: cc.Node = null;
     BackgroundSize: cc.Size = null;
@@ -55,7 +56,7 @@ export class BackgroundControllor extends cc.Component {
     prePlayerOrder: { direction: number, action: number } = null;
 
     canvas: cc.Node = null;
-
+    textTips: cc.Label = null;
 
     onLoad() {
         //------Camera-------
@@ -88,8 +89,9 @@ export class BackgroundControllor extends cc.Component {
         //显示圆圈参数
         this.drawline = this.circular.getChildByName("DrawLine");
         this.rDis = this.circular.width / 2;
-
-
+        this.boxMaxNum = settingBasic.fun.getBoxNumByLv(settingBasic.game.currLevel);
+        this.textTips = this.cameraNode.getChildByName("tip").getComponent(cc.Label);
+        this.textTips.string = "Box: " + this.boxMaxNum;
     };
 
     start() {
@@ -109,7 +111,11 @@ export class BackgroundControllor extends cc.Component {
                 this.playerState = this.playerStateType.LongTouch;
 
                 //产生boxShadow
-                this.createBoxShadow()
+                if(this.boxMaxNum >0){
+                    this.createBoxShadow();
+                    this.boxMaxNum --;
+                    this.textTips.string = "Box: " + this.boxMaxNum;
+                }
             }
         }
     };
@@ -278,7 +284,7 @@ export class BackgroundControllor extends cc.Component {
 
         if (this.preTouchId && event.getID() != this.preTouchId) return
 
-        let playerPos = cc.v2(0, 0);
+        let playerPos = this.brotherNode.convertToWorldSpace(cc.Vec2.ZERO);
         let touchPos = event.touch.getLocation();
         this.camera.getCameraToWorldPoint(touchPos, touchPos)
 

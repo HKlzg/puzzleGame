@@ -24,6 +24,7 @@ export class BrotherBasic extends cc.Component {
     //方向 L/R/U/D 
     //动作 WAIT/WALK/CLIMB
     order: { direction: number, action: number } = null;
+    //是否处于播放动画状态
     isPlaying: boolean = false;
 
     onLoad() {
@@ -50,8 +51,9 @@ export class BrotherBasic extends cc.Component {
 
     //更新动作
     brotherAction(msg: { direction: number, action: number }) {
-        this.order = msg;
+        if (this.isPlaying) return;
 
+        this.order = msg;
         this.node.scaleX =
             (this.order.direction == actionDirection.Left || this.order.direction == actionDirection.Up_Left) ? -1 : 1;
 
@@ -98,7 +100,7 @@ export class BrotherBasic extends cc.Component {
             default:
                 break;
         }
-        
+
     }
 
     update(dt) {
@@ -118,12 +120,20 @@ export class BrotherBasic extends cc.Component {
                     break;
 
                 case actionType.Jump:
-                    let speedVec = this.rigidBody.linearVelocity;
-                    this.rigidBody.linearVelocity = cc.v2(speedVec.x,speedVec.y+30);
+                    let pos: cc.Vec2 = this.node.position;
+                    let action = cc.spawn(
+                        cc.moveTo(0.5, pos.x, pos.y + 80),
+                        cc.moveTo(0.5, pos.x + 50, pos.y),
+                    )
+                    let isDone = this.node.runAction(action).isDone
+                    if (isDone) {
+                        this.isMove = false;
+                    }
                     break;
                 case actionType.MAGIC:
 
                     break;
+
                 default:
                     break;
             }
@@ -133,21 +143,20 @@ export class BrotherBasic extends cc.Component {
 
     //-------------Animation--Event---------
     animationPlay(event) {
-        if (this.order.action != actionType.Wait) {
+        if (this.order.action == actionType.Jump) {
             this.isPlaying = true;
-            // console.log("=====1===animationPlay isPlaying= " + this.isPlaying);
         }
     }
 
     animationStop(event) {
-        if (this.order.action != actionType.Wait) {
+        if (this.order.action == actionType.Jump) {
             this.isPlaying = false;
             // console.log("=====2===Finish isPlaying= " + this.isPlaying);
             switch (this.order.action) {
                 case actionType.Jump:
-                    this.brotherAction( { direction: this.order.direction, action: actionType.Wait })
+                    this.brotherAction({ direction: this.order.direction, action: actionType.Wait })
                     break;
-            
+
                 default:
                     break;
             }
