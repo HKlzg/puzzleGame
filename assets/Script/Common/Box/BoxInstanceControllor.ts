@@ -97,7 +97,8 @@ export default class NewClass extends cc.Component {
         this.body.gravityScale = this.gravityScale;
         this.body.type = cc.RigidBodyType.Dynamic;
         //还原为BoxInstante显示
-        this.node.getComponent(cc.Sprite).spriteFrame = this.spriteFrame
+        this.node.getComponent(cc.Sprite).spriteFrame = this.spriteFrame;
+        this.node.angle = 0
         this.phyBoxCollider.sensor = false;
         this.boxCollider.enabled = true;
         this.phyBoxCollider.apply();

@@ -52,6 +52,7 @@ export default class NewClass extends cc.Component {
             this.maskTag = 1;
         } else {
             this.maskTag = 0;
+            this.waterMaskNode1.height = this.mask1InitHeight;
         }
 
         //根据banboo 4
@@ -68,8 +69,9 @@ export default class NewClass extends cc.Component {
             this.maskTag = 2;
         } else {
             this.maskTag = 0;
+            this.waterMaskNode2.height = this.mask2InitHeight;
         }
     }
-  
+
 
 }

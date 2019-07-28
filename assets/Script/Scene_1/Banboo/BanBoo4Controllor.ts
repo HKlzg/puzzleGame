@@ -55,6 +55,7 @@ export default class NewClass extends cc.Component {
                     this.waterDirection = direction.Left;
                     this.waterRight.active = false;
                     this.schedule(this.leftStream, 1, 0);
+
                 }
 
             } else if (angle < 0) {
@@ -62,7 +63,9 @@ export default class NewClass extends cc.Component {
                 if (this.waterDirection != direction.Right) {
                     this.waterDirection = direction.Right;
                     this.waterLeft.active = false;
+
                     this.schedule(this.rightStream, 1, 0);
+
                 }
             } else {
                 this.waterDirection = direction.Stop;
@@ -76,11 +79,15 @@ export default class NewClass extends cc.Component {
         this.waterLeft.active = true;
         //持续浇水4S 火才能熄灭
         this.schedule(() => {
-            //4S之后检测水是否处于开启状态
-            if (this.waterLeft.active) {
-                this.fireLeftList.forEach((fire) => {
-                    fire.runAction(cc.fadeOut(2))
-                })
+            //指定角度才能浇灭
+            let angle = this.node.angle;
+            if (angle > 0 && angle <= 24) {
+                //4S之后检测水是否处于开启状态
+                if (this.waterLeft.active) {
+                    this.fireLeftList.forEach((fire) => {
+                        fire.runAction(cc.fadeOut(2))
+                    })
+                }
             }
 
         }, 4)
@@ -90,10 +97,14 @@ export default class NewClass extends cc.Component {
         this.waterRight.active = true;
         //4S之后检测水是否处于开启状态
         this.schedule(() => {
-            if (this.waterRight.active) {
-                this.fireRightList.forEach((fire) => {
-                    fire.runAction(cc.fadeOut(2))
-                })
+            //指定角度才能浇灭
+            let angle = this.node.angle;
+            if (angle >= -16 && angle < 0) {
+                if (this.waterRight.active) {
+                    this.fireRightList.forEach((fire) => {
+                        fire.runAction(cc.fadeOut(2))
+                    })
+                }
             }
         }, 4)
     }

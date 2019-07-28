@@ -53,6 +53,7 @@ let settingBasic = {
             Jump: 3,
             Climb: 4,
             MAGIC: 5,
+            No_Magic:6,
         }),
         //人物动作方向
         actionDirection:cc.Enum({
@@ -81,6 +82,7 @@ let settingBasic = {
     game: {
         State: 1,
         currLevel: 0,
+        currBoxNum:0,
     },
 
     //自定义事件
@@ -112,6 +114,9 @@ let settingBasic = {
 
         //Box
         instanceBoxEvent: "instanceBoxEvent",
+
+        //Circle
+        changeCircleColor:"changeCircleColor"
     }
 
 

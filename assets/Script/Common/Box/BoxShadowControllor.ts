@@ -40,7 +40,8 @@ export default class NewClass extends cc.Component {
     }
 
 
-    changePic(msg) {
+    changePic(msg,fun?:any ) {
+
         if (this.isOK) {
             let box = cc.instantiate(this.boxInstancePerfab)
             this.boxParent = this.node.parent;
@@ -48,6 +49,7 @@ export default class NewClass extends cc.Component {
                 this.boxParent.addChild(box);
                 box.setPosition(this.node.position);
             }
+            fun(true); 
         }
 
         this.node.removeFromParent();

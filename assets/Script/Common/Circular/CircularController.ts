@@ -1,14 +1,6 @@
-// Learn TypeScript:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/typescript.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/typescript.html
-// Learn Attribute:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/reference/attributes.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/reference/attributes.html
-// Learn life-cycle callbacks:
-//  - [Chinese] https://docs.cocos.com/creator/manual/zh/scripting/life-cycle-callbacks.html
-//  - [English] http://www.cocos2d-x.org/docs/creator/manual/en/scripting/life-cycle-callbacks.html
 
 const { ccclass, property } = cc._decorator;
+import settingBasic from "../../Setting/settingBasic";
 
 @ccclass
 export default class NewClass extends cc.Component {
@@ -17,18 +9,39 @@ export default class NewClass extends cc.Component {
     angle = 1;
     @property(Number)
     speed = 1;
-    // LIFE-CYCLE CALLBACKS:
+    @property(cc.SpriteFrame)
+    spriteWhite: cc.SpriteFrame = null;
+    @property(cc.SpriteFrame)
+    spriteRed: cc.SpriteFrame = null;
 
-    // onLoad () {}
-
+    sprite: cc.Sprite = null;
+    rdis: number = 0
     start() {
-
+        this.node.on(settingBasic.gameEvent.changeCircleColor, this.changeColor, this);
+        this.sprite = this.node.getComponent(cc.Sprite);
+        this.rdis = this.node.width;
     }
 
     update(dt) {
-        if(this.angle==1)
-        this.node.angle +=this.speed;
+        if (this.angle == 1)
+            this.node.angle += this.speed;
         else
-        this.node.angle -= this.speed;
+            this.node.angle -= this.speed;
     }
+
+    changeColor(color: string) {
+        switch (color) {
+            case "red":
+                this.sprite.spriteFrame = this.spriteRed
+                break;
+            case "white":
+                this.sprite.spriteFrame = this.spriteWhite
+                break;
+            default:
+                break;
+        }
+        this.node.width = this.rdis;
+        this.node.height = this.rdis;
+    }
+
 }

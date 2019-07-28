@@ -92,10 +92,24 @@ export class BrotherBasic extends cc.Component {
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
                 this.anmstate = this.brotherAnimation.play("MagicClip");
-
+                
+                this.Circerl.emit(settingBasic.gameEvent.changeCircleColor, "white");
                 this.Circerl.setPosition(this.Circerl.parent.convertToNodeSpaceAR((this.node.convertToWorldSpace(cc.v2(0, 0)))));
                 this.Circerl.active = true;
                 this.isMove = true;
+
+                break;
+            case actionType.No_Magic:
+                //无法产生箱子时
+                this.brotherWalkNode.active = true;
+                this.brotherClimbNode.active = false;
+                this.anmstate = this.brotherAnimation.play("MagicClip");
+
+                this.Circerl.emit(settingBasic.gameEvent.changeCircleColor, "red");
+                this.Circerl.setPosition(this.Circerl.parent.convertToNodeSpaceAR((this.node.convertToWorldSpace(cc.v2(0, 0)))));
+                this.Circerl.active = true;
+                this.isMove = true;
+
                 break;
             default:
                 break;

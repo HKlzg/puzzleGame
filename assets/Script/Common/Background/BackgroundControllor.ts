@@ -111,11 +111,8 @@ export class BackgroundControllor extends cc.Component {
                 this.playerState = this.playerStateType.LongTouch;
 
                 //产生boxShadow
-                if(this.boxMaxNum >0){
-                    this.createBoxShadow();
-                    this.boxMaxNum --;
-                    this.textTips.string = "Box: " + this.boxMaxNum;
-                }
+                this.createBoxShadow();
+
             }
         }
     };
@@ -320,7 +317,7 @@ export class BackgroundControllor extends cc.Component {
 
     // 产生箱子
     createBoxShadow() {
-        {
+        if (this.boxMaxNum > 0) {
             this.playerState = this.playerStateType.LongTouch
             this.boxShadow ? this.boxShadow.removeFromParent() : null;
             let touchPos = this.longTouchStartPos;
@@ -333,6 +330,14 @@ export class BackgroundControllor extends cc.Component {
             touchPos = this.boxParent.convertToNodeSpaceAR(touchPos);
             this.boxShadow.setPosition(this.boxToDistanceBoY());
 
+        } else {
+            let bortherpos = this.brotherNode.convertToWorldSpace(cc.v2(0, 0));
+            let boxpos = this.camera.getCameraToWorldPoint(this.endpos, this.endpos);
+
+            //切换动作
+            let dire = boxpos.x >= bortherpos.x ? actionDirection.Right : actionDirection.Left;
+            let order: { direction: number, action: number } = { direction: dire, action: actionType.No_Magic }
+            this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
 
         }
 
@@ -365,7 +370,11 @@ export class BackgroundControllor extends cc.Component {
         this.longTouchTime = 0;
         this.drawline.getComponent(cc.Graphics).clear();
         if (this.boxShadow) {
-            this.boxShadow.emit(settingBasic.gameEvent.instanceBoxEvent, "");
+            this.boxShadow.emit(settingBasic.gameEvent.instanceBoxEvent, "", (isOk) => {
+                if (this.boxMaxNum == 0) return;
+                isOk ? this.boxMaxNum-- : null;
+                this.textTips.string = "Box:" + this.boxMaxNum;
+            });
         }
         this.boxShadow = null;
     }
