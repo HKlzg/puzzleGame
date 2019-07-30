@@ -59,7 +59,7 @@ export default class NewClass extends cc.Component {
         if (!this.hasWater) return
         // 根据banboo 3
         let banboo3Angle = this.banboo3Node.angle;
-        banboo3Angle = banboo3Angle >= 360 ? banboo3Angle % 360 : banboo3Angle;
+        banboo3Angle = banboo3Angle > 360 ? banboo3Angle % 360 : banboo3Angle;
 
         if (banboo3Angle >= -30 && banboo3Angle <= 5) {
 
