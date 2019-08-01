@@ -11,7 +11,7 @@ export default class NewClass extends cc.Component {
     @property(cc.Node)
     gearR: cc.Node = null;
 
-    rotateSpeed: number = 0.2;
+    rotateSpeed: number = 0.1;
     start() {
 
     }

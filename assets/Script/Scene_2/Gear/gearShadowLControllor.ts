@@ -10,7 +10,7 @@ export default class NewClass extends cc.Component {
     gearU: cc.Node = null;
     @property(cc.Node)
     gearR: cc.Node = null;
-
+    @property(cc.Float)
     rotateSpeed: number = 0.2;
     start() {
 

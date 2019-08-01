@@ -82,8 +82,8 @@ export default class NewClass extends cc.Component {
 
                 //靠近
                 let moveAction = cc.moveTo(time, cc.v2(pos.x, this.node.y));
-                let downAction = cc.moveTo(0.5, cc.v2(pos.x, this.node.y - 80));
-                let rotaAction = cc.rotateBy(0.5, this.node.scaleX < 0 ? 40 : -40);
+                let downAction = cc.moveTo(0.3, cc.v2(pos.x, this.node.y - 50));
+                let rotaAction = cc.rotateBy(0.3, this.node.scaleX < 0 ? 20 : -20);
                 this.node.runAction(cc.sequence(
                     moveAction,
                     cc.spawn(downAction, rotaAction),
@@ -99,8 +99,8 @@ export default class NewClass extends cc.Component {
                             let time = height / 200 * 0.5;
                             time = time <= 0.5 ? 0.5 : time;
                             time = time >= 1.5 ? 1.5 : time;
-                            let jumpAction = cc.jumpTo(time, cc.v2(this.node.x + tmpDist, this.node.y + 80), height, 1)
-                            let rotaAction1 = cc.rotateBy(time / 2, this.node.scaleX < 0 ? 30 : -30);
+                            let jumpAction = cc.jumpTo(time, cc.v2(this.node.x + tmpDist, this.node.y + 50), height, 1)
+                            let rotaAction1 = cc.rotateBy(time / 2, this.node.scaleX < 0 ? 50 : -50);
                             let rotaAction2 = cc.rotateBy(time / 2, this.node.scaleX < 0 ? -70 : 70);
                             this.node.runAction(
                                 cc.spawn(jumpAction, cc.sequence(rotaAction1, rotaAction2)),
