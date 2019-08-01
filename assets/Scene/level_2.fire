@@ -5560,7 +5560,7 @@
     },
     "_enabled": true,
     "tag": 0,
-    "_density": 1,
+    "_density": 5,
     "_sensor": false,
     "_friction": 0.2,
     "_restitution": 0,
@@ -8745,7 +8745,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": -750.496,
-      "y": -563.414,
+      "y": -587.027,
       "z": 0
     },
     "_scale": {
