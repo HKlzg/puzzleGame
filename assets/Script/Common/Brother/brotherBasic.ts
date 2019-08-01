@@ -8,9 +8,9 @@ const actionDirection = settingBasic.setting.actionDirection;
 @ccclass
 export class BrotherBasic extends cc.Component {
     @property(cc.Node)
-    brotherWalkNode: cc.Node = null;
+    brotherWalkNode: cc.Node = null; //行走动画对象
     @property(cc.Node)
-    brotherClimbNode: cc.Node = null;
+    brotherClimbNode: cc.Node = null; //背对 攀爬动画对象
     @property(cc.Node)
     Circerl: cc.Node = null;
 
@@ -22,8 +22,8 @@ export class BrotherBasic extends cc.Component {
     anmstate = null;
 
     //方向 L/R/U/D 
-    //动作 WAIT/WALK/CLIMB
-    order: { direction: number, action: number } = null;
+    //动作 WAIT/WALK/CLIMB //msg-其他信息
+    order: { direction: number, action: number, msg?: any } = null;
     //是否处于播放动画状态
     isPlaying: boolean = false;
 
@@ -74,25 +74,43 @@ export class BrotherBasic extends cc.Component {
                 this.Circerl.active = false;
                 break;
 
-            case actionType.Climb:
+            case actionType.Climb: //背对着爬
                 this.brotherWalkNode.active = false;
                 this.brotherClimbNode.active = true;
                 this.anmstate = this.brotherAnimation.play("ClimbClip");
                 this.isMove = true;
                 this.Circerl.active = false;
                 break;
-            case actionType.Jump:
+
+            case actionType.Climb_Left: //左侧身爬
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
-                this.anmstate = this.brotherAnimation.play("JumpClip");
+                this.anmstate = this.brotherAnimation.play("ClimbClip");
                 this.isMove = true;
                 this.Circerl.active = false;
                 break;
+
+            case actionType.Climb_Right: //右侧身爬
+                this.brotherWalkNode.active = true;
+                this.brotherClimbNode.active = false;
+                this.anmstate = this.brotherAnimation.play("ClimbClip");
+                this.isMove = true;
+                this.Circerl.active = false;
+                break;
+
+            case actionType.Jump: //跳跃
+                this.brotherWalkNode.active = true;
+                this.brotherClimbNode.active = false;
+
+                this.isMove = true;
+                this.Circerl.active = false;
+                break;
+
             case actionType.MAGIC:
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
                 this.anmstate = this.brotherAnimation.play("MagicClip");
-                
+
                 this.Circerl.emit(settingBasic.gameEvent.changeCircleColor, "white");
                 this.Circerl.setPosition(this.Circerl.parent.convertToNodeSpaceAR((this.node.convertToWorldSpace(cc.v2(0, 0)))));
                 this.Circerl.active = true;
@@ -135,10 +153,21 @@ export class BrotherBasic extends cc.Component {
 
                 case actionType.Jump:
                     let pos: cc.Vec2 = this.node.position;
-                    let action = cc.spawn(
-                        cc.moveTo(0.5, pos.x, pos.y + 80),
-                        cc.moveTo(0.5, pos.x + 50, pos.y),
-                    )
+                    let tmpPos = this.order.msg;
+                    let time = tmpPos.y / 200 * 0.8; //根据动画的原本时间计算
+
+                    tmpPos = { x: tmpPos.x, y: tmpPos.y }; //放大倍数
+
+                    tmpPos.x = tmpPos.x >= 200 ? 200 : tmpPos.x;
+                    tmpPos.y = tmpPos.y >= 200 ? 200 : tmpPos.y;
+
+                    time = time < 0.1 ? 0.1 : time;
+                    time = time > 0.8 ? 0.8 : time;
+                    // console.log("===========tmpPos " + tmpPos.x + "  ; " + tmpPos.y + " time = " + time)
+                    this.brotherAnimation.play("JumpClip").speed = (1 - time) + 1;
+
+                    let action = cc.jumpTo(time, cc.v2(pos.x + tmpPos.x, pos.y), tmpPos.y, 1);
+
                     let isDone = this.node.runAction(action).isDone
                     if (isDone) {
                         this.isMove = false;
@@ -151,8 +180,8 @@ export class BrotherBasic extends cc.Component {
                 default:
                     break;
             }
-            this.collider ? this.collider.apply() : null;
         }
+        this.collider ? this.collider.apply() : null;
     }
 
     //-------------Animation--Event---------

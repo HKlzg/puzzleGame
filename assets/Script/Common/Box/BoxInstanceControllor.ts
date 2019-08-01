@@ -105,6 +105,14 @@ export default class NewClass extends cc.Component {
 
         this.boxShadow.removeFromParent();
 
+        let touchPos = event.getLocation();
+        this.camera.getCameraToWorldPoint(touchPos, touchPos);
+        let centerPos = this.brotherNode.convertToWorldSpace(cc.Vec2.ZERO);
+ 
+        let dire = touchPos.x >= centerPos.x ? actionDirection.Right : actionDirection.Left;
+        let order: { direction: number, action: number } = { direction: dire, action: actionType.Wait }
+        this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
+
     }
 
 }

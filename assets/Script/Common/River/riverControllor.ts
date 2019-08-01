@@ -11,13 +11,14 @@ export default class River extends cc.Component {
     far_speed = 0.2;
  
     CanvasNode :cc.Node = null;
+    long :number = 0;
     onLoad() {
         this.CanvasNode = cc.find("Canvas")
         toolsBasics.photoSetPos(this.far_bg[0], this.far_bg[1]);
     }
 
     update(dt) {
-        toolsBasics.photoScroll(this.far_bg, this.far_speed);
+         toolsBasics.photoScroll(this.far_bg, this.far_speed);
         
         
     }

@@ -1,7 +1,17 @@
 
+import AudioControllor from "../Common/Audio/audioControllor"
 //---------------------公共方法---------------------
 var toolsBasics = {
-    /**lzg 計算角度 末位置,初始位置*/
+    /**
+     * 获取音频管理对象
+     */
+    getAudioManager: function (): AudioControllor {
+        return AudioControllor.getAudioManager();
+    },
+
+    /**
+     * lzg 計算角度 末位置,初始位置
+     * */
     getVectorRadians: function (x1, y1, x2, y2) {
         // cc.log("getVectorRadians-----------------")
         let len_y = y2 - y1;
@@ -96,74 +106,11 @@ var toolsBasics = {
         return newJoint;
     },
 
-
-    createCable: function (ropePerfabs: cc.Prefab, ropeGravity: number, nodeArray: Array<cc.Node>, isConnect: boolean, ropeName?: string, groupIndex?: number) {
-
-        let len = nodeArray.length;
-        let width = cc.instantiate(ropePerfabs).width;
-        let distance = 0;
-        let nodeNum = 0;
-
-        let newRope = null;
-        let newRopeBody = null;
-        let revoJoint = null;
-        //转折点
-        let nextVector = null; //到下一个点的向量
-        let lastNode = null;
-        let nextNode = null;
-        let lastRope = null;
-        let nextRopePos = null;
-        //作为产生的绳子的父节点
-        let newJoint = new cc.Node("ropeNode");
-
-        for (let n = 0; n < nodeArray.length; n++) {
-            lastNode = nodeArray[n];
-            nextNode = nodeArray[n + 1];
-            if (n + 1 == len) break;
-
-            /**转换为世界坐标 再计算两坐标之间的直线距离 sub()向量减法 mag() 计算向量的长度*/
-            nextVector = nextNode.convertToWorldSpace(cc.v2(0, 0))
-                .sub(lastNode.convertToWorldSpace(cc.v2(0, 0)));
-            distance = Math.abs(nextVector.mag());
-
-            nodeNum = Math.floor(distance / width);
-
-            // lastRope = isConnect ? lastNode : (lastRope ? lastRope : lastNode);
-            lastRope = lastRope ? lastRope : lastNode;
-            for (let i = 0; i < nodeNum; i++) {
-                newRope = cc.instantiate(ropePerfabs);
-                ropeName ? newRope.name = ropeName : null;
-                newRope.groupIndex = groupIndex ? groupIndex : 1;
-                newRopeBody = newRope.getComponent(cc.RigidBody);
-                newRopeBody.gravityScale = ropeGravity ? ropeGravity : 1;
-                //mul() 缩放向量
-                nextRopePos = lastRope.position.add((nextVector.mul(1 / nodeNum)));
-
-                newRope.setPosition(nextRopePos);
-                revoJoint = newRope.getComponent(cc.WeldJoint);
-                revoJoint.connectedBody = lastRope.getComponent(cc.RigidBody);
-
-                revoJoint.anchor.x = (-width / 2);
-                revoJoint.anchor.y = 0;
-                revoJoint.connectedAnchor.x = (width / 2);
-                revoJoint.connectedAnchor.y = 0;
-
-                lastRope = newRope;
-
-                if (isConnect || n == len - 2) {
-                    //当前绳子的最后节点挂在转折点上
-                    nextNode.getComponent(cc.WeldJoint).connectedBody = i == nodeNum - 1 ?
-                        newRope.getComponent(cc.RigidBody) : null;
-                }
-
-                newJoint.addChild(newRope);
-            }
-        }
-
-        return newJoint;
-    },
-
-    //用来确定滚动的两个图片的初始位置    
+    /**
+     * 用来确定滚动的两个图片的初始位置
+     * @param bg1 
+     * @param bg2 
+     */
     photoSetPos: function (bg1, bg2) {
         bg1.x = 0;
         //利用前一张图片的边框大小设置下一张图片的位置
@@ -171,7 +118,11 @@ var toolsBasics = {
         bg2.setPosition({ x: bg1BoundingBox.xMax - 1, y: bg1.y });
     },
 
-    //滚动效果
+    /**
+     * 滚动效果
+     * @param bgList 
+     * @param speed 
+     */
     photoScroll: function (bgList, speed) {
         for (var index = 0; index < bgList.length; index++) {
             var element = bgList[index];
@@ -186,21 +137,33 @@ var toolsBasics = {
         }
 
     },
-    //已知向量求角度
+
+    /**
+     * 已知向量求角度
+     * @param dirVec 
+     */
     vectorsToDegress: function (dirVec) {
-        let comVec = cc.v2(1, 0);    // 水平向右的对比向量
+        let comVec = cc.v2(100, 0);    // 水平向右的对比向量
         let radian = dirVec.signAngle(comVec);    // 求方向向量与对比向量间的弧度
         let degree = cc.misc.radiansToDegrees(radian);    // 将弧度转换为角度
         return degree;
     },
-    //已知角度求向量
+    /**
+     * 已知角度求向量
+     * @param degree 
+     */
     degreesToVectors: function (degree) {
         let radian = cc.misc.degreesToRadians(degree);    // 将角度转换为弧度
         let comVec = cc.v2(1, 0);    // 一个水平向右的对比向量
         let dirVec = comVec.rotate(-radian);    // 将对比向量旋转给定的弧度返回一个新的向量
         return dirVec;
     },
-    //求两点之间的距离
+   
+    /**
+     * 求两点之间的距离
+     * @param start 
+     * @param end 
+     */
     distanceVector: function (start, end) {
         let distance = start.sub(end).mag();
         return distance;

@@ -3,13 +3,10 @@ import settingBasic from "../Setting/settingBasic";
 const { ccclass, property } = cc._decorator;
 @ccclass
 export default class NewClass extends ViewControllorBasic {
-    containerNode: cc.Node = null;
-    ladderNode: cc.Node = null;
-   
+ 
     start() {
-        this.containerNode = this.node.getChildByName("Container");
-        this.ladderNode = this.containerNode.getChildByName("Ladder");
-  
+
+
     }
     //重写
     loadSubPackage() {
@@ -23,23 +20,8 @@ export default class NewClass extends ViewControllorBasic {
 
         switch (step) {
 
-            case "0": //等待
-                this.moveStep(0);
+            case "0":
                 break;
-            case "1":
-                //下面段梯子上升 
-                this.ladderNode.emit(settingBasic.gameEvent.ladderActionEvent, 2);
-                //向右行走
-                this.moveStep(1);
-                break;
-            case "2":
-                //上面梯子下落
-                this.ladderNode.emit(settingBasic.gameEvent.ladderActionEvent, 1);
-                //向上行走
-                this.moveStep(2);
-                break;
-
-
             default:
                 break;
         }
@@ -78,7 +60,7 @@ export default class NewClass extends ViewControllorBasic {
     }
     //重写
     toUpdate() {
- 
+
     }
 
 

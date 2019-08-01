@@ -53,7 +53,7 @@ export class BackgroundControllor extends cc.Component {
     isLongTouchBegin: boolean = false;
     longTouchStartPos: cc.Vec2 = null;
     preTouchId: number;
-    prePlayerOrder: { direction: number, action: number } = null;
+    prePlayerOrder: { direction: number, action: number, msg?: any } = null;
 
     canvas: cc.Node = null;
     textTips: cc.Label = null;
@@ -129,6 +129,7 @@ export class BackgroundControllor extends cc.Component {
                 && broPosWorld.x <= this.maxX) {
 
                 movePos = this.cameraNode.parent.convertToNodeSpaceAR(broPosWorld);
+                movePos = cc.v2(movePos.x, this.cameraNode.position.y)
             } else {
                 movePos = this.cameraNode.position;
             }
@@ -142,25 +143,25 @@ export class BackgroundControllor extends cc.Component {
             }
         }
         //Y
-        if (cameraPos.y >= this.minY && cameraPos.y <= this.maxY) {
+        // if (cameraPos.y >= this.minY && cameraPos.y <= this.maxY) {
 
-            if (broPosWorld.y >= this.minY
-                && broPosWorld.y <= this.maxY) {
+        //     if (broPosWorld.y >= this.minY
+        //         && broPosWorld.y <= this.maxY) {
 
-                movePos = cc.v2(movePos.x, this.brotherNode.y);
-            } else {
-                movePos = cc.v2(movePos.x, this.cameraNode.y);
-            }
-        } else {
-            let pos = cc.v2(0, 0);
-            if (cameraPos.y < this.minY) {
-                pos = this.node.convertToNodeSpaceAR(cc.v2(0, this.minY));
-            }
-            if (cameraPos.y > this.maxY) {
-                pos = this.node.convertToNodeSpaceAR(cc.v2(0, this.maxY));
-            }
-            movePos = cc.v2(movePos.x, pos.y)
-        }
+        //         movePos = cc.v2(movePos.x, this.brotherNode.y);
+        //     } else {
+        //         movePos = cc.v2(movePos.x, this.cameraNode.y);
+        //     }
+        // } else {
+        //     let pos = cc.v2(0, 0);
+        //     if (cameraPos.y < this.minY) {
+        //         pos = this.node.convertToNodeSpaceAR(cc.v2(0, this.minY));
+        //     }
+        //     if (cameraPos.y > this.maxY) {
+        //         pos = this.node.convertToNodeSpaceAR(cc.v2(0, this.maxY));
+        //     }
+        //     movePos = cc.v2(movePos.x, pos.y)
+        // }
         // console.log("======cameraPos=" + cameraPos + "        movePos ==" + movePos)
         this.cameraNode.setPosition(movePos);
 
@@ -199,11 +200,16 @@ export class BackgroundControllor extends cc.Component {
     playerStart(event) {
         this.startpos = event.touch.getLocation();
         this.endpos = event.touch.getLocation();
+
+        // this.startpos = this.camera.getCameraToWorldPoint(this.startpos, this.startpos)
+        // this.endpos = this.camera.getCameraToWorldPoint(this.endpos, this.endpos)
     }
 
     playerMove(event) {
 
         this.endpos = event.touch.getLocation();
+        // this.endpos = this.camera.getCameraToWorldPoint(this.endpos, this.endpos)
+
         if (this.playerState == this.playerStateType.LongTouch) return
         //手机一直触发此事件
         this.playerState = this.playerStateType.Moving;
@@ -211,13 +217,9 @@ export class BackgroundControllor extends cc.Component {
         //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
         if (this.preTouchId && event.getID() != this.preTouchId) return
 
-        let playerPos = this.brotherNode.convertToWorldSpace(cc.v2(0, 0));
-        let touchPos = event.touch.getLocation();
-        //将当前camera坐标下的event 坐标转换到世界坐标
-        this.camera.getCameraToWorldPoint(touchPos, touchPos)
-
-        let order: { direction: number, action: number } = { direction: actionDirection.Right, action: actionType.Wait };
+        let order: { direction: number, action: number, msg?: any } = { direction: actionDirection.Right, action: actionType.Wait };
         let direction = actionDirection.Right;
+
 
         /******滑动方向检测 */
         let currpos = cc.v2(this.endpos.x - this.startpos.x, this.endpos.y - this.startpos.y);
@@ -231,6 +233,7 @@ export class BackgroundControllor extends cc.Component {
 
             } else if (angle > -90 && angle <= -45) {
                 direction = actionDirection.Up_Right;
+
 
             } else if (angle <= -90 && angle >= -135) {
                 direction = actionDirection.Up_Left;
@@ -265,37 +268,58 @@ export class BackgroundControllor extends cc.Component {
 
         if (!this.prePlayerOrder || (this.prePlayerOrder.direction != order.direction
             || this.prePlayerOrder.direction != order.direction)) {
-            this.prePlayerOrder = order
+            if (order.action == actionType.Walk) {
+                this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
+                this.scheduleOnce(() => {
+                    this.prePlayerOrder = null;
+                }, 0.5)
+            }
+            this.prePlayerOrder = order;
+
             // console.log("=======direction=" + direction)
-            this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
-            this.brotherNode.getChildByName("Brother_Walk").emit(settingBasic.gameEvent.brotherActionEvent, order);
         }
+        //只有行走动作 在TouchMove中发指令,其余在End中发
 
     }
 
     playerStop(event) {
-        // console.log("=======playerStop===")
-        this.endpos = null;
-        this.prePlayerOrder = null;
         this.playerState = this.playerStateType.Stop
-
         if (this.preTouchId && event.getID() != this.preTouchId) return
 
         let playerPos = this.brotherNode.convertToWorldSpace(cc.Vec2.ZERO);
         let touchPos = event.touch.getLocation();
+        let order: { direction: number, action: number, msg?: any } = { direction: actionDirection.Right, action: actionType.Wait };
+
         this.camera.getCameraToWorldPoint(touchPos, touchPos)
 
-        let order: { direction: number, action: number } = null;
-        let direction = actionDirection.Right;
+        if (this.prePlayerOrder && this.prePlayerOrder.action == actionType.Jump) {
+            //当跳跃指令 时,计算(初始点 和结束点的相对)的 距离
+            //跳跃时额外的指令信息
+            let tempPos: { x: number, y: number } = { x: 10, y: 10 };
+            this.endpos = event.touch.getLocation();
+            tempPos.x = this.endpos.x - this.startpos.x;
+            tempPos.y = Math.abs(this.endpos.y - this.startpos.y);
+            order = this.prePlayerOrder;
+            order.msg = tempPos; //跳跃距离信息
+            this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
 
-        if (playerPos.x < touchPos.x) {
-            direction = actionDirection.Right
+            this.prePlayerOrder = null;
+        } else {
+
+            let order: { direction: number, action: number } = null;
+            let direction = actionDirection.Right;
+
+            if (playerPos.x < touchPos.x) {
+                direction = actionDirection.Right
+            }
+            if (playerPos.x > touchPos.x) {
+                direction = actionDirection.Left
+            }
+            order = { direction: direction, action: actionType.Wait }
+            this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
         }
-        if (playerPos.x > touchPos.x) {
-            direction = actionDirection.Left
-        }
-        order = { direction: direction, action: actionType.Wait }
-        this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
+
+        this.endpos = null;
     }
 
     //-------------------------------Box Event----------------------------

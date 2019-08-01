@@ -1,0 +1,519 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "SwimClip",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.0333333333333334,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "paths": {
+      "body_2/fish_tail_1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": -0.998
+            },
+            {
+              "frame": 1,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body_2/fish_tail_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -3.995
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": -1.9170000000000003
+            },
+            {
+              "frame": 1,
+              "value": -3.995
+            }
+          ]
+        }
+      },
+      "body_2/fish_tail_3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -3.995
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": -0.891
+            },
+            {
+              "frame": 1,
+              "value": -3.995
+            }
+          ]
+        }
+      },
+      "body_2/fish_tail": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 1,
+              "value": 0
+            }
+          ],
+          "scaleX": [
+            {
+              "frame": 0,
+              "value": 0.9
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": 1.2
+            },
+            {
+              "frame": 1,
+              "value": 0.8
+            }
+          ]
+        }
+      },
+      "body_1/gear": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 360
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": -360
+            },
+            {
+              "frame": 1.0333333333333334,
+              "value": 360
+            }
+          ]
+        }
+      },
+      "body_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -3
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": 5.494
+            },
+            {
+              "frame": 1,
+              "value": -3
+            }
+          ]
+        }
+      },
+      "body_1/fish_body": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -5
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": 4.807
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": -5
+            }
+          ]
+        }
+      },
+      "body_1/fish_fin_3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -25.902
+            },
+            {
+              "frame": 0.55,
+              "value": 14.704
+            },
+            {
+              "frame": 1.0333333333333334,
+              "value": -25.902
+            }
+          ]
+        }
+      },
+      "body_1/fish_fin_4": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -14.932
+            },
+            {
+              "frame": 0.55,
+              "value": 9.371
+            },
+            {
+              "frame": 1.0333333333333334,
+              "value": -14.932
+            }
+          ]
+        }
+      },
+      "body_1/fish_fin_5": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -7.428
+            },
+            {
+              "frame": 0.55,
+              "value": 11.818999999999999
+            },
+            {
+              "frame": 1.0333333333333334,
+              "value": -7.428
+            }
+          ]
+        }
+      },
+      "body_1/fish_fin_6": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.55,
+              "value": 12.523
+            },
+            {
+              "frame": 1.0333333333333334,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body_1/fish_dow": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -4.981
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": 9.069
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": -4.981
+            }
+          ]
+        }
+      },
+      "body_1/fish_fin": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -26.511
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": 25.26
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": -26.511
+            }
+          ]
+        }
+      },
+      "body_1/fish_fin/fish_fin_1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -18.4
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": -5.447999999999999
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": -18.4
+            }
+          ]
+        }
+      },
+      "body_1/fish_fin/fish_fin_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -10.012
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": -7.784000000000001
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": -10.012
+            }
+          ]
+        }
+      },
+      "body_1/fish_head/fish_eyes": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body_1/fish_head": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 12.277000000000001
+            },
+            {
+              "frame": 0.5166666666666667,
+              "value": 7.179000000000001
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": 12.277000000000001
+            }
+          ]
+        }
+      },
+      "body_1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -5
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": -1.924
+            },
+            {
+              "frame": 1,
+              "value": -5
+            }
+          ]
+        }
+      },
+      "body_2/gear": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.016666666666666666,
+              "value": 360
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": -360
+            },
+            {
+              "frame": 1,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body_2/gear_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -360
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": 360
+            },
+            {
+              "frame": 1,
+              "value": -360
+            }
+          ]
+        }
+      },
+      "body_2/gear_3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": -360
+            },
+            {
+              "frame": 1,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body_1/gear_9": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 360
+            },
+            {
+              "frame": 0.55,
+              "value": -360
+            },
+            {
+              "frame": 1.0333333333333334,
+              "value": 360
+            }
+          ]
+        }
+      },
+      "body_1/gear_8": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -360
+            },
+            {
+              "frame": 0.55,
+              "value": 360
+            },
+            {
+              "frame": 1.0333333333333334,
+              "value": -360
+            }
+          ]
+        }
+      },
+      "body_1/gear_7": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 360
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": -360
+            },
+            {
+              "frame": 1.0333333333333334,
+              "value": 360
+            }
+          ]
+        }
+      },
+      "body_1/gear_4": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 360
+            },
+            {
+              "frame": 0.5333333333333333,
+              "value": -360
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": 360
+            }
+          ]
+        }
+      },
+      "body_1/gear_5": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.016666666666666666,
+              "value": -360
+            },
+            {
+              "frame": 0.5166666666666667,
+              "value": 360
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body_1/gear_6": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.016666666666666666,
+              "value": 360
+            },
+            {
+              "frame": 0.5166666666666667,
+              "value": -360
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": 0
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

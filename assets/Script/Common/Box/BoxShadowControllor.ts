@@ -29,13 +29,13 @@ export default class NewClass extends cc.Component {
         cc.director.getCollisionManager().enabled = true
     }
 
-    onCollisionEnter(contact, self, other) {
+    onCollisionEnter(other, self) {
         this.isContact = true
     }
-    onCollisionStay(contact, self, other) {
+    onCollisionStay(other, self) {
         this.isContact = true
     }
-    onCollisionExit(contact, self, other) {
+    onCollisionExit(other, self) {
         this.isContact = false
     }
 

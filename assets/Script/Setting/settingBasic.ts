@@ -27,10 +27,10 @@ let settingBasic = {
         //设定每关箱子的数量
         boxNum: {
             lv1: 2,
-            lv2: 3,
-            lv3: 3,
-            lv4: 3,
-            lv5: 3,
+            lv2: 2,
+            lv3: 10,
+            lv4: 10,
+            lv5: 10,
             lv6: 50,
             lv7: 50,
             lv8: 50,
@@ -53,17 +53,20 @@ let settingBasic = {
             Jump: 3,
             Climb: 4,
             MAGIC: 5,
-            No_Magic:6,
+            No_Magic: 6,
+            Climb_Left: 7,
+            Climb_Right: 8,
         }),
         //人物动作方向
-        actionDirection:cc.Enum({
-            Left:1,
-            Right:2,
-            Up:3,
-            Down:4,
-            Up_Left:5,
-            Up_Right:6,
+        actionDirection: cc.Enum({
+            Left: 1,
+            Right: 2,
+            Up: 3,
+            Down: 4,
+            Up_Left: 5,
+            Up_Right: 6,
         }),
+
     },
 
 
@@ -82,7 +85,7 @@ let settingBasic = {
     game: {
         State: 1,
         currLevel: 0,
-        currBoxNum:0,
+        currBoxNum: 0,
     },
 
     //自定义事件
@@ -116,11 +119,9 @@ let settingBasic = {
         instanceBoxEvent: "instanceBoxEvent",
 
         //Circle
-        changeCircleColor:"changeCircleColor"
+        changeCircleColor: "changeCircleColor"
     }
-
-
 };
 
-export default settingBasic;
 
+export default settingBasic;

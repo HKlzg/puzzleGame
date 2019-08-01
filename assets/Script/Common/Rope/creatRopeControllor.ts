@@ -11,7 +11,7 @@ export default class CreatRopes extends cc.Component {
     ropePerfabs: cc.Prefab = null;
 
     @property(cc.Boolean)
-    isConnect = true;
+    isConnect: boolean = true;
 
     @property({ type: cc.Float, displayName: "绳子重力" })
     ropeGravity: number = 1;

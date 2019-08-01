@@ -7,7 +7,7 @@ export default class NewClass extends cc.Component {
     bgm: cc.AudioSource = null;
 
     onLoad() {
-        cc.audioEngine.play(this.bgm.clip, true, 0.6)
+        // cc.audioEngine.play(this.bgm.clip, true, 0.6)
 
         //开启物理系统 ----------必须写在onLoad 里面
         cc.director.getPhysicsManager().enabled = true;

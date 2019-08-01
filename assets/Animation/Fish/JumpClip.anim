@@ -1,0 +1,54 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "JumpClip",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.3333333333333333,
+  "sample": 60,
+  "speed": 0.8,
+  "wrapMode": 1,
+  "curveData": {
+    "props": {
+      "angle": []
+    },
+    "paths": {
+      "body_1/fish_dow": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -4.981
+            },
+            {
+              "frame": 0.25,
+              "value": -19.359
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 3.0589999999999975
+            }
+          ]
+        }
+      },
+      "body_1/fish_head": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 12.277000000000001
+            },
+            {
+              "frame": 0.25,
+              "value": 30.571
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -5.706999999999997
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}
