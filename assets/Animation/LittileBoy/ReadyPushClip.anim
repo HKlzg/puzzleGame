@@ -1,0 +1,145 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "ReadyPushClip",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "paths": {
+      "thethigh_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -12.611
+            }
+          ]
+        }
+      },
+      "thethigh_left/thecafe": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -12.528
+            }
+          ]
+        }
+      },
+      "thethigh_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 86.94999999999999
+            }
+          ]
+        }
+      },
+      "thethigh_right/thecafe": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -85.928
+            }
+          ]
+        }
+      },
+      "arm_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "arm_right/smallarms": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "arm_right/smallarms/hand": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -10
+            }
+          ]
+        }
+      },
+      "body": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body/thebelly": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "head": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 21.17600000000001
+            }
+          ]
+        }
+      },
+      "arm_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 117
+            }
+          ]
+        }
+      },
+      "arm_left/smallarms": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 46.594
+            }
+          ]
+        }
+      },
+      "arm_left/smallarms/hand": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -10
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

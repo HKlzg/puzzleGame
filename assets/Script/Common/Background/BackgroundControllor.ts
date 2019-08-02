@@ -103,7 +103,7 @@ export class BackgroundControllor extends cc.Component {
         if (this.playerState != this.playerStateType.LongTouch) {
             this.cameraControllor();
         }
-        if (this.isLongTouchBegin /*&& this.playerState == this.playerStateType.Stop*/) {
+        if (this.isLongTouchBegin ) {
             this.longTouchTime++;
 
             if (this.startpos.equals(this.endpos) && this.longTouchTime > 20) {
@@ -201,14 +201,15 @@ export class BackgroundControllor extends cc.Component {
         this.startpos = event.touch.getLocation();
         this.endpos = event.touch.getLocation();
 
-        // this.startpos = this.camera.getCameraToWorldPoint(this.startpos, this.startpos)
-        // this.endpos = this.camera.getCameraToWorldPoint(this.endpos, this.endpos)
+        this.camera.getCameraToWorldPoint(this.startpos,this.startpos)
+        this.camera.getCameraToWorldPoint(this.endpos,this.endpos)
+
     }
 
     playerMove(event) {
 
         this.endpos = event.touch.getLocation();
-        // this.endpos = this.camera.getCameraToWorldPoint(this.endpos, this.endpos)
+        this.camera.getCameraToWorldPoint(this.endpos,this.endpos)
 
         if (this.playerState == this.playerStateType.LongTouch) return
         //手机一直触发此事件
@@ -216,10 +217,9 @@ export class BackgroundControllor extends cc.Component {
 
         //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
         if (this.preTouchId && event.getID() != this.preTouchId) return
-
-        let order: { direction: number, action: number, msg?: any } = { direction: actionDirection.Right, action: actionType.Wait };
+  
+        let order: { direction: number, action: number } = { direction: actionDirection.Right, action: actionType.Wait };
         let direction = actionDirection.Right;
-
 
         /******滑动方向检测 */
         let currpos = cc.v2(this.endpos.x - this.startpos.x, this.endpos.y - this.startpos.y);
@@ -234,7 +234,6 @@ export class BackgroundControllor extends cc.Component {
             } else if (angle > -90 && angle <= -45) {
                 direction = actionDirection.Up_Right;
 
-
             } else if (angle <= -90 && angle >= -135) {
                 direction = actionDirection.Up_Left;
 
@@ -242,6 +241,8 @@ export class BackgroundControllor extends cc.Component {
             else if ((angle > -180 && angle <= -135) || (angle > 135 && angle <= 180)) {
                 direction = actionDirection.Left;
             }
+        }else{
+            return;
         }
 
         switch (direction) {
@@ -268,58 +269,36 @@ export class BackgroundControllor extends cc.Component {
 
         if (!this.prePlayerOrder || (this.prePlayerOrder.direction != order.direction
             || this.prePlayerOrder.direction != order.direction)) {
-            if (order.action == actionType.Walk) {
-                this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
-                this.scheduleOnce(() => {
-                    this.prePlayerOrder = null;
-                }, 0.5)
-            }
-            this.prePlayerOrder = order;
-
+            this.prePlayerOrder = order
+            this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
             // console.log("=======direction=" + direction)
         }
-        //只有行走动作 在TouchMove中发指令,其余在End中发
 
     }
 
     playerStop(event) {
+        // console.log("=======playerStop===")
+        this.endpos = null;
+        this.prePlayerOrder = null;
         this.playerState = this.playerStateType.Stop
+
         if (this.preTouchId && event.getID() != this.preTouchId) return
 
         let playerPos = this.brotherNode.convertToWorldSpace(cc.Vec2.ZERO);
         let touchPos = event.touch.getLocation();
-        let order: { direction: number, action: number, msg?: any } = { direction: actionDirection.Right, action: actionType.Wait };
-
         this.camera.getCameraToWorldPoint(touchPos, touchPos)
 
-        if (this.prePlayerOrder && this.prePlayerOrder.action == actionType.Jump) {
-            //当跳跃指令 时,计算(初始点 和结束点的相对)的 距离
-            //跳跃时额外的指令信息
-            let tempPos: { x: number, y: number } = { x: 10, y: 10 };
-            this.endpos = event.touch.getLocation();
-            tempPos.x = this.endpos.x - this.startpos.x;
-            tempPos.y = Math.abs(this.endpos.y - this.startpos.y);
-            order = this.prePlayerOrder;
-            order.msg = tempPos; //跳跃距离信息
-            this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
+        let order: { direction: number, action: number } = null;
+        let direction = actionDirection.Right;
 
-            this.prePlayerOrder = null;
-        } else {
-
-            let order: { direction: number, action: number } = null;
-            let direction = actionDirection.Right;
-
-            if (playerPos.x < touchPos.x) {
-                direction = actionDirection.Right
-            }
-            if (playerPos.x > touchPos.x) {
-                direction = actionDirection.Left
-            }
-            order = { direction: direction, action: actionType.Wait }
-            this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
+        if (playerPos.x < touchPos.x) {
+            direction = actionDirection.Right
         }
-
-        this.endpos = null;
+        if (playerPos.x > touchPos.x) {
+            direction = actionDirection.Left
+        }
+        order = { direction: direction, action: actionType.Wait }
+        this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
     }
 
     //-------------------------------Box Event----------------------------
@@ -327,7 +306,7 @@ export class BackgroundControllor extends cc.Component {
         //拿到borther和box的位置求距离来限制箱子生成的范围
         let vector = cc.Vec2.ZERO;
         let bortherpos = this.brotherNode.convertToWorldSpace(cc.v2(0, 0));
-        let boxpos = this.camera.getCameraToWorldPoint(this.endpos, this.endpos);
+        let boxpos = this.endpos;
         let gra = this.drawline.getComponent(cc.Graphics);
 
         //切换动作
@@ -356,7 +335,7 @@ export class BackgroundControllor extends cc.Component {
 
         } else {
             let bortherpos = this.brotherNode.convertToWorldSpace(cc.v2(0, 0));
-            let boxpos = this.camera.getCameraToWorldPoint(this.endpos, this.endpos);
+            let boxpos = this.endpos;
 
             //切换动作
             let dire = boxpos.x >= bortherpos.x ? actionDirection.Right : actionDirection.Left;

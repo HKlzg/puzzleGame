@@ -1,6 +1,6 @@
 const { ccclass, property } = cc._decorator;
 import tools from "../../Tools/toolsBasics";
-
+import setting from "../../Setting/settingBasic";
 @ccclass
 export default class NewClass extends cc.Component {
     @property(cc.Node)
@@ -8,9 +8,14 @@ export default class NewClass extends cc.Component {
     @property(cc.Node)
     personNode: cc.Node = null;
 
+    @property(cc.Node)
+    attackNode: cc.Node = null;
+    canvas: cc.Node = null;
+
     isAttack: boolean = false; //攻击状态
     isPreAttack: boolean = false; //预备攻击状态
     isObserve: boolean = true; //观察状态
+    isGameOver:boolean = false;
 
     safeDistance: number = 500;
 
@@ -22,6 +27,7 @@ export default class NewClass extends cc.Component {
     minX: number = 0;
     maxX: number = 0;
     onLoad() {
+        this.canvas = cc.find("Canvas");
         this.currPersonPos = this.personNode.position;
         this.animation = this.node.getComponent(cc.Animation);
         let riverPos = this.river.convertToWorldSpace(cc.Vec2.ZERO);
@@ -55,13 +61,18 @@ export default class NewClass extends cc.Component {
 
             this.node.runAction(cc.moveTo(dt, cc.v2(pos.x + speed, pos.y)))
         }
+
+        if(!this.isGameOver){
+            this.attackCheck();
+        }
+
     }
 
     observePerson() {
         // console.log("=======2S 后=====observePerson== ")
         //2秒后再次观察人物的位置， 若没有变化则准备攻击
         let personPos = this.personNode.position;
-        if (this.currPersonPos.fuzzyEquals(personPos, 2)) {
+        if (this.currPersonPos.fuzzyEquals(personPos, 5)) {
             //进入预备攻击状态
             let personPos = this.personNode.convertToWorldSpace(cc.Vec2.ZERO);
             let fishPos = this.node.convertToWorldSpace(cc.Vec2.ZERO);
@@ -89,13 +100,13 @@ export default class NewClass extends cc.Component {
                     cc.spawn(downAction, rotaAction),
                     cc.callFunc(() => {
                         if (!this.isAttack) {
-                            
+
                             this.isPreAttack = false;
                             this.isAttack = true;
                             //发动攻击
                             this.animation.play("JumpClip");
                             let tmpDist = this.node.scaleX < 0 ? -200 : 200;
-                            let height = personPos.y - fishPos.y - 100;
+                            let height = personPos.y - fishPos.y - 120;
                             let time = height / 200 * 0.5;
                             time = time <= 0.5 ? 0.5 : time;
                             time = time >= 1.5 ? 1.5 : time;
@@ -115,17 +126,28 @@ export default class NewClass extends cc.Component {
         this.isObserve = true; //继续观察
     }
 
+    //检测是否碰撞到人
+    attackCheck() {
+        let personPos = this.personNode.convertToWorldSpace(cc.Vec2.ZERO);
+        personPos = cc.v2(personPos.x, personPos.y - 80);
+        let attckPos = this.attackNode.convertToWorldSpace(cc.Vec2.ZERO);
+        let distX = Math.abs(personPos.x - attckPos.x);
+        let distY = personPos.y - attckPos.y;
+        if (distY <= 30 && distX <= 10) {
+             this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.OVER);
+             //test
+            //  this.isGameOver = true; 
+        }
+
+    }
+
 
     jumpFinished() {
         if (this.isAttack) { //(攻击)跳跃动作时
-            // console.log("=======jumpFinished== ")
             this.isAttack = false;
             this.isPreAttack = false;
             this.animation.play("SwimClip");
-            // this.scheduleOnce(() => {
 
-            //     console.log("=========5S后===== ")
-            // }, 5)
         }
     }
 

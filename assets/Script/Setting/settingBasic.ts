@@ -54,8 +54,9 @@ let settingBasic = {
             Climb: 4,
             MAGIC: 5,
             No_Magic: 6,
-            Climb_Left: 7,
-            Climb_Right: 8,
+            ClimbBox: 7,
+            ReadyPush:8,
+            Push:9,
         }),
         //人物动作方向
         actionDirection: cc.Enum({
@@ -96,28 +97,11 @@ let settingBasic = {
         gameStepEvent: "gameStepEvent",
         gameMoveStep: "brotherMoveStep",
         setCurrGameStep: "setCurrGameStep",
-
-        //----绳子---ropeConnectCtr--
-        ropeOnBeginContact: "ropeOnBeginContact",
-
-        //---箭---ArrowControllor---
-        setArrowOffset: "setArrowOffset",
-        setArrowPropertys: "setArrowPropertys",
-
-        //---弓---bowContrpllor----------
-        setBowsSring: "setBowsSring",
-
-        //----梯子 ladderContrpllor----------
-        ladderActionEvent: "ladderActionEvent",
-
         //----brotherControllor---- Action
         brotherActionEvent: "brotherActionEvent",
-        //----bear3Controllor---- Action
-        bearActionEvent: "bearActionEvent",
-
+        
         //Box
         instanceBoxEvent: "instanceBoxEvent",
-
         //Circle
         changeCircleColor: "changeCircleColor"
     }

@@ -142,10 +142,11 @@ var toolsBasics = {
      * 已知向量求角度
      * @param dirVec 
      */
-    vectorsToDegress: function (dirVec) {
+    vectorsToDegress: function (dirVec: cc.Vec2) {
         let comVec = cc.v2(100, 0);    // 水平向右的对比向量
         let radian = dirVec.signAngle(comVec);    // 求方向向量与对比向量间的弧度
         let degree = cc.misc.radiansToDegrees(radian);    // 将弧度转换为角度
+
         return degree;
     },
     /**
@@ -158,7 +159,7 @@ var toolsBasics = {
         let dirVec = comVec.rotate(-radian);    // 将对比向量旋转给定的弧度返回一个新的向量
         return dirVec;
     },
-   
+
     /**
      * 求两点之间的距离
      * @param start 

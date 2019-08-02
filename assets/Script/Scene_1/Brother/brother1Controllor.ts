@@ -1,13 +1,16 @@
-import {BrotherBasic} from "../../Common/Brother/brotherBasic"
+import { BrotherBasic } from "../../Common/Brother/brotherBasic"
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 @ccclass
 export default class NewClass extends BrotherBasic {
 
-   
-    start () {
+
+    start() {
 
     }
+    //重写
+    toUpdate() { };
 
-    // update (dt) {}
+    //重写
+    rayCheck() { };
 }
