@@ -23,6 +23,7 @@ export default class NewClass extends cc.Component {
 
     gravityScale: number = 0;
     spriteFrame: cc.SpriteFrame = null;
+    preBoxPos:cc.Vec2 = null;
     start() {
 
         this.canvas = cc.find("Canvas");
@@ -64,6 +65,7 @@ export default class NewClass extends cc.Component {
 
     //-----------------------event----------------
     touchStart(event) {
+        this.preBoxPos = this.node.position;
         let touchPos = event.getLocation();
         this.camera.getCameraToWorldPoint(touchPos, touchPos);
         this.node.setPosition(this.node.parent.convertToNodeSpaceAR(touchPos))
@@ -96,15 +98,20 @@ export default class NewClass extends cc.Component {
 
         this.body.gravityScale = this.gravityScale;
         this.body.type = cc.RigidBodyType.Dynamic;
+        let shadowPic = this.boxShadow.getComponent(cc.Sprite).spriteFrame;
         //还原为BoxInstante显示
         this.node.getComponent(cc.Sprite).spriteFrame = this.spriteFrame;
         this.node.angle = 0
         this.phyBoxCollider.sensor = false;
         this.boxCollider.enabled = true;
         this.phyBoxCollider.apply();
-
+        
+        if(shadowPic.name == "box_red"){
+            this.node.setPosition(this.preBoxPos);
+        }
         this.boxShadow.removeFromParent();
 
+        //人物动作
         let touchPos = event.getLocation();
         this.camera.getCameraToWorldPoint(touchPos, touchPos);
         let centerPos = this.brotherNode.convertToWorldSpace(cc.Vec2.ZERO);

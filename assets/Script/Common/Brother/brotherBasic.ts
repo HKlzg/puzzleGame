@@ -43,6 +43,7 @@ export abstract class BrotherBasic extends cc.Component {
     onLoad() {
         this.brotherAnimation = this.brotherWalkNode.getComponent(cc.Animation);
         this.node.on(settingBasic.gameEvent.brotherActionEvent, this.brotherAction, this);
+        this.node.on(settingBasic.gameEvent.brotherPlayState, this.setPlayState, this);
         this.order = { direction: actionDirection.Left, action: actionType.Wait };
         //初始状态
         this.brotherWalkNode.active = true;
@@ -122,9 +123,11 @@ export abstract class BrotherBasic extends cc.Component {
 
                 this.isReadyClimbBox = false;
                 break;
+
             case actionType.ClimbBox: //爬箱子
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
+                this.isPlaying = true;
                 this.anmstate = this.brotherAnimation.play("ClimbBoxClip");
                 this.isMove = true;
                 this.Circerl.active = false;
@@ -132,9 +135,9 @@ export abstract class BrotherBasic extends cc.Component {
 
             case actionType.Jump: //跳跃
 
-                //非准备动作时
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
+                this.isPlaying = true;
                 this.anmstate = this.brotherAnimation.play("JumpClip").speed = 1.5;
 
                 this.isMove = true;
@@ -197,7 +200,7 @@ export abstract class BrotherBasic extends cc.Component {
                     let pos: cc.Vec2 = this.node.position;
                     let time = 0.8;
 
-                    let action = cc.jumpTo(time, cc.v2(pos.x, pos.y), 150, 1);
+                    let action = cc.jumpTo(time, cc.v2(pos.x, pos.y), 200, 1);
 
                     this.node.runAction(
                         cc.sequence(action,
@@ -275,24 +278,32 @@ export abstract class BrotherBasic extends cc.Component {
         }
     }
 
-    // animationStop(event) {
-    //     if (this.order.action == actionType.Jump ||
-    //         this.order.action == actionType.ClimbBox ||
-    //         this.order.action == actionType.Climb) {
+    //触发异常
+    animationStop(event) {
+        if (this.order.action == actionType.Jump ||
+            this.order.action == actionType.ClimbBox ||
+            this.order.action == actionType.Climb) {
 
-    //         this.isPlaying = false;
-    //         // console.log("=====2===Finish isPlaying= " + this.isPlaying);
-    //         switch (this.order.action) {
-    //             case actionType.Jump:
-    //                 this.brotherAction({ direction: this.order.direction, action: actionType.Wait })
-    //                 break;
+            this.isPlaying = false;
+            switch (this.order.action) {
+                case actionType.Jump:
+                    this.brotherAction({ direction: this.order.direction, action: actionType.Wait })
+                    break;
 
-    //             default:
-    //                 break;
-    //         }
-    //     }
+                default:
+                    break;
+            }
+        }
 
-    // }
+    }
+
+    //碰撞检测
+    onBeginContact(contact, self, other) {
+    }
+
+    setPlayState(isPlay) {
+        this.isPlaying = isPlay;
+    }
 
 
 }

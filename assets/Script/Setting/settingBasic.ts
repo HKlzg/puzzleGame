@@ -99,7 +99,7 @@ let settingBasic = {
         setCurrGameStep: "setCurrGameStep",
         //----brotherControllor---- Action
         brotherActionEvent: "brotherActionEvent",
-        
+        brotherPlayState:"brotherPlayState",
         //Box
         instanceBoxEvent: "instanceBoxEvent",
         //Circle

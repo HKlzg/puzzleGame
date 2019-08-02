@@ -26,13 +26,14 @@ export default class NewClass extends BrotherBasic {
                     this.isReadyClimbBox = true;
                     this.pushObject ? null : this.pushObject = collider.node;
                 }
-                if(collider.node.groupIndex == 2){ //箱子
+                if (collider.node.groupIndex == 2 && !this.isPlaying) { //箱子
+                    console.log("====ray===Box")
                     this.pushObject ? null : this.pushObject = collider.node;
                     this.order.action = this.actionType.ClimbBox;
                     this.order.direction = this.actionDirection.Right;
                     this.brotherAction(this.order);
                 }
-
+                break;
             }
         } else {
             results = cc.director.getPhysicsManager().rayCast(pos1, pos3, cc.RayCastType.Any);
@@ -43,12 +44,14 @@ export default class NewClass extends BrotherBasic {
                     this.isReadyClimbBox = true;
                     this.pushObject ? null : this.pushObject = collider.node;
                 }
-                if(collider.node.groupIndex == 2){ //箱子
+                if (collider.node.groupIndex == 2 && !this.isPlaying) { //箱子
+
                     this.pushObject ? null : this.pushObject = collider.node;
                     this.order.action = this.actionType.ClimbBox;
                     this.order.direction = this.actionDirection.Left;
                     this.brotherAction(this.order);
                 }
+                break;
             }
         }
 

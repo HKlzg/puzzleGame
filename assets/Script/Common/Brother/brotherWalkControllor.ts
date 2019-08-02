@@ -1,10 +1,11 @@
 
 const { ccclass, property } = cc._decorator;
+import settingBasic from "../../Setting/settingBasic";
 
 @ccclass
 export default class NewClass extends cc.Component {
 
-    parentGravityScale:number = 10;
+    parentGravityScale: number = 10;
     start() {
         this.parentGravityScale = this.node.parent.getComponent(cc.RigidBody).gravityScale;
     }
@@ -28,10 +29,20 @@ export default class NewClass extends cc.Component {
     climbBoxEnd() {
         let parent = this.node.parent;
         let tmpX = parent.scaleX > 0 ? 50 : -50;
-        parent.runAction(cc.moveTo(0.5, cc.v2(parent.x + tmpX, parent.y)))
+        parent.runAction(
+            cc.sequence(
+                cc.moveTo(0.5, cc.v2(parent.x + tmpX, parent.y)),
+                cc.callFunc(() => {
+                    parent.emit(settingBasic.gameEvent.brotherPlayState, false);
+                })
+            )
+        )
 
         parent.getComponent(cc.RigidBody).gravityScale = this.parentGravityScale;
         parent.getComponent(cc.PhysicsBoxCollider).sensor = false;
         parent.getComponent(cc.PhysicsBoxCollider).apply();
     }
+
+
+
 }
