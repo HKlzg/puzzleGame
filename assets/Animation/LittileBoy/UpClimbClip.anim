@@ -1,0 +1,287 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "UpClimbClip",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.0166666666666666,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "props": {
+      "angle": [
+        {
+          "frame": 0,
+          "value": 0
+        }
+      ],
+      "position": [
+        {
+          "frame": 0,
+          "value": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "frame": 0.16666666666666666,
+          "value": [
+            0,
+            43.901,
+            0
+          ]
+        },
+        {
+          "frame": 0.5,
+          "value": [
+            33.712,
+            132.652,
+            0
+          ]
+        },
+        {
+          "frame": 1,
+          "value": [
+            54.923,
+            144.796,
+            0
+          ]
+        }
+      ]
+    },
+    "paths": {
+      "thethigh_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 111
+            },
+            {
+              "frame": 1,
+              "value": 17.259
+            }
+          ]
+        }
+      },
+      "thethigh_left/thecafe": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -66.519
+            },
+            {
+              "frame": 0.5,
+              "value": -20.668000000000006
+            }
+          ]
+        }
+      },
+      "thethigh_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 9.337000000000003
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 56
+            },
+            {
+              "frame": 0.5,
+              "value": 5.9310000000000045
+            }
+          ]
+        }
+      },
+      "thethigh_right/thecafe": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": -57.509
+            },
+            {
+              "frame": 1,
+              "value": -6.201999999999998
+            }
+          ]
+        }
+      },
+      "arm_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 142
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 66.496
+            },
+            {
+              "frame": 0.5,
+              "value": 46.196999999999996
+            },
+            {
+              "frame": 1,
+              "value": 10.688999999999993
+            }
+          ]
+        }
+      },
+      "arm_right/smallarms": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 56.311
+            },
+            {
+              "frame": 0.5,
+              "value": 8.043999999999997
+            }
+          ]
+        }
+      },
+      "arm_right/smallarms/hand": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -10
+            }
+          ]
+        }
+      },
+      "body": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": -1
+            }
+          ]
+        }
+      },
+      "body/thebelly": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": 4
+            }
+          ]
+        }
+      },
+      "head": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -1
+            },
+            {
+              "frame": 0.5,
+              "value": -26.856
+            },
+            {
+              "frame": 1,
+              "value": 0.34899999999999665
+            }
+          ]
+        }
+      },
+      "arm_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 135
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 52.976
+            },
+            {
+              "frame": 0.5,
+              "value": -17.164
+            },
+            {
+              "frame": 1,
+              "value": -1.947000000000001
+            }
+          ]
+        }
+      },
+      "arm_left/smallarms": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 11
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 53.847
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": 5.5930000000000035
+            }
+          ]
+        }
+      },
+      "arm_left/smallarms/hand": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -10
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": [
+    {
+      "frame": 0,
+      "func": "",
+      "params": []
+    },
+    {
+      "frame": 0.31666666666666665,
+      "func": "",
+      "params": []
+    },
+    {
+      "frame": 0.65,
+      "func": "",
+      "params": []
+    }
+  ]
+}

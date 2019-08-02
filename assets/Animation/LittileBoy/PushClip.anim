@@ -1,0 +1,297 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "PushClip",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 2.0166666666666666,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "props": {
+      "angle": [
+        {
+          "frame": 0,
+          "value": -14
+        }
+      ],
+      "y": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 0.5,
+          "value": -2.662
+        },
+        {
+          "frame": 1.0166666666666666,
+          "value": 0.668
+        },
+        {
+          "frame": 1.5,
+          "value": -2.245
+        },
+        {
+          "frame": 2,
+          "value": -0.247
+        }
+      ]
+    },
+    "paths": {
+      "thethigh_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -12.611
+            },
+            {
+              "frame": 0.5,
+              "value": -6.799
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": 94.458
+            },
+            {
+              "frame": 1.5,
+              "value": 67.447
+            },
+            {
+              "frame": 2,
+              "value": -12.611
+            }
+          ]
+        }
+      },
+      "thethigh_left/thecafe": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -12.528
+            },
+            {
+              "frame": 0.5,
+              "value": -55.214999999999996
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": -105.398
+            },
+            {
+              "frame": 1.5,
+              "value": -66.05199999999999
+            },
+            {
+              "frame": 2,
+              "value": -12.528
+            }
+          ]
+        }
+      },
+      "thethigh_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 86.94999999999999
+            },
+            {
+              "frame": 0.5,
+              "value": 54.94299999999999
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": -13.789000000000009
+            },
+            {
+              "frame": 1.5,
+              "value": -3.4960000000000093
+            },
+            {
+              "frame": 2,
+              "value": 96.344
+            }
+          ]
+        }
+      },
+      "thethigh_right/thecafe": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -85.928
+            },
+            {
+              "frame": 0.5,
+              "value": -62.82
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": -21.131
+            },
+            {
+              "frame": 1.5,
+              "value": -65.756
+            },
+            {
+              "frame": 2,
+              "value": -111.348
+            }
+          ]
+        }
+      },
+      "arm_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "arm_right/smallarms": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "arm_right/smallarms/hand": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -10
+            }
+          ]
+        }
+      },
+      "body": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body/thebelly": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "head": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 21.17600000000001
+            },
+            {
+              "frame": 0.5166666666666667,
+              "value": 12.360000000000007
+            },
+            {
+              "frame": 1,
+              "value": 16.628000000000007
+            },
+            {
+              "frame": 1.5166666666666666,
+              "value": 8.407000000000007
+            },
+            {
+              "frame": 2.0166666666666666,
+              "value": 15.179000000000007
+            }
+          ]
+        }
+      },
+      "arm_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 117
+            },
+            {
+              "frame": 0.5,
+              "value": 105.309
+            },
+            {
+              "frame": 1,
+              "value": 111.262
+            },
+            {
+              "frame": 1.5,
+              "value": 105.563
+            },
+            {
+              "frame": 2.0166666666666666,
+              "value": 110.616
+            }
+          ]
+        }
+      },
+      "arm_left/smallarms": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 46.594
+            },
+            {
+              "frame": 0.5,
+              "value": 56.65
+            },
+            {
+              "frame": 1,
+              "value": 59.326
+            },
+            {
+              "frame": 1.5,
+              "value": 65.164
+            },
+            {
+              "frame": 2.0166666666666666,
+              "value": 59.813
+            }
+          ]
+        }
+      },
+      "arm_left/smallarms/hand": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -10
+            }
+          ]
+        }
+      },
+      "arm_left/smallarms/smallarms": {
+        "props": {
+          "angle": [
+            {
+              "frame": 1.5,
+              "value": 56.65
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}
