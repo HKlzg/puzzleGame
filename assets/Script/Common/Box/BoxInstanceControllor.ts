@@ -49,6 +49,7 @@ export default class NewClass extends cc.Component {
         if (this.node.y < -1500) {
             this.node.destroy()
         }
+        this.phyBoxCollider.apply();
     }
     setBoxPos(touchPos) {
         let centerPos = this.brotherNode.convertToWorldSpace(cc.Vec2.ZERO);

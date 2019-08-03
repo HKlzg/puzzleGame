@@ -1,11 +1,14 @@
 import { ViewControllorBasic } from "../Common/viewControllorBasic";
 import settingBasic from "../Setting/settingBasic";
+import tools from "../Tools/toolsBasics";
+
 const { ccclass, property } = cc._decorator;
 @ccclass
 export default class NewClass extends ViewControllorBasic {
- 
-    start() {
+    audioManager = tools.getAudioManager();
 
+    start() {
+        this.audioManager.playLoopBGM("river");
 
     }
     //重写

@@ -28,21 +28,34 @@ export default class AudioManager {
     }
 
     //播放音频
-    playAudio(name: string) {
-        this.isEnablePlay && this.audioList[name] ?
-            cc.audioEngine.playEffect(this.audioList[name], false) : null;
+    playAudio(name: string,isLoop?:boolean): number {
+        if (this.isEnablePlay && this.audioList[name]) {
+            let loop = isLoop?isLoop:false;
+            return cc.audioEngine.playEffect(this.audioList[name], loop);
+        }
+        return 0;
     }
 
-    //播放循环的音乐
-    playLoopMusic(name: string) {
+    /**BGM 只能同时播放一个(播放循环的音乐)
+     *  */
+    playLoopBGM(name: string): number {
         if (this.isEnablePlay && this.audioList[name]) {
-            cc.audioEngine.playMusic(this.audioList[name], true);
             this.currMusicName = name;
+            return cc.audioEngine.playMusic(this.audioList[name], true);
         }
+        return 0;
     }
     //停止背景音乐
     stopMusic() {
         cc.audioEngine.stopMusic();
+    }
+    //停止音效
+    stopAudioById(id: number) {
+        cc.audioEngine.stop(id);
+    }
+    //停止音效
+    stopEffectByID(id: number) {
+        cc.audioEngine.stopEffect(id);
     }
     //停止音效
     stopEffects() {

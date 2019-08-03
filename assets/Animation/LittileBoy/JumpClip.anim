@@ -232,6 +232,13 @@
       ]
     },
     {
+      "frame": 0.43333333333333335,
+      "func": "jumpMid",
+      "params": [
+        ""
+      ]
+    },
+    {
       "frame": 1,
       "func": "jumpEnd",
       "params": [

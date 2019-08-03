@@ -1,5 +1,7 @@
 
 const { ccclass, property } = cc._decorator;
+import tools from "../../Tools/toolsBasics";
+
 /**
  * 控制齿轮机关
  */
@@ -21,6 +23,9 @@ export default class NewClass extends cc.Component {
 
     tmpHeight: number = 0;
     step: number = 20;
+
+    audioManager = tools.getAudioManager();
+    audioMountainId: number;
     start() {
         this.angle = this.node.angle;
         let pos = this.node.convertToWorldSpace(cc.Vec2.ZERO)
@@ -50,7 +55,6 @@ export default class NewClass extends cc.Component {
             }
 
             if (ang != 0) {
-
                 this.isRotate = true;
                 this.node.runAction(
                     cc.sequence(
@@ -60,12 +64,35 @@ export default class NewClass extends cc.Component {
                             //ang < 0  逆时针 向上移动
                             if (ang < 0) {
                                 if (this.tmpHeight <= this.maxHeight - this.step) {
-                                    this.mountain.runAction(cc.moveTo(1, cc.v2(this.mountain.x, this.mountain.y + this.step)));
+                                    this.mountain.runAction(
+                                        cc.sequence(
+                                            cc.callFunc(() => {
+                                                //播放山体音效
+                                                this.audioMountainId = this.audioManager.playAudio("mountainMove", true)
+                                            }),
+                                            cc.moveTo(1, cc.v2(this.mountain.x, this.mountain.y + this.step)),
+                                            cc.callFunc(() => {
+                                                //停止播放山体音效
+                                                this.audioManager.stopAudioById(this.audioMountainId);
+                                            })
+
+                                        ));
                                     this.tmpHeight += this.step;
                                 }
                             } else {
                                 if (this.tmpHeight >= this.step) {
-                                    this.mountain.runAction(cc.moveTo(1, cc.v2(this.mountain.x, this.mountain.y - this.step)));
+                                    this.mountain.runAction(
+                                        cc.sequence(
+                                            cc.callFunc(() => {
+                                                //播放山体音效
+                                                this.audioMountainId = this.audioManager.playAudio("mountainMove", true)
+                                            }),
+                                            cc.moveTo(1, cc.v2(this.mountain.x, this.mountain.y - this.step)),
+                                            cc.callFunc(() => {
+                                                //停止播放山体音效
+                                                this.audioManager.stopAudioById(this.audioMountainId);
+                                            })
+                                        ));
                                     this.tmpHeight -= this.step;
                                 }
                             }

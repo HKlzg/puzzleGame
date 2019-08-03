@@ -13,7 +13,7 @@ export default class NewClass extends cc.Component {
     }
 
     // update (dt) {}
-
+    //--------------climbBox------------------暂时取消------------
     climbBoxStart() {
         if (this.isClimbBox) return;
 
@@ -56,13 +56,24 @@ export default class NewClass extends cc.Component {
 
     }
 
-    //Jump
+    //------------------------Jump
     jumpStart() {
+        let parent = this.node.parent;
         this.isJump = true;
         let pos: cc.Vec2 = this.node.parent.position;
-        let action = cc.jumpTo(1, cc.v2(pos.x, pos.y), 210, 1);
-        this.node.parent.runAction(action);
+        let temp = parent.scaleX > 0 ? 150 : -150;
+        let action1 = cc.jumpTo(1, cc.v2(pos.x, pos.y), 200, 1);
+        let action2 = cc.moveTo(0.6, cc.v2(pos.x + temp, pos.y))
+        parent.runAction(
+            cc.spawn(
+                action1, action2
+            )
+        );
     }
+    JumpMid() {
+
+    }
+
     jumpEnd() {
         this.node.parent.emit(settingBasic.gameEvent.brotherPlayState, false);
         this.isJump = false;

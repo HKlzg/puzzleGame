@@ -26,6 +26,7 @@ export default class NewClass extends cc.Component {
 
     minX: number = 0;
     maxX: number = 0;
+    audioManager = tools.getAudioManager();
     onLoad() {
         this.canvas = cc.find("Canvas");
         this.currPersonPos = this.personNode.position;
@@ -94,8 +95,13 @@ export default class NewClass extends cc.Component {
                 //靠近
                 let moveAction = cc.moveTo(time, cc.v2(pos.x, this.node.y));
                 let downAction = cc.moveTo(0.3, cc.v2(pos.x, this.node.y - 50));
-                let rotaAction = cc.rotateBy(0.3, this.node.scaleX < 0 ? 20 : -20);
+                let rotaAction = cc.rotateBy(0.3, this.node.scaleX < 0 ? 20 : -20); //起跳
+                let warnId = 0;
                 this.node.runAction(cc.sequence(
+                    //警告声音
+                    cc.callFunc(()=>{
+                        warnId =  this.audioManager.playAudio("fishWarning");
+                    }),
                     moveAction,
                     cc.spawn(downAction, rotaAction),
                     cc.callFunc(() => {
@@ -114,7 +120,18 @@ export default class NewClass extends cc.Component {
                             let rotaAction1 = cc.rotateBy(time / 2, this.node.scaleX < 0 ? 50 : -50);
                             let rotaAction2 = cc.rotateBy(time / 2, this.node.scaleX < 0 ? -70 : 70);
                             this.node.runAction(
-                                cc.spawn(jumpAction, cc.sequence(rotaAction1, rotaAction2)),
+                                cc.sequence(
+                                    //跳跃前
+                                    cc.callFunc(()=>{
+                                        this.audioManager.stopEffectByID(warnId);
+                                        this.audioManager.playAudio("outWater")
+                                    }),
+                                    cc.spawn(jumpAction, cc.sequence(rotaAction1, rotaAction2)),
+                                    //跳跃后
+                                    cc.callFunc(()=>{
+                                        this.audioManager.playAudio("fallIntoWater");
+                                    }),
+                                )
                             )
                         }
                     })

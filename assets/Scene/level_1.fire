@@ -2095,15 +2095,14 @@
     "_id": "11M2K6zNtNlYarNecVM15U"
   },
   {
-    "__type__": "5dd133QBcFFW4SRK5lxFaf/",
+    "__type__": "79e08/pcGBDV6RxKROEFiIY",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 15
     },
     "_enabled": true,
-    "isleft": true,
-    "_id": "71wHs3+aZP+pOXVtLvoe/h"
+    "_id": "d0t1BOBedIVLK9r+dl7bV1"
   },
   {
     "__type__": "cc.Node",

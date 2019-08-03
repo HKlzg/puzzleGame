@@ -39,7 +39,7 @@ export default class NewClass extends BrotherBasic {
                 let direc = this.node.scaleX > 0 ? this.actionDirection.Right : this.actionDirection.Left;
                 this.order = { direction: direc, action: this.actionType.ReadyPush };
                 this.brotherAction(this.order);
-                console.log("==================Push stone=================")
+                // console.log("==================Push stone===============this.pushObject==" + this.pushObject)
             }
             //爬
             // if (collider.node.groupIndex == 2 && !this.isPlaying && this.pushObject != collider.node) { //箱子
