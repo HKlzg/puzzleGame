@@ -223,5 +223,20 @@
       }
     }
   },
-  "events": []
+  "events": [
+    {
+      "frame": 0,
+      "func": "jumpStart",
+      "params": [
+        ""
+      ]
+    },
+    {
+      "frame": 1,
+      "func": "jumpEnd",
+      "params": [
+        ""
+      ]
+    }
+  ]
 }

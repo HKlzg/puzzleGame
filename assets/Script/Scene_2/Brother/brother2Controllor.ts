@@ -31,18 +31,24 @@ export default class NewClass extends BrotherBasic {
             let collider = result.collider;
 
             if (!collider.node) return;
-
+            //推
             if (collider.node.name == "stone") {
                 this.isReadyClimbBox = true;
                 this.pushObject = collider.node;
-            }
-            if (collider.node.groupIndex == 2 && !this.isPlaying && this.pushObject != collider.node) { //箱子
-                this.pushObject = collider.node;
-                this.order.action = this.actionType.ClimbBox;
-                this.order.direction = this.node.scaleX > 0 ? this.actionDirection.Right : this.actionDirection.Left;
+
+                let direc = this.node.scaleX > 0 ? this.actionDirection.Right : this.actionDirection.Left;
+                this.order = { direction: direc, action: this.actionType.ReadyPush };
                 this.brotherAction(this.order);
-                console.log("==================ClimbBox=================")
+                console.log("==================Push stone=================")
             }
+            //爬
+            // if (collider.node.groupIndex == 2 && !this.isPlaying && this.pushObject != collider.node) { //箱子
+            //     this.pushObject = collider.node;
+            //     this.order.action = this.actionType.ClimbBox;
+            //     this.order.direction = this.node.scaleX > 0 ? this.actionDirection.Right : this.actionDirection.Left;
+            //     this.brotherAction(this.order);
+            //     console.log("==================ClimbBox=================")
+            // }
 
             //只对第一个结果检测
             return;

@@ -40,6 +40,9 @@ export abstract class BrotherBasic extends cc.Component {
     pushObject: cc.Node = null;
     //射线检测的X长度
     rayWidth: number = 40;
+
+    //是否在地面上
+
     onLoad() {
         this.brotherAnimation = this.brotherWalkNode.getComponent(cc.Animation);
         this.node.on(settingBasic.gameEvent.brotherActionEvent, this.brotherAction, this);
@@ -76,7 +79,7 @@ export abstract class BrotherBasic extends cc.Component {
                 this.anmstate = this.brotherAnimation.play("WaitClip");
                 this.isMove = false;
                 this.Circerl.active = false;
-                this.isPlaying = false;
+
                 break;
             case actionType.Walk:
                 this.brotherWalkNode.active = true;
@@ -115,7 +118,7 @@ export abstract class BrotherBasic extends cc.Component {
                 this.Circerl.active = false;
                 break;
 
-            case actionType.ReadyPush://准备爬箱子 或者 推箱子
+            case actionType.ReadyPush://准备 推箱子
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
                 this.anmstate = this.brotherAnimation.play("ReadyPushClip");
@@ -125,17 +128,17 @@ export abstract class BrotherBasic extends cc.Component {
                 this.isReadyClimbBox = false;
                 break;
 
-            case actionType.ClimbBox: //爬箱子
-                this.brotherWalkNode.active = true;
-                this.brotherClimbNode.active = false;
-                this.isPlaying = true;
-                this.anmstate = this.brotherAnimation.play("ClimbBoxClip");
-                this.isMove = true;
-                this.Circerl.active = false;
-                break;
+            // case actionType.ClimbBox: //爬箱子
+            //     this.brotherWalkNode.active = true;
+            //     this.brotherClimbNode.active = false;
+            //     this.isPlaying = true;
+            //     this.anmstate = this.brotherAnimation.play("ClimbBoxClip");
+            //     this.isMove = true;
+            //     this.Circerl.active = false;
+            //     break;
 
             case actionType.Jump: //跳跃
-
+                console.log("=============jump==Start=")
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
                 this.isPlaying = true;
@@ -143,7 +146,6 @@ export abstract class BrotherBasic extends cc.Component {
 
                 this.isMove = true;
                 this.Circerl.active = false;
-
                 break;
 
             case actionType.MAGIC:
@@ -179,7 +181,7 @@ export abstract class BrotherBasic extends cc.Component {
     }
 
     update(dt) {
-        //更新位置
+        //更新位置 只对持续位移的动作  JUMP/Climb动画位移在动画帧事件中写
         if (this.isMove) {
             switch (this.order.action) {
                 case actionType.Wait:
@@ -193,53 +195,24 @@ export abstract class BrotherBasic extends cc.Component {
                 case actionType.Push:
                     this.node.scaleX > 0 ? this.node.x += 2
                         : this.node.x -= 2;
-
                     break;
-                case actionType.Climb:
-                    this.order.direction == actionDirection.Up ? this.node.y += 2 : this.node.y -= 2;
-                    break;
-
-                case actionType.Jump:
-                    let pos: cc.Vec2 = this.node.position;
-                    let time = 0.8;
-
-                    let action = cc.jumpTo(time, cc.v2(pos.x, pos.y), 200, 1);
-
-                    this.node.runAction(
-                        cc.sequence(action,
-                            cc.callFunc(() => {
-                                this.isMove = false;
-                                this.isPlaying = false;
-                                this.order.action = actionType.Wait;
-                                this.brotherAction(this.order)
-                            }))
-                    )
-                    break;
-                case actionType.MAGIC:
-
-                    break;
-
                 default:
                     break;
             }
         }
 
         //射线检测
-        if (!this.isReadyClimbBox && (this.preOrder && this.preOrder.action != actionType.ReadyPush &&
-            !this.isPlaying && this.preOrder.action != actionType.Push
-        )) {
+        if (!this.isReadyClimbBox &&
+            (this.preOrder && this.preOrder.action != actionType.ReadyPush &&
+                !this.isPlaying && this.preOrder.action != actionType.Push)
+        ) {
             this.rayCheck();
-        } else if (this.preOrder && this.preOrder.action != actionType.Push &&
-            this.preOrder.action != actionType.ReadyPush) {
-
-            let direc = this.node.scaleX > 0 ? actionDirection.Right : actionDirection.Left;
-            this.order = { direction: direc, action: actionType.ReadyPush };
-            this.brotherAction(this.order);
-
         }
+
         this.pushCheck();
         this.toUpdate();
-        this.collider = this.node.getComponent(cc.PhysicsBoxCollider);
+        this.isOnGround();
+
         this.collider ? this.collider.apply() : null;
 
     }
@@ -247,15 +220,30 @@ export abstract class BrotherBasic extends cc.Component {
     //射线检测
     abstract rayCheck();
 
+    //离地检测
+    isOnGround(){
+        if(!this.isPlaying && this.rigidBody.linearVelocity.y < 0){
+            this.order.action = actionType.Wait;
+            this.brotherAction(this.order)
+        }
+    }
+
     pushCheck() {
+        if (this.order.action != actionType.ReadyPush ||
+            this.order.action != actionType.Push) {
+            this.isReadyClimbBox = false;
+            this.pushObject = null;
+        }
+
         // 若左右切换方向时 准备推的动作取消
         if (this.preOrder && this.order &&
             this.preOrder.action == actionType.ReadyPush &&
-            this.order.action == actionType.Walk
+            this.preOrder.direction != this.order.direction
         ) {
-            if (this.preOrder.direction != this.order.direction) {
-                this.isReadyClimbBox = false;
-            }
+            this.isReadyClimbBox = false;
+            this.pushObject = null;
+            // console.log("=====1=====cancle push ===")
+
         }
         //推动物体的距离大于 指定距离 取消推 的动作 ,替换为走
         if (this.pushObject && this.preOrder &&
@@ -269,8 +257,10 @@ export abstract class BrotherBasic extends cc.Component {
                 this.order.action = actionType.Wait;
                 this.brotherAction(this.order);
                 this.pushObject = null;
+                // console.log("=====2=====cancle push ===")
             }
         }
+
     }
     //-------------Animation--Event---------
     animationPlay(event) {
@@ -303,11 +293,12 @@ export abstract class BrotherBasic extends cc.Component {
 
     //碰撞检测
     onBeginContact(contact, self, other) {
+    
     }
 
     setPlayState(isPlay) {
-        
         this.isPlaying = isPlay;
+        // console.log("=====setPlayState: "+ this.isPlaying)
     }
 
 
