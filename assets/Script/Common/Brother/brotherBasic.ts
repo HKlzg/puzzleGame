@@ -76,7 +76,7 @@ export abstract class BrotherBasic extends cc.Component {
                 this.anmstate = this.brotherAnimation.play("WaitClip");
                 this.isMove = false;
                 this.Circerl.active = false;
-
+                this.isPlaying = false;
                 break;
             case actionType.Walk:
                 this.brotherWalkNode.active = true;
@@ -92,6 +92,7 @@ export abstract class BrotherBasic extends cc.Component {
                 } else {
                     //非准备推的动作时 切换为行走
                     this.anmstate = this.brotherAnimation.play("WalkClip");
+                    this.isPlaying = false;
                 }
                 this.isMove = true;
                 this.Circerl.active = false;
@@ -148,6 +149,7 @@ export abstract class BrotherBasic extends cc.Component {
             case actionType.MAGIC:
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
+                this.isPlaying = true;
                 this.anmstate = this.brotherAnimation.play("MagicClip");
 
                 this.Circerl.emit(settingBasic.gameEvent.changeCircleColor, "white");
@@ -160,6 +162,7 @@ export abstract class BrotherBasic extends cc.Component {
                 //无法产生箱子时
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
+                this.isPlaying = true;
                 this.anmstate = this.brotherAnimation.play("MagicClip");
 
                 this.Circerl.emit(settingBasic.gameEvent.changeCircleColor, "red");
@@ -236,6 +239,7 @@ export abstract class BrotherBasic extends cc.Component {
         }
         this.pushCheck();
         this.toUpdate();
+        this.collider = this.node.getComponent(cc.PhysicsBoxCollider);
         this.collider ? this.collider.apply() : null;
 
     }
@@ -253,7 +257,7 @@ export abstract class BrotherBasic extends cc.Component {
                 this.isReadyClimbBox = false;
             }
         }
-        //推动物体的距离小于 指定距离 取消推 的动作 ,替换为走
+        //推动物体的距离大于 指定距离 取消推 的动作 ,替换为走
         if (this.pushObject && this.preOrder &&
             this.preOrder.action != actionType.Wait
         ) {
@@ -302,6 +306,7 @@ export abstract class BrotherBasic extends cc.Component {
     }
 
     setPlayState(isPlay) {
+        
         this.isPlaying = isPlay;
     }
 

@@ -6,6 +6,7 @@ import settingBasic from "../../Setting/settingBasic";
 export default class NewClass extends cc.Component {
 
     parentGravityScale: number = 10;
+    isClimbBox: boolean = false;
     start() {
         this.parentGravityScale = this.node.parent.getComponent(cc.RigidBody).gravityScale;
     }
@@ -13,34 +14,46 @@ export default class NewClass extends cc.Component {
     // update (dt) {}
 
     climbBoxStart() {
-        let parent = this.node.parent;
-        let tmpX = parent.scaleX > 0 ? 20 : -20;
-        parent.runAction(cc.moveTo(0.5, cc.v2(parent.x + tmpX, parent.y + 100)));
+        if (this.isClimbBox) return;
 
-        parent.getComponent(cc.RigidBody).gravityScale = 0;
-        parent.getComponent(cc.PhysicsBoxCollider).sensor = true;
-        parent.getComponent(cc.PhysicsBoxCollider).apply();
+        let parent = this.node.parent;
+        let tmpX = parent.scaleX > 0 ? 30 : -30;
+        parent.runAction(cc.moveTo(0.16, cc.v2(parent.x + tmpX, parent.y + 150)));
+
+        // parent.getComponent(cc.RigidBody).gravityScale = 0;
+        // parent.getComponent(cc.PhysicsBoxCollider).sensor = true;
+        // parent.getComponent(cc.PhysicsBoxCollider).apply();
+        this.isClimbBox = true;
     }
+
     climbBoxMid() {
         let parent = this.node.parent;
-        parent.runAction(cc.moveTo(0.5, cc.v2(parent.x, parent.y + 50)))
-
+        let tmpX = parent.scaleX > 0 ? 30 : -30;
+        parent.runAction(cc.moveTo(0.32, cc.v2(parent.x + tmpX, parent.y + 50)))
+        // console.log("==climbBox  Mid==")
     }
-    climbBoxEnd() {
+
+    climbBoxMid2() {
         let parent = this.node.parent;
         let tmpX = parent.scaleX > 0 ? 50 : -50;
         parent.runAction(
             cc.sequence(
-                cc.moveTo(0.5, cc.v2(parent.x + tmpX, parent.y)),
+                cc.moveTo(0.32, cc.v2(parent.x + tmpX, parent.y)),
                 cc.callFunc(() => {
-                    parent.emit(settingBasic.gameEvent.brotherPlayState, false);
+                    // parent.getComponent(cc.RigidBody).gravityScale = this.parentGravityScale;
+                    // parent.getComponent(cc.PhysicsBoxCollider).sensor = false;
+                    // parent.getComponent(cc.PhysicsBoxCollider).apply();
+                    // parent.emit(settingBasic.gameEvent.brotherPlayState, false);
                 })
             )
         )
 
-        parent.getComponent(cc.RigidBody).gravityScale = this.parentGravityScale;
-        parent.getComponent(cc.PhysicsBoxCollider).sensor = false;
-        parent.getComponent(cc.PhysicsBoxCollider).apply();
+    }
+    climbBoxEnd() {
+        this.node.parent.emit(settingBasic.gameEvent.brotherPlayState, false);
+
+        this.isClimbBox = false;
+
     }
 
 

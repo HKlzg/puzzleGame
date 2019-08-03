@@ -23,7 +23,7 @@ export default class NewClass extends cc.Component {
 
     gravityScale: number = 0;
     spriteFrame: cc.SpriteFrame = null;
-    preBoxPos:cc.Vec2 = null;
+    preBoxPos: cc.Vec2 = null;
     start() {
 
         this.canvas = cc.find("Canvas");
@@ -47,7 +47,7 @@ export default class NewClass extends cc.Component {
 
     update(dt) {
         if (this.node.y < -1500) {
-            this.node.removeFromParent()
+            this.node.destroy()
         }
     }
     setBoxPos(touchPos) {
@@ -59,6 +59,7 @@ export default class NewClass extends cc.Component {
         this.node.setPosition(vec);
 
         let dire = touchPos.x >= centerPos.x ? actionDirection.Right : actionDirection.Left;
+        this.brotherNode.scaleX = touchPos.x >= centerPos.x ? 1 : -1;
         let order: { direction: number, action: number } = { direction: dire, action: actionType.MAGIC }
         this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
     }
@@ -105,21 +106,21 @@ export default class NewClass extends cc.Component {
         this.phyBoxCollider.sensor = false;
         this.boxCollider.enabled = true;
         this.phyBoxCollider.apply();
-        
-        if(shadowPic.name == "box_red"){
+
+        if (shadowPic.name == "box_red") {
             this.node.setPosition(this.preBoxPos);
         }
-        this.boxShadow.removeFromParent();
+        this.boxShadow.destroy();
 
         //人物动作
         let touchPos = event.getLocation();
         this.camera.getCameraToWorldPoint(touchPos, touchPos);
         let centerPos = this.brotherNode.convertToWorldSpace(cc.Vec2.ZERO);
- 
+
         let dire = touchPos.x >= centerPos.x ? actionDirection.Right : actionDirection.Left;
         let order: { direction: number, action: number } = { direction: dire, action: actionType.Wait }
+        this.brotherNode.emit(settingBasic.gameEvent.brotherPlayState, false) //取消isPlaying 状态
         this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
-
     }
 
 }

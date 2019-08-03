@@ -52,7 +52,7 @@ export default class NewClass extends cc.Component {
             fun(true); 
         }
 
-        this.node.removeFromParent();
+        this.node.destroy();
     }
 
     update() {

@@ -10,6 +10,8 @@ export default class NewClass extends BrotherBasic {
 
     //重写
     rayCheck() {
+        //已经有推的物体 则不进行检测
+        if (this.pushObject) return;
 
         let pos1 = this.node.convertToWorldSpace(cc.Vec2.ZERO)
         pos1 = cc.v2(pos1.x, pos1.y - 40);
@@ -18,41 +20,32 @@ export default class NewClass extends BrotherBasic {
         let results = null;
 
         if (this.node.scaleX > 0) {
+            //向右检测
             results = cc.director.getPhysicsManager().rayCast(pos1, pos2, cc.RayCastType.Any);
-            for (let i = 0; i < results.length; i++) {
-                let result = results[i];
-                let collider = result.collider;
-                if (collider.node.name == "stone") {
-                    this.isReadyClimbBox = true;
-                    this.pushObject ? null : this.pushObject = collider.node;
-                }
-                if (collider.node.groupIndex == 2 && !this.isPlaying) { //箱子
-                    console.log("====ray===Box")
-                    this.pushObject ? null : this.pushObject = collider.node;
-                    this.order.action = this.actionType.ClimbBox;
-                    this.order.direction = this.actionDirection.Right;
-                    this.brotherAction(this.order);
-                }
-                break;
-            }
         } else {
+            //向左检测
             results = cc.director.getPhysicsManager().rayCast(pos1, pos3, cc.RayCastType.Any);
-            for (let i = 0; i < results.length; i++) {
-                let result = results[i];
-                let collider = result.collider;
-                if (collider.node.name == "stone") {
-                    this.isReadyClimbBox = true;
-                    this.pushObject ? null : this.pushObject = collider.node;
-                }
-                if (collider.node.groupIndex == 2 && !this.isPlaying) { //箱子
+        }
+        for (let i = 0; i < results.length; i++) {
+            let result = results[i];
+            let collider = result.collider;
 
-                    this.pushObject ? null : this.pushObject = collider.node;
-                    this.order.action = this.actionType.ClimbBox;
-                    this.order.direction = this.actionDirection.Left;
-                    this.brotherAction(this.order);
-                }
-                break;
+            if (!collider.node) return;
+
+            if (collider.node.name == "stone") {
+                this.isReadyClimbBox = true;
+                this.pushObject = collider.node;
             }
+            if (collider.node.groupIndex == 2 && !this.isPlaying && this.pushObject != collider.node) { //箱子
+                this.pushObject = collider.node;
+                this.order.action = this.actionType.ClimbBox;
+                this.order.direction = this.node.scaleX > 0 ? this.actionDirection.Right : this.actionDirection.Left;
+                this.brotherAction(this.order);
+                console.log("==================ClimbBox=================")
+            }
+
+            //只对第一个结果检测
+            return;
         }
 
     }

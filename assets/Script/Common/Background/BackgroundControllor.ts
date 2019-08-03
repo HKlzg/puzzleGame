@@ -103,7 +103,7 @@ export class BackgroundControllor extends cc.Component {
         if (this.playerState != this.playerStateType.LongTouch) {
             this.cameraControllor();
         }
-        if (this.isLongTouchBegin ) {
+        if (this.isLongTouchBegin) {
             this.longTouchTime++;
 
             if (this.startpos.equals(this.endpos) && this.longTouchTime > 20) {
@@ -201,15 +201,15 @@ export class BackgroundControllor extends cc.Component {
         this.startpos = event.touch.getLocation();
         this.endpos = event.touch.getLocation();
 
-        this.camera.getCameraToWorldPoint(this.startpos,this.startpos)
-        this.camera.getCameraToWorldPoint(this.endpos,this.endpos)
+        this.camera.getCameraToWorldPoint(this.startpos, this.startpos)
+        this.camera.getCameraToWorldPoint(this.endpos, this.endpos)
 
     }
 
     playerMove(event) {
 
         this.endpos = event.touch.getLocation();
-        this.camera.getCameraToWorldPoint(this.endpos,this.endpos)
+        this.camera.getCameraToWorldPoint(this.endpos, this.endpos)
 
         if (this.playerState == this.playerStateType.LongTouch) return
         //手机一直触发此事件
@@ -217,7 +217,7 @@ export class BackgroundControllor extends cc.Component {
 
         //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
         if (this.preTouchId && event.getID() != this.preTouchId) return
-  
+
         let order: { direction: number, action: number } = { direction: actionDirection.Right, action: actionType.Wait };
         let direction = actionDirection.Right;
 
@@ -241,7 +241,7 @@ export class BackgroundControllor extends cc.Component {
             else if ((angle > -180 && angle <= -135) || (angle > 135 && angle <= 180)) {
                 direction = actionDirection.Left;
             }
-        }else{
+        } else {
             return;
         }
 
@@ -311,6 +311,7 @@ export class BackgroundControllor extends cc.Component {
 
         //切换动作
         let dire = boxpos.x >= bortherpos.x ? actionDirection.Right : actionDirection.Left;
+        this.brotherNode.scaleX = boxpos.x >= bortherpos.x ? 1 : -1;
         let order: { direction: number, action: number } = { direction: dire, action: actionType.MAGIC }
         this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
 
@@ -322,7 +323,7 @@ export class BackgroundControllor extends cc.Component {
     createBoxShadow() {
         if (this.boxMaxNum > 0) {
             this.playerState = this.playerStateType.LongTouch
-            this.boxShadow ? this.boxShadow.removeFromParent() : null;
+            this.boxShadow ? this.boxShadow.destroy() : null;
             let touchPos = this.longTouchStartPos;
             this.camera.getCameraToWorldPoint(touchPos, touchPos)
             this.boxShadow = cc.instantiate(this.boxShadowPerfab)
@@ -379,6 +380,11 @@ export class BackgroundControllor extends cc.Component {
                 this.textTips.string = "Box:" + this.boxMaxNum;
             });
         }
+        //设置isPlaying = false
+        this.brotherNode.emit(settingBasic.gameEvent.brotherPlayState, false)
+        //设置等待状态
+        let dire = this.brotherNode.scaleX > 0 ? actionDirection.Right : actionDirection.Left;
+        this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, { direction: dire, action: actionType.Wait })
         this.boxShadow = null;
     }
 
