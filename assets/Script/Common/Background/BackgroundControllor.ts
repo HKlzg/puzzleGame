@@ -231,13 +231,13 @@ export class BackgroundControllor extends cc.Component {
             if (angle >= -30 && angle < 45) {
                 direction = actionDirection.Right;
 
-            } else if (angle >= -60 && angle < -30) {
+            } else if (angle >= -75 && angle < -30) {
                 direction = actionDirection.Up_Right;
 
-            } else if (angle < -60 && angle >= -120) { //向上
+            } else if (angle < -75 && angle >= -105) { //向上
                 direction = actionDirection.Up;
 
-            } else if (angle >= -150 && angle < -120) {
+            } else if (angle >= -150 && angle < -105) {
                 direction = actionDirection.Up_Left;
             }
             else if ((angle > -180 && angle <= -150) || (angle > 135 && angle <= 180)) {

@@ -36,9 +36,9 @@ export default class NewClass extends cc.Component {
     }
 
     onBeginContact(contact, self, other) {
-        //只和鱼-9 碰撞
+        //只和鱼-11 碰撞
         // console.log("========Gear====Contact== "+ other.node.groupIndex)
-        if (other.node.groupIndex != 9) return
+        if (other.node.groupIndex != 11) return
         if (!this.isRotate) {
 
             let worldManifold = contact.getWorldManifold();

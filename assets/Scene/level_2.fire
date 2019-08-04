@@ -549,7 +549,7 @@
     "tag": 0,
     "_density": 1,
     "_sensor": false,
-    "_friction": 0.2,
+    "_friction": 0.5,
     "_restitution": 0,
     "body": null,
     "_offset": {
@@ -1115,7 +1115,7 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "groupIndex": 9,
+    "groupIndex": 10,
     "_id": "ea1dJ0ArVDybU+QGIQRsKk"
   },
   {
@@ -2903,7 +2903,7 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "groupIndex": 8,
+    "groupIndex": 12,
     "_id": "28vwX2z6FDcJsOP/O6uCNQ"
   },
   {
@@ -2948,9 +2948,9 @@
     "_enabled": true,
     "_type": 2,
     "_allowSleep": true,
-    "_gravityScale": 5,
+    "_gravityScale": 2,
     "_linearDamping": 0,
-    "_angularDamping": 0,
+    "_angularDamping": 2,
     "_linearVelocity": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -3063,7 +3063,7 @@
     "tag": 0,
     "_density": 1,
     "_sensor": false,
-    "_friction": 0.2,
+    "_friction": 0.5,
     "_restitution": 0,
     "body": null,
     "_offset": {
@@ -3223,8 +3223,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -77.594,
-      "y": 102.315,
+      "x": -736.849,
+      "y": -92.219,
       "z": 0
     },
     "_scale": {
@@ -3242,7 +3242,7 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "groupIndex": 8,
+    "groupIndex": 12,
     "_id": "92KyzqNhdDPajf/JwRvaGH"
   },
   {
@@ -3287,9 +3287,9 @@
     "_enabled": true,
     "_type": 2,
     "_allowSleep": true,
-    "_gravityScale": 5,
+    "_gravityScale": 2,
     "_linearDamping": 0,
-    "_angularDamping": 0,
+    "_angularDamping": 2,
     "_linearVelocity": {
       "__type__": "cc.Vec2",
       "x": 0,
@@ -3311,7 +3311,7 @@
     },
     "_enabled": true,
     "tag": 0,
-    "_density": 5,
+    "_density": 10,
     "_sensor": false,
     "_friction": 0.5,
     "_restitution": 0,
@@ -3402,7 +3402,7 @@
     "tag": 0,
     "_density": 1,
     "_sensor": false,
-    "_friction": 0.2,
+    "_friction": 0.5,
     "_restitution": 0,
     "body": null,
     "_offset": {
@@ -3718,7 +3718,7 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "groupIndex": 9,
+    "groupIndex": 10,
     "_id": "f34bPcB5JCQqFhtZgnpIgr"
   },
   {
@@ -4177,7 +4177,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": -812.195,
-      "y": -200.266,
+      "y": -220.337,
       "z": 0
     },
     "_scale": {
@@ -7911,7 +7911,7 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "groupIndex": 9,
+    "groupIndex": 10,
     "_id": "c0K002GA5Lb5mNrBXl+AvH"
   },
   {
@@ -8580,7 +8580,7 @@
     "tag": 0,
     "_density": 1,
     "_sensor": false,
-    "_friction": 0.2,
+    "_friction": 0.5,
     "_restitution": 0,
     "body": null,
     "_offset": {
@@ -8860,7 +8860,7 @@
     "tag": 0,
     "_density": 1,
     "_sensor": false,
-    "_friction": 0.2,
+    "_friction": 0.5,
     "_restitution": 0,
     "body": null,
     "_offset": {
@@ -9546,7 +9546,7 @@
     "_skewX": 0,
     "_skewY": 0,
     "_is3DNode": false,
-    "groupIndex": 9,
+    "groupIndex": 11,
     "_id": "3c7OuzuZhNgZI7HDE9PQQg"
   },
   {

@@ -43,7 +43,12 @@ export abstract class BrotherBasic extends cc.Component {
 
     //距离推动物体的距离
     pushDistance: number = 0;
+    cameraNode: cc.Node = null;
 
+    //死亡次数
+    deadNum: number = 0;
+    isDead: boolean = false;
+    birthPos:cc.Vec2 = null;
     onLoad() {
         this.brotherAnimation = this.brotherWalkNode.getComponent(cc.Animation);
         this.node.on(settingBasic.gameEvent.brotherActionEvent, this.brotherAction, this);
@@ -60,6 +65,8 @@ export abstract class BrotherBasic extends cc.Component {
         this.brotherAnimation.on(cc.Animation.EventType.PLAY, this.animationPlay, this);
         // this.brotherAnimation.on(cc.Animation.EventType.FINISHED, this.animationStop, this);
 
+        this.cameraNode = cc.find("Canvas/Camera");
+        this.birthPos = this.node.position;
     }
 
     start() {
@@ -67,7 +74,7 @@ export abstract class BrotherBasic extends cc.Component {
 
     //更新动作
     brotherAction(msg: { direction: number, action: number }, fun?: any) {
-        if (this.isPlaying) return;
+        if (this.isPlaying || this.isDead) return;
 
         this.order = msg;
         this.node.scaleX =
@@ -196,38 +203,39 @@ export abstract class BrotherBasic extends cc.Component {
     }
 
     update(dt) {
-        //更新位置 只对持续位移的动作  JUMP/Climb动画位移在动画帧事件中写
-        if (this.isMove) {
-            switch (this.order.action) {
-                case actionType.Wait:
+        if (!this.isDead) {
+            //更新位置 只对持续位移的动作  JUMP/Climb动画位移在动画帧事件中写
+            if (this.isMove) {
+                switch (this.order.action) {
+                    case actionType.Wait:
 
-                    break;
-                case actionType.Walk:
-                    this.node.scaleX > 0 ? this.node.x += 2
-                        : this.node.x -= 2;
+                        break;
+                    case actionType.Walk:
+                        this.node.scaleX > 0 ? this.node.x += 2
+                            : this.node.x -= 2;
 
-                    break;
-                case actionType.Push:
-                    this.node.scaleX > 0 ? this.node.x += 2
-                        : this.node.x -= 2;
-                    break;
-                default:
-                    break;
+                        break;
+                    case actionType.Push:
+                        this.node.scaleX > 0 ? this.node.x += 2
+                            : this.node.x -= 2;
+                        break;
+                    default:
+                        break;
+                }
             }
+
+            //射线检测
+            if (!this.isReadyClimbBox &&
+                (this.preOrder && this.preOrder.action != actionType.ReadyPush &&
+                    !this.isPlaying && this.preOrder.action != actionType.Push)
+            ) {
+                this.rayCheck();
+            }
+
+            this.pushCheck();
+            this.toUpdate();
+            this.isOnGround();
         }
-
-        //射线检测
-        if (!this.isReadyClimbBox &&
-            (this.preOrder && this.preOrder.action != actionType.ReadyPush &&
-                !this.isPlaying && this.preOrder.action != actionType.Push)
-        ) {
-            this.rayCheck();
-        }
-
-        this.pushCheck();
-        this.toUpdate();
-        this.isOnGround();
-
         this.collider ? this.collider.apply() : null;
 
     }
@@ -293,7 +301,7 @@ export abstract class BrotherBasic extends cc.Component {
         }
     }
 
-    //触发异常
+    //此事件触发异常
     animationStop(event) {
         if (this.order.action == actionType.Jump ||
             this.order.action == actionType.ClimbBox ||
@@ -312,9 +320,48 @@ export abstract class BrotherBasic extends cc.Component {
 
     }
 
-    //碰撞检测
+    //物理碰撞检测
     onBeginContact(contact, self, other) {
 
+    }
+    //碰撞检测(传感器)
+    onCollisionEnter(other, self) {
+        //被下落的箱子 砸中
+        if (other.node.groupIndex == 2) {
+            let boxBody = other.node.getComponent(cc.RigidBody);
+            if (boxBody.linearVelocity.y < -100) {
+                // console.log("============box on head")
+                this.reBirth();
+            }
+        }
+    }
+    //重生
+    reBirth() {
+        this.isDead = true;
+        let gravity = this.rigidBody.gravityScale;
+        this.rigidBody.gravityScale = 0;
+        this.rigidBody.type = cc.RigidBodyType.Static;
+        this.collider.sensor = true;
+        let pos = this.birthPos;
+        //死亡数+1
+        let camera = this.cameraNode.getComponent(cc.Camera);
+        this.deadNum++;
+
+        this.node.runAction(
+            cc.sequence(
+                cc.fadeOut(2),
+                cc.spawn(
+                    cc.fadeIn(1),
+                    cc.moveTo(0.5, pos)
+                ),
+                cc.callFunc(() => {
+                    this.rigidBody.gravityScale = gravity;
+                    this.collider.sensor = false;
+                    this.rigidBody.type = cc.RigidBodyType.Dynamic;
+                    this.isDead = false;
+                })
+            )
+        )
     }
 
     setPlayState(isPlay) {

@@ -41,7 +41,7 @@
   },
   "startScene": "c536a283-b686-473b-823e-8c00ce9e4537",
   "title": "puzzleGame",
-  "webOrientation": "auto",
+  "webOrientation": "portrait",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "",
     "appid": "wx6ac3f5090a6b99c5",
