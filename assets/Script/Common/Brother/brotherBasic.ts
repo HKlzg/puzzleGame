@@ -45,6 +45,8 @@ export abstract class BrotherBasic extends cc.Component {
     pushDistance: number = 0;
     cameraNode: cc.Node = null;
 
+    oldPos:cc.Vec2 = null;
+
     //死亡次数
     deadNum: number = 0;
     isDead: boolean = false;
@@ -328,40 +330,41 @@ export abstract class BrotherBasic extends cc.Component {
     onCollisionEnter(other, self) {
         //被下落的箱子 砸中
         if (other.node.groupIndex == 2) {
-            let boxBody = other.node.getComponent(cc.RigidBody);
+            this.oldPos = this.node.position;
+            let boxBody = other.node.getComponent(cc.RigidBody);            
             if (boxBody.linearVelocity.y < -100) {
                 // console.log("============box on head")
                 this.reBirth();
             }
         }
+        
     }
     //重生
     reBirth() {
         this.isDead = true;
-        let gravity = this.rigidBody.gravityScale;
-        this.rigidBody.gravityScale = 0;
-        this.rigidBody.type = cc.RigidBodyType.Static;
-        this.collider.sensor = true;
+        this.anmstate = this.brotherAnimation.play("DeadClip");
+        // let gravity = this.rigidBody.gravityScale;
+        // this.rigidBody.gravityScale = 0;
+        // this.rigidBody.type = cc.RigidBodyType.Static;
+        // this.collider.sensor = true;
         let pos = this.birthPos;
         //死亡数+1
-        let camera = this.cameraNode.getComponent(cc.Camera);
+        // let camera = this.cameraNode.getComponent(cc.Camera);
+        // let black = camera.node.getChildByName("black");
         this.deadNum++;
+        this.scheduleOnce(this.observePerson, 3);
+    }
 
-        this.node.runAction(
-            cc.sequence(
-                cc.fadeOut(2),
-                cc.spawn(
-                    cc.fadeIn(1),
-                    cc.moveTo(0.5, pos)
-                ),
-                cc.callFunc(() => {
-                    this.rigidBody.gravityScale = gravity;
-                    this.collider.sensor = false;
-                    this.rigidBody.type = cc.RigidBodyType.Dynamic;
-                    this.isDead = false;
-                })
-            )
-        )
+    observePerson(){
+        var fin = cc.fadeIn(1); //渐显效果,返回    ActionInterval,参数 持续时间/秒
+        // this.node.opacity = 0.5;
+        this.node.runAction(fin);
+        this.anmstate = this.brotherAnimation.play("WaitClip");
+        this.node.position = cc.v2(this.oldPos.x,this.oldPos.y + 300);
+        this.rigidBody.linearVelocity = cc.v2(0,0);
+        this.collider.sensor = false;
+        // this.rigidBody.type = cc.RigidBodyType.Dynamic;
+        this.isDead = false;
     }
 
     setPlayState(isPlay) {

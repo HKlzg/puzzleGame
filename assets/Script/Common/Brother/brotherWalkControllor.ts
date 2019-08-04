@@ -84,5 +84,14 @@ export default class NewClass extends cc.Component {
         this.isJump = false;
     }
 
+    deadStart(){
+        let parent = this.node.parent;
+        parent.runAction(cc.moveTo(1, cc.v2(parent.x, parent.y-100)));
+    }
 
+    deadEnd(){
+        let parent = this.node.parent.getComponent(cc.PhysicsBoxCollider).sensor = true;   
+        var fout = cc.fadeOut(1); //渐隐效果,返回    ActionInterval,参数 持续时间/秒
+        this.node.parent.runAction(fout); // 物体还是在的的
+    }
 }
