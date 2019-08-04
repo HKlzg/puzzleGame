@@ -100,7 +100,7 @@ let settingBasic = {
         //----brotherControllor---- Action
         brotherActionEvent: "brotherActionEvent",
         brotherPlayState:"brotherPlayState",
-
+        brotherJumpEvent:"brotherJumpEvent",
         //backGround
         //Box
         instanceBoxEvent: "instanceBoxEvent",

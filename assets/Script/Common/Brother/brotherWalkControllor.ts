@@ -8,8 +8,10 @@ export default class NewClass extends cc.Component {
     parentGravityScale: number = 10;
     isClimbBox: boolean = false;
     isJump: boolean = false;
+    jumpXdist:number = 0;//水平跳跃距离
     start() {
         this.parentGravityScale = this.node.parent.getComponent(cc.RigidBody).gravityScale;
+        this.node.on(settingBasic.gameEvent.brotherJumpEvent,this.setJumpX,this)
     }
 
     // update (dt) {}
@@ -57,11 +59,14 @@ export default class NewClass extends cc.Component {
     }
 
     //------------------------Jump
+    setJumpX(dist){
+        this.jumpXdist = dist?dist:0;
+    }
     jumpStart() {
         let parent = this.node.parent;
         this.isJump = true;
         let pos: cc.Vec2 = this.node.parent.position;
-        let temp = parent.scaleX > 0 ? 150 : -150;
+        let temp = this.jumpXdist;
         let action1 = cc.jumpTo(1, cc.v2(pos.x, pos.y), 200, 1);
         let action2 = cc.moveTo(0.6, cc.v2(pos.x + temp, pos.y))
         parent.runAction(

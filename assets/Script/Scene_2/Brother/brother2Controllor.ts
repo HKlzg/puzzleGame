@@ -14,7 +14,7 @@ export default class NewClass extends BrotherBasic {
         if (this.pushObject) return;
 
         let pos1 = this.node.convertToWorldSpace(cc.Vec2.ZERO)
-        pos1 = cc.v2(pos1.x, pos1.y - 40);
+        pos1 = cc.v2(pos1.x, pos1.y - 10);
         let pos2 = cc.v2(pos1.x + this.rayWidth, pos1.y);
         let pos3 = cc.v2(pos1.x - this.rayWidth, pos1.y);
         let results = null;

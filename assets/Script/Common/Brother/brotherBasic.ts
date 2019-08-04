@@ -149,6 +149,14 @@ export abstract class BrotherBasic extends cc.Component {
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
                 this.isPlaying = true;
+                let x = 0;
+                if (this.order.direction == actionDirection.Up) {
+                    x = 0;
+                } else {
+                    x = this.order.direction == actionDirection.Up_Left ? -150 : 150;
+                }
+                this.brotherWalkNode.emit(settingBasic.gameEvent.brotherJumpEvent, x);
+
                 this.anmstate = this.brotherAnimation.play("JumpClip").speed = 1.5;
 
                 this.isMove = true;
@@ -177,7 +185,7 @@ export abstract class BrotherBasic extends cc.Component {
                 this.Circerl.emit(settingBasic.gameEvent.changeCircleColor, "red");
                 this.Circerl.setPosition(this.Circerl.parent.convertToNodeSpaceAR((this.node.convertToWorldSpace(cc.v2(0, 0)))));
                 this.Circerl.active = true;
-                this.isMove = true;
+                this.isPlaying = false;
 
                 break;
             default:
@@ -229,7 +237,7 @@ export abstract class BrotherBasic extends cc.Component {
 
     //离地检测
     isOnGround() {
-        if (!this.isPlaying && this.rigidBody.linearVelocity.y < 0) {
+        if (!this.isPlaying && this.rigidBody.linearVelocity.y < -5) {
             this.order.action = actionType.Wait;
             this.brotherAction(this.order)
         }

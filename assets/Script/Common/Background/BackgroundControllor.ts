@@ -228,17 +228,19 @@ export class BackgroundControllor extends cc.Component {
         if (distance > 10) {
             let angle = toolsBasics.vectorsToDegress(currpos);
 
-            if (angle >= -45 && angle < 45) {
+            if (angle >= -30 && angle < 45) {
                 direction = actionDirection.Right;
 
-            } else if (angle > -90 && angle <= -45) {
+            } else if (angle >= -60 && angle < -30) {
                 direction = actionDirection.Up_Right;
 
-            } else if (angle <= -90 && angle >= -135) {
-                direction = actionDirection.Up_Left;
+            } else if (angle < -60 && angle >= -120) { //向上
+                direction = actionDirection.Up;
 
+            } else if (angle >= -150 && angle < -120) {
+                direction = actionDirection.Up_Left;
             }
-            else if ((angle > -180 && angle <= -135) || (angle > 135 && angle <= 180)) {
+            else if ((angle > -180 && angle <= -150) || (angle > 135 && angle <= 180)) {
                 direction = actionDirection.Left;
             }
         } else {
@@ -246,7 +248,9 @@ export class BackgroundControllor extends cc.Component {
         }
 
         switch (direction) {
-
+            case actionDirection.Up: //向上
+                order = { direction: direction, action: actionType.Jump };
+                break;
             case actionDirection.Up_Left: //向左上
                 order = { direction: direction, action: actionType.Jump };
                 break;
@@ -271,7 +275,7 @@ export class BackgroundControllor extends cc.Component {
             || this.prePlayerOrder.direction != order.direction)) {
             this.prePlayerOrder = order
             this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
-            // console.log("=======direction=" + direction)
+            console.log("=======direction=" + direction)
         }
 
     }
