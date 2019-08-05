@@ -49,7 +49,7 @@ export class BackgroundControllor extends cc.Component {
     //当前角色状态
     playerState = 0;
     //角色是否死亡
-    isDeath:boolean = false;
+    isDeath: boolean = false;
 
     longTouchTime: number = 0;
     isLongTouchBegin: boolean = false;
@@ -61,6 +61,7 @@ export class BackgroundControllor extends cc.Component {
     textTips: cc.Label = null;
 
     onLoad() {
+
         //------Camera-------
         this.camera = this.cameraNode.getComponent(cc.Camera);
         //获取背景大小
@@ -102,8 +103,6 @@ export class BackgroundControllor extends cc.Component {
 
     //#endregion
     update(dt) {
-        //是否在重生中 (死亡状态)
-        this.isDeath = settingBasic.game.State == settingBasic.setting.stateType.REBORN ;
 
         if (this.playerState != this.playerStateType.LongTouch) {
             this.cameraControllor();
@@ -178,9 +177,11 @@ export class BackgroundControllor extends cc.Component {
     touchStart(event) {
         //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
         if (this.preTouchId && event.getID() != this.preTouchId) return
-        this.preTouchId = event.getID();
+        // this.preTouchId = event.getID();
+        //是否在重生中 (死亡状态)
+        this.isDeath = settingBasic.game.State == settingBasic.setting.stateType.REBORN;
 
-        if(this.isDeath) return
+        if (this.isDeath) return
 
         //可以触发人物触摸移动事件
         if (this.playerState != this.playerStateType.LongTouch) {
@@ -194,7 +195,7 @@ export class BackgroundControllor extends cc.Component {
     }
 
     touchMove(event) {
-        if(this.isDeath) return
+        if (this.isDeath) return
         this.playerMove(event);
         this.boxTouchMove(event);
     }

@@ -6,13 +6,12 @@ import settingBasic from "../Setting/settingBasic";
 export default class NewClass extends cc.Component {
 
     onLoad() {
-        
-        cc.director.preloadScene("level_1");   
-        this.node.on(cc.Node.EventType.TOUCH_END,function(){
+
+        cc.director.preloadScene("loading");
+        this.node.on(cc.Node.EventType.TOUCH_END, function () {
             settingBasic.game.currLevel = 1;
-            cc.director.loadScene("loading")
-            
-        },this)
+            cc.director.loadScene("loading");
+        }, this)
     }
     start() {
 

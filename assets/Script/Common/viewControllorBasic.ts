@@ -38,6 +38,7 @@ export abstract class ViewControllorBasic extends cc.Component {
     onLoad() {
         console.log("=========SCENE: " + this.level + " ==========")
         settingBasic.game.currLevel = this.level;
+        settingBasic.fun.setScene("level_" + this.level, cc.director.getScene());
 
         //加载子包资源
         this.loadSubPackageDefualt();
@@ -50,6 +51,8 @@ export abstract class ViewControllorBasic extends cc.Component {
         // cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
         // 开启碰撞检测
         cc.director.getCollisionManager().enabled = true;
+
+        // cc.game.setFrameRate(60);
 
         // 自定义事件 控制游戏状态 
         this.node.on(settingBasic.gameEvent.gameStateEvent, this.changeGameState, this);
@@ -99,7 +102,7 @@ export abstract class ViewControllorBasic extends cc.Component {
                 console.log("==========GAME START==========")
                 break;
             case this.stateType.NORMAL:
-                    console.log("==========GAME NORMAL==========")
+                console.log("==========GAME NORMAL==========")
                 break;
             case this.stateType.NEXT:
                 //切换到下一个场景
@@ -119,11 +122,11 @@ export abstract class ViewControllorBasic extends cc.Component {
                 break;
             case this.stateType.REBORN:
                 //只能连续死一次
-                if(this.preGameState == this.stateType.REBORN) return;
+                if (this.preGameState == this.stateType.REBORN) return;
 
-                this.brotherNode.emit(settingBasic.gameEvent.brotherDeathEvent,true);
+                this.brotherNode.emit(settingBasic.gameEvent.brotherDeathEvent, true);
                 console.log("=======GameState===REBORN==========")
-  
+
                 break;
             default:
                 break;

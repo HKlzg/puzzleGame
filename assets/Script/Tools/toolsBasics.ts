@@ -8,7 +8,7 @@ var toolsBasics = {
     getAudioManager: function (): AudioControllor {
         return AudioControllor.getAudioManager();
     },
-
+    
     /**
      * lzg 計算角度 末位置,初始位置
      * */

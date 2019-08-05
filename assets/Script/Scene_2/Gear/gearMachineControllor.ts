@@ -14,15 +14,19 @@ export default class NewClass extends cc.Component {
     //是否处于旋转中
     isRotate: boolean = false;
     centerPos: cc.Vec2 = null;
-    tmpAngle: number = 45;
     initMountPos: cc.Vec2 = null;
 
+    @property({type:cc.Integer,displayName:"齿轮每次旋转角度"})
+    tmpAngle: number = 45;
     //山体移动的距离
+    @property({type:cc.Integer,displayName:"最高升降距离"})
     maxHeight: number = 100;
+    @property({type:cc.Integer,displayName:"最低升降距离"})
     minHeight: number = 0;
+    @property({type:cc.Integer,displayName:"每次升降的距离"})
+    step: number = 20;
 
     tmpHeight: number = 0;
-    step: number = 20;
 
     audioManager = tools.getAudioManager();
     audioMountainId: number;

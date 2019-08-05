@@ -17,7 +17,7 @@ export default class NewClass extends cc.Component {
     isAttack: boolean = false; //攻击状态
     isPreAttack: boolean = false; //预备攻击状态
     isObserve: boolean = true; //观察状态
-    isDeath: boolean = false;
+    isPersonDeath: boolean = false;
 
     safeDistance: number = 500;
 
@@ -29,6 +29,11 @@ export default class NewClass extends cc.Component {
     minX: number = 0;
     maxX: number = 0;
     audioManager = tools.getAudioManager();
+
+    //
+    lifeNum: number = 2;
+
+
     onLoad() {
         this.canvas = cc.find("Canvas");
         this.prePersonPos = this.personNode.position;
@@ -50,7 +55,7 @@ export default class NewClass extends cc.Component {
     update(dt) {
 
         //检测是否人已经死亡
-        this.isDeath = setting.game.State == setting.setting.stateType.REBORN;
+        this.isPersonDeath = setting.game.State == setting.setting.stateType.REBORN;
 
         if (!this.isAttack && !this.isPreAttack) {
 
@@ -81,7 +86,7 @@ export default class NewClass extends cc.Component {
 
         //2秒后再次观察人物的位置， 两次位置 若没有变化则准备攻击
         let personPos = this.personNode.position;
-        if (this.prePersonPos.fuzzyEquals(personPos, 5) && !this.isDeath) {
+        if (this.prePersonPos.fuzzyEquals(personPos, 5) && !this.isPersonDeath) {
             //进入预备攻击状态
             let personPos = this.personNode.convertToWorldSpace(cc.Vec2.ZERO);
             let fishPos = this.node.convertToWorldSpace(cc.Vec2.ZERO);
@@ -167,11 +172,25 @@ export default class NewClass extends cc.Component {
     }
 
     onBeginContact(contact, self, other) {
-        if (other.node.groupIndex == 6 && !this.isDeath) {
-            //检测是否碰撞到人
+        if (other.node.groupIndex == 6 && !this.isPersonDeath) {
+            //检测是否碰撞到人-6
             this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.REBORN);
-            this.isDeath = true;
+            this.isPersonDeath = true;
 
+        }
+
+        //碰到下落的石头-12 
+        if (other.node.groupIndex == 12) {
+            console.log("=======fish==stone======")
+            let stone: cc.Node = other.node;
+            let vy = stone.getComponent(cc.RigidBody).linearVelocity.y;
+            if (vy < -10) {
+                this.lifeNum--;
+                if (this.lifeNum == 0) {
+                    //下一关
+                    this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.NEXT)
+                }
+            }
         }
     }
 

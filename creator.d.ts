@@ -9636,7 +9636,7 @@ declare namespace cc {
 		
 		@example 
 		```js
-		node.destroy();
+		node.removeFromParent();
 		node.removeFromParent(false);
 		``` 
 		*/

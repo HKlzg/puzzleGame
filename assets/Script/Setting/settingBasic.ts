@@ -17,7 +17,7 @@ let settingBasic = {
             PAUSE: 3,
             RESUME: 4,
             REBORN: 5,//重生
-            NORMAL:6
+            NORMAL: 6
         }),
         //角色枚举值
         roleState: cc.Enum({
@@ -79,6 +79,30 @@ let settingBasic = {
             let num = setting["lv" + lv];
             return num;
         },
+        //记录场景
+        setScene(name: string, scene: cc.Scene) {
+            let list = settingBasic.game.sceneList;
+            if (!list[name]) {
+                list[name] = scene;
+            }
+            // console.log("----------------sceneList name: " + name)
+        },
+
+        getSceneByName(name: string) {
+            let list = settingBasic.game.sceneList;
+            return list[name] ? list[name] : null;
+        },
+
+        nextScene() {
+            let level = settingBasic.game.currLevel;
+            let name = "level_" + (level + 1);
+            cc.director.loadScene(name);
+
+        },
+        reLoade() {
+            let name = "level_" + settingBasic.game.currLevel;
+            cc.director.loadScene(name)
+        }
     },
 
     //当前游戏运行状态 全局
@@ -86,6 +110,7 @@ let settingBasic = {
         State: 1,
         currLevel: 0,
         currBoxNum: 0,
+        sceneList: {}
     },
 
     //自定义事件
@@ -100,14 +125,17 @@ let settingBasic = {
         brotherActionEvent: "brotherActionEvent",
         brotherPlayState: "brotherPlayState",
         brotherJumpEvent: "brotherJumpEvent",
-        brotherDeathEvent:"brotherDeathEvent",
-        brotherSetBornPos:"brotherSetBornPos",
+        brotherDeathEvent: "brotherDeathEvent",
+        brotherSetBornPos: "brotherSetBornPos",
         //backGround
         //Box
         instanceBoxEvent: "instanceBoxEvent",
         //Circle
         changeCircleColor: "changeCircleColor"
-    }
+    },
+
+
+
 };
 
 

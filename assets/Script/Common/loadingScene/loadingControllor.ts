@@ -11,8 +11,11 @@ export default class NewClass extends cc.Component {
     txtLabel: cc.Label = null;
 
     loadLevel: number = 0
-
+    onload() {
+    }
     start() {
+        settingBasic.fun.setScene("loading", cc.director.getScene());
+
         this.loadLevel = settingBasic.game.currLevel;
         this.txtLabel.string = this.loadLevel >= 0 ? "第" + this.loadLevel + "关" : "恭喜通关";
     }
@@ -26,7 +29,9 @@ export default class NewClass extends cc.Component {
         } else {
             //找不到对应的场景时 切换到主页面
             // cc.director.loadScene(this.loadLevel < 0 ? "homePage" : "level_" + this.loadLevel)
-
+            let sceneName = this.loadLevel < 0 ? "homePage" : "level_" + this.loadLevel;
+            cc.director.loadScene(sceneName);
+             
         }
     }
 }

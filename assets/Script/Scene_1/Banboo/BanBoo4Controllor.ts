@@ -1,4 +1,6 @@
 
+
+import setting from "../../Setting/settingBasic";
 const { ccclass, property } = cc._decorator;
 const direction = cc.Enum({
     Stop: 0,
@@ -21,10 +23,12 @@ export default class NewClass extends cc.Component {
     fireRightList: Array<cc.Node> = []
 
     waterDirection: number = 0;
-
+    canvas: cc.Node = null;
 
     start() {
         this.waterDirection = direction.Stop;
+        this.canvas = cc.find("Canvas");
+
     }
 
     update(dt) {
@@ -40,6 +44,14 @@ export default class NewClass extends cc.Component {
 
 
     }
+    onPostSolve(contact, selfCollider, otherCollider) {
+        selfCollider.node.getComponent(cc.RigidBody).linearVelocity = cc.v2(0, 0)
+        let angle = selfCollider.node.getComponent(cc.RigidBody).angularVelocity;
+        selfCollider.node.getComponent(cc.RigidBody).angularVelocity = angle * 0.5;
+        let vel: cc.Vec2 = otherCollider.node.getComponent(cc.RigidBody).linearVelocity;
+        otherCollider.node.getComponent(cc.RigidBody).linearVelocity.x = vel.normalizeSelf().mulSelf(5)
+    }
+
 
     waterContrl() {
         if (this.banboo2Water.active) {
@@ -85,7 +97,14 @@ export default class NewClass extends cc.Component {
                 //4S之后检测水是否处于开启状态
                 if (this.waterLeft.active) {
                     this.fireLeftList.forEach((fire) => {
-                        fire.runAction(cc.fadeOut(2))
+                        fire.runAction(
+                            cc.sequence(
+                                cc.fadeOut(2),
+                                cc.callFunc(() => {
+                                    this.canvas.emit(setting.gameEvent.gameMoveStep, 3)
+                                })
+                            )
+                        )
                     })
                 }
             }
@@ -102,7 +121,14 @@ export default class NewClass extends cc.Component {
             if (angle >= -16 && angle < 0) {
                 if (this.waterRight.active) {
                     this.fireRightList.forEach((fire) => {
-                        fire.runAction(cc.fadeOut(2))
+                        fire.runAction(
+                            cc.sequence(
+                                cc.fadeOut(2),
+                                cc.callFunc(() => {
+                                    this.canvas.emit(setting.gameEvent.gameMoveStep, 4)
+                                })
+                            )
+                        )
                     })
                 }
             }
