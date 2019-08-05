@@ -3,7 +3,7 @@
   "_name": "ReadyPushClip",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0,
+  "_duration": 0.3333333333333333,
   "sample": 60,
   "speed": 1,
   "wrapMode": 1,
@@ -14,7 +14,11 @@
           "angle": [
             {
               "frame": 0,
-              "value": -12.611
+              "value": 7.601000000000001
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -9.888
             }
           ]
         }
@@ -24,7 +28,7 @@
           "angle": [
             {
               "frame": 0,
-              "value": -12.528
+              "value": -8.756
             }
           ]
         }
@@ -34,7 +38,11 @@
           "angle": [
             {
               "frame": 0,
-              "value": 86.94999999999999
+              "value": 7.83499999999999
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 29.46999999999999
             }
           ]
         }
@@ -44,7 +52,11 @@
           "angle": [
             {
               "frame": 0,
-              "value": -85.928
+              "value": -6.889999999999997
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -36.958
             }
           ]
         }
@@ -54,7 +66,11 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0
+              "value": 18.031
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 57.735
             }
           ]
         }
@@ -64,39 +80,28 @@
           "angle": [
             {
               "frame": 0,
-              "value": 0
+              "value": -7.939
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 45.723
             }
           ]
         }
       },
       "arm_right/smallarms/hand": {
         "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": -10
-            }
-          ]
+          "angle": []
         }
       },
       "body": {
         "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
+          "angle": []
         }
       },
       "body/thebelly": {
         "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
+          "angle": []
         }
       },
       "head": {
@@ -104,7 +109,11 @@
           "angle": [
             {
               "frame": 0,
-              "value": 21.17600000000001
+              "value": 3.518000000000008
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 19.875000000000007
             }
           ]
         }
@@ -114,7 +123,11 @@
           "angle": [
             {
               "frame": 0,
-              "value": 117
+              "value": 4.742000000000004
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 61.007000000000005
             }
           ]
         }
@@ -124,21 +137,32 @@
           "angle": [
             {
               "frame": 0,
-              "value": 46.594
+              "value": 5.986000000000004
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 40.037000000000006
             }
           ]
         }
       },
       "arm_left/smallarms/hand": {
         "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": -10
-            }
-          ]
+          "angle": []
         }
       }
+    },
+    "props": {
+      "angle": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 0.3333333333333333,
+          "value": -13
+        }
+      ]
     }
   },
   "events": []

@@ -9,7 +9,6 @@ export default class NewClass extends ViewControllorBasic {
 
     start() {
         this.audioManager.playLoopBGM("river");
-
     }
     //重写
     loadSubPackage() {

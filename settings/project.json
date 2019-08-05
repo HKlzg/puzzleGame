@@ -79,6 +79,8 @@
       true,
       true,
       null,
+      false,
+      true,
       true,
       true,
       true
@@ -125,7 +127,7 @@
       true,
       false,
       false,
-      true,
+      false,
       false,
       false,
       false,
@@ -161,6 +163,39 @@
       false,
       true,
       true
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
     ]
   ],
   "design-resolution-height": 1280,
@@ -195,7 +230,9 @@
     "【只能和同组类型碰撞】",
     "齿轮",
     "鱼",
-    "石头(可推动)"
+    "石头(可推动)",
+    "重生传感器",
+    "死亡线"
   ],
   "last-module-event-record-time": 1564458623848,
   "simulator-orientation": false,
@@ -204,5 +241,6 @@
     "width": 960
   },
   "use-customize-simulator": true,
-  "use-project-simulator-setting": false
+  "use-project-simulator-setting": false,
+  "start-scene": "current"
 }

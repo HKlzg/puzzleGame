@@ -12,14 +12,16 @@ export default class NewClass extends cc.Component {
     attackNode: cc.Node = null;
     canvas: cc.Node = null;
 
+    isStartSwim: boolean = false; //是否开始
+
     isAttack: boolean = false; //攻击状态
     isPreAttack: boolean = false; //预备攻击状态
     isObserve: boolean = true; //观察状态
-    isGameOver:boolean = false;
+    isDeath: boolean = false;
 
     safeDistance: number = 500;
 
-    currPersonPos: cc.Vec2 = null;
+    prePersonPos: cc.Vec2 = null;    //观察前人的位置
     animation: cc.Animation = null;
     repeatActionTag: any = null;
     moveSpeed: number = 6;
@@ -29,7 +31,7 @@ export default class NewClass extends cc.Component {
     audioManager = tools.getAudioManager();
     onLoad() {
         this.canvas = cc.find("Canvas");
-        this.currPersonPos = this.personNode.position;
+        this.prePersonPos = this.personNode.position;
         this.animation = this.node.getComponent(cc.Animation);
         let riverPos = this.river.convertToWorldSpace(cc.Vec2.ZERO);
 
@@ -40,14 +42,22 @@ export default class NewClass extends cc.Component {
     start() {
         this.animation.on(cc.Animation.EventType.FINISHED, this.jumpFinished, this);
         this.animation.play("SwimClip");
+
+        //游戏开始2秒之后再 执行
+        this.scheduleOnce(() => { this.isStartSwim = true }, 1);
     }
 
     update(dt) {
+
+        //检测是否人已经死亡
+        this.isDeath = setting.game.State == setting.setting.stateType.REBORN;
+
         if (!this.isAttack && !this.isPreAttack) {
 
-            if (this.isObserve) {
+            if (this.isObserve && this.isStartSwim) {
                 this.isObserve = false;
-                this.scheduleOnce(this.observePerson, 2);
+
+                this.scheduleOnce(() => { this.observePerson(); }, 2);
             }
 
             //左右游动
@@ -63,17 +73,15 @@ export default class NewClass extends cc.Component {
             this.node.runAction(cc.moveTo(dt, cc.v2(pos.x + speed, pos.y)))
         }
 
-        if(!this.isGameOver){
-            this.attackCheck();
-        }
+
 
     }
 
     observePerson() {
-        // console.log("=======2S 后=====observePerson== ")
-        //2秒后再次观察人物的位置， 若没有变化则准备攻击
+
+        //2秒后再次观察人物的位置， 两次位置 若没有变化则准备攻击
         let personPos = this.personNode.position;
-        if (this.currPersonPos.fuzzyEquals(personPos, 5)) {
+        if (this.prePersonPos.fuzzyEquals(personPos, 5) && !this.isDeath) {
             //进入预备攻击状态
             let personPos = this.personNode.convertToWorldSpace(cc.Vec2.ZERO);
             let fishPos = this.node.convertToWorldSpace(cc.Vec2.ZERO);
@@ -99,8 +107,8 @@ export default class NewClass extends cc.Component {
                 let warnId = 0;
                 this.node.runAction(cc.sequence(
                     //警告声音
-                    cc.callFunc(()=>{
-                        warnId =  this.audioManager.playAudio("fishWarning");
+                    cc.callFunc(() => {
+                        warnId = this.audioManager.playAudio("fishWarning");
                     }),
                     moveAction,
                     cc.spawn(downAction, rotaAction),
@@ -122,14 +130,16 @@ export default class NewClass extends cc.Component {
                             this.node.runAction(
                                 cc.sequence(
                                     //跳跃前
-                                    cc.callFunc(()=>{
+                                    cc.callFunc(() => {
                                         this.audioManager.stopEffectByID(warnId);
                                         this.audioManager.playAudio("outWater")
                                     }),
                                     cc.spawn(jumpAction, cc.sequence(rotaAction1, rotaAction2)),
                                     //跳跃后
-                                    cc.callFunc(()=>{
+                                    cc.callFunc(() => {
                                         this.audioManager.playAudio("fallIntoWater");
+                                        this.isObserve = true; //继续观察
+                                        // this.prePersonPos = personPos; //记录人物位置
                                     }),
                                 )
                             )
@@ -139,31 +149,28 @@ export default class NewClass extends cc.Component {
 
             }
         }
-        this.currPersonPos = personPos; //记录人物位置
         this.isObserve = true; //继续观察
+        this.prePersonPos = personPos; //记录人物位置
     }
 
-    //检测是否碰撞到人
-    attackCheck() {
-        let personPos = this.personNode.convertToWorldSpace(cc.Vec2.ZERO);
-        personPos = cc.v2(personPos.x, personPos.y - 80);
-        let attckPos = this.attackNode.convertToWorldSpace(cc.Vec2.ZERO);
-        let distX = Math.abs(personPos.x - attckPos.x);
-        let distY = personPos.y - attckPos.y;
-        if (distY <= 30 && distX <= 10) {
-             this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.OVER);
-             //test
-            //  this.isGameOver = true; 
-        }
 
-    }
 
 
     jumpFinished() {
         if (this.isAttack) { //(攻击)跳跃动作时
             this.isAttack = false;
             this.isPreAttack = false;
+            this.isObserve = true; //继续观察
             this.animation.play("SwimClip");
+
+        }
+    }
+
+    onBeginContact(contact, self, other) {
+        if (other.node.groupIndex == 6 && !this.isDeath) {
+            //检测是否碰撞到人
+            this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.REBORN);
+            this.isDeath = true;
 
         }
     }

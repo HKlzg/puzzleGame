@@ -12,16 +12,7 @@ export default class Ground extends cc.Component {
 
     onBeginContact(contact, selfCollider, otherCollider) {
 
-        if (settingBasic.game.State == settingBasic.setting.stateType.OVER) {
-            return;
-        } else {
-            switch (otherCollider.node.groupIndex) {
-                case 2://
-                    
-                default:
-                    break;
-            }
-        }
+       
 
     }
 }

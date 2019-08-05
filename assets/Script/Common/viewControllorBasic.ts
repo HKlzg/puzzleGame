@@ -33,11 +33,12 @@ export abstract class ViewControllorBasic extends cc.Component {
     public stateType = settingBasic.setting.stateType;
 
     public stepList: Array<string> = [];
- 
+    public preGameState = 0;
+
     onLoad() {
         console.log("=========SCENE: " + this.level + " ==========")
         settingBasic.game.currLevel = this.level;
-        
+
         //加载子包资源
         this.loadSubPackageDefualt();
 
@@ -55,7 +56,7 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.node.on(settingBasic.gameEvent.gameStepEvent, this.gameStep, this);
         this.node.on(settingBasic.gameEvent.gameMoveStep, this.moveStep, this);
         this.node.on(settingBasic.gameEvent.setCurrGameStep, this.setCurrGameStep, this);
-     
+
     };
     //#endregion
 
@@ -64,12 +65,13 @@ export abstract class ViewControllorBasic extends cc.Component {
         // cc.view.getDesignResolutionSize();
         // cc.view.getFrameSize();
         this.node.emit(settingBasic.gameEvent.gameStateEvent, this.stateType.START);
+        this.node.emit(settingBasic.gameEvent.gameStateEvent, this.stateType.NORMAL);
     };
 
 
     //#endregion
     update(dt) {
-       
+
         this.toUpdate();
     };
 
@@ -96,6 +98,9 @@ export abstract class ViewControllorBasic extends cc.Component {
             case this.stateType.START:
                 console.log("==========GAME START==========")
                 break;
+            case this.stateType.NORMAL:
+                    console.log("==========GAME NORMAL==========")
+                break;
             case this.stateType.NEXT:
                 //切换到下一个场景
                 let nextLevel = this.level + 1;
@@ -112,17 +117,19 @@ export abstract class ViewControllorBasic extends cc.Component {
             case this.stateType.RESUME:
 
                 break;
-            case this.stateType.OVER:
-                console.log("==========GAME OVER==========")
-                //注销事件
-                // this.node.off(cc.Node.EventType.TOUCH_START, this.playerService.touchStart, this.playerService);
-                // this.node.off(cc.Node.EventType.TOUCH_MOVE, this.playerService.touchMove, this.playerService);
-                // this.node.off(cc.Node.EventType.TOUCH_END, this.playerService.touchEnd, this.playerService);
+            case this.stateType.REBORN:
+                //只能连续死一次
+                if(this.preGameState == this.stateType.REBORN) return;
 
+                this.brotherNode.emit(settingBasic.gameEvent.brotherDeathEvent,true);
+                console.log("=======GameState===REBORN==========")
+  
                 break;
             default:
                 break;
         }
+        //记录上一个状态
+        this.preGameState = state;
     }
     //记录当前移动的
     setCurrGameStep(step: string) {
@@ -142,5 +149,5 @@ export abstract class ViewControllorBasic extends cc.Component {
         }
         return false;
     }
-   
+
 }

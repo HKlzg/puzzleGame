@@ -45,14 +45,18 @@ export abstract class BrotherBasic extends cc.Component {
     pushDistance: number = 0;
     cameraNode: cc.Node = null;
 
+    bornPos: cc.Vec2 = null;
     //死亡次数
     deadNum: number = 0;
-    isDead: boolean = false;
-    birthPos:cc.Vec2 = null;
+    isDeath: boolean = false;
+    canvas: cc.Node = null;
     onLoad() {
         this.brotherAnimation = this.brotherWalkNode.getComponent(cc.Animation);
         this.node.on(settingBasic.gameEvent.brotherActionEvent, this.brotherAction, this);
         this.node.on(settingBasic.gameEvent.brotherPlayState, this.setPlayState, this);
+        this.node.on(settingBasic.gameEvent.brotherDeathEvent, this.reBirth, this);
+        this.node.on(settingBasic.gameEvent.brotherSetBornPos, this.setReBornPosition, this);
+
         this.order = { direction: actionDirection.Left, action: actionType.Wait };
         //初始状态
         this.brotherWalkNode.active = true;
@@ -64,9 +68,10 @@ export abstract class BrotherBasic extends cc.Component {
         //注册事件
         this.brotherAnimation.on(cc.Animation.EventType.PLAY, this.animationPlay, this);
         // this.brotherAnimation.on(cc.Animation.EventType.FINISHED, this.animationStop, this);
+        this.canvas = cc.find("Canvas");
+        this.cameraNode = this.canvas.getChildByName("Camera");
 
-        this.cameraNode = cc.find("Canvas/Camera");
-        this.birthPos = this.node.position;
+        this.bornPos = this.node.position;//默认值
     }
 
     start() {
@@ -74,7 +79,7 @@ export abstract class BrotherBasic extends cc.Component {
 
     //更新动作
     brotherAction(msg: { direction: number, action: number }, fun?: any) {
-        if (this.isPlaying || this.isDead) return;
+        if (this.isPlaying || this.isDeath) return;
 
         this.order = msg;
         this.node.scaleX =
@@ -124,7 +129,6 @@ export abstract class BrotherBasic extends cc.Component {
                 this.anmstate = this.brotherAnimation.play("PushClip");
                 this.isMove = true;
                 this.Circerl.active = false;
-
 
                 break;
 
@@ -203,7 +207,7 @@ export abstract class BrotherBasic extends cc.Component {
     }
 
     update(dt) {
-        if (!this.isDead) {
+        if (!this.isDeath) {
             //更新位置 只对持续位移的动作  JUMP/Climb动画位移在动画帧事件中写
             if (this.isMove) {
                 switch (this.order.action) {
@@ -236,16 +240,20 @@ export abstract class BrotherBasic extends cc.Component {
             this.toUpdate();
             this.isOnGround();
         }
+
+
         this.collider ? this.collider.apply() : null;
 
     }
+
     abstract toUpdate();
     //射线检测
     abstract rayCheck();
 
     //离地检测
     isOnGround() {
-        if (!this.isPlaying && this.rigidBody.linearVelocity.y < -5) {
+
+        if (!this.isPlaying && this.rigidBody.linearVelocity.y < -50) {
             this.order.action = actionType.Wait;
             this.brotherAction(this.order)
         }
@@ -322,6 +330,12 @@ export abstract class BrotherBasic extends cc.Component {
 
     //物理碰撞检测
     onBeginContact(contact, self, other) {
+        if (other.node.groupIndex == 4) {
+            //地面
+            let pos = this.node.position;
+            this.bornPos = cc.v2(pos.x, pos.y + 10)
+            // this.bornPos = this.node.scaleX > 0 ? cc.v2(pos.x - 50, pos.y + 10) : cc.v2(pos.x + 50, pos.y + 10);
+        }
 
     }
     //碰撞检测(传感器)
@@ -330,44 +344,51 @@ export abstract class BrotherBasic extends cc.Component {
         if (other.node.groupIndex == 2) {
             let boxBody = other.node.getComponent(cc.RigidBody);
             if (boxBody.linearVelocity.y < -100) {
-                // console.log("============box on head")
-                this.reBirth();
+                this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.REBORN);
             }
         }
+
     }
     //重生
-    reBirth() {
-        this.isDead = true;
-        let gravity = this.rigidBody.gravityScale;
-        this.rigidBody.gravityScale = 0;
-        this.rigidBody.type = cc.RigidBodyType.Static;
-        this.collider.sensor = true;
-        let pos = this.birthPos;
-        //死亡数+1
-        let camera = this.cameraNode.getComponent(cc.Camera);
-        this.deadNum++;
+    reBirth(isReborn) {
+        if (!isReborn) return;
 
-        this.node.runAction(
-            cc.sequence(
-                cc.fadeOut(2),
-                cc.spawn(
-                    cc.fadeIn(1),
-                    cc.moveTo(0.5, pos)
-                ),
-                cc.callFunc(() => {
-                    this.rigidBody.gravityScale = gravity;
-                    this.collider.sensor = false;
-                    this.rigidBody.type = cc.RigidBodyType.Dynamic;
-                    this.isDead = false;
-                })
-            )
-        )
+        this.isDeath = true;
+        this.anmstate = this.brotherAnimation.play("DeadClip");
+        this.collider.sensor = true;
+        let pos = this.bornPos ? this.bornPos : this.node.position;
+        //死亡数+1
+        // let camera = this.cameraNode.getComponent(cc.Camera);
+        this.deadNum++;
+        //更改游戏状态 -重生中
+        this.scheduleOnce(() => {
+
+            var fin = cc.fadeIn(1); //渐显效果,返回    ActionInterval,参数 持续时间/秒
+            this.node.runAction(fin);
+            this.order.action = actionType.Wait;
+            this.brotherAction(this.order);
+
+            this.node.position = cc.v2(pos.x, pos.y + this.node.height);
+            // this.node.runAction(cc.moveTo(0.5, cc.v2(pos.x, pos.y + this.node.height)))
+
+            this.rigidBody.linearVelocity = cc.v2(0, 0);
+            this.collider.sensor = false;
+
+            this.isDeath = false;
+            //更改游戏状态为-Normal 正常状态
+            this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.NORMAL);
+        }, 2.5);
     }
 
     setPlayState(isPlay) {
         this.isPlaying = isPlay;
-        // console.log("=====setPlayState: "+ this.isPlaying)
     }
 
+    //设置重生地点
+    setReBornPosition(pos: cc.Vec2) {
+        this.bornPos = pos ? pos : this.bornPos;
+
+        // console.log("=======reBorn= "+this.bornPos);
+    }
 
 }

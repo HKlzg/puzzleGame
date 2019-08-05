@@ -1,12 +1,12 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "WaitClip",
+  "_name": "DeadClip",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 1.55,
+  "_duration": 1,
   "sample": 60,
   "speed": 1,
-  "wrapMode": 2,
+  "wrapMode": 1,
   "curveData": {
     "props": {
       "angle": [
@@ -15,12 +15,8 @@
           "value": 0
         },
         {
-          "frame": 0.7333333333333333,
-          "value": 2
-        },
-        {
-          "frame": 1.55,
-          "value": 0
+          "frame": 0.5,
+          "value": 98
         }
       ]
     },
@@ -33,12 +29,12 @@
               "value": 0
             },
             {
-              "frame": 0.7333333333333333,
-              "value": -1
+              "frame": 0.5,
+              "value": 21.941
             },
             {
-              "frame": 1.5333333333333334,
-              "value": 0
+              "frame": 1,
+              "value": -1.899000000000001
             }
           ]
         }
@@ -61,12 +57,12 @@
               "value": 0
             },
             {
-              "frame": 0.75,
-              "value": -4
+              "frame": 0.5,
+              "value": 15.566
             },
             {
-              "frame": 1.5166666666666666,
-              "value": 0
+              "frame": 1,
+              "value": -4.267999999999999
             }
           ]
         }
@@ -87,6 +83,18 @@
             {
               "frame": 0,
               "value": 0
+            },
+            {
+              "frame": 0.2833333333333333,
+              "value": 31.881
+            },
+            {
+              "frame": 0.5,
+              "value": 59.128
+            },
+            {
+              "frame": 1,
+              "value": 3.378
             }
           ]
         }
@@ -97,6 +105,10 @@
             {
               "frame": 0,
               "value": 0
+            },
+            {
+              "frame": 1,
+              "value": 2.1110000000000007
             }
           ]
         }
@@ -121,6 +133,16 @@
           ]
         }
       },
+      "body/thebelly": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
       "head": {
         "props": {
           "angle": [
@@ -129,16 +151,16 @@
               "value": -1
             },
             {
-              "frame": 0.7333333333333333,
-              "value": 13
+              "frame": 0.2833333333333333,
+              "value": -21.452
             },
             {
-              "frame": 0.75,
-              "value": 13
+              "frame": 0.5,
+              "value": 12.904
             },
             {
-              "frame": 1.5166666666666666,
-              "value": -1
+              "frame": 1,
+              "value": 24.828
             }
           ]
         }
@@ -151,16 +173,16 @@
               "value": 0
             },
             {
-              "frame": 0.7333333333333333,
-              "value": -6
+              "frame": 0.2833333333333333,
+              "value": 40.789
             },
             {
-              "frame": 0.75,
-              "value": -6
+              "frame": 0.5,
+              "value": 64.035
             },
             {
-              "frame": 1.5166666666666666,
-              "value": 0
+              "frame": 1,
+              "value": -15.426000000000002
             }
           ]
         }
@@ -170,18 +192,6 @@
           "angle": [
             {
               "frame": 0,
-              "value": 11
-            },
-            {
-              "frame": 0.7333333333333333,
-              "value": 6
-            },
-            {
-              "frame": 0.75,
-              "value": 6
-            },
-            {
-              "frame": 1.5166666666666666,
               "value": 11
             }
           ]
@@ -199,5 +209,16 @@
       }
     }
   },
-  "events": []
+  "events": [
+    {
+      "frame": 0,
+      "func": "deadStart",
+      "params": []
+    },
+    {
+      "frame": 0.1,
+      "func": "deadEnd",
+      "params": []
+    }
+  ]
 }

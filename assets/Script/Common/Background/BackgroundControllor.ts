@@ -48,6 +48,8 @@ export class BackgroundControllor extends cc.Component {
     playerStateType = settingBasic.setting.roleState;
     //当前角色状态
     playerState = 0;
+    //角色是否死亡
+    isDeath:boolean = false;
 
     longTouchTime: number = 0;
     isLongTouchBegin: boolean = false;
@@ -173,6 +175,11 @@ export class BackgroundControllor extends cc.Component {
     touchStart(event) {
         //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
         if (this.preTouchId && event.getID() != this.preTouchId) return
+        this.preTouchId = event.getID();
+
+        //是否在重生中 (死亡状态)
+        this.isDeath = settingBasic.game.State == settingBasic.setting.stateType.REBORN ;
+        if(this.isDeath) return
 
         //可以触发人物触摸移动事件
         if (this.playerState != this.playerStateType.LongTouch) {
@@ -186,11 +193,13 @@ export class BackgroundControllor extends cc.Component {
     }
 
     touchMove(event) {
+        if(this.isDeath) return
         this.playerMove(event);
         this.boxTouchMove(event);
     }
 
     touchEnd(event) {
+        if(this.isDeath) return
         this.playerStop(event);
         this.boxTouchEnd(event);
     }
@@ -275,7 +284,7 @@ export class BackgroundControllor extends cc.Component {
             || this.prePlayerOrder.direction != order.direction)) {
             this.prePlayerOrder = order
             this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
-            console.log("=======direction=" + direction)
+            // console.log("=======direction=" + direction)
         }
 
     }

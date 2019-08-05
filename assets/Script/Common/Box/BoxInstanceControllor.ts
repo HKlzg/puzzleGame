@@ -24,6 +24,9 @@ export default class NewClass extends cc.Component {
     gravityScale: number = 0;
     spriteFrame: cc.SpriteFrame = null;
     preBoxPos: cc.Vec2 = null;
+    isDeath: boolean = false;
+
+    preTouchId: number = 0;
     start() {
 
         this.canvas = cc.find("Canvas");
@@ -67,6 +70,13 @@ export default class NewClass extends cc.Component {
 
     //-----------------------event----------------
     touchStart(event) {
+
+        if (this.preTouchId && event.getID() != this.preTouchId) return
+        this.preTouchId = event.getID();
+        //是否死亡
+        this.isDeath = settingBasic.game.State == settingBasic.setting.stateType.REBORN;
+        if(this.isDeath) return;
+
         this.preBoxPos = this.node.position;
         let touchPos = event.getLocation();
         this.camera.getCameraToWorldPoint(touchPos, touchPos);
@@ -87,6 +97,9 @@ export default class NewClass extends cc.Component {
         this.node.getComponent(cc.Sprite).spriteFrame = null;
     }
     touchMove(event) {
+        if (this.preTouchId && event.getID() != this.preTouchId) return
+        if(this.isDeath) return;
+
         let touchPos = event.getLocation();
         this.camera.getCameraToWorldPoint(touchPos, touchPos);
         this.node.setPosition(this.node.parent.convertToNodeSpaceAR(touchPos))
@@ -96,6 +109,9 @@ export default class NewClass extends cc.Component {
         this.boxShadow.setPosition(this.node.position);
     }
     touchEnd(event) {
+        if (this.preTouchId && event.getID() != this.preTouchId) return
+        if(this.isDeath) return;
+        
         this.circular.active = false;
 
         this.body.gravityScale = this.gravityScale;
@@ -123,5 +139,6 @@ export default class NewClass extends cc.Component {
         this.brotherNode.emit(settingBasic.gameEvent.brotherPlayState, false) //取消isPlaying 状态
         this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
     }
+
 
 }

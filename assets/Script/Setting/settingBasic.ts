@@ -16,7 +16,8 @@ let settingBasic = {
             NEXT: 2, //下一关
             PAUSE: 3,
             RESUME: 4,
-            OVER: 5
+            REBORN: 5,//重生
+            NORMAL:6
         }),
         //角色枚举值
         roleState: cc.Enum({
@@ -55,8 +56,8 @@ let settingBasic = {
             MAGIC: 5,
             No_Magic: 6,
             ClimbBox: 7,
-            ReadyPush:8,
-            Push:9,
+            ReadyPush: 8,
+            Push: 9,
         }),
         //人物动作方向
         actionDirection: cc.Enum({
@@ -76,8 +77,6 @@ let settingBasic = {
         getBoxNumByLv(lv) {
             let setting = settingBasic.setting.boxNum;
             let num = setting["lv" + lv];
-            // console.log("===========setting " + lv + " num =" + num)
-
             return num;
         },
     },
@@ -99,8 +98,10 @@ let settingBasic = {
         setCurrGameStep: "setCurrGameStep",
         //----brotherControllor---- Action
         brotherActionEvent: "brotherActionEvent",
-        brotherPlayState:"brotherPlayState",
-        brotherJumpEvent:"brotherJumpEvent",
+        brotherPlayState: "brotherPlayState",
+        brotherJumpEvent: "brotherJumpEvent",
+        brotherDeathEvent:"brotherDeathEvent",
+        brotherSetBornPos:"brotherSetBornPos",
         //backGround
         //Box
         instanceBoxEvent: "instanceBoxEvent",
