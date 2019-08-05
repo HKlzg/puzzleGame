@@ -52,6 +52,7 @@ export default class NewClass extends cc.Component {
         if (this.node.y < -1500) {
             this.node.destroy()
         }
+        this.isDeath = settingBasic.game.State == settingBasic.setting.stateType.REBORN;
         this.phyBoxCollider.apply();
     }
     setBoxPos(touchPos) {
@@ -74,10 +75,10 @@ export default class NewClass extends cc.Component {
         if (this.preTouchId && event.getID() != this.preTouchId) return
         this.preTouchId = event.getID();
         //是否死亡
-        this.isDeath = settingBasic.game.State == settingBasic.setting.stateType.REBORN;
-        if(this.isDeath) return;
-
         this.preBoxPos = this.node.position;
+        
+        if (this.isDeath) return;
+
         let touchPos = event.getLocation();
         this.camera.getCameraToWorldPoint(touchPos, touchPos);
         this.node.setPosition(this.node.parent.convertToNodeSpaceAR(touchPos))
@@ -98,7 +99,7 @@ export default class NewClass extends cc.Component {
     }
     touchMove(event) {
         if (this.preTouchId && event.getID() != this.preTouchId) return
-        if(this.isDeath) return;
+        if (this.isDeath || !this.boxShadow) return;
 
         let touchPos = event.getLocation();
         this.camera.getCameraToWorldPoint(touchPos, touchPos);
@@ -110,13 +111,13 @@ export default class NewClass extends cc.Component {
     }
     touchEnd(event) {
         if (this.preTouchId && event.getID() != this.preTouchId) return
-        if(this.isDeath) return;
-        
+        this.preTouchId = null;
+        if (!this.boxShadow) return;
+
         this.circular.active = false;
 
         this.body.gravityScale = this.gravityScale;
         this.body.type = cc.RigidBodyType.Dynamic;
-        let shadowPic = this.boxShadow.getComponent(cc.Sprite).spriteFrame;
         //还原为BoxInstante显示
         this.node.getComponent(cc.Sprite).spriteFrame = this.spriteFrame;
         this.node.angle = 0
@@ -124,10 +125,18 @@ export default class NewClass extends cc.Component {
         this.boxCollider.enabled = true;
         this.phyBoxCollider.apply();
 
-        if (shadowPic.name == "box_red") {
+        if (this.isDeath) { //人物死亡 箱子还原
             this.node.setPosition(this.preBoxPos);
+
+            this.boxShadow.destroy();
+        } else {
+
+            let shadowPic = this.boxShadow.getComponent(cc.Sprite).spriteFrame;
+            if (shadowPic.name == "box_red") {
+                this.node.setPosition(this.preBoxPos);
+            }
+            this.boxShadow.destroy();
         }
-        this.boxShadow.destroy();
 
         //人物动作
         let touchPos = event.getLocation();

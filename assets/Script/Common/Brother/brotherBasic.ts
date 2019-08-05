@@ -363,20 +363,20 @@ export abstract class BrotherBasic extends cc.Component {
         //更改游戏状态 -重生中
         this.scheduleOnce(() => {
 
-            var fin = cc.fadeIn(1); //渐显效果,返回    ActionInterval,参数 持续时间/秒
-            this.node.runAction(fin);
             this.order.action = actionType.Wait;
             this.brotherAction(this.order);
-
             this.node.position = cc.v2(pos.x, pos.y + this.node.height);
-            // this.node.runAction(cc.moveTo(0.5, cc.v2(pos.x, pos.y + this.node.height)))
-
             this.rigidBody.linearVelocity = cc.v2(0, 0);
             this.collider.sensor = false;
 
+            this.node.runAction(cc.fadeIn(1));
+
+            this.node.angle = 0;
             this.isDeath = false;
+            this.isPlaying = false;
             //更改游戏状态为-Normal 正常状态
             this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.NORMAL);
+
         }, 2.5);
     }
 
@@ -387,8 +387,6 @@ export abstract class BrotherBasic extends cc.Component {
     //设置重生地点
     setReBornPosition(pos: cc.Vec2) {
         this.bornPos = pos ? pos : this.bornPos;
-
-        // console.log("=======reBorn= "+this.bornPos);
     }
 
 }

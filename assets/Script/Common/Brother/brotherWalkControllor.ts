@@ -94,9 +94,13 @@ export default class NewClass extends cc.Component {
         let ani = this.node.getComponent(cc.Animation);
         ani.play("waitClip")
         this.node.parent.runAction(
-            cc.fadeOut(0.5),
-        );
-
+            cc.sequence(
+                cc.fadeOut(0.5),
+                cc.callFunc(()=>{
+                    this.node.angle = 0;
+                })
+            )
+            );
 
     }
 }

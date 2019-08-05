@@ -102,6 +102,9 @@ export class BackgroundControllor extends cc.Component {
 
     //#endregion
     update(dt) {
+        //是否在重生中 (死亡状态)
+        this.isDeath = settingBasic.game.State == settingBasic.setting.stateType.REBORN ;
+
         if (this.playerState != this.playerStateType.LongTouch) {
             this.cameraControllor();
         }
@@ -177,8 +180,6 @@ export class BackgroundControllor extends cc.Component {
         if (this.preTouchId && event.getID() != this.preTouchId) return
         this.preTouchId = event.getID();
 
-        //是否在重生中 (死亡状态)
-        this.isDeath = settingBasic.game.State == settingBasic.setting.stateType.REBORN ;
         if(this.isDeath) return
 
         //可以触发人物触摸移动事件
@@ -199,7 +200,7 @@ export class BackgroundControllor extends cc.Component {
     }
 
     touchEnd(event) {
-        if(this.isDeath) return
+        // if(this.isDeath) return
         this.playerStop(event);
         this.boxTouchEnd(event);
     }
