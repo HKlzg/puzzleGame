@@ -181,16 +181,15 @@ export default class NewClass extends cc.Component {
 
         //碰到下落的石头-12 
         if (other.node.groupIndex == 12) {
-            console.log("=======fish==stone======")
-            let stone: cc.Node = other.node;
-            let vy = stone.getComponent(cc.RigidBody).linearVelocity.y;
-            if (vy < -10) {
-                this.lifeNum--;
-                if (this.lifeNum == 0) {
-                    //下一关
-                    this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.NEXT)
-                }
-            }
+            //  let stone: cc.Node = other.node;
+            // let vy = stone.getComponent(cc.RigidBody).linearVelocity.y;
+            // if (vy < -10) {
+            //     this.lifeNum--;
+            //     if (this.lifeNum == 0) {
+            //         //下一关
+            //         this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.NEXT)
+            //     }
+            // }
         }
     }
 

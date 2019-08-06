@@ -392,11 +392,11 @@ export class BackgroundControllor extends cc.Component {
                 if (this.boxMaxNum == 0) return;
                 isOk ? this.boxMaxNum-- : null;
                 this.boxTip.string = "Box:" + this.boxMaxNum;
-                //设置isPlaying = false
-                this.brotherNode.emit(settingBasic.gameEvent.brotherPlayState, false)
-                let dire = this.brotherNode.scaleX > 0 ? actionDirection.Right : actionDirection.Left;
-                this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, { direction: dire, action: actionType.Wait })
             });
+            //设置isPlaying = false
+            this.brotherNode.emit(settingBasic.gameEvent.brotherPlayState, false)
+            let dire = this.brotherNode.scaleX > 0 ? actionDirection.Right : actionDirection.Left;
+            this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, { direction: dire, action: actionType.Wait })
         }
         //设置等待状态
 
