@@ -95,6 +95,7 @@ export default class NewClass extends cc.Component {
         this.node.parent.addChild(this.boxShadow);
         this.boxShadow.setPosition(this.node.position);
         this.boxShadow.active = true;
+        this.boxShadow.angle = this.node.angle;
         this.node.getComponent(cc.Sprite).spriteFrame = null;
     }
     touchMove(event) {
@@ -120,7 +121,7 @@ export default class NewClass extends cc.Component {
         this.body.type = cc.RigidBodyType.Dynamic;
         //还原为BoxInstante显示
         this.node.getComponent(cc.Sprite).spriteFrame = this.spriteFrame;
-        this.node.angle = 0
+        this.node.angle = this.boxShadow.angle;
         this.phyBoxCollider.sensor = false;
         this.boxCollider.enabled = true;
         this.phyBoxCollider.apply();

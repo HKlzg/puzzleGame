@@ -58,8 +58,7 @@ export class BackgroundControllor extends cc.Component {
     prePlayerOrder: { direction: number, action: number, msg?: any } = null;
 
     canvas: cc.Node = null;
-    textTips: cc.Label = null;
-
+    boxTip: cc.Label = null;
     onLoad() {
 
         //------Camera-------
@@ -93,8 +92,8 @@ export class BackgroundControllor extends cc.Component {
         this.drawline = this.circular.getChildByName("DrawLine");
         this.rDis = this.circular.width / 2;
         this.boxMaxNum = settingBasic.fun.getBoxNumByLv(settingBasic.game.currLevel);
-        this.textTips = this.cameraNode.getChildByName("tip").getComponent(cc.Label);
-        this.textTips.string = "Box: " + this.boxMaxNum;
+        this.boxTip = this.cameraNode.getChildByName("boxTip").getComponent(cc.Label);
+        this.boxTip.string = "Box: " + this.boxMaxNum;
     };
 
     start() {
@@ -299,17 +298,17 @@ export class BackgroundControllor extends cc.Component {
 
         if (this.preTouchId && event.getID() != this.preTouchId) return
 
-        let playerPos = this.brotherNode.convertToWorldSpace(cc.Vec2.ZERO);
+        // let playerPos = this.brotherNode.convertToWorldSpace(cc.Vec2.ZERO);
         let touchPos = event.touch.getLocation();
         this.camera.getCameraToWorldPoint(touchPos, touchPos)
 
         let order: { direction: number, action: number } = null;
         let direction = actionDirection.Right;
 
-        if (playerPos.x < touchPos.x) {
+        if (this.startpos.x < touchPos.x) {
             direction = actionDirection.Right
         }
-        if (playerPos.x > touchPos.x) {
+        if (this.startpos.x > touchPos.x) {
             direction = actionDirection.Left
         }
         order = { direction: direction, action: actionType.Wait }
@@ -392,7 +391,7 @@ export class BackgroundControllor extends cc.Component {
             this.boxShadow.emit(settingBasic.gameEvent.instanceBoxEvent, "", (isOk) => {
                 if (this.boxMaxNum == 0) return;
                 isOk ? this.boxMaxNum-- : null;
-                this.textTips.string = "Box:" + this.boxMaxNum;
+                this.boxTip.string = "Box:" + this.boxMaxNum;
                 //设置isPlaying = false
                 this.brotherNode.emit(settingBasic.gameEvent.brotherPlayState, false)
                 let dire = this.brotherNode.scaleX > 0 ? actionDirection.Right : actionDirection.Left;

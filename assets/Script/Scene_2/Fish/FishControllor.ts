@@ -143,8 +143,7 @@ export default class NewClass extends cc.Component {
                                     //跳跃后
                                     cc.callFunc(() => {
                                         this.audioManager.playAudio("fallIntoWater");
-                                        this.isObserve = true; //继续观察
-                                        // this.prePersonPos = personPos; //记录人物位置
+                                        
                                     }),
                                 )
                             )
@@ -153,9 +152,10 @@ export default class NewClass extends cc.Component {
                 ));
 
             }
+        } else {
+            this.isObserve = true; //继续观察
+            this.prePersonPos = personPos; //记录人物位置
         }
-        this.isObserve = true; //继续观察
-        this.prePersonPos = personPos; //记录人物位置
     }
 
 

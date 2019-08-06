@@ -16,15 +16,17 @@ export default class NewClass extends cc.Component {
     centerPos: cc.Vec2 = null;
     initMountPos: cc.Vec2 = null;
 
-    @property({type:cc.Integer,displayName:"齿轮每次旋转角度"})
+    @property({ type: cc.Integer, displayName: "齿轮每次旋转角度" })
     tmpAngle: number = 45;
     //山体移动的距离
-    @property({type:cc.Integer,displayName:"最高升降距离"})
+    @property({ type: cc.Integer, displayName: "最高升降距离" })
     maxHeight: number = 100;
-    @property({type:cc.Integer,displayName:"最低升降距离"})
+    @property({ type: cc.Integer, displayName: "最低升降距离" })
     minHeight: number = 0;
-    @property({type:cc.Integer,displayName:"每次升降的距离"})
+    @property({ type: cc.Integer, displayName: "每次升降的距离" })
     step: number = 20;
+    @property({ type: cc.Boolean, displayName: "是否逆时针上升" })
+    isReversion: boolean = false;
 
     tmpHeight: number = 0;
 
@@ -49,8 +51,12 @@ export default class NewClass extends cc.Component {
             let contPos = worldManifold.points[0]; //碰撞位置
             let ang = 0;
             //************** angle > 0 cc.rotateBy 顺时针转 旋转角度变小 山体下降*/
-            ang = contPos.x < this.centerPos.x ? -this.tmpAngle : this.tmpAngle;
-
+            if (this.isReversion) {
+                //逆时针上升
+                ang = contPos.x > this.centerPos.x ? -this.tmpAngle : this.tmpAngle;
+            } else {
+                ang = contPos.x < this.centerPos.x ? -this.tmpAngle : this.tmpAngle;
+            }
             if (this.tmpHeight == this.maxHeight) { //最高点                    
                 ang = ang > 0 ? ang : 0; // 只能顺时针 向下移动
             }

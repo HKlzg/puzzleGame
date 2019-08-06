@@ -34,6 +34,7 @@ export abstract class ViewControllorBasic extends cc.Component {
 
     public stepList: Array<string> = [];
     public preGameState = 0;
+    public deathTip: cc.Label = null;
 
     onLoad() {
         console.log("=========SCENE: " + this.level + " ==========")
@@ -59,6 +60,9 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.node.on(settingBasic.gameEvent.gameStepEvent, this.gameStep, this);
         this.node.on(settingBasic.gameEvent.gameMoveStep, this.moveStep, this);
         this.node.on(settingBasic.gameEvent.setCurrGameStep, this.setCurrGameStep, this);
+        this.deathTip = this.cameraNode.getChildByName("deathTip").getComponent(cc.Label);
+        let currDeath = settingBasic.game.currDeath;
+        this.deathTip.string = "Death: " + currDeath;
 
     };
     //#endregion
@@ -125,6 +129,10 @@ export abstract class ViewControllorBasic extends cc.Component {
                 if (this.preGameState == this.stateType.REBORN) return;
 
                 this.brotherNode.emit(settingBasic.gameEvent.brotherDeathEvent, true);
+                //记录死亡次数
+                let currDeath = settingBasic.fun.addCurrDeath(this.level)
+                this.deathTip.string = "Death: " + currDeath;
+
                 console.log("=======GameState===REBORN==========")
 
                 break;
@@ -153,4 +161,8 @@ export abstract class ViewControllorBasic extends cc.Component {
         return false;
     }
 
+    //写入资料到本地 / 上传资料
+    onDestroy(){
+
+    }
 }

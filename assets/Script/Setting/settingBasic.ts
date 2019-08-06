@@ -102,7 +102,22 @@ let settingBasic = {
         reLoade() {
             let name = "level_" + settingBasic.game.currLevel;
             cc.director.loadScene(name)
-        }
+        },
+
+        /**
+         * 记录当前关卡死亡数
+         */
+        addCurrDeath(lv:number) :number{
+            settingBasic.game.currDeath++;
+            settingBasic.game.totalDeath++;
+            settingBasic.game.deathRecord[lv] = settingBasic.game.currDeath;
+            settingBasic.game.deathRecord["total"] = settingBasic.game.totalDeath;
+            return settingBasic.game.currDeath;
+        },
+        clearCurrDeath() {
+            settingBasic.game.currDeath = 0;
+        },
+
     },
 
     //当前游戏运行状态 全局
@@ -110,7 +125,10 @@ let settingBasic = {
         State: 1,
         currLevel: 0,
         currBoxNum: 0,
-        sceneList: {}
+        currDeath: 0, //当前关卡死亡数
+        totalDeath: 0, //游戏死亡总数
+        sceneList: {},
+        deathRecord:{},//死亡记录 用于存档
     },
 
     //自定义事件
