@@ -1,11 +1,10 @@
 import { ViewControllorBasic } from "../Common/viewControllorBasic";
-import settingBasic from "../Setting/settingBasic";
 const { ccclass, property } = cc._decorator;
 @ccclass
 export default class NewClass extends ViewControllorBasic {
 
-    start() {
-
+    toStart() {
+        this.audioManager.playLoopBGM("night");
     }
     loadSubPackage() {
 

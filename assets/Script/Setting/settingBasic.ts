@@ -145,11 +145,13 @@ const settingBasic = {
         brotherJumpEvent: "brotherJumpEvent",
         brotherDeathEvent: "brotherDeathEvent",
         brotherSetBornPos: "brotherSetBornPos",
+        brotherSetAudio:"brotherSetAudio",
         //backGround
         //Box
         instanceBoxEvent: "instanceBoxEvent",
         //Circle
         changeCircleColor: "changeCircleColor"
+
     },
 
 

@@ -3,6 +3,13 @@ const { ccclass, property } = cc._decorator;
 import settingBasic from "../../Setting/settingBasic";
 import tools from "../../Tools/toolsBasics";
 
+class AudioType {
+    walkName: string;
+    jumpName: string;
+    magicName: string;
+    ClimbName: string;
+}
+
 @ccclass
 export default class NewClass extends cc.Component {
 
@@ -10,11 +17,38 @@ export default class NewClass extends cc.Component {
     isClimbBox: boolean = false;
     isJump: boolean = false;
     jumpXdist: number = 0;//水平跳跃距离
+    audioName: AudioType = new AudioType();
 
     audioManager = tools.getAudioManager();
     start() {
         this.parentGravityScale = this.node.parent.getComponent(cc.RigidBody).gravityScale;
         this.node.on(settingBasic.gameEvent.brotherJumpEvent, this.setJumpX, this)
+        this.node.on(settingBasic.gameEvent.brotherSetAudio, this.setWalkAudioName, this)
+
+        //设置默认值
+        this.audioName.walkName = "walkInWater";
+        this.audioName.jumpName = "jumpOnFloor";
+        this.audioName.ClimbName = "";
+        this.audioName.magicName = "";
+    }
+
+    //设置对应动作的声音
+    setWalkAudioName(msgList: [{ actionType: number, name: string }]) {
+        // console.log("=============this.walkAudioName=" + JSON.stringify(msgList))
+
+        let type = settingBasic.setting.actionType;
+        msgList.forEach((msg) => {
+            switch (msg.actionType) {
+                case type.Jump:
+                    this.audioName.jumpName = msg.name;
+                    break;
+                case type.Walk:
+                    this.audioName.walkName = msg.name;
+                    break;
+                default:
+                    break;
+            }
+        })
 
     }
 
@@ -67,8 +101,8 @@ export default class NewClass extends cc.Component {
         this.jumpXdist = dist ? dist : 0;
     }
     jumpStart() {
-        if(this.isJump) return;
-        
+        if (this.isJump) return;
+
         let parent = this.node.parent;
         this.isJump = true;
         let pos: cc.Vec2 = this.node.parent.position;
@@ -87,7 +121,7 @@ export default class NewClass extends cc.Component {
 
     jumpEnd() {
         this.node.parent.emit(settingBasic.gameEvent.brotherPlayState, false);
-        this.audioManager.playAudio("personJump");
+        this.audioManager.playAudio(this.audioName.jumpName);
         this.isJump = false;
     }
     //死亡动画
@@ -109,12 +143,14 @@ export default class NewClass extends cc.Component {
         );
     }
 
-    //walk
+    //------------------------walk 左脚------------------
+
     walkFootStep1() {
-        this.audioManager.playAudio("personWalk");
+        this.audioManager.playAudio(this.audioName.walkName);
     }
+    //右脚
     walkFootStep2() {
-        this.audioManager.playAudio("personWalk");
+        this.audioManager.playAudio(this.audioName.walkName);
     }
 
 

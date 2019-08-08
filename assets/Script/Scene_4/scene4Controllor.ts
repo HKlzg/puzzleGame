@@ -6,7 +6,7 @@ export default class NewClass extends ViewControllorBasic {
     containerNode: cc.Node = null;
     brotherNode: cc.Node = null;
  
-    start() {
+    toStart() {
         this.containerNode = this.node.getChildByName("Container");
         this.brotherNode = this.containerNode.getChildByName("Brother")
           //默认开启第一步

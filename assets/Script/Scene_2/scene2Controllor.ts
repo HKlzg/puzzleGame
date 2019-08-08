@@ -1,14 +1,13 @@
 import { ViewControllorBasic } from "../Common/viewControllorBasic";
-import settingBasic from "../Setting/settingBasic";
-import tools from "../Tools/toolsBasics";
-
+ 
 const { ccclass, property } = cc._decorator;
 @ccclass
 export default class NewClass extends ViewControllorBasic {
-    audioManager = tools.getAudioManager();
-
-    start() {
+ 
+    toStart() {
         this.audioManager.playLoopBGM("river");
+        this.brotherWalkNode.emit(this.settingBasic.gameEvent.brotherSetAudio,"walkInWater")
+
     }
     //重写
     loadSubPackage() {
@@ -55,7 +54,7 @@ export default class NewClass extends ViewControllorBasic {
             default:
                 break;
         }
-        this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
+        this.brotherNode.emit(this.settingBasic.gameEvent.brotherActionEvent, order)
         //记录当前开启的机关步骤
         //this.setCurrGameStep(nextStep);
 

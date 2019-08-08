@@ -27,6 +27,7 @@ export abstract class ViewControllorBasic extends cc.Component {
     // boxShadow: cc.Node = null;
     // camera: cc.Camera = null;
 
+    //public 用于给子类调用
     public boxParent: cc.Node = null;
     public toolsBasics = toolsBasics;
     public settingBasic = settingBasic;
@@ -35,6 +36,12 @@ export abstract class ViewControllorBasic extends cc.Component {
     public stepList: Array<string> = [];
     public preGameState = 0;
     public deathTip: cc.Label = null;
+    public audioManager = toolsBasics.getAudioManager();
+    public brotherWalkNode: cc.Node = null;
+    public actionType = settingBasic.setting.actionType;
+
+    isSetAudio: boolean = false;
+    personAudio: [{ actionType: number, name: string }] = null;
 
     onLoad() {
         console.log("=========SCENE: " + this.level + " ==========")
@@ -54,6 +61,7 @@ export abstract class ViewControllorBasic extends cc.Component {
         cc.director.getCollisionManager().enabled = true;
 
         // cc.game.setFrameRate(60);
+        this.brotherWalkNode = this.brotherNode.getChildByName("Brother_Walk");
 
         // 自定义事件 控制游戏状态 
         this.node.on(settingBasic.gameEvent.gameStateEvent, this.changeGameState, this);
@@ -73,15 +81,26 @@ export abstract class ViewControllorBasic extends cc.Component {
         // cc.view.getFrameSize();
         this.node.emit(settingBasic.gameEvent.gameStateEvent, this.stateType.START);
         this.node.emit(settingBasic.gameEvent.gameStateEvent, this.stateType.NORMAL);
-    };
 
+        this.toStart();
+    };
+    //子类实现
+    abstract toStart();
 
     //#endregion
     update(dt) {
 
         this.toUpdate();
+        if (this.personAudio && this.brotherWalkNode.hasEventListener(settingBasic.gameEvent.brotherSetAudio) && !this.isSetAudio) {
+            this.brotherWalkNode.emit(this.settingBasic.gameEvent.brotherSetAudio, this.personAudio);
+            this.isSetAudio = true;
+        }
     };
 
+    //设置人物 动作对应的音效
+    setPersonAudioName(msg: [{ actionType: number, name: string }]) {
+        this.personAudio = msg;
+    };
     abstract toUpdate();
 
     loadSubPackageDefualt() {
@@ -162,7 +181,7 @@ export abstract class ViewControllorBasic extends cc.Component {
     }
 
     //写入资料到本地 / 上传资料
-    onDestroy(){
+    onDestroy() {
 
     }
 }
