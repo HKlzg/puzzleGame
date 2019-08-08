@@ -58,6 +58,7 @@ const settingBasic = {
             ClimbBox: 7,
             ReadyPush: 8,
             Push: 9,
+            QuietlyWalk: 10, //悄悄走
         }),
         //人物动作方向
         actionDirection: cc.Enum({
@@ -107,7 +108,7 @@ const settingBasic = {
         /**
          * 记录当前关卡死亡数
          */
-        addCurrDeath(lv:number) :number{
+        addCurrDeath(lv: number): number {
             settingBasic.game.currDeath++;
             settingBasic.game.totalDeath++;
             settingBasic.game.deathRecord[lv] = settingBasic.game.currDeath;
@@ -128,7 +129,7 @@ const settingBasic = {
         currDeath: 0, //当前关卡死亡数
         totalDeath: 0, //游戏死亡总数
         sceneList: {},
-        deathRecord:{},//死亡记录 用于存档
+        deathRecord: {},//死亡记录 用于存档
     },
 
     //自定义事件
@@ -145,12 +146,17 @@ const settingBasic = {
         brotherJumpEvent: "brotherJumpEvent",
         brotherDeathEvent: "brotherDeathEvent",
         brotherSetBornPos: "brotherSetBornPos",
-        brotherSetAudio:"brotherSetAudio",
+        brotherSetAudio: "brotherSetAudio",
+        getBrotherAction: "getBrotherAction",
         //backGround
         //Box
         instanceBoxEvent: "instanceBoxEvent",
         //Circle
-        changeCircleColor: "changeCircleColor"
+        changeCircleColor: "changeCircleColor",
+        //lv3 leopard
+        leopardAction: "leopardAction",
+        leopardReduceState: "leopardReduceState",
+
 
     },
 

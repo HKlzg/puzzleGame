@@ -56,6 +56,7 @@ export abstract class BrotherBasic extends cc.Component {
         this.node.on(settingBasic.gameEvent.brotherPlayState, this.setPlayState, this);
         this.node.on(settingBasic.gameEvent.brotherDeathEvent, this.reBirth, this);
         this.node.on(settingBasic.gameEvent.brotherSetBornPos, this.setReBornPosition, this);
+        this.node.on(settingBasic.gameEvent.getBrotherAction, this.getBrotherAction, this);
 
         this.order = { direction: actionDirection.Right, action: actionType.Wait };
         //初始状态
@@ -401,4 +402,11 @@ export abstract class BrotherBasic extends cc.Component {
         this.bornPos = pos ? pos : this.bornPos;
     }
 
+    getBrotherAction(msg, fun?) {
+        // console.log("======getBrotherAction======msg===" + msg + " fun:" + (fun ? true : false))
+        if (fun) {
+            fun(this.order)
+        }
+
+    }
 }
