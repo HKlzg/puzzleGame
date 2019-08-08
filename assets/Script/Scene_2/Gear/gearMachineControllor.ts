@@ -25,7 +25,7 @@ export default class NewClass extends cc.Component {
     minHeight: number = 0;
     @property({ type: cc.Integer, displayName: "每次升降的距离" })
     step: number = 20;
-    @property({ type: cc.Boolean, displayName: "是否逆时针上升" })
+    @property({displayName: "是否逆时针上升" })
     isReversion: boolean = false;
 
     tmpHeight: number = 0;

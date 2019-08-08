@@ -10,7 +10,7 @@ export default class CreatRopes extends cc.Component {
     @property({ type: cc.Prefab, displayName: "绳子预制体" })
     ropePerfabs: cc.Prefab = null;
 
-    @property(cc.Boolean)
+    @property({ displayName: "是否连接绳子" })
     isConnect: boolean = true;
 
     @property({ type: cc.Float, displayName: "绳子重力" })

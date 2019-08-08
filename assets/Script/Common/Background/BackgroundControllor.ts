@@ -50,6 +50,7 @@ export class BackgroundControllor extends cc.Component {
     playerState = 0;
     //角色是否死亡
     isDeath: boolean = false;
+    isOrder: boolean = false; //是否已经发射命令
 
     longTouchTime: number = 0;
     isLongTouchBegin: boolean = false;
@@ -200,9 +201,9 @@ export class BackgroundControllor extends cc.Component {
     }
 
     touchEnd(event) {
-        // if(this.isDeath) return
         this.playerStop(event);
         this.boxTouchEnd(event);
+
     }
 
 
@@ -213,10 +214,11 @@ export class BackgroundControllor extends cc.Component {
 
         this.camera.getCameraToWorldPoint(this.startpos, this.startpos)
         this.camera.getCameraToWorldPoint(this.endpos, this.endpos)
-
+        this.isOrder = false;
     }
 
     playerMove(event) {
+        if(this.isOrder) return;
 
         this.endpos = event.touch.getLocation();
         this.camera.getCameraToWorldPoint(this.endpos, this.endpos)
@@ -235,7 +237,7 @@ export class BackgroundControllor extends cc.Component {
         let currpos = cc.v2(this.endpos.x - this.startpos.x, this.endpos.y - this.startpos.y);
         let distance = toolsBasics.distanceVector(this.startpos, this.endpos);
 
-        if (distance > 10) {
+        if (distance > 20) {
             let angle = toolsBasics.vectorsToDegress(currpos);
 
             if (angle >= -30 && angle < 45) {
@@ -283,8 +285,9 @@ export class BackgroundControllor extends cc.Component {
 
         if (!this.prePlayerOrder || (this.prePlayerOrder.direction != order.direction
             || this.prePlayerOrder.direction != order.direction)) {
-            this.prePlayerOrder = order
-            this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
+            this.prePlayerOrder = order;
+            this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order);
+            this.isOrder = true;
             // console.log("=======direction=" + direction)
         }
 
@@ -295,7 +298,7 @@ export class BackgroundControllor extends cc.Component {
         this.endpos = null;
         this.prePlayerOrder = null;
         this.playerState = this.playerStateType.Stop
-
+        this.isOrder = false;
         if (this.preTouchId && event.getID() != this.preTouchId) return
 
         // let playerPos = this.brotherNode.convertToWorldSpace(cc.Vec2.ZERO);

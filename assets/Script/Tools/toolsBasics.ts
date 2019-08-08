@@ -1,7 +1,7 @@
 
 import AudioControllor from "../Common/Audio/audioControllor"
 //---------------------公共方法---------------------
-var toolsBasics = {
+export const toolsBasics = {
     /**
      * 获取音频管理对象
      */

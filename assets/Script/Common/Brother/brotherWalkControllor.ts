@@ -1,6 +1,7 @@
 
 const { ccclass, property } = cc._decorator;
 import settingBasic from "../../Setting/settingBasic";
+import tools from "../../Tools/toolsBasics";
 
 @ccclass
 export default class NewClass extends cc.Component {
@@ -9,6 +10,8 @@ export default class NewClass extends cc.Component {
     isClimbBox: boolean = false;
     isJump: boolean = false;
     jumpXdist: number = 0;//水平跳跃距离
+
+    audioManager = tools.getAudioManager();
     start() {
         this.parentGravityScale = this.node.parent.getComponent(cc.RigidBody).gravityScale;
         this.node.on(settingBasic.gameEvent.brotherJumpEvent, this.setJumpX, this)
@@ -64,6 +67,8 @@ export default class NewClass extends cc.Component {
         this.jumpXdist = dist ? dist : 0;
     }
     jumpStart() {
+        if(this.isJump) return;
+        
         let parent = this.node.parent;
         this.isJump = true;
         let pos: cc.Vec2 = this.node.parent.position;
@@ -82,6 +87,7 @@ export default class NewClass extends cc.Component {
 
     jumpEnd() {
         this.node.parent.emit(settingBasic.gameEvent.brotherPlayState, false);
+        this.audioManager.playAudio("personJump");
         this.isJump = false;
     }
     //死亡动画
@@ -96,11 +102,21 @@ export default class NewClass extends cc.Component {
         this.node.parent.runAction(
             cc.sequence(
                 cc.fadeOut(0.5),
-                cc.callFunc(()=>{
+                cc.callFunc(() => {
                     this.node.angle = 0;
                 })
             )
-            );
-
+        );
     }
+
+    //walk
+    walkFootStep1() {
+        this.audioManager.playAudio("personWalk");
+    }
+    walkFootStep2() {
+        this.audioManager.playAudio("personWalk");
+    }
+
+
+
 }

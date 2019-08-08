@@ -57,7 +57,7 @@ export abstract class BrotherBasic extends cc.Component {
         this.node.on(settingBasic.gameEvent.brotherDeathEvent, this.reBirth, this);
         this.node.on(settingBasic.gameEvent.brotherSetBornPos, this.setReBornPosition, this);
 
-        this.order = { direction: actionDirection.Left, action: actionType.Wait };
+        this.order = { direction: actionDirection.Right, action: actionType.Wait };
         //初始状态
         this.brotherWalkNode.active = true;
         this.brotherClimbNode.active = false;
@@ -72,6 +72,7 @@ export abstract class BrotherBasic extends cc.Component {
         this.cameraNode = this.canvas.getChildByName("Camera");
 
         this.bornPos = this.node.position;//默认值
+        this.node.scaleX = 1;
     }
 
     start() {
@@ -79,17 +80,22 @@ export abstract class BrotherBasic extends cc.Component {
 
     //更新动作
     brotherAction(msg: { direction: number, action: number }, fun?: any) {
-        if (this.isPlaying || this.isDeath) return;
+        if (this.isPlaying || this.isDeath || (this.anmstate && this.anmstate.isPlaying)) return;
+
 
         this.order = msg;
-        this.node.scaleX =
-            (this.order.direction == actionDirection.Left || this.order.direction == actionDirection.Up_Left) ? -1 : 1;
+        if (this.order.direction == actionDirection.Left || this.order.direction == actionDirection.Up_Left) {
+            this.node.scaleX = -1
+        } else if (this.order.direction != actionDirection.Up) {
+            this.node.scaleX = 1;
+        }
+
 
         switch (this.order.action) {
             case actionType.Wait:
                 this.brotherWalkNode.active = true;
                 this.brotherClimbNode.active = false;
-                this.anmstate = this.brotherAnimation.play("WaitClip");
+                this.brotherAnimation.play("WaitClip");
                 this.isMove = false;
                 this.Circerl.active = false;
 
@@ -107,7 +113,7 @@ export abstract class BrotherBasic extends cc.Component {
                     return;
                 } else {
                     //非准备推的动作时 切换为行走
-                    this.anmstate = this.brotherAnimation.play("WalkClip");
+                    this.brotherAnimation.play("WalkClip");
                     this.isPlaying = false;
                 }
                 this.isMove = true;
@@ -208,6 +214,12 @@ export abstract class BrotherBasic extends cc.Component {
 
     update(dt) {
         if (!this.isDeath) {
+            // if(!this.anmstate){
+            //     this.order.action = actionType.Wait;
+            //     this.brotherAction(this.order)
+            // }
+
+
             //更新位置 只对持续位移的动作  JUMP/Climb动画位移在动画帧事件中写
             if (this.isMove) {
                 switch (this.order.action) {
@@ -246,7 +258,7 @@ export abstract class BrotherBasic extends cc.Component {
 
     }
 
-    abstract toUpdate();
+    abstract toUpdate(dt?);
     //射线检测
     abstract rayCheck();
 

@@ -1,5 +1,5 @@
 
-let settingBasic = {
+const settingBasic = {
 
     setting: {
         //每一帧的蓄力 
@@ -151,7 +151,6 @@ let settingBasic = {
         //Circle
         changeCircleColor: "changeCircleColor"
     },
-
 
 
 };

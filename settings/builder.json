@@ -43,7 +43,7 @@
     "appid": "wx6ac3f5090a6b99c5",
     "orientation": "portrait",
     "separate_engine": false,
-    "subContext": ""
+    "subContext": "wx-open-data"
   },
   "xxteaKey": "9c9fd46d-a989-45",
   "zipCompressJs": true
