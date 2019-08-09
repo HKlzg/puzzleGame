@@ -136,7 +136,7 @@ export default class NewClass extends cc.Component {
                                 cc.sequence(
                                     //跳跃前
                                     cc.callFunc(() => {
-                                        this.audioManager.stopEffectByID(warnId);
+                                        this.audioManager.stopAudioById(warnId);
                                         this.audioManager.playAudio("outWater")
                                     }),
                                     cc.spawn(jumpAction, cc.sequence(rotaAction1, rotaAction2)),

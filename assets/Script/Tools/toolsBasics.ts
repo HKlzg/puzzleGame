@@ -199,7 +199,8 @@ export const toolsBasics = {
 
         grap.stroke();
         return targetNode.convertToNodeSpaceAR(vector);
-    }
+    },
+
 
 };
 //导出 

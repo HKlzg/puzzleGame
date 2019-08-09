@@ -1,0 +1,743 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "WalkClip",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 0.6666666666666666,
+  "sample": 60,
+  "speed": 0.5,
+  "wrapMode": 2,
+  "curveData": {
+    "props": {
+      "angle": [
+        {
+          "frame": 0,
+          "value": 0
+        }
+      ],
+      "y": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 0.16666666666666666,
+          "value": -10
+        },
+        {
+          "frame": 0.3333333333333333,
+          "value": 0
+        },
+        {
+          "frame": 0.5,
+          "value": -10
+        },
+        {
+          "frame": 0.6666666666666666,
+          "value": 0
+        }
+      ]
+    },
+    "paths": {
+      "legfornt_in": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -13.244
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -10.4695
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 26.993
+            },
+            {
+              "frame": 0.5,
+              "value": 2.950999999999997
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -13.244
+            }
+          ]
+        }
+      },
+      "legfornt_in/mid_leg_front": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -12.769
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 6.886000000000001
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "legfornt_in/mid_leg_front/mid_leg_front_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -45.549
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -61.676
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -34.851
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -45.549
+            }
+          ]
+        }
+      },
+      "legfornt_in/mid_leg_front/mid_leg_front_2/foot_front": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -5.831
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 72.961
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -3.4879999999999995
+            },
+            {
+              "frame": 0.5,
+              "value": 29.003999999999998
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -5.831
+            }
+          ]
+        }
+      },
+      "legfornt_in/mid_leg_front/mid_leg_front_2/foot_front/toes_fornt": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -12.980999999999998
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -14.390999999999998
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "leg_in": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 44.701
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 50.278
+            },
+            {
+              "frame": 0.5,
+              "value": 11.894999999999996
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "leg_in/mid_leg_down": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -37.613
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -39.024
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "leg_in/mid_leg_down/mid_leg_down_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 42.918
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -1.0120000000000005
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "leg_in/mid_leg_down/mid_leg_down_2/foot": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -9.859
+            },
+            {
+              "frame": 0.5,
+              "value": 13.88
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "leg_in/mid_leg_down/mid_leg_down_2/foot/toes": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body_front": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -3
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -3.5439999999999996
+            },
+            {
+              "frame": 0.5,
+              "value": -1.7269999999999999
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body_front/neck": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 12.39
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 5.8180000000000005
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 10.814
+            },
+            {
+              "frame": 0.5,
+              "value": 6.706
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 12.39
+            }
+          ]
+        }
+      },
+      "body_front/body_down": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -0.528
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 0.471
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "legfornt_out": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 37.058
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 5.541999999999998
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -27.072000000000003
+            },
+            {
+              "frame": 0.5,
+              "value": 51.422999999999995
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 37.058
+            }
+          ]
+        }
+      },
+      "legfornt_out/mid_leg_front": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 2.494999999999999
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 5.405
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 10.344999999999999
+            },
+            {
+              "frame": 0.5,
+              "value": -66.02100000000002
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 2.494999999999999
+            }
+          ]
+        }
+      },
+      "legfornt_out/mid_leg_front/mid_leg_front_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -44.324000000000005
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -39.588
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -75.179
+            },
+            {
+              "frame": 0.5,
+              "value": -87.011
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -44.324000000000005
+            }
+          ]
+        }
+      },
+      "legfornt_out/mid_leg_front/mid_leg_front_2/foot_front": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 6.814999999999998
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 34.183
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 47.824
+            },
+            {
+              "frame": 0.5,
+              "value": 61.471000000000004
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 6.814999999999998
+            }
+          ]
+        }
+      },
+      "legfornt_out/mid_leg_front/mid_leg_front_2/foot_front/toes_fornt": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 19.915
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 0.6939999999999991
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -19.214000000000002
+            },
+            {
+              "frame": 0.5,
+              "value": 0.6939999999999991
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 19.915
+            }
+          ]
+        }
+      },
+      "head_1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 6
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 8.984
+            },
+            {
+              "frame": 0.5,
+              "value": 1.601
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "head_1/eyes": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "head_1/ear": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "head_1/down_mouth": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "head_1/front_mouth": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 6.4670000000000005
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -1.7040000000000006
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "leg_out": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -8
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -16.957
+            },
+            {
+              "frame": 0.5,
+              "value": 49.918
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "leg_out/mid_leg_down": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -13.458000000000002
+            },
+            {
+              "frame": 0.5,
+              "value": -11.955
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "leg_out/mid_leg_down/mid_leg_down_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -11.032
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": 18.854
+            },
+            {
+              "frame": 0.5,
+              "value": 38.073
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "leg_out/mid_leg_down/mid_leg_down_2/foot": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 18.94
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -61.114000000000004
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "leg_out/mid_leg_down/mid_leg_down_2/foot/toes": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -50.57
+            },
+            {
+              "frame": 0.5,
+              "value": -18.753
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "tail_1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -4
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -6.993
+            },
+            {
+              "frame": 0.5,
+              "value": -3.2660000000000005
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "tail_1/tail_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -3.272
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -6.224
+            },
+            {
+              "frame": 0.5,
+              "value": -2.114
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "tail_1/tail_2/tail_3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 2.343
+            },
+            {
+              "frame": 0.5,
+              "value": 4.234
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 0
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

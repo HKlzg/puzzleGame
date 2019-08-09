@@ -51,13 +51,13 @@ export default class AudioManager {
     }
     //停止音效
     stopAudioById(id: number) {
-        cc.audioEngine.stop(id);
-    }
-    //停止音效
-    stopEffectByID(id: number) {
         cc.audioEngine.stopEffect(id);
     }
     //停止音效
+    // stopEffectByID(id: number) {
+    //     cc.audioEngine.stopEffect(id);
+    // }
+    //停止所有音效
     stopEffects() {
         cc.audioEngine.stopAllEffects();
     }
