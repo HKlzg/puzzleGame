@@ -35,110 +35,6 @@
           ]
         }
       },
-      "thethigh_left": {
-        "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": -6
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": -21
-            },
-            {
-              "frame": 0.35,
-              "value": 32
-            },
-            {
-              "frame": 0.5,
-              "value": 42
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": -6
-            }
-          ]
-        }
-      },
-      "thethigh_left/thecafe": {
-        "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": -13
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": -42
-            },
-            {
-              "frame": 0.35,
-              "value": -100
-            },
-            {
-              "frame": 0.5,
-              "value": -4
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": -13
-            }
-          ]
-        }
-      },
-      "thethigh_right": {
-        "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": 34
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": 20
-            },
-            {
-              "frame": 0.35,
-              "value": -3
-            },
-            {
-              "frame": 0.5,
-              "value": 0
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": 34
-            }
-          ]
-        }
-      },
-      "thethigh_right/thecafe": {
-        "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": -35
-            },
-            {
-              "frame": 0.16666666666666666,
-              "value": 3
-            },
-            {
-              "frame": 0.35,
-              "value": -8
-            },
-            {
-              "frame": 0.5,
-              "value": -64
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": -35
-            }
-          ]
-        }
-      },
       "arm_right": {
         "props": {
           "angle": [
@@ -193,32 +89,12 @@
       },
       "arm_right/smallarms/hand": {
         "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": -10
-            }
-          ]
+          "angle": []
         }
       },
       "body": {
         "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "thebelly": {
-        "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": -3
-            }
-          ]
+          "angle": []
         }
       },
       "arm_left": {
@@ -279,6 +155,129 @@
             {
               "frame": 0,
               "value": -1
+            }
+          ]
+        }
+      },
+      "body/New Node": {
+        "props": {
+          "angle": []
+        }
+      },
+      "body/New Node/thethigh_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 36.054
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -1.322000000000001
+            },
+            {
+              "frame": 0.35,
+              "value": -16.757
+            },
+            {
+              "frame": 0.5,
+              "value": 34.031
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 43.785000000000004
+            }
+          ]
+        }
+      },
+      "body/New Node/thethigh_left/thecafe": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -21.38000000000001
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -8.121047619047626
+            },
+            {
+              "frame": 0.35,
+              "value": -26.964000000000006
+            },
+            {
+              "frame": 0.5,
+              "value": -65.65700000000004
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -34.620999999999995
+            }
+          ]
+        }
+      },
+      "body/New Node/thethigh_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -17.92
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 23.031000000000002
+            },
+            {
+              "frame": 0.35,
+              "value": 34.757000000000005
+            },
+            {
+              "frame": 0.5,
+              "value": 3.719000000000003
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -17.92
+            }
+          ]
+        }
+      },
+      "body/New Node/thethigh_right/thecafe": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -22.76800000000001
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": -83.72600000000001
+            },
+            {
+              "frame": 0.35,
+              "value": -17.514000000000006
+            },
+            {
+              "frame": 0.5,
+              "value": -3.002000000000006
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -22.76800000000001
+            }
+          ]
+        }
+      },
+      "body/New Node/thebelly": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -1.3359999999999985
+            },
+            {
+              "frame": 0.16666666666666666,
+              "value": 1.6660000000000013
             }
           ]
         }

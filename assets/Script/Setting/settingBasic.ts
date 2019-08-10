@@ -68,6 +68,8 @@ const settingBasic = {
             Down: 4,
             Up_Left: 5,
             Up_Right: 6,
+            Down_Right: 7,
+            Down_left: 8,
         }),
 
     },
@@ -153,10 +155,10 @@ const settingBasic = {
         instanceBoxEvent: "instanceBoxEvent",
         //Circle
         changeCircleColor: "changeCircleColor",
-        //lv3 leopard
-        leopardAction: "leopardAction",
-        leopardReduceState: "leopardReduceState",
-
+        //lv3 monster
+        monsterAction: "monsterAction",
+        monsterReduceState: "monsterReduceState",
+        monsterStopPlayAction: "monsterStopPlayAction",
 
     },
 

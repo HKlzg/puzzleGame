@@ -3,7 +3,7 @@
   "_name": "WaitClip",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 1.55,
+  "_duration": 1.5166666666666666,
   "sample": 60,
   "speed": 1,
   "wrapMode": 2,
@@ -12,75 +12,11 @@
       "angle": [
         {
           "frame": 0,
-          "value": 0
-        },
-        {
-          "frame": 0.7333333333333333,
-          "value": 2
-        },
-        {
-          "frame": 1.55,
-          "value": 0
+          "value": 1.985
         }
       ]
     },
     "paths": {
-      "thethigh_left": {
-        "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.7333333333333333,
-              "value": -1
-            },
-            {
-              "frame": 1.5333333333333334,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "thethigh_left/thecafe": {
-        "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "thethigh_right": {
-        "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": 0
-            },
-            {
-              "frame": 0.75,
-              "value": -4
-            },
-            {
-              "frame": 1.5166666666666666,
-              "value": 0
-            }
-          ]
-        }
-      },
-      "thethigh_right/thecafe": {
-        "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": 0
-            }
-          ]
-        }
-      },
       "arm_right": {
         "props": {
           "angle": [
@@ -193,6 +129,66 @@
             {
               "frame": 0,
               "value": -10
+            }
+          ]
+        }
+      },
+      "body/New Node/thethigh_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -5.565
+            }
+          ]
+        }
+      },
+      "body/New Node/thethigh_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -3.990999999999998
+            }
+          ]
+        }
+      },
+      "body/New Node": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 2.402000000000002
+            }
+          ]
+        }
+      },
+      "body/New Node/thethigh_left/thecafe": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -3.269000000000008
+            }
+          ]
+        }
+      },
+      "body/New Node/thethigh_right/thecafe": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -2.2310000000000114
+            }
+          ]
+        }
+      },
+      "body/New Node/thebelly": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -1.3359999999999985
             }
           ]
         }

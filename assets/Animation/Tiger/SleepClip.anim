@@ -1,0 +1,407 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "SleepClip",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 2.0166666666666666,
+  "sample": 60,
+  "speed": 1,
+  "wrapMode": 2,
+  "curveData": {
+    "props": {
+      "angle": [
+        {
+          "frame": 0,
+          "value": 0
+        }
+      ]
+    },
+    "paths": {
+      "legfornt_in": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -13.244
+            }
+          ]
+        }
+      },
+      "legfornt_in/mid_leg_front": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 65.101
+            }
+          ]
+        }
+      },
+      "legfornt_in/mid_leg_front/mid_leg_front_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -19.712
+            }
+          ]
+        }
+      },
+      "legfornt_in/mid_leg_front/mid_leg_front_2/foot_front": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -5.831
+            }
+          ]
+        }
+      },
+      "legfornt_in/mid_leg_front/mid_leg_front_2/foot_front/toes_fornt": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "leg_in": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "leg_in/mid_leg_down": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -22
+            }
+          ]
+        }
+      },
+      "leg_in/mid_leg_down/mid_leg_down_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 82.414
+            }
+          ]
+        }
+      },
+      "leg_in/mid_leg_down/mid_leg_down_2/foot": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "leg_in/mid_leg_down/mid_leg_down_2/foot/toes": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "neck": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 12.39
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": 13.677
+            },
+            {
+              "frame": 2.0166666666666666,
+              "value": 12.39
+            }
+          ]
+        }
+      },
+      "neck/head_1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "neck/head_1/eyes": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ],
+          "scaleY": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "neck/head_1/ear": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "neck/head_1/down_mouth": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "neck/head_1/front_mouth": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -9.338
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": -6.129
+            },
+            {
+              "frame": 2.0166666666666666,
+              "value": -9.338
+            }
+          ]
+        }
+      },
+      "body_front": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": -2
+            },
+            {
+              "frame": 2,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body_front/body_down": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": -2.963
+            },
+            {
+              "frame": 2,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "legfornt_out": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 37.058
+            }
+          ]
+        }
+      },
+      "legfornt_out/mid_leg_front": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 19.792
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": 20.92
+            },
+            {
+              "frame": 2,
+              "value": 19.792
+            }
+          ]
+        }
+      },
+      "legfornt_out/mid_leg_front/mid_leg_front_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -16.123000000000005
+            }
+          ]
+        }
+      },
+      "legfornt_out/mid_leg_front/mid_leg_front_2/foot_front": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -31.929000000000002
+            }
+          ]
+        }
+      },
+      "legfornt_out/mid_leg_front/mid_leg_front_2/foot_front/toes_fornt": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 19.915
+            }
+          ]
+        }
+      },
+      "leg_out": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 15
+            },
+            {
+              "frame": 1,
+              "value": 12.361
+            },
+            {
+              "frame": 2,
+              "value": 15
+            }
+          ]
+        }
+      },
+      "leg_out/mid_leg_down": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 12.863
+            }
+          ]
+        }
+      },
+      "leg_out/mid_leg_down/mid_leg_down_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 59.324
+            },
+            {
+              "frame": 1,
+              "value": 49.274
+            },
+            {
+              "frame": 2,
+              "value": 59.324
+            }
+          ]
+        }
+      },
+      "leg_out/mid_leg_down/mid_leg_down_2/foot": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -56.005
+            }
+          ]
+        }
+      },
+      "leg_out/mid_leg_down/mid_leg_down_2/foot/toes": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "tail_1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 37
+            },
+            {
+              "frame": 1,
+              "value": 33.4
+            },
+            {
+              "frame": 2,
+              "value": 37
+            }
+          ]
+        }
+      },
+      "tail_1/tail_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -13.982
+            },
+            {
+              "frame": 1,
+              "value": -15.921999999999999
+            }
+          ]
+        }
+      },
+      "tail_1/tail_2/tail_3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -10.124
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}

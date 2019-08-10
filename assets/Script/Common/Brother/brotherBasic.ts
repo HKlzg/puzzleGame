@@ -9,8 +9,7 @@ const actionDirection = settingBasic.setting.actionDirection;
 export abstract class BrotherBasic extends cc.Component {
     @property(cc.Node)
     brotherWalkNode: cc.Node = null; //行走动画对象
-    @property(cc.Node)
-    brotherClimbNode: cc.Node = null; //背对 攀爬动画对象
+    // @property(cc.Node)
     @property(cc.Node)
     Circerl: cc.Node = null;
 
@@ -60,8 +59,6 @@ export abstract class BrotherBasic extends cc.Component {
 
         this.order = { direction: actionDirection.Right, action: actionType.Wait };
         //初始状态
-        this.brotherWalkNode.active = true;
-        this.brotherClimbNode.active = false;
 
         this.collider = this.node.getComponent(cc.PhysicsBoxCollider);
         this.rigidBody = this.node.getComponent(cc.RigidBody);
@@ -85,25 +82,23 @@ export abstract class BrotherBasic extends cc.Component {
 
 
         this.order = msg;
-        if (this.order.direction == actionDirection.Left || this.order.direction == actionDirection.Up_Left) {
+        if (this.order.direction == actionDirection.Left || this.order.direction == actionDirection.Up_Left ||
+            this.order.direction == actionDirection.Down_left) {
             this.node.scaleX = -1
         } else if (this.order.direction != actionDirection.Up) {
             this.node.scaleX = 1;
         }
 
-
         switch (this.order.action) {
             case actionType.Wait:
-                this.brotherWalkNode.active = true;
-                this.brotherClimbNode.active = false;
+
                 this.brotherAnimation.play("WaitClip");
                 this.isMove = false;
                 this.Circerl.active = false;
 
                 break;
             case actionType.Walk:
-                this.brotherWalkNode.active = true;
-                this.brotherClimbNode.active = false;
+
                 if (this.preOrder &&
                     this.preOrder.action == actionType.ReadyPush
                     && this.preOrder.direction == this.order.direction
@@ -119,29 +114,23 @@ export abstract class BrotherBasic extends cc.Component {
                 }
                 this.isMove = true;
                 this.Circerl.active = false;
-
                 break;
 
-            case actionType.Climb: //背对着爬
-                this.brotherWalkNode.active = false;
-                this.brotherClimbNode.active = true;
-                this.anmstate = this.brotherAnimation.play("ClimbClip");
+            case actionType.QuietlyWalk:
+                this.brotherAnimation.play("SquatClip");
                 this.isMove = true;
+                this.isPlaying = false;
                 this.Circerl.active = false;
                 break;
 
             case actionType.Push:
-                this.brotherWalkNode.active = true;
-                this.brotherClimbNode.active = false;
                 this.anmstate = this.brotherAnimation.play("PushClip");
                 this.isMove = true;
                 this.Circerl.active = false;
-
                 break;
 
             case actionType.ReadyPush://准备 推箱子
-                this.brotherWalkNode.active = true;
-                this.brotherClimbNode.active = false;
+
                 this.anmstate = this.brotherAnimation.play("ReadyPushClip");
                 this.isMove = true;
                 this.Circerl.active = false;
@@ -154,8 +143,7 @@ export abstract class BrotherBasic extends cc.Component {
                 break;
 
             // case actionType.ClimbBox: //爬箱子
-            //     this.brotherWalkNode.active = true;
-            //     this.brotherClimbNode.active = false;
+            //      
             //     this.isPlaying = true;
             //     this.anmstate = this.brotherAnimation.play("ClimbBoxClip");
             //     this.isMove = true;
@@ -164,8 +152,7 @@ export abstract class BrotherBasic extends cc.Component {
 
             case actionType.Jump: //跳跃
                 // console.log("=============jump==Start=")
-                this.brotherWalkNode.active = true;
-                this.brotherClimbNode.active = false;
+
                 this.isPlaying = true;
                 let x = 0;
                 if (this.order.direction == actionDirection.Up) {
@@ -182,8 +169,7 @@ export abstract class BrotherBasic extends cc.Component {
                 break;
 
             case actionType.MAGIC:
-                this.brotherWalkNode.active = true;
-                this.brotherClimbNode.active = false;
+
                 this.isPlaying = true;
                 this.anmstate = this.brotherAnimation.play("MagicClip");
 
@@ -195,8 +181,6 @@ export abstract class BrotherBasic extends cc.Component {
                 break;
             case actionType.No_Magic:
                 //无法产生箱子时
-                this.brotherWalkNode.active = true;
-                this.brotherClimbNode.active = false;
                 this.isPlaying = true;
                 this.anmstate = this.brotherAnimation.play("MagicClip");
 
@@ -215,16 +199,13 @@ export abstract class BrotherBasic extends cc.Component {
 
     update(dt) {
         if (!this.isDeath) {
-            // if(!this.anmstate){
-            //     this.order.action = actionType.Wait;
-            //     this.brotherAction(this.order)
-            // }
-
 
             //更新位置 只对持续位移的动作  JUMP/Climb动画位移在动画帧事件中写
             if (this.isMove) {
                 switch (this.order.action) {
-                    case actionType.Wait:
+                    case actionType.QuietlyWalk:
+                        this.node.scaleX > 0 ? this.node.x += 1
+                            : this.node.x -= 1;
 
                         break;
                     case actionType.Walk:
@@ -333,7 +314,6 @@ export abstract class BrotherBasic extends cc.Component {
                 case actionType.Jump:
                     this.brotherAction({ direction: this.order.direction, action: actionType.Wait })
                     break;
-
                 default:
                     break;
             }
@@ -347,7 +327,6 @@ export abstract class BrotherBasic extends cc.Component {
             //地面
             let pos = this.node.position;
             this.bornPos = cc.v2(pos.x, pos.y + 10)
-            // this.bornPos = this.node.scaleX > 0 ? cc.v2(pos.x - 50, pos.y + 10) : cc.v2(pos.x + 50, pos.y + 10);
         }
 
     }
@@ -359,9 +338,14 @@ export abstract class BrotherBasic extends cc.Component {
             if (boxBody.linearVelocity.y < -100) {
                 this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.REBORN);
             }
+
         }
+    }
+    onCollisionEnd(other, self) {
 
     }
+
+
     //重生
     reBirth(isReborn) {
         if (!isReborn) return;
@@ -403,9 +387,8 @@ export abstract class BrotherBasic extends cc.Component {
     }
 
     getBrotherAction(msg, fun?) {
-        // console.log("======getBrotherAction======msg===" + msg + " fun:" + (fun ? true : false))
         if (fun) {
-            fun(this.order)
+            fun(this.order.action)
         }
 
     }

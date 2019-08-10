@@ -12,91 +12,11 @@
       "angle": [
         {
           "frame": 0,
-          "value": 0
-        },
-        {
-          "frame": 0.43333333333333335,
-          "value": -4
-        },
-        {
-          "frame": 0.6666666666666666,
-          "value": 1.9850000000000003
+          "value": 1.985
         }
       ]
     },
     "paths": {
-      "thethigh_left": {
-        "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": 11
-            },
-            {
-              "frame": 0.43333333333333335,
-              "value": 52.53
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": 0.10800000000000409
-            }
-          ]
-        }
-      },
-      "thethigh_left/thecafe": {
-        "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": -9
-            },
-            {
-              "frame": 0.43333333333333335,
-              "value": -103.526
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": -21.525999999999996
-            }
-          ]
-        }
-      },
-      "thethigh_right": {
-        "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": -4
-            },
-            {
-              "frame": 0.43333333333333335,
-              "value": 45.032
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": -1.1950000000000003
-            }
-          ]
-        }
-      },
-      "thethigh_right/thecafe": {
-        "props": {
-          "angle": [
-            {
-              "frame": 0,
-              "value": 1
-            },
-            {
-              "frame": 0.43333333333333335,
-              "value": -102.12899999999999
-            },
-            {
-              "frame": 0.6666666666666666,
-              "value": -5.196999999999992
-            }
-          ]
-        }
-      },
       "arm_right": {
         "props": {
           "angle": [
@@ -219,6 +139,98 @@
       "arm_left/smallarms/hand": {
         "props": {
           "angle": []
+        }
+      },
+      "body/New Node": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 2.402000000000002
+            }
+          ]
+        }
+      },
+      "body/New Node/thethigh_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -5.021000000000001
+            },
+            {
+              "frame": 0.43333333333333335,
+              "value": 25.772
+            },
+            {
+              "frame": 1,
+              "value": -5.021000000000001
+            }
+          ]
+        }
+      },
+      "body/New Node/thethigh_left/thecafe": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 1.6060000000000016
+            },
+            {
+              "frame": 0.43333333333333335,
+              "value": -80.11599999999999
+            },
+            {
+              "frame": 1,
+              "value": 1.6060000000000016
+            }
+          ]
+        }
+      },
+      "body/New Node/thethigh_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -0.07200000000000006
+            },
+            {
+              "frame": 0.43333333333333335,
+              "value": 30.492
+            },
+            {
+              "frame": 1,
+              "value": -0.07200000000000006
+            }
+          ]
+        }
+      },
+      "body/New Node/thethigh_right/thecafe": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -6.95900000000001
+            },
+            {
+              "frame": 0.43333333333333335,
+              "value": -78.016
+            },
+            {
+              "frame": 1,
+              "value": -6.95900000000001
+            }
+          ]
+        }
+      },
+      "body/New Node/thebelly": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -1.3359999999999985
+            }
+          ]
         }
       }
     }

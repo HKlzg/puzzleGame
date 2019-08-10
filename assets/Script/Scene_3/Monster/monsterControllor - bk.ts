@@ -3,12 +3,13 @@ const { ccclass, property } = cc._decorator;
 import setting from "../../Setting/settingBasic";
 import toolsBasics from "../../Tools/toolsBasics";
 
-//狮子状态
+//monster状态
 const monsterActionType = cc.Enum({
     sleep: 0,
-    walk: 1,
-    warning: 2, //警戒
-    attack: 3  //攻击
+    standOrLieDown: 1, //过度 
+    walk: 2,
+    warning: 3, //警戒
+    attack: 4  //攻击
 })
 
 //人物状态
@@ -27,7 +28,7 @@ export default class LeopardControllor extends cc.Component {
     monsterAnimation: cc.Animation = null;
     canvas: cc.Node = null;
     monsterActionState = monsterActionType.sleep;
-
+    monsterPreActionState = monsterActionType.sleep;
     sleepPos: cc.Vec2 = null;
     isPersonDeath: boolean = false;
     //人物当前动作状态
@@ -36,7 +37,7 @@ export default class LeopardControllor extends cc.Component {
     personPreAction = personActionType.QuietlyWalk;
 
     personPrePos: cc.Vec2 = null;
-    //狮子是否是在观察中
+    //monster是否是在观察中
     isObserve: boolean = false;
     //人物是否处于安全状态
     isSafePos: boolean = false;
@@ -49,6 +50,8 @@ export default class LeopardControllor extends cc.Component {
     isSnoring: boolean = false;
     isSleeping: boolean = false;
     isPlayWaringAudio: boolean = false;
+    isLieDown: boolean = false;
+    isPlayingAction: boolean = false;
 
     audioManager = toolsBasics.getAudioManager();
     sleepAudioID: number = 0;
@@ -59,18 +62,24 @@ export default class LeopardControllor extends cc.Component {
     //动作间隔
     actionTime = 2;
 
+    isMonsterActionStart: boolean = false;
     start() {
         this.canvas = cc.find("Canvas");
         this.monsterAnimation = this.monsterNode.getComponent(cc.Animation);
-        this.node.on(setting.gameEvent.leopardAction, this.setAction, this);
-        this.node.on(setting.gameEvent.leopardReduceState, this.setIsSafePos, this);
+        this.node.on(setting.gameEvent.monsterAction, this.setAction, this);
+        this.node.on(setting.gameEvent.monsterReduceState, this.setIsSafePos, this);
+        this.node.on(setting.gameEvent.monsterStopPlayAction, this.stopPlayAction, this);
 
         this.sleepPos = this.sleepPosNode.position;
 
+        //初始化1S后启动
+        this.scheduleOnce(() => { this.isMonsterActionStart = true; }, 1)
     }
 
-
     update(dt) {
+        //是否开始Action
+        if (!this.isMonsterActionStart || this.isPlayingAction) return;
+
         this.isPersonDeath = setting.game.State == setting.setting.stateType.REBORN;
         //人没有死亡时 
         if (!this.isPersonDeath && this.personNode.hasEventListener(setting.gameEvent.getBrotherAction)) {
@@ -82,7 +91,7 @@ export default class LeopardControllor extends cc.Component {
                     this.scheduleOnce(() => { this.reduceState(); }, 2)
                 }
             } else {
-                //非攻击状态下 且 人处于非安全地方  
+                //非攻击状态下 且 人处于非安全地方 && 非处于播放action 时
                 if (!this.isDoAction && this.monsterActionState != monsterActionType.attack) {
                     //获取人物的状态
                     this.getPersonAction();
@@ -96,10 +105,8 @@ export default class LeopardControllor extends cc.Component {
                 this.scheduleOnce(() => { this.reduceState(); }, 2)
             }
         }
-
         //豹子 根据当前状态 做出相应的动作
         this.doAction(dt);
-
     }
 
     doAction(dt) {
@@ -113,6 +120,17 @@ export default class LeopardControllor extends cc.Component {
                             this.sleepAudioID = this.audioManager.playAudio("tigerSnoring") //鼾声
                             this.scheduleOnce(() => { this.isSnoring = false; }, 2);
                         }, 3)
+                        this.monsterAnimation.play("SleepClip");
+                    }
+                }
+                break;
+            case monsterActionType.standOrLieDown:
+                if (!this.isPlayingAction) {
+                    this.isPlayingAction = true;
+                    if (this.monsterPreActionState == monsterActionType.sleep) {
+                        this.monsterAnimation.play("StandUpClip");
+                    } else {
+                        this.monsterAnimation.play("LieDownClip");
                     }
                 }
                 break;
@@ -143,6 +161,8 @@ export default class LeopardControllor extends cc.Component {
                     }
                 } else {
                     this.isBackToSleepPos = false;
+                    this.reduceState();
+
                 }
                 break;
             case monsterActionType.warning:
@@ -180,9 +200,9 @@ export default class LeopardControllor extends cc.Component {
                     }
                 }
 
-
                 break;
             case monsterActionType.attack:
+
                 if (!this.isAttack && !this.isSafePos) {
                     this.isAttack = true;
                     let personPos = this.personNode.convertToWorldSpace(cc.Vec2.ZERO);
@@ -203,7 +223,7 @@ export default class LeopardControllor extends cc.Component {
                     // console.log("======jump===" + height + "  time:" + time + "  jumpPos: " + jumpPos)
                     this.monsterAnimation.play("ReadyAttackClip");
                     this.audioManager.playAudio("tigerAttack")
-
+                    this.isPlayingAction = true;
                     let action1 = cc.jumpTo(time, jumpPos, height, 1);
                     // let action2 = cc.moveTo(time, cc.v2(pos.x, pos.y - (selfPos.y - personPos.y)));
                     this.isDoAction = true;
@@ -242,14 +262,13 @@ export default class LeopardControllor extends cc.Component {
     getPersonAction() {
         if (this.isObserve) return;
 
-        this.personNode.emit(setting.gameEvent.getBrotherAction, "", (order: { direction: number, action: number, msg?: any }) => {
-            let personAction = order.action;
-            // 当人物 不是 (QuietlyWalk)悄悄走的状态 若2秒之后人物还是此状态 则豹子进入 警戒状态(warning)
+        this.personNode.emit(setting.gameEvent.getBrotherAction, "", (action) => {
+            let personAction = action;
+            // 当人物 不是 (QuietlyWalk)悄悄走的状态 若*秒之后人物还是此状态 则豹子进入 警戒状态(warning)
             if (personAction != personActionType.QuietlyWalk) {
                 this.personPreAction = personAction;
-                //2 秒后再次获取人物状态
+                // 再次获取人物状态
                 this.isObserve = true;
-
                 //设置当前状态 升级所需的时间
                 switch (this.monsterActionState) {
                     case monsterActionType.sleep:
@@ -261,74 +280,90 @@ export default class LeopardControllor extends cc.Component {
                     case monsterActionType.warning:
                         this.actionTime = 3;
                         break;
-
                     default:
                         break;
                 }
-
                 this.scheduleOnce(() => {
-                    // console.log("======2 S 后===========");
-
                     this.isObserve = false;
-
-                    this.personNode.emit(setting.gameEvent.getBrotherAction, "", (order: { direction: number, action: number, msg?: any }) => {
-                        this.personCurrAction = order.action;
-
-                        if (this.monsterActionState == monsterActionType.sleep) {
-                            //狮子是 sleep -0
-                            if (this.personCurrAction != personActionType.QuietlyWalk) {
-                                //检测人物 仍然是重度活动状态 则进入 walk 状态
-                                this.monsterActionState = monsterActionType.walk;
-                            } else {
-                                //否则 继续 sleep 
-                                this.monsterActionState = monsterActionType.sleep;
-                                //继续观察
-                                this.personPreAction = this.personCurrAction;
-                            }
-                        } else if (this.monsterActionState == monsterActionType.walk) {
-                            //狮子是 walk状态 -1
-                            if (this.personCurrAction != personActionType.QuietlyWalk) {
-                                //检测人物 仍然是重度活动状态 则进入 warning 状态
-                                this.monsterActionState = monsterActionType.warning;
-                            } else {
-                                //否则 进入 sleep 
-                                this.monsterActionState = monsterActionType.sleep;
-                                //继续观察
-                                this.personPreAction = this.personCurrAction;
-                            }
-                        } else if (this.monsterActionState == monsterActionType.warning) {
-                            //狮子是 warning状态 -2
-                            if (this.personCurrAction != personActionType.QuietlyWalk) {
-                                //检测人物 仍然是重度活动状态 则进入 attack 状态
-                                this.monsterActionState = monsterActionType.attack;
-                            } else {
-                                //否则 进入 walk 
-                                this.monsterActionState = monsterActionType.walk;
-                                //继续观察
-                                this.personPreAction = this.personCurrAction;
-                            }
-                        }
-
-                        console.log("==========Add======= monsterActionState+" + this.monsterActionState)
+                    this.personNode.emit(setting.gameEvent.getBrotherAction, "", (action) => {
+                        this.risingSate(action);
                     });
 
                 }, this.actionTime)
-
             }
 
         })
+    }
+
+    //根据当前状态 升级
+    risingSate(personCurrAct) {
+        this.personCurrAction = personCurrAct;
+        this.monsterPreActionState = this.monsterActionState;
+
+
+        if (this.monsterActionState == monsterActionType.sleep) {
+            // Monster是 sleep -0
+            if (this.personCurrAction != personActionType.QuietlyWalk) {
+                //检测人物 仍然是重度活动状态 则进入 walk 状态
+                this.monsterActionState = monsterActionType.standOrLieDown;
+            } else {
+                //否则 继续 sleep 
+                this.monsterActionState = monsterActionType.sleep;
+                //继续观察
+                this.personPreAction = this.personCurrAction;
+            }
+        } else if (this.monsterActionState == monsterActionType.standOrLieDown) {
+            // Monster是 sleep -0
+            if (this.personCurrAction != personActionType.QuietlyWalk) {
+                //检测人物 仍然是重度活动状态 则进入 walk 状态
+                this.monsterActionState = monsterActionType.walk;
+            } else {
+                //否则 继续 sleep 
+                this.monsterActionState = monsterActionType.sleep;
+                //继续观察
+                this.personPreAction = this.personCurrAction;
+            }
+        } else if (this.monsterActionState == monsterActionType.walk) {
+            // Monster是 walk状态 -1
+            if (this.personCurrAction != personActionType.QuietlyWalk) {
+                //检测人物 仍然是重度活动状态 则进入 warning 状态
+                this.monsterActionState = monsterActionType.warning;
+            } else {
+                //否则 进入 sleep 
+                this.monsterActionState = monsterActionType.sleep;
+                //继续观察
+                this.personPreAction = this.personCurrAction;
+            }
+        } else if (this.monsterActionState == monsterActionType.warning) {
+            // Monster是 warning状态 -2
+            if (this.personCurrAction != personActionType.QuietlyWalk) {
+                //检测人物 仍然是重度活动状态 则进入 attack 状态
+                this.monsterActionState = monsterActionType.attack;
+            } else {
+                //否则 进入 walk 
+                this.monsterActionState = monsterActionType.walk;
+                //继续观察
+                this.personPreAction = this.personCurrAction;
+            }
+        }
+
+        console.log("==========Add======= monsterActionState+" + this.monsterActionState)
     }
 
     //降低 警戒值(状态)
     reduceState() {
         this.isReduceState = false;
         if (this.monsterActionState == monsterActionType.sleep) {
-            //狮子是 sleep -0
+            // Monster是 sleep -0
             return;
         }
         // this.scheduleOnce(() => {
         if (this.monsterActionState == monsterActionType.walk) {
-            //狮子是 walk状态 -1
+            // Monster是 walk状态 -1
+            this.monsterActionState = monsterActionType.standOrLieDown;
+
+        } else if (this.monsterActionState == monsterActionType.standOrLieDown) {
+            // Monster是 walk状态 -1
             this.monsterActionState = monsterActionType.sleep;
 
         } else if (this.monsterActionState == monsterActionType.warning) {
@@ -377,7 +412,10 @@ export default class LeopardControllor extends cc.Component {
         this.isSafePos = isSafe;
         console.log("=====isSafePos== " + this.isSafePos)
     }
-
+    stopPlayAction(isPlay) {
+        this.isPlayingAction = isPlay;
+        this.reduceState();
+    }
 
     onCollisionEnter(other, self) {
         console.log("===other.node.groupIndex===" + other.node.groupIndex)

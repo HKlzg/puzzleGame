@@ -22,16 +22,19 @@ export default class NewClass extends cc.Component {
     onCollisionEnter(other, self) {
         if (other.node.groupIndex == 6) { //人 - 6
             console.log("========Enter======safe= ")
-            this.monster.emit(setting.gameEvent.leopardReduceState, true)
+            this.monster.emit(setting.gameEvent.monsterReduceState, true)
         }
     }
     onCollisionStay(other, self) {
-
+        if (other.node.groupIndex == 6) { //人 - 6
+            // console.log("========Enter======safe= ")
+            this.monster.emit(setting.gameEvent.monsterReduceState, true)
+        }
     }
     onCollisionExit(other, self) {
         if (other.node.groupIndex == 6) {
-            console.log("========Exit=====Not=safe= ")
-            this.monster.emit(setting.gameEvent.leopardReduceState, false)
+            console.log("========Exit=====danger= ")
+            this.monster.emit(setting.gameEvent.monsterReduceState, false)
         }
     }
 

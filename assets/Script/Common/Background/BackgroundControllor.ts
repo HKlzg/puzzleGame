@@ -218,7 +218,7 @@ export class BackgroundControllor extends cc.Component {
     }
 
     playerMove(event) {
-        if(this.isOrder) return;
+        if (this.isOrder) return;
 
         this.endpos = event.touch.getLocation();
         this.camera.getCameraToWorldPoint(this.endpos, this.endpos)
@@ -240,20 +240,29 @@ export class BackgroundControllor extends cc.Component {
         if (distance > 20) {
             let angle = toolsBasics.vectorsToDegress(currpos);
 
-            if (angle >= -30 && angle < 45) {
-                direction = actionDirection.Right;
+            if (angle >= -15 && angle < 15) {
+                direction = actionDirection.Right; //水平向右
 
-            } else if (angle >= -75 && angle < -30) {
-                direction = actionDirection.Up_Right;
+            } else if (angle >= -75 && angle < -15) {
+                direction = actionDirection.Up_Right; //右上
 
-            } else if (angle < -75 && angle >= -105) { //向上
+            } else if (angle < -75 && angle >= -105) { //垂直向上
                 direction = actionDirection.Up;
 
-            } else if (angle >= -150 && angle < -105) {
+            } else if (angle >= -165 && angle < -105) { //左上
                 direction = actionDirection.Up_Left;
-            }
-            else if ((angle > -180 && angle <= -150) || (angle > 135 && angle <= 180)) {
+
+            } else if ((angle >= -180 && angle < -165) || (angle >= 165 && angle <= 180)) {//水平向左
                 direction = actionDirection.Left;
+
+            } else if (angle >= 105 && angle < 165) { //左下方
+                direction = actionDirection.Down_left;
+
+            } else if (angle >= 15 && angle < 75) { //右下方
+                direction = actionDirection.Down_Right;
+
+            } else if (angle >= 75 && angle < 105) { //垂直向下
+                direction = actionDirection.Down;
             }
         } else {
             return;
@@ -278,7 +287,12 @@ export class BackgroundControllor extends cc.Component {
             case actionDirection.Right://向右
                 order = { direction: direction, action: actionType.Walk };
                 break;
-
+            case actionDirection.Down_Right://向右下
+                order = { direction: direction, action: actionType.QuietlyWalk };
+                break;
+            case actionDirection.Down_left://向左下
+                order = { direction: direction, action: actionType.QuietlyWalk };
+                break;
             default:
                 break;
         }
@@ -390,6 +404,7 @@ export class BackgroundControllor extends cc.Component {
         this.isLongTouchBegin = false;
         this.longTouchTime = 0;
         this.drawline.getComponent(cc.Graphics).clear();
+        
         if (this.boxShadow) {
             this.boxShadow.emit(settingBasic.gameEvent.instanceBoxEvent, "", (isOk) => {
                 if (this.boxMaxNum == 0) return;
