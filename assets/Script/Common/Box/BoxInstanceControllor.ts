@@ -53,7 +53,7 @@ export default class NewClass extends cc.Component {
             this.node.destroy()
         }
         this.isDeath = settingBasic.game.State == settingBasic.setting.stateType.REBORN;
-        this.phyBoxCollider.apply();
+  
     }
     setBoxPos(touchPos) {
         let centerPos = this.brotherNode.convertToWorldSpace(cc.Vec2.ZERO);
