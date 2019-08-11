@@ -3,7 +3,7 @@
   "_name": "WaitClip",
   "_objFlags": 0,
   "_native": "",
-  "_duration": 0.5,
+  "_duration": 0,
   "sample": 60,
   "speed": 1,
   "wrapMode": 2,
@@ -29,7 +29,12 @@
       },
       "legfornt_in/mid_leg_front": {
         "props": {
-          "angle": []
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
         }
       },
       "legfornt_in/mid_leg_front/mid_leg_front_2": {
@@ -268,10 +273,6 @@
             {
               "frame": 0,
               "value": 12.39
-            },
-            {
-              "frame": 0.5,
-              "value": 14.558
             }
           ]
         }

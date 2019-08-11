@@ -17,7 +17,8 @@ const settingBasic = {
             PAUSE: 3,
             RESUME: 4,
             REBORN: 5,//重生
-            NORMAL: 6
+            NORMAL: 6,
+            RESTART:7,
         }),
         //角色枚举值
         roleState: cc.Enum({
@@ -156,8 +157,7 @@ const settingBasic = {
         //Circle
         changeCircleColor: "changeCircleColor",
         //lv3 monster
-        monsterAction: "monsterAction",
-        monsterReduceState: "monsterReduceState",
+         monsterReduceState: "monsterReduceState",
         monsterStopPlayAction: "monsterStopPlayAction",
 
     },

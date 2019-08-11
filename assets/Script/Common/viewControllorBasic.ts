@@ -26,6 +26,7 @@ export abstract class ViewControllorBasic extends cc.Component {
 
     // boxShadow: cc.Node = null;
     // camera: cc.Camera = null;
+    public blackMask: cc.Node = null;
 
     //public 用于给子类调用
     public boxParent: cc.Node = null;
@@ -71,6 +72,7 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.deathTip = this.cameraNode.getChildByName("deathTip").getComponent(cc.Label);
         let currDeath = settingBasic.game.currDeath;
         this.deathTip.string = "Death: " + currDeath;
+        this.blackMask = this.cameraNode.getChildByName("blackMask")
 
     };
     //#endregion
@@ -123,6 +125,16 @@ export abstract class ViewControllorBasic extends cc.Component {
         switch (state) {
             case this.stateType.START:
                 console.log("==========GAME START==========")
+                this.blackMask.active = true;
+                this.blackMask.runAction(
+                    cc.sequence(
+                        cc.fadeOut(2),
+                        cc.callFunc(()=>{
+                            this.blackMask.active = false;
+                        })
+                    )
+                );
+
                 break;
             case this.stateType.NORMAL:
                 console.log("==========GAME NORMAL==========")
@@ -153,6 +165,19 @@ export abstract class ViewControllorBasic extends cc.Component {
                 this.deathTip.string = "Death: " + currDeath;
 
                 console.log("=======GameState===REBORN==========")
+
+                break;
+            case this.stateType.RESTART:
+                console.log("==========GAME RESTART =========")
+                this.blackMask.active = true;
+                this.blackMask.runAction(
+                    cc.sequence(
+                        cc.fadeIn(2),
+                        cc.callFunc(()=>{
+                            cc.director.loadScene("level_" + this.level)
+                        })
+                    )
+                );
 
                 break;
             default:
