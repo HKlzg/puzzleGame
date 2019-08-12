@@ -5,7 +5,7 @@
   "_native": "",
   "_duration": 1.0333333333333334,
   "sample": 60,
-  "speed": 3,
+  "speed": 2,
   "wrapMode": 36,
   "curveData": {
     "props": {
@@ -415,7 +415,7 @@
   },
   "events": [
     {
-      "frame": 1,
+      "frame": 0,
       "func": "lieDownEnd",
       "params": [
         ""

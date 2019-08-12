@@ -96,7 +96,7 @@
       true,
       true,
       true,
-      null,
+      true,
       null,
       true
     ],
@@ -109,7 +109,7 @@
       false,
       true,
       false,
-      true
+      false
     ],
     [
       false,
@@ -119,16 +119,16 @@
       true,
       true,
       true,
+      false,
       true,
       true,
-      true,
       null,
       null,
       null,
       null,
       null,
       null,
-      true,
+      false,
       true
     ],
     [
@@ -237,7 +237,7 @@
       false,
       false,
       false,
-      true,
+      false,
       null,
       true
     ],
@@ -248,8 +248,6 @@
       false,
       true,
       false,
-      false,
-      false,
       true,
       false,
       false,
@@ -257,7 +255,9 @@
       false,
       false,
       false,
-      true,
+      false,
+      false,
+      false,
       false
     ],
     [

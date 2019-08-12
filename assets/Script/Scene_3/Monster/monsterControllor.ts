@@ -12,6 +12,7 @@ const monsterActionType = cc.Enum({
     warning: 4, //靠近人
     attack: 5, //攻击
     wait: 6,
+    jumpBack: 7,
 })
 
 //人物状态
@@ -24,18 +25,13 @@ export default class LeopardControllor extends cc.Component {
     personNode: cc.Node = null;
     @property(cc.Node)
     monsterNode: cc.Node = null;
-    @property(cc.Node)
-    sleepPosNode: cc.Node = null;
 
     monsterAnimation: cc.Animation = null;
     canvas: cc.Node = null;
     monsterActionState = monsterActionType.sleep;
-    preActionState = monsterActionType.sleep;
 
-    sleepPos: cc.Vec2 = null;
     isPersonDeath: boolean = false;
 
-    personPrePos: cc.Vec2 = null;
     //monster是否是在观察中
     isObservePerson: boolean = false;
     //人物是否处于安全状态
@@ -43,24 +39,19 @@ export default class LeopardControllor extends cc.Component {
 
     //是否处于降低状态中
     isReduceState: boolean = false;
-    isWarning: boolean = false;
+    //是否已经发现人
+    isDiscover: boolean = false;
     isAttack: boolean = false;
     isSnoring: boolean = false;
     isPlayWaringAudio: boolean = false;
     isJumpBack: boolean = false;
 
-
     audioManager = toolsBasics.getAudioManager();
-    sleepAudioID: number = 0;
-    warnAudioID: number = 0;
 
     //是否处于播放动画 状态
     isDoAction: boolean = false;
     //是否处于循环Action状态
     isLoopAction: boolean = true;
-
-    //动作间隔
-    actionTime = 2;
 
     isMonsterActionStart: boolean = false;
     start() {
@@ -68,8 +59,6 @@ export default class LeopardControllor extends cc.Component {
         this.monsterAnimation = this.monsterNode.getComponent(cc.Animation);
         this.node.on(setting.gameEvent.monsterReduceState, this.setIsSafePos, this);
         this.node.on(setting.gameEvent.monsterStopPlayAction, this.stopPlayAction, this);
-
-        this.sleepPos = this.sleepPosNode.position;
 
         //初始化1S后启动
         this.scheduleOnce(() => { this.isMonsterActionStart = true; }, 1)
@@ -106,25 +95,20 @@ export default class LeopardControllor extends cc.Component {
                         || this.monsterActionState == monsterActionType.wait)
                 ) {
                     this.isObservePerson = true;
+                    let actionTime = 1.5;
+                    if (this.monsterActionState == monsterActionType.wait) {
+                        actionTime = 1;
+                    }
 
                     this.scheduleOnce(() => {
                         // console.log("=======Observe Person====")
                         this.isObservePerson = false;
                         //获取人物的状态
                         this.getPersonAction();
-                    }, 1.5)
+                    }, actionTime)
                 }
             }
 
-        } else {
-            //人物死亡时 逐渐降低 状态
-            if (!this.isReduceState) {
-                this.isReduceState = true;
-                this.scheduleOnce(() => {
-                    this.isReduceState = false;
-                    this.reduceState();
-                }, 2)
-            }
         }
 
         this.loopAction(dt)
@@ -137,7 +121,7 @@ export default class LeopardControllor extends cc.Component {
                 if (!this.isSnoring) {
                     this.isSnoring = true;
                     this.scheduleOnce(() => {
-                        this.sleepAudioID = this.audioManager.playAudio("tigerSnoring") //鼾声
+                        this.audioManager.playAudio("tigerSnoring") //鼾声
                         this.scheduleOnce(() => { this.isSnoring = false; }, 2);
                     }, 3)
                 }
@@ -148,7 +132,7 @@ export default class LeopardControllor extends cc.Component {
                     this.isPlayWaringAudio = true;
                     this.scheduleOnce(() => {
                         this.isPlayWaringAudio = false;
-                        this.warnAudioID = this.audioManager.playAudio("heartBeat");
+                        this.audioManager.playAudio("heartBeat");
                     }, 1)
                 }
 
@@ -158,7 +142,7 @@ export default class LeopardControllor extends cc.Component {
                     let personPos = this.personNode.convertToWorldSpace(cc.Vec2.ZERO);
                     let selfPos = this.node.convertToWorldSpace(cc.Vec2.ZERO);
                     let dist = personPos.x - selfPos.x;
-                    let speed = personPos.x >= selfPos.x ? 1 : -1;
+                    let speed = personPos.x >= selfPos.x ? 2 : -2;
 
                     this.node.scaleX = personPos.x >= selfPos.x ? 1 : -1;
 
@@ -201,9 +185,7 @@ export default class LeopardControllor extends cc.Component {
                 // console.log("====  lieDown  ====")
                 this.isDoAction = true;
                 this.monsterAnimation.play("LieDownClip");
-                // if (this.node.position.y == this.sleepPos.y) {
-                //     this.node.runAction(cc.moveTo(0.3, cc.v2(pos.x, pos.y - 50)))
-                // }
+
                 break;
 
             case monsterActionType.warning: //慢慢靠近人
@@ -241,12 +223,30 @@ export default class LeopardControllor extends cc.Component {
                         this.isAttack = false;
                         this.isDoAction = false;
                         this.reduceState();
-                        this.canvas.emit(setting.gameEvent.gameStateEvent,setting.setting.stateType.REBORN);
+                        this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.REBORN);
 
-                        this.canvas.emit(setting.gameEvent.gameStateEvent,setting.setting.stateType.RESTART);
+                        this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.RESTART);
                     })
                     this.node.runAction(cc.sequence(action1, callfun));
                 }
+
+                break;
+            case monsterActionType.jumpBack:
+
+                let pos = this.node.position;
+                let tmpX = -500;
+                let jumpPos = cc.v2(pos.x + tmpX, pos.y);
+
+                this.monsterAnimation.play("ReadyAttackClip");
+                this.isDoAction = true;
+
+                let action1 = cc.jumpTo(0.5, jumpPos, 200, 1);
+                let callfun = cc.callFunc(() => {
+                    this.isDoAction = false;
+                    this.monsterActionState = monsterActionType.wait;
+                })
+                this.node.runAction(cc.sequence(action1, callfun));
+
 
                 break;
             default:
@@ -255,82 +255,79 @@ export default class LeopardControllor extends cc.Component {
 
     }
 
-    //获取人物的状态
+    //在非安全区域 获取人物的状态 
     getPersonAction() {
         // 每*秒 获取一次人物状态 , 若是重度动作, 则状态逐渐升级
         this.personNode.emit(setting.gameEvent.getBrotherAction, "", (action) => { //获取的当前人物动作
-            if (action != personActionType.QuietlyWalk) {
+
+            if (this.isDiscover) { //已经发现人 只会升级状态
                 this.risingSate();
-            } else {
-                this.reduceState();
+            } else { // 没有发现人的情况下 根据人物当前的动作 改变状态
+                if (action != personActionType.QuietlyWalk) {
+                    this.risingSate();
+                }
             }
 
         })
     }
 
-    //根据当前状态 升级 每次状态改变
-    risingSate() {
+    //根据当前状态 升级 每次状态改变 //非安全区域 才会提升警戒值
+    risingSate(type?: number) {
+        if (type) {
+            this.monsterActionState = type;
+        } else {
+            if (this.monsterActionState == monsterActionType.sleep) {
+                this.monsterActionState = monsterActionType.standUp;
+                this.isLoopAction = false;
 
-        if (this.monsterActionState == monsterActionType.sleep) {
-            this.preActionState = this.monsterActionState;
-            this.monsterActionState = monsterActionType.standUp;
-            this.isLoopAction = false;
+            } else if (this.monsterActionState == monsterActionType.standUp) {
+                this.monsterActionState = monsterActionType.wait;
 
-        } else if (this.monsterActionState == monsterActionType.standUp) {
-            this.preActionState = this.monsterActionState;
-            this.monsterActionState = monsterActionType.wait;
+            } else if (this.monsterActionState == monsterActionType.wait) { //Wait
+                this.monsterActionState = monsterActionType.warning;
 
-        } else if (this.monsterActionState == monsterActionType.wait) { //Wait
-            this.preActionState = this.monsterActionState;
-            this.monsterActionState = monsterActionType.warning;
+            } else if (this.monsterActionState == monsterActionType.warning) {
+                this.monsterActionState = monsterActionType.attack;
 
-        } else if (this.monsterActionState == monsterActionType.warning) {
-            this.preActionState = this.monsterActionState;
-            this.monsterActionState = monsterActionType.attack;
+            } else if (this.monsterActionState == monsterActionType.warning) {
+                this.monsterActionState = monsterActionType.attack;
 
-        } else if (this.monsterActionState == monsterActionType.warning) {
-            this.preActionState = this.monsterActionState;
-            this.monsterActionState = monsterActionType.attack;
+            } else if (this.monsterActionState == monsterActionType.lieDown) {
+                this.monsterActionState = monsterActionType.standUp;
 
-        } else if (this.monsterActionState == monsterActionType.lieDown) {
-            this.preActionState = this.monsterActionState;
-            this.monsterActionState = monsterActionType.standUp;
-
+            }
         }
 
-        // console.log("==========升级======= monsterActionState+" + this.monsterActionState + "      preActionState= " + this.preActionState)
         //根据当前状态 做出相应的动作
         this.doOnceAction();
     }
 
-    //降低 警戒值(状态)
-    reduceState() {
-        if (this.monsterActionState == monsterActionType.sleep) return;
+    //降低 警戒值(状态) 、//只有在安全区域 才会降低警戒值
+    reduceState(type?: number) {
+        if (type) {
+            this.monsterActionState = type;
+        } else {
 
+            if (this.monsterActionState == monsterActionType.sleep) return;
 
-        if (this.monsterActionState == monsterActionType.wait) { //Wait
-            this.preActionState = this.monsterActionState;
-            this.monsterActionState = monsterActionType.lieDown;
+            if (this.monsterActionState == monsterActionType.wait) { //Wait
+                this.monsterActionState = monsterActionType.lieDown;
 
-        } else if (this.monsterActionState == monsterActionType.lieDown) {
-            this.preActionState = this.monsterActionState;
-            this.monsterActionState = monsterActionType.sleep;
-            this.isDoAction = false;
+            } else if (this.monsterActionState == monsterActionType.lieDown) {
+                this.monsterActionState = monsterActionType.sleep;
+                this.isDoAction = false;
 
-        } else if (this.monsterActionState == monsterActionType.warning) {
-            this.preActionState = this.monsterActionState;
-            this.monsterActionState = monsterActionType.wait;
+            } else if (this.monsterActionState == monsterActionType.warning) {
+                this.monsterActionState = monsterActionType.wait;
 
-        } else if (this.monsterActionState == monsterActionType.standUp) {
-            this.preActionState = this.monsterActionState;
-            this.monsterActionState = monsterActionType.lieDown;
+            } else if (this.monsterActionState == monsterActionType.standUp) {
+                this.monsterActionState = monsterActionType.lieDown;
 
-        } else if (this.monsterActionState == monsterActionType.attack) {
-            this.preActionState = this.monsterActionState;
-            this.monsterActionState = monsterActionType.lieDown;
+            } else if (this.monsterActionState == monsterActionType.attack) {
+                this.monsterActionState = monsterActionType.lieDown;
 
+            }
         }
-        // console.log("==========降级======= monsterActionState+" + this.monsterActionState)
 
         //根据当前状态 做出相应的动作
         this.doOnceAction();
@@ -339,6 +336,11 @@ export default class LeopardControllor extends cc.Component {
     //------------------event-----由外部调用--------------------------------- 
     setIsSafePos(isSafe) {
         this.isSafePos = isSafe;
+
+        //进入非安全区时 检测人物状态
+        this.personNode.emit(setting.gameEvent.getBrotherAction, "", (action) => { //获取的当前人物动作
+            this.isDiscover = action != personActionType.QuietlyWalk;
+        })
         // console.log("=====isSafePos== " + this.isSafePos)
     }
 
@@ -348,12 +350,10 @@ export default class LeopardControllor extends cc.Component {
         switch (this.monsterActionState) { //当前状态
             case monsterActionType.attack:
                 this.isAttack = false;
-                this.isDoAction = false;
                 this.reduceState();
                 break;
             case monsterActionType.standUp:
-                this.risingSate();
-
+                this.reduceState(monsterActionType.wait)
                 break;
             case monsterActionType.lieDown:
                 this.reduceState();
@@ -367,43 +367,29 @@ export default class LeopardControllor extends cc.Component {
         this.node.scaleX = -1;
         let pos = this.node.position;
 
-        let action1 = cc.jumpTo(1, cc.v2(pos.x - 200, pos.y), 200, 1);
-        let callfun = cc.callFunc(() => {
-            this.isAttack = false;
-            this.isDoAction = false;
-            if (this.monsterActionState == monsterActionType.attack) {
-                this.reduceState();
-            }
-            this.isJumpBack = false;
-        })
-        this.node.runAction(cc.sequence(action1, callfun));
+        this.reduceState(monsterActionType.jumpBack);
+        this.isJumpBack = false;
     }
 
     onCollisionEnter(other, self) {
-        // console.log("===other.node.groupIndex===" + other.node.groupIndex)
-        if (other.node.groupIndex == 6 && this.isAttack) {//人 
-            this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.REBORN)
-        }
 
-        if (other.node.groupIndex == 16) {//笼子中间 传感器 //捕捉成功
-            console.log("=============/笼子中间====")
-            this.isAttack = false;
-            this.isDoAction = false;
-            this.monsterActionState = monsterActionType.lieDown;
-            this.reduceState()
-
-            return
-        }
-
-        //碰到笼子边缘
+        //碰到笼子边缘回跳 /碰到中间传感器 捕捉成功
         if (other.node.groupIndex == 18) {
-            let body: cc.RigidBody = other.node.getComponent(cc.RigidBody)
-            let vy = body.linearVelocity.y;
-            if (vy <= -10) {
-                if (!this.isJumpBack) {
-                    this.isJumpBack = true;
-                    console.log("=============cage=====18=====")
-                    this.jumpBack();
+            if (other.node.name == "sensorM") {
+                this.isAttack = false;
+                this.isDoAction = false;
+                this.reduceState(monsterActionType.wait);
+                this.isMonsterActionStart = false;
+                this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.NEXT)
+                return
+            } else {
+                let body: cc.RigidBody = other.node.parent.getComponent(cc.RigidBody)
+                let vy = body.linearVelocity.y;
+                if (vy <= 10) {
+                    if (!this.isJumpBack) {
+                        this.isJumpBack = true;
+                        this.jumpBack();
+                    }
                 }
             }
         }
