@@ -30,12 +30,12 @@ const settingBasic = {
         boxNum: {
             lv1: 2,
             lv2: 2,
-            lv3: 10,
-            lv4: 10,
-            lv5: 10,
-            lv6: 50,
-            lv7: 50,
-            lv8: 50,
+            lv3: 2,
+            lv4: 2,
+            lv5: 2,
+            lv6: 2,
+            lv7: 2,
+            lv8: 2,
         },
         //等级枚举 枚举值 只能是数字
         level: cc.Enum({
