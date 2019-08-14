@@ -16,8 +16,8 @@ export class BackgroundControllor extends cc.Component {
     boxShadowPerfab: cc.Prefab = null;
     @property(cc.Node)
     brotherNode: cc.Node = null;
-    @property(cc.Node)
-    Mask: cc.Node = null;
+    // @property(cc.Node)
+    // Mask: cc.Node = null;
     @property(cc.Node)
     circular: cc.Node = null;
     @property(cc.Node)
@@ -60,6 +60,8 @@ export class BackgroundControllor extends cc.Component {
 
     canvas: cc.Node = null;
     boxTip: cc.Label = null;
+
+    brotherPrePos: cc.Vec2 = null;
     onLoad() {
 
         //------Camera-------
@@ -126,7 +128,11 @@ export class BackgroundControllor extends cc.Component {
         let cameraPos = this.cameraNode.convertToWorldSpace(cc.v2(0, 0))
         let movePos = this.cameraNode.position;
         //X
-        let broPosWorld = this.brotherNode.convertToWorldSpace(cc.v2(0, 0))
+        let broPosWorld: cc.Vec2 = this.brotherNode.convertToWorldSpace(cc.v2(0, 0));
+
+        if (this.brotherPrePos && this.brotherPrePos.fuzzyEquals(broPosWorld, 1)) return;
+        this.brotherPrePos = broPosWorld;
+
         if (cameraPos.x >= this.minX && cameraPos.x <= this.maxX) {
 
             if (broPosWorld.x >= this.minX
@@ -404,7 +410,7 @@ export class BackgroundControllor extends cc.Component {
         this.isLongTouchBegin = false;
         this.longTouchTime = 0;
         this.drawline.getComponent(cc.Graphics).clear();
-        
+
         if (this.boxShadow) {
             this.boxShadow.emit(settingBasic.gameEvent.instanceBoxEvent, "", (isOk) => {
                 if (this.boxMaxNum == 0) return;

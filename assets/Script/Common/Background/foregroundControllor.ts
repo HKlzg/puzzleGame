@@ -18,7 +18,7 @@ export default class NewClass extends cc.Component {
     update(dt) {
         let currCamerPos = this.cameraNode.position;
 
-        if (!this.preCameraPos.equals(currCamerPos)) {
+        if (!this.preCameraPos.fuzzyEquals(currCamerPos,1)) {
             
             if (this.preCameraPos.x < currCamerPos.x) {
                 //camera向右 前景向左

@@ -222,13 +222,13 @@ export abstract class BrotherBasic extends cc.Component {
                 }
             }
 
-            //射线检测
-            if (!this.isReadyClimbBox &&
-                (this.preOrder && this.preOrder.action != actionType.ReadyPush &&
-                    !this.isPlaying && this.preOrder.action != actionType.Push)
-            ) {
-                this.rayCheck();
-            }
+            // //射线检测
+            // if (!this.isReadyClimbBox &&
+            //     (this.preOrder && this.preOrder.action != actionType.ReadyPush &&
+            //         !this.isPlaying && this.preOrder.action != actionType.Push)
+            // ) {
+            //     this.rayCheck();
+            // }
 
             this.pushCheck();
             this.toUpdate();

@@ -107,7 +107,7 @@ export default class NewClass extends cc.Component {
         this.isJump = true;
         let pos: cc.Vec2 = this.node.parent.position;
         let temp = this.jumpXdist;
-        let action1 = cc.jumpTo(1, cc.v2(pos.x, pos.y), 200, 1);
+        let action1 = cc.jumpTo(0.6, cc.v2(pos.x, pos.y), 200, 1);
         let action2 = cc.moveTo(0.6, cc.v2(pos.x + temp, pos.y))
         parent.runAction(
             cc.spawn(
