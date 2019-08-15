@@ -1,9 +1,407 @@
 {
   "__type__": "cc.AnimationClip",
-  "_name": "",
+  "_name": "AttackClip",
   "_objFlags": 0,
-  "_duration": 0,
+  "_native": "",
+  "_duration": 1.6666666666666667,
   "sample": 60,
-  "curveData": {},
+  "speed": 1,
+  "wrapMode": 1,
+  "curveData": {
+    "props": {
+      "angle": [
+        {
+          "frame": 0,
+          "value": 0
+        }
+      ]
+    },
+    "paths": {
+      "spiderfoot_3_1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -42.351
+            },
+            {
+              "frame": 0.5,
+              "value": -48.937
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -43.122
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": -42.351
+            }
+          ]
+        }
+      },
+      "spiderfoot_3_1/spiderfoot_3_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 45.535
+            },
+            {
+              "frame": 0.5,
+              "value": 50.169999999999995
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": 45.535
+            }
+          ]
+        }
+      },
+      "spiderfoot_3_1/spiderfoot_3_2/spiderfoot_3_3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -6.999
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -10.752000000000002
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": -6.999
+            }
+          ]
+        }
+      },
+      "spiderfoot_2_1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -50.139
+            },
+            {
+              "frame": 0.5,
+              "value": -56.548
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -50.171
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": -50.139
+            }
+          ]
+        }
+      },
+      "spiderfoot_2_1/spiderfoot_2_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 56.10999999999999
+            },
+            {
+              "frame": 0.5,
+              "value": 67.079
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": 56.10999999999999
+            }
+          ]
+        }
+      },
+      "spiderfoot_2_1/spiderfoot_2_2/spiderfoot_2_3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -15.879
+            },
+            {
+              "frame": 0.5,
+              "value": -7.260999999999999
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": -15.879
+            }
+          ]
+        }
+      },
+      "spiderfoot_1_1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -43.99699999999999
+            },
+            {
+              "frame": 0.5,
+              "value": -8.509999999999991
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -75.41799999999999
+            },
+            {
+              "frame": 1.3333333333333333,
+              "value": -8.509999999999991
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": -43.99699999999999
+            }
+          ]
+        }
+      },
+      "spiderfoot_1_1/spiderfoot_1_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 52.28
+            },
+            {
+              "frame": 0.5,
+              "value": 26.539
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 152.892
+            },
+            {
+              "frame": 1.3333333333333333,
+              "value": 26.539
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": 52.28
+            }
+          ]
+        }
+      },
+      "spiderfoot_1_1/spiderfoot_1_2/spiderfoot_1_3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -13.402
+            },
+            {
+              "frame": 0.5,
+              "value": -31.366999999999997
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": -2.2849999999999966
+            },
+            {
+              "frame": 1.3333333333333333,
+              "value": -31.366999999999997
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": -13.402
+            }
+          ]
+        }
+      },
+      "spider_body": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": 7
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "spider_body/spider_head": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5,
+              "value": 5.572
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "spiderfoot_6_1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 49.594
+            },
+            {
+              "frame": 0.5,
+              "value": 61.211
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 57.311
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": 49.594
+            }
+          ]
+        }
+      },
+      "spiderfoot_6_1/spiderfoot_6_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -70.685
+            }
+          ]
+        }
+      },
+      "spiderfoot_6_1/spiderfoot_6_2/spiderfoot_6_3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 50.969
+            },
+            {
+              "frame": 0.5,
+              "value": 40.656
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 26.351999999999997
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": 50.969
+            }
+          ]
+        }
+      },
+      "spiderfoot_5_1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 54
+            },
+            {
+              "frame": 0.5,
+              "value": 61.647999999999996
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 56.227999999999994
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": 54
+            }
+          ]
+        }
+      },
+      "spiderfoot_5_1/spiderfoot_5_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -73.714
+            }
+          ]
+        }
+      },
+      "spiderfoot_5_1/spiderfoot_5_2/spiderfoot_5_3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 49.98
+            },
+            {
+              "frame": 0.5,
+              "value": 42.44
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": 49.98
+            }
+          ]
+        }
+      },
+      "spiderfoot_4_1": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 40
+            },
+            {
+              "frame": 0.5,
+              "value": 46.674
+            },
+            {
+              "frame": 0.6666666666666666,
+              "value": 40.333
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": 40
+            }
+          ]
+        }
+      },
+      "spiderfoot_4_1/spiderfoot_4_2": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": -39.991
+            },
+            {
+              "frame": 0.5,
+              "value": -47.937
+            },
+            {
+              "frame": 1.6666666666666667,
+              "value": -39.991
+            }
+          ]
+        }
+      },
+      "spiderfoot_4_1/spiderfoot_4_2/spiderfoot_4_3": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 25.002
+            }
+          ]
+        }
+      }
+    }
+  },
   "events": []
 }

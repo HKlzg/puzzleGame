@@ -57,9 +57,9 @@ export abstract class ViewControllorBasic extends cc.Component {
 
         // 绘制碰撞区域
         var draw = cc.PhysicsManager.DrawBits;
-        // cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
+        cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
         // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
-        cc.director.getCollisionManager().enabledDebugDraw = true; //碰撞区域 
+        // cc.director.getCollisionManager().enabledDebugDraw = true; //碰撞区域 
         // 开启碰撞检测
         cc.director.getCollisionManager().enabled = true;
 
