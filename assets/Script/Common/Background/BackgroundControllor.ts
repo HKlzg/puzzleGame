@@ -424,6 +424,9 @@ export class BackgroundControllor extends cc.Component {
         }
         //设置等待状态
 
+        if (this.boxShadow) {
+            this.boxShadow.destroy()
+        }
         this.boxShadow = null;
     }
 

@@ -57,7 +57,9 @@ export abstract class ViewControllorBasic extends cc.Component {
 
         // 绘制碰撞区域
         var draw = cc.PhysicsManager.DrawBits;
-        cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
+        // cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
+        // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
+        cc.director.getCollisionManager().enabledDebugDraw = true; //碰撞区域 
         // 开启碰撞检测
         cc.director.getCollisionManager().enabled = true;
 
@@ -129,7 +131,7 @@ export abstract class ViewControllorBasic extends cc.Component {
                 this.blackMask.runAction(
                     cc.sequence(
                         cc.fadeOut(2),
-                        cc.callFunc(()=>{
+                        cc.callFunc(() => {
                             this.blackMask.active = false;
                         })
                     )
@@ -173,7 +175,7 @@ export abstract class ViewControllorBasic extends cc.Component {
                 this.blackMask.runAction(
                     cc.sequence(
                         cc.fadeIn(2),
-                        cc.callFunc(()=>{
+                        cc.callFunc(() => {
                             cc.director.loadScene("level_" + this.level)
                         })
                     )

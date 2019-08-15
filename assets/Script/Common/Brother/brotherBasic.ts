@@ -209,8 +209,12 @@ export abstract class BrotherBasic extends cc.Component {
 
                         break;
                     case actionType.Walk:
-                        this.node.scaleX > 0 ? this.node.x += 2
-                            : this.node.x -= 2;
+                        // this.node.scaleX > 0 ? this.node.x += 2
+                        //     : this.node.x -= 2;
+                        let temp = this.node.scaleX > 0 ? 2 : -2;
+                        let pos = this.node.position;
+                        this.node.runAction(cc.moveTo(dt, cc.v2(pos.x + temp, pos.y)));
+
 
                         break;
                     case actionType.Push:
@@ -247,7 +251,7 @@ export abstract class BrotherBasic extends cc.Component {
     //离地检测
     isOnGround() {
 
-        if (!this.isPlaying && this.rigidBody.linearVelocity.y < -50) {
+        if (!this.isPlaying && this.rigidBody.linearVelocity.y < -250) {
             this.order.action = actionType.Wait;
             this.brotherAction(this.order)
         }
@@ -333,13 +337,13 @@ export abstract class BrotherBasic extends cc.Component {
     //碰撞检测(传感器)
     onCollisionEnter(other, self) {
         //被下落的箱子 砸中
-        if (other.node.groupIndex == 2) {
-            let boxBody = other.node.getComponent(cc.RigidBody);
-            if (boxBody.linearVelocity.y < -100) {
-                this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.REBORN);
-            }
+        // if (other.node.groupIndex == 2) {
+        //     let boxBody = other.node.getComponent(cc.RigidBody);
+        //     if (boxBody.linearVelocity.y < -100) {
+        //         this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.REBORN);
+        //     }
 
-        }
+        // }
     }
     onCollisionEnd(other, self) {
 
