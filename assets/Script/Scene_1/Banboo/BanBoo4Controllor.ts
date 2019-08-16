@@ -48,9 +48,15 @@ export default class NewClass extends cc.Component {
         selfCollider.node.getComponent(cc.RigidBody).linearVelocity = cc.v2(0, 0)
         let angle = selfCollider.node.getComponent(cc.RigidBody).angularVelocity;
         selfCollider.node.getComponent(cc.RigidBody).angularVelocity = angle * 0.8;
-        let vel: cc.Vec2 = otherCollider.node.getComponent(cc.RigidBody).linearVelocity;
-        let maxVel = vel.normalize().mul(100);
-        otherCollider.node.getComponent(cc.RigidBody).linearVelocity = vel > maxVel ? maxVel : vel;
+        // let vel: cc.Vec2 = otherCollider.node.getComponent(cc.RigidBody).linearVelocity;
+        // let maxVel = vel.normalize().mul(100);
+        // let linearVelocity = otherCollider.node.getComponent(cc.RigidBody);
+        //.linearVelocity = vel > maxVel ? maxVel : vel;
+        // if (linearVelocity.y >= -50 && linearVelocity.y < 0) {
+        //     otherCollider.node.getComponent(cc.RigidBody).linearVelocity = cc.v2(0, 0)
+        // } else {
+        // }
+        // otherCollider.node.getComponent(cc.RigidBody).linearVelocity = vel > maxVel ? maxVel : vel;
     }
 
 

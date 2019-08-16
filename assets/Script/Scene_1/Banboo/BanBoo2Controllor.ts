@@ -27,11 +27,11 @@ export default class NewClass extends cc.Component {
     }
     onPostSolve(contact, selfCollider, otherCollider) {
         selfCollider.node.getComponent(cc.RigidBody).linearVelocity = cc.v2(0, 0)
-        let angle = selfCollider.node.getComponent(cc.RigidBody).angularVelocity;
-        selfCollider.node.getComponent(cc.RigidBody).angularVelocity = angle * 0.8;
-        let vel: cc.Vec2 = otherCollider.node.getComponent(cc.RigidBody).linearVelocity;
-        let maxVel = vel.normalize().mul(100);
-        otherCollider.node.getComponent(cc.RigidBody).linearVelocity = vel > maxVel ? maxVel : vel;
+        // let angle = selfCollider.node.getComponent(cc.RigidBody).angularVelocity;
+        // selfCollider.node.getComponent(cc.RigidBody).angularVelocity = angle * 0.8;
+        // let vel: cc.Vec2 = otherCollider.node.getComponent(cc.RigidBody).linearVelocity;
+        // let maxVel = vel.normalize().mul(100);
+        // otherCollider.node.getComponent(cc.RigidBody).linearVelocity = vel > maxVel ? maxVel : vel;
     }
 
     waterContrl() {

@@ -153,10 +153,10 @@ export class BackgroundControllor extends cc.Component {
             time = time > 4 ? 4 : time;
             time = time < 1 ? 1 : time;
             cc.tween(this.cameraNode).to(time, { position: keyPos }, { easing: "cubicInOut" }).call(() => {
-            }).delay(1).call(() => {
+            }).delay(0.3).call(() => {
                 this.keyNodeIndex++;
                 if (this.keyNodeIndex == this.keyNodeList.length) {
-                    cc.tween(this.cameraNode).to(1, { position: this.initCameraPos }, { easing: "sineInOut" }).start();
+                    cc.tween(this.cameraNode).to(1, { position: this.initCameraPos }, { easing: "cubicInOut" }).start();
                     this.isStartGame = true;
                 } else {
                     this.moveCamera();

@@ -12,7 +12,7 @@ export default class NewClass extends ViewControllorBasic {
         this.audioManager.playLoopBGM("river");
         //每个关卡 单独设置人物动作的声音
         let msg: [{ actionType: number, name: string }] = [{ actionType: 0, name: "" }];
-        msg.push({ actionType: this.actionType.Walk, name: "walkInRiver" });
+        msg.push({ actionType: this.actionType.Walk, name: "null" });
         msg.push({ actionType: this.actionType.Jump, name: "walkInRiver" });
         this.setPersonAudioName(msg);
 
