@@ -57,7 +57,7 @@ export abstract class ViewControllorBasic extends cc.Component {
 
         // 绘制碰撞区域
         var draw = cc.PhysicsManager.DrawBits;
-        cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
+        // cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
         // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
         // cc.director.getCollisionManager().enabledDebugDraw = true; //碰撞区域 
         // 开启碰撞检测
@@ -144,6 +144,9 @@ export abstract class ViewControllorBasic extends cc.Component {
             case this.stateType.NEXT:
                 //切换到下一个场景
                 let nextLevel = this.level + 1;
+                //开启引导镜头
+                settingBasic.fun.openShowKeyPos();
+
                 if (settingBasic.setting.level[nextLevel]) {
                     settingBasic.game.currLevel = nextLevel;
                 } else {
@@ -171,6 +174,10 @@ export abstract class ViewControllorBasic extends cc.Component {
                 break;
             case this.stateType.RESTART:
                 console.log("==========GAME RESTART =========")
+
+                //关闭 引导镜头
+                settingBasic.fun.closeShowKeyPos();
+
                 this.blackMask.active = true;
                 this.blackMask.runAction(
                     cc.sequence(

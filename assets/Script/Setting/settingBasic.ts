@@ -18,7 +18,7 @@ const settingBasic = {
             RESUME: 4,
             REBORN: 5,//重生
             NORMAL: 6,
-            RESTART:7,
+            RESTART: 7,
         }),
         //角色枚举值
         roleState: cc.Enum({
@@ -121,7 +121,14 @@ const settingBasic = {
         clearCurrDeath() {
             settingBasic.game.currDeath = 0;
         },
-
+        //显示引导镜头
+        openShowKeyPos() {
+            settingBasic.game.isShowKeyPos = true;
+        },
+        //关闭
+        closeShowKeyPos() {
+            settingBasic.game.isShowKeyPos = false;
+        }
     },
 
     //当前游戏运行状态 全局
@@ -133,6 +140,7 @@ const settingBasic = {
         totalDeath: 0, //游戏死亡总数
         sceneList: {},
         deathRecord: {},//死亡记录 用于存档
+        isShowKeyPos: true, //是否显示引导镜头
     },
 
     //自定义事件
@@ -157,7 +165,7 @@ const settingBasic = {
         //Circle
         changeCircleColor: "changeCircleColor",
         //lv3 monster
-         monsterReduceState: "monsterReduceState",
+        monsterReduceState: "monsterReduceState",
         monsterStopPlayAction: "monsterStopPlayAction",
 
     },

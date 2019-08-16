@@ -29,10 +29,8 @@ export default class NewClass extends cc.Component {
     minX: number = 0;
     maxX: number = 0;
     audioManager = tools.getAudioManager();
-
     //
     lifeNum: number = 2;
-
 
     onLoad() {
         this.canvas = cc.find("Canvas");
@@ -49,7 +47,7 @@ export default class NewClass extends cc.Component {
         this.animation.play("SwimClip");
 
         //游戏开始2秒之后再 执行
-        this.scheduleOnce(() => { this.isStartSwim = true }, 1);
+        this.scheduleOnce(() => { this.isStartSwim = true }, 5);
     }
 
     update(dt) {
@@ -61,7 +59,6 @@ export default class NewClass extends cc.Component {
 
             if (this.isObserve && this.isStartSwim) {
                 this.isObserve = false;
-
                 this.scheduleOnce(() => { this.observePerson(); }, 2);
             }
 
@@ -77,7 +74,6 @@ export default class NewClass extends cc.Component {
 
             this.node.runAction(cc.moveTo(dt, cc.v2(pos.x + speed, pos.y)))
         }
-
 
 
     }

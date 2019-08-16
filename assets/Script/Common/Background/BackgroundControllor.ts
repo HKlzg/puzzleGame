@@ -23,6 +23,8 @@ export class BackgroundControllor extends cc.Component {
     @property(cc.Node)
     boxParent: cc.Node = null;
 
+    @property(cc.Node)
+    keyNodeList: Array<cc.Node> = [];
     //Brother Move 
     minX: number = 0;
     minY: number = 0;
@@ -62,6 +64,11 @@ export class BackgroundControllor extends cc.Component {
     boxTip: cc.Label = null;
 
     brotherPrePos: cc.Vec2 = null;
+
+    isStartGame: boolean = false;
+    isMoveCamera: boolean = false;
+    keyNodeIndex: number = 0;
+    initCameraPos: cc.Vec2 = null;
     onLoad() {
 
         //------Camera-------
@@ -82,6 +89,7 @@ export class BackgroundControllor extends cc.Component {
         let pos = this.canvas.convertToNodeSpaceAR(cc.v2(this.minX + this.brotherNode.width / 2, this.minY))
         this.cameraNode.setPosition(pos);
         this.cameraControllor();
+        this.initCameraPos = this.cameraNode.position;
         //使用background 注册事件,是为了 防止点击canvas区域之外时无效的情况
         //触摸事件
         this.node.on(cc.Node.EventType.TOUCH_START, this.touchStart, this)
@@ -100,11 +108,12 @@ export class BackgroundControllor extends cc.Component {
     };
 
     start() {
-
+        this.moveCamera();
     };
 
     //#endregion
     update(dt) {
+        if (!this.isStartGame) return;
 
         if (this.playerState != this.playerStateType.LongTouch) {
             this.cameraControllor();
@@ -122,6 +131,41 @@ export class BackgroundControllor extends cc.Component {
             }
         }
     };
+
+    //移动镜头 显示关键点
+    moveCamera() {
+        let isShow = settingBasic.game.isShowKeyPos;
+
+        if (!isShow || !this.keyNodeList || (this.keyNodeList && this.keyNodeList.length == 0)) {
+
+            this.isStartGame = true;
+            return
+        } else {
+            let cameraPos = this.cameraNode.position;
+            let cameraWorPos = this.cameraNode.convertToWorldSpace(cc.Vec2.ZERO);
+
+            let keyNode = this.keyNodeList[this.keyNodeIndex];
+            let keyPos = keyNode.convertToWorldSpace(cc.Vec2.ZERO);
+            keyPos = this.cameraNode.parent.convertToNodeSpaceAR(keyPos);
+            keyPos.y = cameraPos.y;
+            let dist = Math.abs(cameraWorPos.x - keyPos.x);
+            let time = 4 * dist / 1000;
+            time = time > 4 ? 4 : time;
+            time = time < 1 ? 1 : time;
+            cc.tween(this.cameraNode).to(time, { position: keyPos }, { easing: "cubicInOut" }).call(() => {
+            }).delay(1).call(() => {
+                this.keyNodeIndex++;
+                if (this.keyNodeIndex == this.keyNodeList.length) {
+                    cc.tween(this.cameraNode).to(1, { position: this.initCameraPos }, { easing: "sineInOut" }).start();
+                    this.isStartGame = true;
+                } else {
+                    this.moveCamera();
+                }
+            }).start();
+
+
+        }
+    }
 
     cameraControllor() {
         //限定相机移动区域 防止越界 世界坐标系
