@@ -15,7 +15,6 @@ export default class NewClass extends ViewControllorBasic {
         msg.push({ actionType: this.actionType.Walk, name: "walkInRiver" });
         msg.push({ actionType: this.actionType.Jump, name: "walkInRiver" });
         this.setPersonAudioName(msg);
-        this.cameraNode.getChildByName("test").getComponent(cc.Label).string = "已通关，谢谢体验";
 
     }
     loadSubPackage() {

@@ -35,12 +35,12 @@
     "orientation": "portrait",
     "zip": false
   },
-  "startScene": "6cb785f2-1ba5-4924-9771-e4c3fbc1baf1",
+  "startScene": "7e1ea30a-a1e2-4d12-a2a1-e428e8bb4206",
   "title": "puzzleGame",
   "webOrientation": "portrait",
   "wechatgame": {
     "REMOTE_SERVER_ROOT": "",
-    "appid": "wx6ac3f5090a6b99c5",
+    "appid": "wxbc3069fa71f7415f",
     "orientation": "portrait",
     "separate_engine": false,
     "subContext": "wx-open-data"
