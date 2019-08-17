@@ -18,6 +18,8 @@ export abstract class ViewControllorBasic extends cc.Component {
     @property(cc.Node)
     brotherNode: cc.Node = null;
 
+    @property(cc.Node)
+    plotNode: cc.Node = null;
     //Brother Move 
     minX: number = 0;
     minY: number = 0;
@@ -43,6 +45,10 @@ export abstract class ViewControllorBasic extends cc.Component {
 
     isSetAudio: boolean = false;
     personAudio: [{ actionType: number, name: string }] = null;
+
+    plotsArr: [] = null;
+    plotInitPos: cc.Vec2 = null;
+    plotIndex: number = 0;
 
     onLoad() {
         console.log("=========SCENE: " + this.level + " ==========")
@@ -76,6 +82,10 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.deathTip.string = "Death: " + currDeath;
         this.blackMask = this.cameraNode.getChildByName("blackMask")
 
+        //获取剧情资料
+        this.plotsArr = settingBasic.fun.getPlotsByLv(this.level);
+        this.plotInitPos = this.plotNode.position;
+
     };
     //#endregion
 
@@ -87,20 +97,37 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.node.emit(settingBasic.gameEvent.gameStateEvent, this.stateType.NORMAL);
 
         this.toStart();
+        this.showPlots();
     };
     //子类实现
     abstract toStart();
 
     //#endregion
     update(dt) {
-
         this.toUpdate();
         if (this.personAudio && this.brotherWalkNode.hasEventListener(settingBasic.gameEvent.brotherSetAudio) && !this.isSetAudio) {
             this.brotherWalkNode.emit(this.settingBasic.gameEvent.brotherSetAudio, this.personAudio);
             this.isSetAudio = true;
         }
     };
+    //显示剧情资料
+    showPlots() {
+        let isShow = settingBasic.game.isShowKeyPos; //是否 显示引导镜头/介绍剧情
+        if (!isShow) return;
 
+        let plotPos = this.plotNode.position;
+        let plot = this.plotsArr[this.plotIndex++];
+        if (plot) {
+            let labe = this.plotNode.getChildByName("tips");
+            labe.getComponent(cc.Label).string = plot;
+            // console.log("===============plot: " + plot + " ==")
+            cc.tween(this.plotNode).to(0.5, { position: cc.v2(plotPos.x + 900, plotPos.y) }).delay(3).
+                to(0.3, { position: cc.v2(plotPos.x - 900, plotPos.y) }).call(() => {
+                    this.plotNode.position = this.plotInitPos;
+                    this.showPlots();
+                }).start();
+        }
+    }
     //设置人物 动作对应的音效
     setPersonAudioName(msg: [{ actionType: number, name: string }]) {
         this.personAudio = msg;

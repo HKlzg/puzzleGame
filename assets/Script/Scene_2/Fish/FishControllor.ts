@@ -46,8 +46,8 @@ export default class NewClass extends cc.Component {
         this.animation.on(cc.Animation.EventType.FINISHED, this.jumpFinished, this);
         this.animation.play("SwimClip");
 
-        //游戏开始2秒之后再 执行
-        this.scheduleOnce(() => { this.isStartSwim = true }, 5);
+        //游戏开始*秒之后再 执行
+        this.scheduleOnce(() => { this.isStartSwim = true }, 7);
     }
 
     update(dt) {

@@ -72,12 +72,31 @@ const settingBasic = {
             Down_Right: 7,
             Down_left: 8,
         }),
+        //剧情介绍
+        plot: {
+            lv1: ["这篇宁静的村庄突然着起了大火", "熊熊的大火烧毁了一切", "但是大火之中一定还隐藏了什么线索"],
+            lv2: ["这篇宁静的村庄突然着起了大火", "熊熊的大火烧毁了一切", "但是大火之中一定还隐藏了什么线索"],
+            lv3: ["剧情介绍", "", ""],
+            lv4: ["剧情介绍", "", ""],
+            lv5: ["剧情介绍", "", ""],
+        }
 
     },
 
 
 
     fun: {
+        //设置剧情资料
+        setPlotsByLv(plots: string[], lv: number) {
+            settingBasic.setting.plot["lv" + lv] = plots;
+        },
+        //获取剧情资料
+        getPlotsByLv(lv): [] {
+            let plot = settingBasic.setting.plot;
+            let p: [] = plot["lv" + lv];
+            return p;
+        },
+
         getBoxNumByLv(lv) {
             let setting = settingBasic.setting.boxNum;
             let num = setting["lv" + lv];

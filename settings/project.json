@@ -369,6 +369,30 @@
       false,
       true,
       false
+    ],
+    [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
     ]
   ],
   "design-resolution-height": 1280,
@@ -411,7 +435,8 @@
     "升降台",
     "笼子侧边传感器",
     "蜘蛛",
-    "蜘蛛爬行地面"
+    "蜘蛛爬行地面",
+    "plot-剧情介绍"
   ],
   "last-module-event-record-time": 1565760392478,
   "simulator-orientation": false,

@@ -25,6 +25,8 @@ export class BackgroundControllor extends cc.Component {
 
     @property(cc.Node)
     keyNodeList: Array<cc.Node> = [];
+
+
     //Brother Move 
     minX: number = 0;
     minY: number = 0;
@@ -69,10 +71,13 @@ export class BackgroundControllor extends cc.Component {
     isMoveCamera: boolean = false;
     keyNodeIndex: number = 0;
     initCameraPos: cc.Vec2 = null;
+    cameraAnimation: cc.Animation = null;
+ 
     onLoad() {
 
         //------Camera-------
         this.camera = this.cameraNode.getComponent(cc.Camera);
+        this.cameraAnimation = this.cameraNode.getComponent(cc.Animation);
         //获取背景大小
         this.BackgroundSize = this.node.getContentSize();
 
@@ -105,6 +110,7 @@ export class BackgroundControllor extends cc.Component {
         this.boxMaxNum = settingBasic.fun.getBoxNumByLv(settingBasic.game.currLevel);
         this.boxTip = this.cameraNode.getChildByName("boxTip").getComponent(cc.Label);
         this.boxTip.string = "Box: " + this.boxMaxNum;
+   
     };
 
     start() {
@@ -146,14 +152,22 @@ export class BackgroundControllor extends cc.Component {
 
             let keyNode = this.keyNodeList[this.keyNodeIndex];
             let keyPos = keyNode.convertToWorldSpace(cc.Vec2.ZERO);
+
+            let dist = Math.abs(cameraWorPos.x - keyPos.x);
+            let time = 4 * dist / 1200;
+            time = time > 4 ? 4 : time;
+            time = time < 0.5 ? 0.5 : time;
+
+            //镜头放大缩小    
+            cc.tween(this.cameraNode).delay(time + 0.3).call(() => {
+                this.cameraAnimation.play("zoomInOut").speed = 0.8;
+            }).start();
+
             keyPos = this.cameraNode.parent.convertToNodeSpaceAR(keyPos);
             keyPos.y = cameraPos.y;
-            let dist = Math.abs(cameraWorPos.x - keyPos.x);
-            let time = 4 * dist / 1000;
-            time = time > 4 ? 4 : time;
-            time = time < 1 ? 1 : time;
-            cc.tween(this.cameraNode).to(time, { position: keyPos }, { easing: "cubicInOut" }).call(() => {
-            }).delay(0.3).call(() => {
+
+            cc.tween(this.cameraNode).to(time, { position: keyPos }, { easing: "quartInOut" }).call(() => {
+            }).delay(2).call(() => {
                 this.keyNodeIndex++;
                 if (this.keyNodeIndex == this.keyNodeList.length) {
                     cc.tween(this.cameraNode).to(1, { position: this.initCameraPos }, { easing: "cubicInOut" }).start();
@@ -287,7 +301,7 @@ export class BackgroundControllor extends cc.Component {
         let currpos = cc.v2(this.endpos.x - this.startpos.x, this.endpos.y - this.startpos.y);
         let distance = toolsBasics.distanceVector(this.startpos, this.endpos);
 
-        if (distance > 20) {
+        if (distance > 50) {
             let angle = toolsBasics.vectorsToDegress(currpos);
 
             if (angle >= -15 && angle < 15) {
