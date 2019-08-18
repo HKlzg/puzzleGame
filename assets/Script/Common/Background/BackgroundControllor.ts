@@ -11,6 +11,8 @@ export class BackgroundControllor extends cc.Component {
 
     @property(cc.Node)
     cameraNode: cc.Node = null;
+    @property(cc.Node)
+    cameraTips: cc.Node = null;
     //box
     @property(cc.Prefab)
     boxShadowPerfab: cc.Prefab = null;
@@ -72,7 +74,7 @@ export class BackgroundControllor extends cc.Component {
     keyNodeIndex: number = 0;
     initCameraPos: cc.Vec2 = null;
     cameraAnimation: cc.Animation = null;
- 
+
     onLoad() {
 
         //------Camera-------
@@ -108,9 +110,9 @@ export class BackgroundControllor extends cc.Component {
         this.drawline = this.circular.getChildByName("DrawLine");
         this.rDis = this.circular.width / 2;
         this.boxMaxNum = settingBasic.fun.getBoxNumByLv(settingBasic.game.currLevel);
-        this.boxTip = this.cameraNode.getChildByName("boxTip").getComponent(cc.Label);
-        this.boxTip.string = "Box: " + this.boxMaxNum;
-   
+        this.boxTip = this.cameraTips.getChildByName("boxTip").getComponent(cc.Label);
+        this.boxTip.string = "箱子数量:" + this.boxMaxNum;
+
     };
 
     start() {
@@ -473,7 +475,7 @@ export class BackgroundControllor extends cc.Component {
             this.boxShadow.emit(settingBasic.gameEvent.instanceBoxEvent, "", (isOk) => {
                 if (this.boxMaxNum == 0) return;
                 isOk ? this.boxMaxNum-- : null;
-                this.boxTip.string = "Box:" + this.boxMaxNum;
+                this.boxTip.string = "箱子数量:" + this.boxMaxNum;
             });
             //设置isPlaying = false
             this.brotherNode.emit(settingBasic.gameEvent.brotherPlayState, false)

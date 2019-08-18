@@ -13,6 +13,8 @@ export abstract class ViewControllorBasic extends cc.Component {
 
     @property(cc.Node)
     cameraNode: cc.Node = null;
+    @property(cc.Node)
+    cameraTips: cc.Node = null;
     //box
 
     @property(cc.Node)
@@ -77,9 +79,9 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.node.on(settingBasic.gameEvent.gameStepEvent, this.gameStep, this);
         this.node.on(settingBasic.gameEvent.gameMoveStep, this.moveStep, this);
         this.node.on(settingBasic.gameEvent.setCurrGameStep, this.setCurrGameStep, this);
-        this.deathTip = this.cameraNode.getChildByName("deathTip").getComponent(cc.Label);
+        this.deathTip = this.cameraTips.getChildByName("deathTip").getComponent(cc.Label);
         let currDeath = settingBasic.game.currDeath;
-        this.deathTip.string = "Death: " + currDeath;
+        this.deathTip.string = "失败次数:" + currDeath;
         this.blackMask = this.cameraNode.getChildByName("blackMask")
 
         //获取剧情资料
@@ -194,7 +196,7 @@ export abstract class ViewControllorBasic extends cc.Component {
                 this.brotherNode.emit(settingBasic.gameEvent.brotherDeathEvent, true);
                 //记录死亡次数
                 let currDeath = settingBasic.fun.addCurrDeath(this.level)
-                this.deathTip.string = "Death: " + currDeath;
+                this.deathTip.string = "失败次数: " + currDeath;
 
                 console.log("=======GameState===REBORN==========")
 
