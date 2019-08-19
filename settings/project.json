@@ -436,7 +436,7 @@
     "笼子侧边传感器",
     "蜘蛛",
     "蜘蛛爬行地面",
-    "plot-剧情介绍"
+    "--tips--不受引导镜头影响"
   ],
   "last-module-event-record-time": 1565760392478,
   "simulator-orientation": false,

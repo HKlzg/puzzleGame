@@ -47,11 +47,12 @@ export default class NewClass extends cc.Component {
         this.animation.play("SwimClip");
 
         //游戏开始*秒之后再 执行
-        this.scheduleOnce(() => { this.isStartSwim = true }, 7);
+        this.scheduleOnce(() => { this.isStartSwim = true }, 10);
     }
 
     update(dt) {
 
+        if (setting.game.State == setting.setting.stateType.PAUSE) return;
         //检测是否人已经死亡
         this.isPersonDeath = setting.game.State == setting.setting.stateType.REBORN;
 
@@ -139,7 +140,7 @@ export default class NewClass extends cc.Component {
                                     //跳跃后
                                     cc.callFunc(() => {
                                         this.audioManager.playAudio("fallIntoWater");
-                                        
+
                                     }),
                                 )
                             )

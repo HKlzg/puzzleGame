@@ -106,6 +106,8 @@ export abstract class ViewControllorBasic extends cc.Component {
 
     //#endregion
     update(dt) {
+        if (settingBasic.game.State == settingBasic.setting.stateType.PAUSE) return;
+
         this.toUpdate();
         if (this.personAudio && this.brotherWalkNode.hasEventListener(settingBasic.gameEvent.brotherSetAudio) && !this.isSetAudio) {
             this.brotherWalkNode.emit(this.settingBasic.gameEvent.brotherSetAudio, this.personAudio);
@@ -116,7 +118,9 @@ export abstract class ViewControllorBasic extends cc.Component {
     showPlots() {
         let isShow = settingBasic.game.isShowKeyPos; //是否 显示引导镜头/介绍剧情
         if (!isShow) return;
-
+        if (!this.plotNode.active) {
+            this.plotNode.active = true;
+        }
         let plotPos = this.plotNode.position;
         let plot = this.plotsArr[this.plotIndex++];
         if (plot) {
@@ -183,10 +187,13 @@ export abstract class ViewControllorBasic extends cc.Component {
                 }
                 cc.director.loadScene("loading")
                 break;
+
             case this.stateType.PAUSE:
+                settingBasic.game.State = settingBasic.setting.stateType.PAUSE;
 
                 break;
             case this.stateType.RESUME:
+                settingBasic.game.State = settingBasic.setting.stateType.RESUME;
 
                 break;
             case this.stateType.REBORN:

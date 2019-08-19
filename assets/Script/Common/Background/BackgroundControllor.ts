@@ -46,7 +46,6 @@ export class BackgroundControllor extends cc.Component {
     endpos: cc.Vec2 = null;
 
     //显示圈范围
-
     rDis: number = 300;  // 半径
     drawline: cc.Node = null;
 
@@ -121,7 +120,7 @@ export class BackgroundControllor extends cc.Component {
 
     //#endregion
     update(dt) {
-        if (!this.isStartGame) return;
+        if (!this.isStartGame || (settingBasic.game.State == settingBasic.setting.stateType.PAUSE)) return;
 
         if (this.playerState != this.playerStateType.LongTouch) {
             this.cameraControllor();
@@ -139,6 +138,7 @@ export class BackgroundControllor extends cc.Component {
             }
         }
     };
+
 
     //移动镜头 显示关键点
     moveCamera() {
@@ -241,6 +241,7 @@ export class BackgroundControllor extends cc.Component {
     //事件分发
     //----------------------------touch event ---------------------------
     touchStart(event) {
+        if (!this.isStartGame) return;
         //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
         if (this.preTouchId && event.getID() != this.preTouchId) return
         // this.preTouchId = event.getID();
@@ -261,12 +262,14 @@ export class BackgroundControllor extends cc.Component {
     }
 
     touchMove(event) {
+        if (!this.isStartGame) return;
         if (this.isDeath) return
         this.playerMove(event);
         this.boxTouchMove(event);
     }
 
     touchEnd(event) {
+        if (!this.isStartGame) return;
         this.playerStop(event);
         this.boxTouchEnd(event);
 
