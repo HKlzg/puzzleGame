@@ -147,6 +147,10 @@ const settingBasic = {
         //关闭
         closeShowKeyPos() {
             settingBasic.game.isShowKeyPos = false;
+        },
+        //关闭操作引导
+        closeOperationGuide() {
+            settingBasic.game.isShowOperationGuide = false;
         }
     },
 
@@ -160,6 +164,7 @@ const settingBasic = {
         sceneList: {},
         deathRecord: {},//死亡记录 用于存档
         isShowKeyPos: true, //是否显示引导镜头
+        isShowOperationGuide: true,// 是否显示操作引导
     },
 
     //自定义事件

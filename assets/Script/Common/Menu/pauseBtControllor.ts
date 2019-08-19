@@ -23,7 +23,6 @@ export default class NewClass extends cc.Component {
         this.menuNode.active = true;
         let pos = this.menuNode.position;
 
-        this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.PAUSE);
 
         cc.tween(this.menuNode).then(
             cc.spawn(
@@ -31,6 +30,7 @@ export default class NewClass extends cc.Component {
                 cc.fadeIn(0.5),
             )
         ).call(() => {
+            this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.PAUSE);
             this.node.getComponent(cc.Button).enabled = true;
         }).start();
 

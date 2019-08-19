@@ -26,10 +26,14 @@ export default class NewClass extends cc.Component {
         this.canvas = cc.find("Canvas");
     }
 
-    // update (dt) {}
+    update(dt) {
+
+
+    }
 
     hideMenu(event) {
         // console.log("==========hideMenu=========")
+        cc.director.resume();
         let pos = this.node.position;
         cc.tween(this.node).then(
             cc.spawn(
@@ -44,19 +48,34 @@ export default class NewClass extends cc.Component {
     }
 
     restart(event) {
+        cc.director.resume();
         console.log("==========restart=========");
         settingBasic.fun.clearCurrDeath();
         cc.tween(this.node).then(cc.fadeOut(0.5)).call(() => {
             this.node.getComponent(cc.Button).enabled = false;
             this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.RESTART);
+            this.hideMenu(event);
         }).start();
     }
 
     home(event) {
+        cc.director.resume();
         console.log("==========home=========")
+
+
+        this.hideMenu(event);
     }
 
     help(event) {
-        console.log("==========help=========")
+        cc.director.resume();
+        console.log("==========help=========");
+        let operationNode = this.node.parent.getChildByName("operationTips");
+        if (operationNode) {
+            operationNode.active = true;
+            this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.PAUSE);
+            this.hideMenu(event);
+            cc.tween(operationNode).to(0.5, { position: cc.v2(0, 0) }).start()
+        }
+
     }
 }

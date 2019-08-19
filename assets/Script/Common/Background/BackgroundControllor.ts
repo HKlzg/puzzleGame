@@ -112,10 +112,12 @@ export class BackgroundControllor extends cc.Component {
         this.boxTip = this.cameraTips.getChildByName("boxTip").getComponent(cc.Label);
         this.boxTip.string = "箱子数量:" + this.boxMaxNum;
 
+        this.isshowTipUi(false)
     };
 
     start() {
         this.moveCamera();
+
     };
 
     //#endregion
@@ -139,6 +141,34 @@ export class BackgroundControllor extends cc.Component {
         }
     };
 
+    //显示其他提示界面
+    isshowTipUi(isShow) {
+        if (isShow) {
+            //显示按钮
+            this.cameraTips.getChildByName("pauseNode").active = true;
+            this.cameraTips.getChildByName("deathTip").active = true;
+            this.cameraTips.getChildByName("boxTip").active = true;
+        } else {
+            //显示按钮
+            this.cameraTips.getChildByName("pauseNode").active = false;
+            this.cameraTips.getChildByName("deathTip").active = false;
+            this.cameraTips.getChildByName("boxTip").active = false;
+        }
+    }
+
+    //操作引导
+    operationGuide() {
+        if (!settingBasic.game.isShowOperationGuide || settingBasic.game.currLevel != 1) return
+        let operationNode = this.cameraTips.getChildByName("operationTips");
+        if (operationNode) {
+            operationNode.active = true;
+            let pos = operationNode
+            cc.tween(operationNode).to(0.5, { position: cc.v2(0, 0) }).call(()=>{
+                this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.PAUSE);
+            }).start()
+        }
+    }
+
 
     //移动镜头 显示关键点
     moveCamera() {
@@ -147,6 +177,9 @@ export class BackgroundControllor extends cc.Component {
         if (!isShow || !this.keyNodeList || (this.keyNodeList && this.keyNodeList.length == 0)) {
 
             this.isStartGame = true;
+            this.isshowTipUi(true);
+            //显示引导
+            this.operationGuide();
             return
         } else {
             let cameraPos = this.cameraNode.position;
@@ -174,6 +207,9 @@ export class BackgroundControllor extends cc.Component {
                 if (this.keyNodeIndex == this.keyNodeList.length) {
                     cc.tween(this.cameraNode).to(1, { position: this.initCameraPos }, { easing: "cubicInOut" }).start();
                     this.isStartGame = true;
+                    this.isshowTipUi(true);
+                    //显示引导
+                    this.operationGuide();
                 } else {
                     this.moveCamera();
                 }

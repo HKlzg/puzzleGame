@@ -1,6 +1,7 @@
 const { ccclass, property } = cc._decorator;
 import tools from "../../Tools/toolsBasics";
 import setting from "../../Setting/settingBasic";
+import settingBasic from "../../Setting/settingBasic";
 
 const spiderActionType = cc.Enum({
     wait: 0,
@@ -44,7 +45,7 @@ export default class spiderClass extends cc.Component {
     }
 
     update(dt) {
-        if (!this.isStart) return;
+        if (!this.isStart || settingBasic.game.State == settingBasic.setting.stateType.PAUSE) return;
 
         this.moveByAction(dt);
 

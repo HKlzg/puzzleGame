@@ -190,11 +190,15 @@ export abstract class ViewControllorBasic extends cc.Component {
 
             case this.stateType.PAUSE:
                 settingBasic.game.State = settingBasic.setting.stateType.PAUSE;
+                console.log("==========GAME PAUSE==========")
 
+                cc.director.pause();
+                this.audioManager.setEnablePlay(false);
                 break;
             case this.stateType.RESUME:
+                console.log("==========GAME RESUME==========")
                 settingBasic.game.State = settingBasic.setting.stateType.RESUME;
-
+                this.audioManager.setEnablePlay(true);
                 break;
             case this.stateType.REBORN:
                 //只能连续死一次
