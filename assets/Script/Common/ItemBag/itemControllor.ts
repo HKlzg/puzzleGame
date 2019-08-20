@@ -177,6 +177,8 @@ export default class NewClass extends cc.Component {
 
         if (this.isDeath || this.isForbidden) { //人物死亡 箱子还原
             this.node.setPosition(this.preItemPos);
+            this.isForbidden = false;
+            this.forbiddenNode.active = false;
         }
 
         //人物动作
