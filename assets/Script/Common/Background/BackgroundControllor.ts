@@ -170,12 +170,12 @@ export class BackgroundControllor extends cc.Component {
     }
 
 
-    //移动镜头 显示关键点
+    //引导镜头 显示关键点
     moveCamera() {
-        let isShow = settingBasic.game.isShowKeyPos;
+        let isShow = !settingBasic.game.isShowKeyPos;
 
         if (!isShow || !this.keyNodeList || (this.keyNodeList && this.keyNodeList.length == 0)) {
-
+            cc.tween(this.cameraNode).to(1, { position: this.initCameraPos }, { easing: "cubicInOut" }).start();
             this.isStartGame = true;
             this.isshowTipUi(true);
             //显示引导

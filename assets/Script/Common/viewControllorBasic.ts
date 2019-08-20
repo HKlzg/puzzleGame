@@ -20,7 +20,6 @@ export abstract class ViewControllorBasic extends cc.Component {
     @property(cc.Node)
     brotherNode: cc.Node = null;
 
-    @property(cc.Node)
     plotNode: cc.Node = null;
     //Brother Move 
     minX: number = 0;
@@ -86,6 +85,7 @@ export abstract class ViewControllorBasic extends cc.Component {
 
         //获取剧情资料
         this.plotsArr = settingBasic.fun.getPlotsByLv(this.level);
+        this.plotNode = this.cameraTips.getChildByName("plotNode");
         this.plotInitPos = this.plotNode.position;
 
     };

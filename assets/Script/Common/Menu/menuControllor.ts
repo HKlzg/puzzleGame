@@ -72,9 +72,10 @@ export default class NewClass extends cc.Component {
         let operationNode = this.node.parent.getChildByName("operationTips");
         if (operationNode) {
             operationNode.active = true;
-            this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.PAUSE);
             this.hideMenu(event);
-            cc.tween(operationNode).to(0.5, { position: cc.v2(0, 0) }).start()
+            cc.tween(operationNode).to(0.5, { position: cc.v2(0, 0) }).call(()=>{
+                this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.PAUSE);
+            }).start()
         }
 
     }
