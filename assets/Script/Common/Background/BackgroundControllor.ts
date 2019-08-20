@@ -74,6 +74,9 @@ export class BackgroundControllor extends cc.Component {
     initCameraPos: cc.Vec2 = null;
     cameraAnimation: cc.Animation = null;
 
+    //道具
+    isTouchItem: boolean = false; //是否控制的是 道具
+    items: Array<cc.Node> = [];
     onLoad() {
 
         //------Camera-------
@@ -134,12 +137,50 @@ export class BackgroundControllor extends cc.Component {
                 this.isLongTouchBegin = false;
                 this.playerState = this.playerStateType.LongTouch;
 
-                //产生boxShadow
-                this.createBoxShadow();
+                if (!this.checkLongTouchArea(this.endpos)) {
+                    //产生boxShadow
+                    this.createBoxShadow();
+                }
 
             }
         }
     };
+    //检测长按区域是否包含道具
+    checkLongTouchArea(touchPos): boolean {
+        let itembag = this.cameraTips.getChildByName("itemsBag");
+        let returnObj: cc.Node = itembag.getComponent("itemBagControllor").checkItemArea(touchPos);
+
+        //返回一个实例的item
+        if (returnObj) {
+            // console.log("=========checkLongTouchArea====")
+            this.boxShadow = cc.instantiate(returnObj);
+            this.boxShadow.active = true;
+            this.boxShadow.groupIndex = 3;
+            let collider: any = null;
+            collider = this.boxShadow.getComponent(cc.PhysicsCircleCollider);
+            if (!collider) {
+                collider = this.boxShadow.getComponent(cc.PhysicsBoxCollider);
+                if (!collider) {
+                    collider = this.boxShadow.getComponent(cc.PhysicsPolygonCollider);
+                }
+            }
+            if (collider) {
+                collider.sensor = true;
+                collider.apply();
+            }
+
+            this.boxShadow.parent = this.boxParent;
+            this.boxShadow.setPosition(this.boxToDistanceBoY());
+            let scale = this.boxShadow.scale;
+            this.boxShadow.runAction(cc.scaleTo(0.1, scale + 0.2, scale + 0.2));
+            this.isTouchItem = true;
+        } else {
+            this.isTouchItem = false;
+        }
+        return this.isTouchItem;
+
+    }
+
 
     //显示其他提示界面
     isshowTipUi(isShow) {
@@ -163,7 +204,7 @@ export class BackgroundControllor extends cc.Component {
         if (operationNode) {
             operationNode.active = true;
             let pos = operationNode
-            cc.tween(operationNode).to(0.5, { position: cc.v2(0, 0) }).call(()=>{
+            cc.tween(operationNode).to(0.5, { position: cc.v2(0, 0) }).call(() => {
                 this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.PAUSE);
             }).start()
         }
@@ -317,8 +358,8 @@ export class BackgroundControllor extends cc.Component {
         this.startpos = event.touch.getLocation();
         this.endpos = event.touch.getLocation();
 
-        this.camera.getCameraToWorldPoint(this.startpos, this.startpos)
-        this.camera.getCameraToWorldPoint(this.endpos, this.endpos)
+        this.startpos = this.camera.getCameraToWorldPoint(this.startpos, this.startpos)
+        this.endpos = this.camera.getCameraToWorldPoint(this.endpos, this.endpos)
         this.isOrder = false;
     }
 
@@ -467,7 +508,7 @@ export class BackgroundControllor extends cc.Component {
             this.boxShadow.parent = this.boxParent;
             this.boxShadow.runAction(cc.scaleTo(0.1, 1, 1));
 
-            touchPos = this.boxParent.convertToNodeSpaceAR(touchPos);
+            // touchPos = this.boxParent.convertToNodeSpaceAR(touchPos);
             this.boxShadow.setPosition(this.boxToDistanceBoY());
 
         } else {
@@ -510,23 +551,65 @@ export class BackgroundControllor extends cc.Component {
         this.longTouchTime = 0;
         this.drawline.getComponent(cc.Graphics).clear();
 
-        if (this.boxShadow) {
-            this.boxShadow.emit(settingBasic.gameEvent.instanceBoxEvent, "", (isOk) => {
-                if (this.boxMaxNum == 0) return;
-                isOk ? this.boxMaxNum-- : null;
-                this.boxTip.string = "箱子数量:" + this.boxMaxNum;
-            });
-            //设置isPlaying = false
+        if (this.isTouchItem) {
+            //控制的是物品栏的道具
+            //获取当前item状态
+            let itemCtrl = this.boxShadow.getComponent("itemControllor");
+            let isforbidden = itemCtrl.getIsForbidden();
+            if (!isforbidden) {
+                this.boxShadow.getComponent(cc.RigidBody).type = cc.RigidBodyType.Dynamic;
+                let collider: any = null;
+                collider = this.boxShadow.getComponent(cc.PhysicsCircleCollider);
+                if (!collider) {
+                    collider = this.boxShadow.getComponent(cc.PhysicsBoxCollider);
+                    if (!collider) {
+                        collider = this.boxShadow.getComponent(cc.PhysicsPolygonCollider);
+                    }
+                }
+                if (collider) {
+                    collider.sensor = false;
+                    collider.apply();
+                }
+                //添加到 当前场景中保存
+                this.items.push(this.boxShadow);
+
+                // 注册点击事件
+                itemCtrl.registEvent(true);
+
+                //从物品栏移除当前物品
+                let itembag = this.cameraTips.getChildByName("itemsBag");
+                itembag.getComponent("itemBagControllor").removeCurrCtrItem(true);
+            } else {
+                this.boxShadow.destroy();
+                //恢复 显示物品
+                let itembag = this.cameraTips.getChildByName("itemsBag");
+                itembag.getComponent("itemBagControllor").removeCurrCtrItem(false);
+            }
+            //设置人  isPlaying = false
             this.brotherNode.emit(settingBasic.gameEvent.brotherPlayState, false)
             let dire = this.brotherNode.scaleX > 0 ? actionDirection.Right : actionDirection.Left;
-            this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, { direction: dire, action: actionType.Wait })
-        }
-        //设置等待状态
+            this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, { direction: dire, action: actionType.Wait });
 
+            this.isTouchItem = false;
+        } else {
+            //控制的是Box
+            if (this.boxShadow) {
+                this.boxShadow.emit(settingBasic.gameEvent.instanceBoxEvent, "", (isOk) => {
+                    if (this.boxMaxNum == 0) return;
+                    isOk ? this.boxMaxNum-- : null;
+                    this.boxTip.string = "箱子数量:" + this.boxMaxNum;
+                });
+                //设置isPlaying = false
+                this.brotherNode.emit(settingBasic.gameEvent.brotherPlayState, false)
+                let dire = this.brotherNode.scaleX > 0 ? actionDirection.Right : actionDirection.Left;
+                this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, { direction: dire, action: actionType.Wait })
+            }
+
+        }
+        this.boxShadow = null;
         if (this.boxShadow) {
             this.boxShadow.destroy()
         }
-        this.boxShadow = null;
     }
 
 

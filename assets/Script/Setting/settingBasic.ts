@@ -79,7 +79,13 @@ const settingBasic = {
             lv3: ["剧情介绍", "", ""],
             lv4: ["剧情介绍", "", ""],
             lv5: ["剧情介绍", "", ""],
-        }
+        },
+        //可控制的道具类型
+        itemType: cc.Enum({
+            flower: 0,
+            gear: 1,
+            tear: 2
+        }),
 
     },
 
@@ -151,6 +157,10 @@ const settingBasic = {
         //关闭操作引导
         closeOperationGuide() {
             settingBasic.game.isShowOperationGuide = false;
+        },
+        //增加物品
+        addItems(itemType: number) {
+            settingBasic.game.inventory.push(itemType);
         }
     },
 
@@ -165,6 +175,7 @@ const settingBasic = {
         deathRecord: {},//死亡记录 用于存档
         isShowKeyPos: true, //是否显示引导镜头
         isShowOperationGuide: true,// 是否显示操作引导
+        inventory: [], //物品栏
     },
 
     //自定义事件
