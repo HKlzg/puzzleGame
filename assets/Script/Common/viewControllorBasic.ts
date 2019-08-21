@@ -127,11 +127,13 @@ export abstract class ViewControllorBasic extends cc.Component {
             let labe = this.plotNode.getChildByName("tips");
             labe.getComponent(cc.Label).string = plot;
             // console.log("===============plot: " + plot + " ==")
-            cc.tween(this.plotNode).to(0.5, { position: cc.v2(plotPos.x + 900, plotPos.y) }).delay(3).
-                to(0.3, { position: cc.v2(plotPos.x - 900, plotPos.y) }).call(() => {
+            cc.tween(this.plotNode).to(0.5, { position: cc.v2(0, plotPos.y) }).delay(3).
+                to(0.5, { position: cc.v2(plotPos.x - 1000, plotPos.y) }).call(() => {
                     this.plotNode.position = this.plotInitPos;
                     this.showPlots();
                 }).start();
+        } else {
+            this.plotNode.active = false;
         }
     }
     //设置人物 动作对应的音效
