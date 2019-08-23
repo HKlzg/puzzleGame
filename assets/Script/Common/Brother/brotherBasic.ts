@@ -250,7 +250,7 @@ export abstract class BrotherBasic extends cc.Component {
 
     abstract toUpdate(dt?);
     //射线检测
-    abstract rayCheck();
+    // abstract rayCheck();
 
     //离地检测
     isOnGround() {

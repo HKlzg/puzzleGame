@@ -4,8 +4,8 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class NewClass extends BrotherBasic {
 
-    start() {
-    }
+    // start() {
+    // }
 
     rayCheck() { }
 

@@ -41,19 +41,21 @@ export default class NewClass extends cc.Component {
         list.forEach(item => {
             //实例化预制体
             let node = cc.instantiate(this.itemNode);
+            node.groupIndex = 22;
             let sprite = node.getComponent(cc.Sprite);
+            let ctrl = node.getComponent("itemControllor")
             switch (item) {
                 case itemType.flower:
                     sprite.spriteFrame = this.spriteFrameList["flower"];
-
+                    ctrl.setItemType(itemType.flower)
                     break;
                 case itemType.tear:
                     sprite.spriteFrame = this.spriteFrameList["tear"];
-
+                    ctrl.setItemType(itemType.tear)
                     break;
                 case itemType.gear:
                     sprite.spriteFrame = this.spriteFrameList["gear"];
-
+                    ctrl.setItemType(itemType.gear)
                     break;
                 default:
                     break;
@@ -65,7 +67,7 @@ export default class NewClass extends cc.Component {
             this.itemList.push(node);
 
         });
-
+        // console.log("=========0==len= " + this.itemList[2].getComponent("itemControllor").getItemType())
     }
 
     update(dt) {

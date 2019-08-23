@@ -148,12 +148,18 @@ export class BackgroundControllor extends cc.Component {
     //检测长按区域是否包含道具
     checkLongTouchArea(touchPos): boolean {
         let itembag = this.cameraTips.getChildByName("itemsBag");
+        if (!itembag) return false;
         let returnObj: cc.Node = itembag.getComponent("itemBagControllor").checkItemArea(touchPos);
 
         //返回一个实例的item
         if (returnObj) {
-            // console.log("=========checkLongTouchArea====")
+            // console.log("=========checkLongTouchArea===itemType="+returnObj.getComponent("itemControllor").getItemType())
             this.boxShadow = cc.instantiate(returnObj);
+            //重新给itemType赋值
+            let itemType = returnObj.getComponent("itemControllor").getItemType();
+            // console.log("===itemType="+itemType)
+            this.boxShadow.getComponent("itemControllor").setItemType(itemType);
+
             this.boxShadow.active = true;
             this.boxShadow.groupIndex = 3;
             let collider: any = null;
@@ -190,7 +196,7 @@ export class BackgroundControllor extends cc.Component {
             this.cameraTips.getChildByName("deathTip").active = true;
             this.cameraTips.getChildByName("boxTip").active = true;
         } else {
-            //显示按钮
+            //隐藏按钮
             this.cameraTips.getChildByName("pauseNode").active = false;
             this.cameraTips.getChildByName("deathTip").active = false;
             this.cameraTips.getChildByName("boxTip").active = false;
@@ -529,9 +535,16 @@ export class BackgroundControllor extends cc.Component {
         this.isLongTouchBegin = true;
         this.longTouchTime = 0;
 
+        if (this.isTouchItem) {
+            this.boxShadow.getComponent("itemControllor").startMove(event)
+        } else {
+
+        }
+
     }
 
     boxTouchMove(event) {
+
         if (this.playerState == this.playerStateType.Moving) return
         //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
         if (this.preTouchId && event.getID() != this.preTouchId) return
@@ -539,10 +552,16 @@ export class BackgroundControllor extends cc.Component {
         this.isLongTouchBegin = false;
 
         if (!this.boxShadow) return;
-        let touchPos = event.touch.getLocation();
-        this.camera.getCameraToWorldPoint(touchPos, touchPos)
-        touchPos = this.boxParent.convertToNodeSpaceAR(touchPos);
-        this.boxShadow.setPosition(this.boxToDistanceBoY());
+
+        if (this.isTouchItem) {
+            this.boxShadow.getComponent("itemControllor").moveItem(event)
+        } else {
+
+            // let touchPos = event.touch.getLocation();
+            // this.camera.getCameraToWorldPoint(touchPos, touchPos)
+            // touchPos = this.boxParent.convertToNodeSpaceAR(touchPos);
+            this.boxShadow.setPosition(this.boxToDistanceBoY());
+        }
     }
 
     boxTouchEnd(event) {
@@ -570,25 +589,22 @@ export class BackgroundControllor extends cc.Component {
                     collider.sensor = false;
                     collider.apply();
                 }
-                //添加到 当前场景中保存
-                this.items.push(this.boxShadow);
-
                 // 注册点击事件
                 itemCtrl.registEvent(true);
-
                 //从物品栏移除当前物品
                 let itembag = this.cameraTips.getChildByName("itemsBag");
                 itembag.getComponent("itemBagControllor").removeCurrCtrItem(true);
+                //添加到 当前场景中保存
+                this.items.push(this.boxShadow);
+
             } else {
                 this.boxShadow.destroy();
                 //恢复 显示物品
                 let itembag = this.cameraTips.getChildByName("itemsBag");
                 itembag.getComponent("itemBagControllor").removeCurrCtrItem(false);
             }
-            //设置人  isPlaying = false
-            this.brotherNode.emit(settingBasic.gameEvent.brotherPlayState, false)
-            let dire = this.brotherNode.scaleX > 0 ? actionDirection.Right : actionDirection.Left;
-            this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, { direction: dire, action: actionType.Wait });
+
+            itemCtrl.stopMove(event); //调用本身的 stop 事件
 
             this.isTouchItem = false;
         } else {
