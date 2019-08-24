@@ -233,7 +233,7 @@ export class BackgroundControllor extends cc.Component {
             let cameraWorPos = this.cameraNode.convertToWorldSpace(cc.Vec2.ZERO);
 
             let keyNode = this.keyNodeList[this.keyNodeIndex];
-            let keyPos = keyNode.convertToWorldSpace(cc.Vec2.ZERO);
+            let keyPos = keyNode.convertToWorldSpaceAR(cc.Vec2.ZERO);
 
             let dist = Math.abs(cameraWorPos.x - keyPos.x);
             let time = 4 * dist / 1200;
@@ -268,10 +268,10 @@ export class BackgroundControllor extends cc.Component {
 
     cameraControllor() {
         //限定相机移动区域 防止越界 世界坐标系
-        let cameraPos = this.cameraNode.convertToWorldSpace(cc.v2(0, 0))
+        let cameraPos = this.cameraNode.convertToWorldSpaceAR(cc.v2(0, 0))
         let movePos = this.cameraNode.position;
         //X
-        let broPosWorld: cc.Vec2 = this.brotherNode.convertToWorldSpace(cc.v2(0, 0));
+        let broPosWorld: cc.Vec2 = this.brotherNode.convertToWorldSpaceAR(cc.v2(0, 0));
 
         if (this.brotherPrePos && this.brotherPrePos.fuzzyEquals(broPosWorld, 1)) return;
         this.brotherPrePos = broPosWorld;
@@ -488,7 +488,7 @@ export class BackgroundControllor extends cc.Component {
     boxToDistanceBoY(): cc.Vec2 {
         //拿到borther和box的位置求距离来限制箱子生成的范围
         let vector = cc.Vec2.ZERO;
-        let bortherpos = this.brotherNode.convertToWorldSpace(cc.v2(0, 0));
+        let bortherpos = this.brotherNode.convertToWorldSpaceAR(cc.v2(0, 0));
         let boxpos = this.endpos;
         let gra = this.drawline.getComponent(cc.Graphics);
 
@@ -518,7 +518,7 @@ export class BackgroundControllor extends cc.Component {
             this.boxShadow.setPosition(this.boxToDistanceBoY());
 
         } else {
-            let bortherpos = this.brotherNode.convertToWorldSpace(cc.v2(0, 0));
+            let bortherpos = this.brotherNode.convertToWorldSpaceAR(cc.v2(0, 0));
             let boxpos = this.endpos;
 
             //切换动作

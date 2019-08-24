@@ -288,8 +288,8 @@ export abstract class BrotherBasic extends cc.Component {
         if (this.pushObject && this.preOrder &&
             this.preOrder.action != actionType.Wait
         ) {
-            let pos1 = this.pushObject.convertToWorldSpace(cc.Vec2.ZERO);
-            let pos2 = this.node.convertToWorldSpace(cc.Vec2.ZERO);
+            let pos1 = this.pushObject.convertToWorldSpaceAR(cc.Vec2.ZERO);
+            let pos2 = this.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
             let dist = Math.abs(pos1.x - pos2.x)
             if (dist > this.pushDistance + 10) {
                 this.order.action = actionType.Wait;
