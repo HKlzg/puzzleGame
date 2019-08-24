@@ -47,7 +47,7 @@ export default class NewClass extends cc.Component {
         this.animation.play("SwimClip");
 
         //游戏开始*秒之后再 执行
-        this.scheduleOnce(() => { this.isStartSwim = true }, 10);
+        this.scheduleOnce(() => { this.isStartSwim = true }, 100);
     }
 
     update(dt) {

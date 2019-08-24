@@ -178,7 +178,7 @@ export class BackgroundControllor extends cc.Component {
             this.boxShadow.parent = this.boxParent;
             this.boxShadow.setPosition(this.boxToDistanceBoY());
             let scale = this.boxShadow.scale;
-            this.boxShadow.runAction(cc.scaleTo(0.1, scale + 0.2, scale + 0.2));
+            cc.tween(this.boxShadow).to(0.1, { scale: scale + 0.2 }).to(0.1, { scale: scale }).start();
             this.isTouchItem = true;
         } else {
             this.isTouchItem = false;

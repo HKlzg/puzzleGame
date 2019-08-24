@@ -25,7 +25,7 @@ export default class NewClass extends cc.Component {
     minHeight: number = 0;
     @property({ type: cc.Integer, displayName: "每次升降的距离" })
     step: number = 20;
-    @property({displayName: "是否逆时针上升" })
+    @property({ displayName: "是否逆时针上升" })
     isReversion: boolean = false;
 
     tmpHeight: number = 0;
@@ -34,8 +34,7 @@ export default class NewClass extends cc.Component {
     audioMountainId: number;
     start() {
         this.angle = this.node.angle;
-        let pos = this.node.convertToWorldSpace(cc.Vec2.ZERO)
-        this.centerPos = cc.v2(pos.x + this.node.width / 2, pos.y + this.node.height / 2);
+        this.centerPos = this.node.convertToWorldSpaceAR(cc.Vec2.ZERO)
 
         this.initMountPos = this.mountain.position;
         this.tmpHeight = this.step;
