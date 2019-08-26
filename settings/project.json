@@ -486,7 +486,7 @@
     "笼子侧边传感器",
     "蜘蛛",
     "蜘蛛爬行地面",
-    "-tips--不受引导镜头影响 不可碰撞",
+    "UI",
     "-tips- 可碰撞 不受引导camera"
   ],
   "last-module-event-record-time": 1565760392478,
@@ -496,6 +496,5 @@
     "width": 960
   },
   "use-customize-simulator": true,
-  "use-project-simulator-setting": false,
-  "start-scene": "current"
+  "use-project-simulator-setting": false
 }

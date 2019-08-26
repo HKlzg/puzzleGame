@@ -50,8 +50,6 @@ export abstract class BrotherBasic extends cc.Component {
     isDeath: boolean = false;
     canvas: cc.Node = null;
 
-    //操作提示
-    operationTip: cc.Node = null;
     onLoad() {
         this.brotherAnimation = this.brotherWalkNode.getComponent(cc.Animation);
         this.node.on(settingBasic.gameEvent.brotherActionEvent, this.brotherAction, this);
@@ -75,7 +73,6 @@ export abstract class BrotherBasic extends cc.Component {
         this.bornPos = this.node.position;//默认值
         this.node.scaleX = 1;
 
-        this.operationTip = this.canvas.getChildByName("Camera Tips").getChildByName("operationTips");
     }
 
     start() {
@@ -238,7 +235,7 @@ export abstract class BrotherBasic extends cc.Component {
             //     this.rayCheck();
             // }
 
-            this.pushCheck();
+            // this.pushCheck();
             this.toUpdate();
             this.isOnGround();
         }
@@ -385,8 +382,14 @@ export abstract class BrotherBasic extends cc.Component {
         }, 2.5);
     }
 
+    //动画播放完之后调用  更改状态
     setPlayState(isPlay) {
         this.isPlaying = isPlay;
+
+        //设置为等待状态
+        this.order.action = actionType.Wait;
+        this.brotherAction(this.order);
+
     }
 
     //设置重生地点

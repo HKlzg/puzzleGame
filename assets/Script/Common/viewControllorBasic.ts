@@ -47,10 +47,6 @@ export abstract class ViewControllorBasic extends cc.Component {
     isSetAudio: boolean = false;
     personAudio: [{ actionType: number, name: string }] = null;
 
-    plotsArr: [] = null;
-    plotInitPos: cc.Vec2 = null;
-    plotIndex: number = 0;
-
     onLoad() {
         console.log("=========SCENE: " + this.level + " ==========")
         settingBasic.game.currLevel = this.level;
@@ -83,11 +79,6 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.deathTip.string = "失败次数:" + currDeath;
         this.blackMask = this.cameraNode.getChildByName("blackMask")
 
-        //获取剧情资料
-        this.plotsArr = settingBasic.fun.getPlotsByLv(this.level);
-        this.plotNode = this.cameraTips.getChildByName("plotNode");
-        this.plotInitPos = this.plotNode.position;
-
     };
     //#endregion
 
@@ -99,7 +90,6 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.node.emit(settingBasic.gameEvent.gameStateEvent, this.stateType.NORMAL);
 
         this.toStart();
-        this.showPlots();
     };
     //子类实现
     abstract toStart();
@@ -114,28 +104,7 @@ export abstract class ViewControllorBasic extends cc.Component {
             this.isSetAudio = true;
         }
     };
-    //显示剧情资料
-    showPlots() {
-        let isShow = settingBasic.game.isShowKeyPos; //是否 显示引导镜头/介绍剧情
-        if (!isShow) return;
-        if (!this.plotNode.active) {
-            this.plotNode.active = true;
-        }
-        let plotPos = this.plotNode.position;
-        let plot = this.plotsArr[this.plotIndex++];
-        if (plot) {
-            let labe = this.plotNode.getChildByName("tips");
-            labe.getComponent(cc.Label).string = plot;
-            // console.log("===============plot: " + plot + " ==")
-            cc.tween(this.plotNode).to(0.5, { position: cc.v2(0, plotPos.y) }).delay(3).
-                to(0.5, { position: cc.v2(plotPos.x - 1000, plotPos.y) }).call(() => {
-                    this.plotNode.position = this.plotInitPos;
-                    this.showPlots();
-                }).start();
-        } else {
-            this.plotNode.active = false;
-        }
-    }
+
     //设置人物 动作对应的音效
     setPersonAudioName(msg: [{ actionType: number, name: string }]) {
         this.personAudio = msg;

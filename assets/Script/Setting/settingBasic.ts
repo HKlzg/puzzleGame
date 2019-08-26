@@ -72,14 +72,7 @@ const settingBasic = {
             Down_Right: 7,
             Down_left: 8,
         }),
-        //剧情介绍
-        plot: {
-            lv1: ["这篇宁静的村庄突然着起了大火", "熊熊的大火烧毁了一切", "但是大火之中一定还隐藏了什么线索"],
-            lv2: ["这篇宁静的村庄突然着起了大火", "熊熊的大火烧毁了一切", "但是大火之中一定还隐藏了什么线索"],
-            lv3: ["剧情介绍", "", ""],
-            lv4: ["剧情介绍", "", ""],
-            lv5: ["剧情介绍", "", ""],
-        },
+
         //可控制的道具类型
         itemType: cc.Enum({
             flower: 0,
@@ -92,16 +85,6 @@ const settingBasic = {
 
 
     fun: {
-        //设置剧情资料
-        setPlotsByLv(plots: string[], lv: number) {
-            settingBasic.setting.plot["lv" + lv] = plots;
-        },
-        //获取剧情资料
-        getPlotsByLv(lv): [] {
-            let plot = settingBasic.setting.plot;
-            let p: [] = plot["lv" + lv];
-            return p;
-        },
 
         getBoxNumByLv(lv) {
             let setting = settingBasic.setting.boxNum;
@@ -150,13 +133,9 @@ const settingBasic = {
         openShowKeyPos() {
             settingBasic.game.isShowKeyPos = true;
         },
-        //关闭
+        //关闭引导镜头
         closeShowKeyPos() {
             settingBasic.game.isShowKeyPos = false;
-        },
-        //关闭操作引导
-        closeOperationGuide() {
-            settingBasic.game.isShowOperationGuide = false;
         },
         //增加物品
         addItems(itemType: number) {
@@ -174,7 +153,6 @@ const settingBasic = {
         sceneList: {},
         deathRecord: {},//死亡记录 用于存档
         isShowKeyPos: true, //是否显示引导镜头
-        isShowOperationGuide: true,// 是否显示操作引导
         inventory: [], //物品栏
     },
 
@@ -194,7 +172,6 @@ const settingBasic = {
         brotherSetBornPos: "brotherSetBornPos",
         brotherSetAudio: "brotherSetAudio",
         getBrotherAction: "getBrotherAction",
-        //backGround
         //Box
         instanceBoxEvent: "instanceBoxEvent",
         //Circle
@@ -202,7 +179,6 @@ const settingBasic = {
         //lv3 monster
         monsterReduceState: "monsterReduceState",
         monsterStopPlayAction: "monsterStopPlayAction",
-
     },
 
 
