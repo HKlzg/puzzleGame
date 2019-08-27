@@ -9,7 +9,7 @@ export default class NewClass extends cc.Component {
     @property(cc.Node)
     cameraNode: cc.Node = null;
     @property(cc.Node)
-    cameraTipNode: cc.Node = null;
+    UICamera: cc.Node = null;
     @property(cc.SpriteFrame)
     picList: Array<cc.SpriteFrame> = [];
 
@@ -77,12 +77,12 @@ export default class NewClass extends cc.Component {
     //检测点击区域是否包含道具
     public checkItemArea(touchWorldPos: cc.Vec2): cc.Node {
         //不同camera 下的左坐标比较
-        // console.log("====camera====" + this.cameraNode.position + "   ===cameraTips= " + this.cameraTipNode.position)
+        // console.log("====camera====" + this.cameraNode.position + "   ===cameraTips= " + this.UICamera.position)
         for (let index = 0; index < this.itemList.length; index++) {
             let item = this.itemList[index];
 
             let wordPos2 = cc.Vec2.ZERO;
-            let tempVec = this.cameraTipNode.position.sub(this.cameraNode.position);
+            let tempVec = this.UICamera.position.sub(this.cameraNode.position);
             wordPos2 = cc.v2(touchWorldPos.x + tempVec.x, touchWorldPos.y + tempVec.y);
 
             let boundingBox: cc.Rect = item.getBoundingBoxToWorld();

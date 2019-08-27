@@ -179,6 +179,7 @@ const settingBasic = {
         //lv3 monster
         monsterReduceState: "monsterReduceState",
         monsterStopPlayAction: "monsterStopPlayAction",
+        //
     },
 
 

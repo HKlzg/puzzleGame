@@ -12,7 +12,7 @@ export class BackgroundControllor extends cc.Component {
     @property(cc.Node)
     cameraNode: cc.Node = null;
     @property(cc.Node)
-    cameraTips: cc.Node = null;
+    UICamera: cc.Node = null;
     //box
     @property(cc.Prefab)
     boxShadowPerfab: cc.Prefab = null;
@@ -111,7 +111,7 @@ export class BackgroundControllor extends cc.Component {
         this.drawline = this.circular.getChildByName("DrawLine");
         this.rDis = this.circular.width / 2;
         this.boxMaxNum = settingBasic.fun.getBoxNumByLv(settingBasic.game.currLevel);
-        this.boxTip = this.cameraTips.getChildByName("boxTip").getComponent(cc.Label);
+        this.boxTip = this.UICamera.getChildByName("boxTip").getComponent(cc.Label);
         this.boxTip.string = "箱子数量:" + this.boxMaxNum;
 
     };
@@ -145,7 +145,7 @@ export class BackgroundControllor extends cc.Component {
     };
     //检测长按区域是否包含道具
     checkLongTouchArea(touchPos): boolean {
-        let itembag = this.cameraTips.getChildByName("itemsBag");
+        let itembag = this.UICamera.getChildByName("itemsBag");
         if (!itembag) return false;
         let returnObj: cc.Node = itembag.getComponent("itemBagControllor").checkItemArea(touchPos);
 
@@ -556,7 +556,7 @@ export class BackgroundControllor extends cc.Component {
                 // 注册点击事件
                 itemCtrl.registEvent(true);
                 //从物品栏移除当前物品
-                let itembag = this.cameraTips.getChildByName("itemsBag");
+                let itembag = this.UICamera.getChildByName("itemsBag");
                 itembag.getComponent("itemBagControllor").removeCurrCtrItem(true);
                 //添加到 当前场景中保存
                 this.items.push(this.boxShadow);
@@ -564,7 +564,7 @@ export class BackgroundControllor extends cc.Component {
             } else {
                 this.boxShadow.destroy();
                 //恢复 显示物品
-                let itembag = this.cameraTips.getChildByName("itemsBag");
+                let itembag = this.UICamera.getChildByName("itemsBag");
                 itembag.getComponent("itemBagControllor").removeCurrCtrItem(false);
             }
 
