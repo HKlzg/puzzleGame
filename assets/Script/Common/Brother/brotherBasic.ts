@@ -337,14 +337,8 @@ export abstract class BrotherBasic extends cc.Component {
     }
     //碰撞检测(传感器)
     onCollisionEnter(other, self) {
-        //被下落的箱子 砸中
-        // if (other.node.groupIndex == 2) {
-        //     let boxBody = other.node.getComponent(cc.RigidBody);
-        //     if (boxBody.linearVelocity.y < -100) {
-        //         this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.REBORN);
-        //     }
 
-        // }
+
     }
     onCollisionEnd(other, self) {
 
@@ -378,7 +372,8 @@ export abstract class BrotherBasic extends cc.Component {
             this.isPlaying = false;
             //更改游戏状态为-Normal 正常状态
             this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.NORMAL);
-
+            this.order.action = actionType.Wait;
+            this.brotherAction(this.order);
         }, 2.5);
     }
 
@@ -387,9 +382,10 @@ export abstract class BrotherBasic extends cc.Component {
         this.isPlaying = isPlay;
 
         //设置为等待状态
-        this.order.action = actionType.Wait;
-        this.brotherAction(this.order);
-
+        if (this.order.action != actionType.Wait) {
+            this.order.action = actionType.Wait;
+            this.brotherAction(this.order);
+        }
     }
 
     //设置重生地点

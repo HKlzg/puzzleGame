@@ -10,8 +10,15 @@ class AudioType {
     ClimbName: string;
 }
 
+const actionTags = cc.Enum({
+    jump: 100,
+    climb: 101,
+})
+
 @ccclass
 export default class NewClass extends cc.Component {
+    @property(cc.Node)
+    footNode: cc.Node = null;
 
     parentGravityScale: number = 10;
     isClimbBox: boolean = false;
@@ -102,6 +109,7 @@ export default class NewClass extends cc.Component {
     }
     jumpStart() {
         if (this.isJump) return;
+        this.footNode.emit(settingBasic.gameEvent.jumpStartEvent, true);
 
         let parent = this.node.parent;
         this.isJump = true;
@@ -113,14 +121,18 @@ export default class NewClass extends cc.Component {
             cc.spawn(
                 action1, action2
             )
-        );
+        ).setTag(actionTags.jump)
     }
     JumpMid() {
 
     }
 
-    jumpEnd() {
-        this.node.parent.emit(settingBasic.gameEvent.brotherPlayState, false);
+    public jumpEnd() {
+        let parent = this.node.parent;
+        parent.stopActionByTag(actionTags.jump);
+        this.footNode.emit(settingBasic.gameEvent.jumpStartEvent, false);
+
+        parent.emit(settingBasic.gameEvent.brotherPlayState, false);
         this.audioManager.playAudio(this.audioName.jumpName);
         this.isJump = false;
     }

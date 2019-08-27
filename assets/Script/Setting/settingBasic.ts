@@ -180,6 +180,7 @@ const settingBasic = {
         monsterReduceState: "monsterReduceState",
         monsterStopPlayAction: "monsterStopPlayAction",
         //
+        jumpStartEvent:"jumpStartEvent",
     },
 
 
