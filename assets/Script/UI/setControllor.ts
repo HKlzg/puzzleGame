@@ -64,17 +64,22 @@ export default class NewClass extends cc.Component {
         if (this.isMapClick) {
             this.isMapClick = false;
             this.mapPiccopy.active = true;
+            this.mapPiccopy.getComponent(cc.Button).enabled = false;
+
             var faTo = cc.fadeTo(1, 0);
             this.mapPiccopy.runAction(faTo);
             this.mapPicMask.getComponent(cc.Mask).enabled = true;
-
             cc.tween(this.mapPicMask)
                 .to(2, { width: 4577, height: 4000 })
+                .call(() => {
+                    
+                })
                 .start();
         }
     }
 
     bookOnClick() {
+
         cc.tween(this.mapPicMask)
             .to(1, { width: 388, height: 236.1 })
             .start();
@@ -84,6 +89,8 @@ export default class NewClass extends cc.Component {
             cc.tween(this.mapPiccopy).delay(0).then(cc.fadeOut(0.5)).call(() => {
                 this.mapPiccopy.active = false;
                 this.isMapClick = true;
+                this.mapPiccopy.getComponent(cc.Button).enabled = true;
+
             }).start();
         }).start();
     }
