@@ -12,6 +12,7 @@ const settingBasic = {
         rotationMax: 45,
         //运行状态枚举值
         stateType: cc.Enum({
+            READY: 0, //准备
             START: 1,
             NEXT: 2, //下一关
             PAUSE: 3,
@@ -145,7 +146,7 @@ const settingBasic = {
 
     //当前游戏运行状态 全局
     game: {
-        State: 1,
+        State: 0,
         currLevel: 0,
         currBoxNum: 0,
         currDeath: 0, //当前关卡死亡数
@@ -180,7 +181,7 @@ const settingBasic = {
         monsterReduceState: "monsterReduceState",
         monsterStopPlayAction: "monsterStopPlayAction",
         //
-        jumpStartEvent:"jumpStartEvent",
+        jumpStartEvent: "jumpStartEvent",
     },
 
 

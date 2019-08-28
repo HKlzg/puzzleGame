@@ -44,6 +44,7 @@ export abstract class ViewControllorBasic extends cc.Component {
 
     isSetAudio: boolean = false;
     personAudio: [{ actionType: number, name: string }] = null;
+    isStartGame: boolean = false;
 
     onLoad() {
         console.log("=========SCENE: " + this.level + " ==========")
@@ -80,22 +81,19 @@ export abstract class ViewControllorBasic extends cc.Component {
         this.blackMask = this.cameraNode.getChildByName("blackMask")
 
     };
-    //#endregion
 
-    //#region start
     start() {
-        // cc.view.getDesignResolutionSize();
-        // cc.view.getFrameSize();
-        this.node.emit(settingBasic.gameEvent.gameStateEvent, this.stateType.START);
-        this.node.emit(settingBasic.gameEvent.gameStateEvent, this.stateType.NORMAL);
 
-        this.toStart();
     };
+
+
     //子类实现
     abstract toStart();
 
     //#endregion
     update(dt) {
+        if (!this.isStartGame) return;
+
         if (settingBasic.game.State == settingBasic.setting.stateType.PAUSE) return;
 
         this.toUpdate();
@@ -118,7 +116,7 @@ export abstract class ViewControllorBasic extends cc.Component {
         //         return console.error("----Audio---------" + err);
         //     }
         // });
-
+        
         this.loadSubPackage();
     };
     //子类实现之后 加载额外的子包
@@ -127,11 +125,18 @@ export abstract class ViewControllorBasic extends cc.Component {
     //更改当前游戏状态
     changeGameState(state) {
         settingBasic.game.State = state;
-        // console.log("================state="+state);
+
         switch (state) {
+            case this.stateType.READY:
+                console.log("==========GAME READY==========")
+                break;
             case this.stateType.START:
                 console.log("==========GAME START==========")
+                this.toStart();
+
+                this.isStartGame = true; //开始运行游戏
                 this.blackMask.active = true;
+
                 this.blackMask.runAction(
                     cc.sequence(
                         cc.fadeOut(2),
@@ -168,6 +173,7 @@ export abstract class ViewControllorBasic extends cc.Component {
                 break;
             case this.stateType.RESUME:
                 console.log("==========GAME RESUME==========")
+                cc.director.resume();
                 settingBasic.game.State = settingBasic.setting.stateType.RESUME;
                 this.audioManager.setEnablePlay(true);
                 break;
@@ -210,10 +216,12 @@ export abstract class ViewControllorBasic extends cc.Component {
     setCurrGameStep(step: string) {
         this.stepList.push(step);
     };
+
     //开启游戏机关 步骤
     abstract gameStep(setp: string);
     //人物移动步骤
     abstract moveStep(setp: number);
+
     //检测是否包含*步骤
     isContainsStep(step: string): boolean {
         // console.log("============stepList =" + this.stepList.toString()+"   step="+step);
