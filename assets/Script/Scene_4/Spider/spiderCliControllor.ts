@@ -1,8 +1,9 @@
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Label)
     label: cc.Label = null;
@@ -18,5 +19,5 @@ export default class NewClass extends cc.Component {
 
     }
 
-    // update (dt) {}
+    logicUpdate (dt) {}
 }

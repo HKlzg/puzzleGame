@@ -1,8 +1,9 @@
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
     waterMaskNode1: cc.Node = null;
     @property(cc.Node)
@@ -31,7 +32,7 @@ export default class NewClass extends cc.Component {
 
     }
 
-    update(dt) {
+    logicUpdate(dt) {
         this.waterMaskContrl();
 
     }

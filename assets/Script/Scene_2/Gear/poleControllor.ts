@@ -1,11 +1,13 @@
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 
 const { ccclass, property } = cc._decorator;
 const type = cc.Enum({
     H: 0,
     V: 1
 })
+//齿轮 上的杆子控制器
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     // @property(cc.Node)
     // gear: cc.Node = null;
@@ -23,7 +25,7 @@ export default class NewClass extends cc.Component {
         this.referencePos = this.node.parent.getChildByName("referencePos").convertToWorldSpaceAR(cc.Vec2.ZERO)
     }
 
-    update(dt) { }
+    logicUpdate(dt) { }
 
     //在物理碰撞之前
     onPreSolve(contact, self, other) {

@@ -1,5 +1,6 @@
 import toolsBasics from "../../Tools/toolsBasics";
 import settingBasic from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 const { ccclass, property } = cc._decorator;
 const actionType = settingBasic.setting.actionType;
 const actionDirection = settingBasic.setting.actionDirection;
@@ -9,7 +10,7 @@ const phyType = cc.Enum({
 })
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Node)
     forbiddenNode: cc.Node = null;
@@ -79,7 +80,7 @@ export default class NewClass extends cc.Component {
         this.forbiddenNode.active = false;
     }
 
-    update(dt) {
+    logicUpdate(dt) {
         if (this.node.y < -1500) {
             this.node.destroy()
         }

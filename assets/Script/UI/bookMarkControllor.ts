@@ -55,10 +55,12 @@ export default class NewClass extends cc.Component {
                     settingBasic.setting.stateType.RESUME;
 
             this.canvas.emit(settingBasic.gameEvent.gameStateEvent, state);
-
-            let currPagePic: cc.Node = this.contentList[this.currPageNum].getChildByName("PicStory");
-            //mapPicCopy更换为当前页面的图片
-            this.mapPicCopy.getComponent(cc.Sprite).spriteFrame = currPagePic.getComponent(cc.Sprite).spriteFrame;
+            
+            if (this.contentList[this.currPageNum]) {
+                let currPagePic: cc.Node = this.contentList[this.currPageNum].getChildByName("PicStory");
+                //mapPicCopy更换为当前页面的图片
+                this.mapPicCopy.getComponent(cc.Sprite).spriteFrame = currPagePic.getComponent(cc.Sprite).spriteFrame;
+            }
 
             this.isContentMapClick = false;
             this.mapPicCopy.active = true;
@@ -90,7 +92,7 @@ export default class NewClass extends cc.Component {
                 this.mapPicCopy.getComponent(cc.Button).enabled = true;
 
                 //暂停游戏
-                // this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.PAUSE)
+                this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.PAUSE)
 
             }).start();
         }).start();

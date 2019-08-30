@@ -1,3 +1,4 @@
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 
 const { ccclass, property } = cc._decorator;
 
@@ -6,7 +7,7 @@ const direction = cc.Enum({
     Right: 1,
 })
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Node)
     otherWood: cc.Node = null;
@@ -81,5 +82,5 @@ export default class NewClass extends cc.Component {
     }
 
 
-    // update (dt) {}
+    logicUpdate (dt) {}
 }

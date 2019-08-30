@@ -1,13 +1,15 @@
 import { ViewControllorBasic } from "../Common/viewControllorBasic";
- 
+
 const { ccclass, property } = cc._decorator;
 @ccclass
 export default class NewClass extends ViewControllorBasic {
- 
+
     toStart() {
         this.audioManager.playLoopBGM("river");
-        this.brotherWalkNode.emit(this.settingBasic.gameEvent.brotherSetAudio,"walkInWater")
 
+        let msg: [{ actionType: number, name: string }] = [{ actionType: 0, name: "" }];
+        msg.push({ actionType: this.actionType.Jump, name: "walkInRiver" });
+        this.setPersonAudioName(msg);
     }
     //重写
     loadSubPackage() {
@@ -30,7 +32,6 @@ export default class NewClass extends ViewControllorBasic {
     // 重写 设置brother移动步骤
     moveStep(nextStep) {
 
-        // console.log("=========nextStep=" + nextStep);
         let order: { direction: string, action: string } = { direction: "R", action: "WAIT" };
 
         switch (nextStep) {
@@ -43,7 +44,6 @@ export default class NewClass extends ViewControllorBasic {
                 break;
             case 2://向上爬
                 //先检测是否开启了下面梯子的机关
-                // console.log("=======moveStep=========" + nextStep + "  " + this.isContainsStep("1") + "  len=" + this.stepList.length)
                 if (this.isContainsStep("1") && this.isContainsStep("2")) {
                     order = { direction: "U", action: "CLIMB" };
                 }
@@ -56,8 +56,6 @@ export default class NewClass extends ViewControllorBasic {
         }
         this.brotherNode.emit(this.settingBasic.gameEvent.brotherActionEvent, order)
         //记录当前开启的机关步骤
-        //this.setCurrGameStep(nextStep);
-
     }
     //重写
     toUpdate() {

@@ -1,3 +1,4 @@
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 
 const { ccclass, property } = cc._decorator;
 
@@ -7,7 +8,7 @@ const sensorType = cc.Enum({
 })
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Node)
     spiderNode: cc.Node = null;
@@ -23,7 +24,7 @@ export default class NewClass extends cc.Component {
 
     }
 
-    // update (dt) {}
+    logicUpdate (dt) {}
     onCollisionEnter(other, self) {
 
         switch (this.type) {

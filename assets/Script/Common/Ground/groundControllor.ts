@@ -1,9 +1,10 @@
 import settingBasic from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class Ground extends cc.Component {
+export default class Ground extends LogicBasicComponent {
 
     private canvasNode = null;
     onLoad() {
@@ -15,4 +16,5 @@ export default class Ground extends cc.Component {
        
 
     }
+    logicUpdate(){}
 }

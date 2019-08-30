@@ -1,9 +1,10 @@
 import setting from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
     @property(cc.SpriteFrame)
     boxShadow: cc.SpriteFrame = null;
     @property(cc.SpriteFrame)
@@ -55,7 +56,7 @@ export default class NewClass extends cc.Component {
         this.node.destroy();
     }
 
-    update() {
+    logicUpdate() {
         if (this.isContact) {
             this.isOK = false
             this.sprite.spriteFrame != this.boxShadowRed ?

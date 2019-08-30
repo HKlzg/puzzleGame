@@ -2,6 +2,7 @@ const { ccclass, property } = cc._decorator;
 import tools from "../../Tools/toolsBasics";
 import setting from "../../Setting/settingBasic";
 import settingBasic from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 
 const spiderActionType = cc.Enum({
     wait: 0,
@@ -18,7 +19,7 @@ const moveStep = cc.Enum({
     fourth: 4
 })
 @ccclass
-export default class spiderClass extends cc.Component {
+export default class spiderClass extends LogicBasicComponent {
 
     @property(cc.Node)
     spider: cc.Node = null;
@@ -44,12 +45,9 @@ export default class spiderClass extends cc.Component {
         this.scaleX = this.node.scaleX;
     }
 
-    update(dt) {
-        if (!this.isStart || settingBasic.game.State == settingBasic.setting.stateType.PAUSE) return;
+    logicUpdate(dt) {
 
         this.moveByAction(dt);
-
-
         if (this.currAction == spiderActionType.walk) {
             let ang = this.node.angle > 360 ? this.node.angle % 360 : this.node.angle;
             if (ang <= 210 && ang >= 130) {

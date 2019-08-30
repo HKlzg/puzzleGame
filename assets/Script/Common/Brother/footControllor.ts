@@ -1,9 +1,10 @@
 
 const { ccclass, property } = cc._decorator;
 import settingBasic from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Node)
     walkNode: cc.Node = null;
@@ -15,8 +16,8 @@ export default class NewClass extends cc.Component {
         this.node.on(settingBasic.gameEvent.jumpStartEvent, this.startJump, this)
     }
 
-    // update(dt) {      
-    //  }
+    logicUpdate(dt) {      
+     }
     startJump(isStart) {
         this.isJump = isStart;
     }

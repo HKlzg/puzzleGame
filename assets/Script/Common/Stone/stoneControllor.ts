@@ -1,8 +1,9 @@
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     // LIFE-CYCLE CALLBACKS:
 
@@ -12,7 +13,7 @@ export default class NewClass extends cc.Component {
 
     }
 
-    update (dt) {
+    logicUpdate (dt) {
         this.node.getComponent(cc.PhysicsCircleCollider).apply()
     }
 

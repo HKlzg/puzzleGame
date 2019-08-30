@@ -2,6 +2,7 @@
 const { ccclass, property } = cc._decorator;
 import settingBasic from "../../Setting/settingBasic";
 import tools from "../../Tools/toolsBasics";
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 
 class AudioType {
     walkName: string;
@@ -16,7 +17,7 @@ const actionTags = cc.Enum({
 })
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
     footNode: cc.Node = null;
 
@@ -42,6 +43,7 @@ export default class NewClass extends cc.Component {
     //设置对应动作的声音
     setWalkAudioName(msgList: [{ actionType: number, name: string }]) {
         // console.log("=============this.walkAudioName=" + JSON.stringify(msgList))
+        if (!msgList || msgList.length <= 0) return
 
         let type = settingBasic.setting.actionType;
         msgList.forEach((msg) => {
@@ -59,7 +61,7 @@ export default class NewClass extends cc.Component {
 
     }
 
-    // update (dt) {}
+    logicUpdate (dt) {}
     //--------------climbBox------------------暂时取消------------
     climbBoxStart() {
         if (this.isClimbBox) return;

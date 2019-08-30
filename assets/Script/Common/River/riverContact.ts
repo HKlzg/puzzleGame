@@ -1,8 +1,9 @@
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Integer)
     tangntSpeed: number = 5;
@@ -11,6 +12,7 @@ export default class NewClass extends cc.Component {
     start() {
 
     }
+    logicUpdate(){}
 
     onPreSolve(contact, self, other) {
 

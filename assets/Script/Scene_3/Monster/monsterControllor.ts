@@ -2,6 +2,7 @@
 const { ccclass, property } = cc._decorator;
 import setting from "../../Setting/settingBasic";
 import toolsBasics from "../../Tools/toolsBasics";
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 
 //monster状态
 const monsterActionType = cc.Enum({
@@ -19,7 +20,7 @@ const monsterActionType = cc.Enum({
 const personActionType = setting.setting.actionType;
 
 @ccclass
-export default class LeopardControllor extends cc.Component {
+export default class LeopardControllor extends LogicBasicComponent {
 
     @property(cc.Node)
     personNode: cc.Node = null;
@@ -64,7 +65,7 @@ export default class LeopardControllor extends cc.Component {
         this.scheduleOnce(() => { this.isMonsterActionStart = true; }, 1)
     }
 
-    update(dt) {
+    logicUpdate(dt) {
         //是否开始Action
         if (!this.isMonsterActionStart) return;
 

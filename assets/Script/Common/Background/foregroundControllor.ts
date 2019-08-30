@@ -1,8 +1,9 @@
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Node)
     cameraNode: cc.Node = null;
@@ -15,7 +16,7 @@ export default class NewClass extends cc.Component {
     start() {
         this.preCameraPos = this.cameraNode.position;
      }
-    update(dt) {
+    logicUpdate(dt) {
         let currCamerPos = this.cameraNode.position;
 
         if (!this.preCameraPos.fuzzyEquals(currCamerPos,1)) {

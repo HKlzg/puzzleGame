@@ -2,11 +2,12 @@
 const { ccclass, property } = cc._decorator;
 import toolsBasics from "../Tools/toolsBasics";
 import settingBasic from "../Setting/settingBasic";
+import { LogicBasicComponent } from "./LogicBasic/LogicBasicComponent";
 
 const leveList = settingBasic.setting.level
 
 @ccclass
-export abstract class ViewControllorBasic extends cc.Component {
+export abstract class ViewControllorBasic extends LogicBasicComponent {
 
     @property({ type: cc.Enum(leveList), displayName: "关卡设定" })
     public level = leveList.lv1;
@@ -18,7 +19,6 @@ export abstract class ViewControllorBasic extends cc.Component {
     @property(cc.Node)
     brotherNode: cc.Node = null;
 
-    plotNode: cc.Node = null;
     //Brother Move 
     minX: number = 0;
     minY: number = 0;
@@ -44,7 +44,6 @@ export abstract class ViewControllorBasic extends cc.Component {
 
     isSetAudio: boolean = false;
     personAudio: [{ actionType: number, name: string }] = null;
-    isStartGame: boolean = false;
 
     onLoad() {
         console.log("=========SCENE: " + this.level + " ==========")
@@ -83,7 +82,12 @@ export abstract class ViewControllorBasic extends cc.Component {
     };
 
     start() {
+        //test
+        this.toStart();
+        
+        this.changeGameState(settingBasic.setting.stateType.START);
 
+        this.changeGameState(settingBasic.setting.stateType.PAUSE)
     };
 
 
@@ -91,11 +95,8 @@ export abstract class ViewControllorBasic extends cc.Component {
     abstract toStart();
 
     //#endregion
-    update(dt) {
-        if (!this.isStartGame) return;
-
-        if (settingBasic.game.State == settingBasic.setting.stateType.PAUSE) return;
-
+    logicUpdate(dt) {
+    
         this.toUpdate();
         if (this.personAudio && this.brotherWalkNode.hasEventListener(settingBasic.gameEvent.brotherSetAudio) && !this.isSetAudio) {
             this.brotherWalkNode.emit(this.settingBasic.gameEvent.brotherSetAudio, this.personAudio);
@@ -116,7 +117,7 @@ export abstract class ViewControllorBasic extends cc.Component {
         //         return console.error("----Audio---------" + err);
         //     }
         // });
-        
+
         this.loadSubPackage();
     };
     //子类实现之后 加载额外的子包
@@ -132,9 +133,7 @@ export abstract class ViewControllorBasic extends cc.Component {
                 break;
             case this.stateType.START:
                 console.log("==========GAME START==========")
-                this.toStart();
-
-                this.isStartGame = true; //开始运行游戏
+                
                 this.blackMask.active = true;
 
                 this.blackMask.runAction(
@@ -165,17 +164,16 @@ export abstract class ViewControllorBasic extends cc.Component {
                 break;
 
             case this.stateType.PAUSE:
-                settingBasic.game.State = settingBasic.setting.stateType.PAUSE;
                 console.log("==========GAME PAUSE==========")
 
-                cc.director.pause();
+                // cc.director.pause();
                 this.audioManager.setEnablePlay(false);
                 break;
             case this.stateType.RESUME:
                 console.log("==========GAME RESUME==========")
-                cc.director.resume();
-                settingBasic.game.State = settingBasic.setting.stateType.RESUME;
+                // cc.director.resume();
                 this.audioManager.setEnablePlay(true);
+
                 break;
             case this.stateType.REBORN:
                 //只能连续死一次

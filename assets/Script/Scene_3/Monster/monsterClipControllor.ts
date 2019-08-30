@@ -2,6 +2,7 @@
 const { ccclass, property } = cc._decorator;
 import tools from "../../Tools/toolsBasics";
 import setting from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 const monsterActionType = cc.Enum({
     sleep: 0,
     standOrLieDown: 1, //过度 
@@ -10,7 +11,7 @@ const monsterActionType = cc.Enum({
     attack: 4  //攻击
 })
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     // LIFE-CYCLE CALLBACKS:
     // onLoad () {}
@@ -21,7 +22,7 @@ export default class NewClass extends cc.Component {
 
     }
 
-    // update (dt) {}
+    logicUpdate (dt) {}
 
     jumpStart() {
         if (this.isJump) return

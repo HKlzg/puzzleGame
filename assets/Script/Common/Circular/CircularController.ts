@@ -1,9 +1,10 @@
 
 const { ccclass, property } = cc._decorator;
 import settingBasic from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(Number)
     angle = 1;
@@ -22,7 +23,7 @@ export default class NewClass extends cc.Component {
         this.rdis = this.node.width;
     }
 
-    update(dt) {
+    logicUpdate(dt) {
         if (this.angle == 1)
             this.node.angle += this.speed;
         else

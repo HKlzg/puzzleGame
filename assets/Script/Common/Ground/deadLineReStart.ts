@@ -1,8 +1,9 @@
 
 const { ccclass, property } = cc._decorator;
 import setting from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 @ccclass
-export default class DeadLineBasic extends cc.Component {
+export default class DeadLineBasic extends LogicBasicComponent {
 
     // onLoad () {}
     canvas: cc.Node = null;
@@ -13,7 +14,7 @@ export default class DeadLineBasic extends cc.Component {
     start() {
     }
 
-    // update (dt) {}
+    logicUpdate (dt) {}
     onBeginContact(contact, self, other) {
         //和人物碰撞 
         if (other.node.groupIndex == 6 && !this.isContact) {

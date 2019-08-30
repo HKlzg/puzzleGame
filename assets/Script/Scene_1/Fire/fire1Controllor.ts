@@ -1,9 +1,10 @@
 import ArrowsService from "../../Tools/toolsBasics"
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Sprite)
     sprite: cc.Sprite = null;
@@ -20,11 +21,9 @@ export default class NewClass extends cc.Component {
 
     start () {
 
-
-
     }
 
-    update (dt) {
+    logicUpdate (dt) {
         this.time += 0.01;
         if (this.lable <= this.sprtelist.length - 1) {
             if (this.time >= 0.08) {

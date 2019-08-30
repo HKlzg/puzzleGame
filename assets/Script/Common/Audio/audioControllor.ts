@@ -64,6 +64,7 @@ export default class AudioManager {
 
     //设置是否播放/停止
     setEnablePlay(enable: boolean) {
+        
         this.isEnablePlay = enable;
         this.isEnablePlay && this.currMusicName ?
             cc.audioEngine.playMusic(this.audioList[this.currMusicName], true) :

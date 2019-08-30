@@ -1,11 +1,12 @@
 
 const { ccclass, property } = cc._decorator;
 import settingBasic from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 
 const itemType = settingBasic.setting.itemType;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
     cameraNode: cc.Node = null;
     @property(cc.Node)
@@ -70,7 +71,7 @@ export default class NewClass extends cc.Component {
         // console.log("=========0==len= " + this.itemList[2].getComponent("itemControllor").getItemType())
     }
 
-    update(dt) {
+    logicUpdate(dt) {
 
         // this.checkItemPos();
     }

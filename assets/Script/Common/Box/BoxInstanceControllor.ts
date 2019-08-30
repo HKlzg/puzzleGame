@@ -1,11 +1,12 @@
 import toolsBasics from "../../Tools/toolsBasics";
 import settingBasic from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 const { ccclass, property } = cc._decorator;
 const actionType = settingBasic.setting.actionType;
 const actionDirection = settingBasic.setting.actionDirection;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Prefab)
     boxShadowPerfab: cc.Prefab = null;
@@ -48,7 +49,7 @@ export default class NewClass extends cc.Component {
 
     }
 
-    update(dt) {
+    logicUpdate(dt) {
         if (this.node.y < -1500) {
             this.node.destroy()
         }

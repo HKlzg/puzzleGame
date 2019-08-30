@@ -1,8 +1,9 @@
 
 const { ccclass, property } = cc._decorator;
 import setting from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
     waterLeft: cc.Node = null;
     @property(cc.Node)
@@ -21,7 +22,7 @@ export default class NewClass extends cc.Component {
         this.canvas = cc.find("Canvas");
     }
 
-    update(dt) {
+    logicUpdate(dt) {
         this.waterContrl();
         this.maskContrl();
     }

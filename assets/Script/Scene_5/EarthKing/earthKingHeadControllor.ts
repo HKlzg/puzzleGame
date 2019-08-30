@@ -1,8 +1,9 @@
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Node)
     eye_left: cc.Node = null;
@@ -49,7 +50,7 @@ export default class NewClass extends cc.Component {
         }, 2)
     }
 
-    update(dt) {
+    logicUpdate(dt) {
         if (!this.isStartGame) return;
 
         this.stareAtPerson();

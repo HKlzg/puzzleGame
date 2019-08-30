@@ -1,9 +1,10 @@
 
 const { ccclass, property } = cc._decorator;
 import setting from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Node)
     monster: cc.Node = null;
@@ -17,7 +18,7 @@ export default class NewClass extends cc.Component {
 
     }
 
-    // update (dt) {}
+    logicUpdate (dt) {}
 
     onCollisionEnter(other, self) {
         if (other.node.groupIndex == 6) { //人 - 6

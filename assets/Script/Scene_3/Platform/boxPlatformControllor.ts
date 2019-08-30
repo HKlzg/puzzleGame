@@ -1,7 +1,9 @@
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
+
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Node)
     cage: cc.Node = null;
@@ -26,7 +28,7 @@ export default class NewClass extends cc.Component {
         this.cagePhyBody = this.cage.getComponent(cc.PhysicsBoxCollider);
     }
 
-    update(dt) {
+    logicUpdate(dt) {
         let pos = this.node.position;
         this.node.x = this.maxPos.x;
         if (!this.isDown) { //上升

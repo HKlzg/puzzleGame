@@ -1,5 +1,6 @@
 
 import settingBasic from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 const { ccclass, property } = cc._decorator;
 const actionType = settingBasic.setting.actionType;
 const actionDirection = settingBasic.setting.actionDirection;
@@ -17,7 +18,7 @@ class operateDataType {
 }
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Node)
     tipNode: cc.Node = null;
@@ -48,7 +49,7 @@ export default class NewClass extends cc.Component {
         this.nextTip();
     }
 
-    // update (dt) {}
+    logicUpdate (dt) {}
     // onEnable() {
     //     cc.director.pause();
     // }

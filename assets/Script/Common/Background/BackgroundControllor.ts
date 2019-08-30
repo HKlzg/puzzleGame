@@ -2,12 +2,13 @@
 const { ccclass, property } = cc._decorator;
 import toolsBasics from "../../Tools/toolsBasics";
 import settingBasic from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 
 const actionType = settingBasic.setting.actionType;
 const actionDirection = settingBasic.setting.actionDirection;
 
 @ccclass
-export class BackgroundControllor extends cc.Component {
+export class BackgroundControllor extends LogicBasicComponent {
 
     @property(cc.Node)
     cameraNode: cc.Node = null;
@@ -27,7 +28,6 @@ export class BackgroundControllor extends cc.Component {
 
     @property(cc.Node)
     keyNodeList: Array<cc.Node> = [];
-
 
     //Brother Move 
     minX: number = 0;
@@ -118,12 +118,10 @@ export class BackgroundControllor extends cc.Component {
 
     start() {
         this.moveCamera();
-
-    };
+     };
 
     //#endregion
-    update(dt) {
-        if (!this.isStartGame || (settingBasic.game.State == settingBasic.setting.stateType.PAUSE)) return;
+    logicUpdate(dt) {
 
         if (this.playerState != this.playerStateType.LongTouch) {
             this.cameraControllor();
@@ -192,7 +190,7 @@ export class BackgroundControllor extends cc.Component {
         if (!isShow || !this.keyNodeList || (this.keyNodeList && this.keyNodeList.length == 0)) {
             cc.tween(this.cameraNode).to(1, { position: this.initCameraPos }, { easing: "cubicInOut" }).start();
             this.isStartGame = true;
- 
+
             return
         } else {
             let cameraPos = this.cameraNode.position;

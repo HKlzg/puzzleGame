@@ -1,12 +1,13 @@
 
 const { ccclass, property } = cc._decorator;
 import settingBasic from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 
 const actionType = settingBasic.setting.actionType;
 const actionDirection = settingBasic.setting.actionDirection;
 
 @ccclass
-export abstract class BrotherBasic extends cc.Component {
+export abstract class BrotherBasic extends LogicBasicComponent {
     @property(cc.Node)
     brotherWalkNode: cc.Node = null; //行走动画对象
     // @property(cc.Node)
@@ -198,7 +199,7 @@ export abstract class BrotherBasic extends cc.Component {
         this.preOrder = this.order;
     }
 
-    update(dt) {
+    logicUpdate(dt) {
         if (!this.isDeath) {
 
             //更新位置 只对持续位移的动作  JUMP/Climb动画位移在动画帧事件中写

@@ -1,8 +1,9 @@
 const { ccclass, property } = cc._decorator;
 import tools from "../../Tools/toolsBasics";
 import setting from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
     river: cc.Node = null;
     @property(cc.Node)
@@ -50,7 +51,7 @@ export default class NewClass extends cc.Component {
         this.scheduleOnce(() => { this.isStartSwim = true }, 10);
     }
 
-    update(dt) {
+    logicUpdate(dt) {
 
         if (setting.game.State == setting.setting.stateType.PAUSE) return;
         //检测是否人已经死亡

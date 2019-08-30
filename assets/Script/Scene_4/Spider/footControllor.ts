@@ -1,9 +1,10 @@
 
 const { ccclass, property } = cc._decorator;
 import setting from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Node)
     spiderNode: cc.Node = null;
@@ -15,7 +16,7 @@ export default class NewClass extends cc.Component {
         this.canvas = cc.find("Canvas")
     }
 
-    // update (dt) {}
+    logicUpdate(dt) { }
 
     onCollisionEnter(other, self) {
         if (!this.isContact && other.node.groupIndex == 6) {

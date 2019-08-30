@@ -1,6 +1,7 @@
 
 
 import setting from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 const { ccclass, property } = cc._decorator;
 const direction = cc.Enum({
     Stop: 0,
@@ -9,7 +10,7 @@ const direction = cc.Enum({
 })
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Node)
     waterLeft: cc.Node = null;
@@ -31,7 +32,7 @@ export default class NewClass extends cc.Component {
 
     }
 
-    update(dt) {
+    logicUpdate(dt) {
         this.waterContrl()
 
         // if (this.waterDirection == direction.Stop) {

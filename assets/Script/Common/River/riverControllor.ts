@@ -1,9 +1,10 @@
 import toolsBasics from "../../Tools/toolsBasics";
 import settingBasic from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class River extends cc.Component {
+export default class River extends LogicBasicComponent{
 
     @property(cc.Node)
     far_bg: Array<cc.Node> = []
@@ -17,9 +18,9 @@ export default class River extends cc.Component {
         toolsBasics.photoSetPos(this.far_bg[0], this.far_bg[1]);
     }
 
-    update(dt) {
+    logicUpdate(dt) {
          toolsBasics.photoScroll(this.far_bg, this.far_speed);
-        
+ 
         
     }
   

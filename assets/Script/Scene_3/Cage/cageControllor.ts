@@ -1,18 +1,19 @@
 
 const { ccclass, property } = cc._decorator;
 import setting from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Node)
     monster: cc.Node = null;
- 
+
     start() {
 
     }
 
-    // update (dt) {}
+    logicUpdate(dt) { }
     //物理碰撞
     onPreSolve(contact, self, other) {
         if (other.node.groupIndex == 6) { //忽略 和人的碰撞

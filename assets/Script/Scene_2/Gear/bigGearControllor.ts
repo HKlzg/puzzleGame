@@ -1,5 +1,6 @@
 import tools from "../../Tools/toolsBasics";
 import setting from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 const { ccclass, property } = cc._decorator;
 class childType {
     node: cc.Node;
@@ -12,7 +13,7 @@ class childType {
     };
 }
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Node)
     gear: cc.Node = null;
@@ -53,7 +54,7 @@ export default class NewClass extends cc.Component {
         this.prePos = this.node.position;
         this.preAngle = this.node.angle;
     }
-    update(dt) {
+    logicUpdate(dt) {
 
         this.updateChildrenBody()
     }

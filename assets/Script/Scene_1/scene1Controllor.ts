@@ -9,7 +9,7 @@ export default class NewClass extends ViewControllorBasic {
     toStart() {
         //不能直接在start 中emit 信息 ,原因:对应的node 可能还没创建
         this.audioManager.playLoopBGM("river");
-        //每个关卡 单独设置人物动作的声音
+         //每个关卡 单独设置人物动作的声音
         let msg: [{ actionType: number, name: string }] = [{ actionType: 0, name: "" }];
         msg.push({ actionType: this.actionType.Walk, name: "null" });
         msg.push({ actionType: this.actionType.Jump, name: "walkInRiver" });

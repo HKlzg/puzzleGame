@@ -1,8 +1,9 @@
+import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Node)
     gearL: cc.Node = null;
@@ -16,7 +17,7 @@ export default class NewClass extends cc.Component {
 
     }
 
-    update(dt) {
+    logicUpdate(dt) {
         this.setSpeed();
     }
     setSpeed() {

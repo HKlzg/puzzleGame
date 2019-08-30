@@ -1,9 +1,10 @@
 
 const { ccclass, property } = cc._decorator;
 import settingBasic from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 
 @ccclass
-export default class NewClass extends cc.Component {
+export default class NewClass extends LogicBasicComponent {
 
     @property(cc.ProgressBar)
     progressBar: cc.ProgressBar = null;
@@ -20,7 +21,7 @@ export default class NewClass extends cc.Component {
         this.txtLabel.string = this.loadLevel >= 0 ? "第" + this.loadLevel + "关" : "恭喜通关";
     }
 
-    update(dt) {
+    logicUpdate(dt) {
         this.loading();
     }
     loading() {
