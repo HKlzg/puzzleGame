@@ -1,0 +1,231 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "fullAttackClip",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 1.0166666666666666,
+  "sample": 60,
+  "speed": 0.7,
+  "wrapMode": 2,
+  "curveData": {
+    "props": {
+      "angle": [
+        {
+          "frame": 0,
+          "value": 0
+        }
+      ],
+      "y": [
+        {
+          "frame": 0,
+          "value": -35.419
+        },
+        {
+          "frame": 0.5166666666666667,
+          "value": -119.89
+        }
+      ]
+    },
+    "paths": {
+      "body": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body/head": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 2
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": 308.223
+            },
+            {
+              "frame": 0.5,
+              "value": 298.155
+            }
+          ]
+        }
+      },
+      "body/head/eyes_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body/head/eyes_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body/head/chin": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": -205.433
+            }
+          ]
+        }
+      },
+      "body/head/grap": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "shoudler_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5166666666666667,
+              "value": -137
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": -22.962999999999994
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": -40
+            }
+          ]
+        }
+      },
+      "shoudler_right/joints_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5166666666666667,
+              "value": -23.789
+            }
+          ]
+        }
+      },
+      "shoudler_right/joints_right/leg_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": -29.59
+            }
+          ]
+        }
+      },
+      "shoulder_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5166666666666667,
+              "value": 101.419
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": 13.448999999999998
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": -48
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": -48
+            }
+          ]
+        }
+      },
+      "shoulder_left/joints_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5166666666666667,
+              "value": 15.554
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": -136
+            }
+          ]
+        }
+      },
+      "shoulder_left/joints_left/leg_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5166666666666667,
+              "value": 32.081
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": -39.618
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": []
+}
