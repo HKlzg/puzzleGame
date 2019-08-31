@@ -84,10 +84,10 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
     start() {
         //test
         this.toStart();
-        
+
         this.changeGameState(settingBasic.setting.stateType.START);
 
-        this.changeGameState(settingBasic.setting.stateType.PAUSE)
+        this.level == 1 ? this.changeGameState(settingBasic.setting.stateType.PAUSE) : null;
     };
 
 
@@ -96,7 +96,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
 
     //#endregion
     logicUpdate(dt) {
-    
+
         this.toUpdate();
         if (this.personAudio && this.brotherWalkNode.hasEventListener(settingBasic.gameEvent.brotherSetAudio) && !this.isSetAudio) {
             this.brotherWalkNode.emit(this.settingBasic.gameEvent.brotherSetAudio, this.personAudio);
@@ -133,7 +133,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
                 break;
             case this.stateType.START:
                 console.log("==========GAME START==========")
-                
+
                 this.blackMask.active = true;
 
                 this.blackMask.runAction(

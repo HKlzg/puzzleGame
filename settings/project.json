@@ -489,13 +489,13 @@
     "UI",
     "-tips- 可碰撞 不受引导camera"
   ],
-  "last-module-event-record-time": 1565760392478,
+  "last-module-event-record-time": 1567220724240,
   "simulator-orientation": false,
   "simulator-resolution": {
     "height": 640,
     "width": 960
   },
+  "start-scene": "current",
   "use-customize-simulator": true,
-  "use-project-simulator-setting": false,
-  "start-scene": "current"
+  "use-project-simulator-setting": false
 }
