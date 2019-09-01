@@ -8,28 +8,6 @@ export const toolsBasics = {
     getAudioManager: function (): AudioControllor {
         return AudioControllor.getAudioManager();
     },
-    
-    /**
-     * lzg 計算角度 末位置,初始位置
-     * */
-    getVectorRadians: function (x1, y1, x2, y2) {
-        // cc.log("getVectorRadians-----------------")
-        let len_y = y2 - y1;
-        let len_x = x2 - x1;
-
-        let tan_yx = Math.abs(len_y) / Math.abs(len_x);
-        let angle = 0;
-        if (len_y > 0 && len_x < 0) {
-            angle = Math.atan(tan_yx) * 180 / Math.PI - 90;
-        } else if (len_y > 0 && len_x > 0) {
-            angle = 90 - Math.atan(tan_yx) * 180 / Math.PI;
-        } else if (len_y < 0 && len_x < 0) {
-            angle = -Math.atan(tan_yx) * 180 / Math.PI - 90;
-        } else if (len_y < 0 && len_x > 0) {
-            angle = Math.atan(tan_yx) * 180 / Math.PI + 90;
-        }
-        return angle;
-    },
 
     /** 产生绳子
      * 预制资源 和 两端节点必须包含 RevoluteJoint 组件
@@ -107,7 +85,9 @@ export const toolsBasics = {
     },
 
     /**
-     * 用来确定滚动的两个图片的初始位置
+     * 用来确定滚动的两个图片的初始位置,第一张默认的X初始位置是 0 ;
+     * 利用前一张图片的边框大小设置下一张图片的位置
+     * [只适合向左移动]
      * @param bg1 
      * @param bg2 
      */

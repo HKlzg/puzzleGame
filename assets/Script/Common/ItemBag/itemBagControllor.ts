@@ -20,10 +20,11 @@ export default class NewClass extends LogicBasicComponent {
     camera: cc.Camera = null;
     itemList: Array<cc.Node> = [];
     // onLoad () {}
-    spriteFrameList: {} = {};
+    spriteFrameList: {} = {};//顺序和 放置pic 的顺序一致
 
     currCtrlIndex: number = 0; //当前控制的物品 
     start() {
+        this.node.on(settingBasic.gameEvent.getItemEvent, this.getItemFromScene, this);
 
         this.camera = this.cameraNode.getComponent(cc.Camera)
 
@@ -32,11 +33,20 @@ export default class NewClass extends LogicBasicComponent {
         settingBasic.fun.addItems(itemType.gear)
         settingBasic.fun.addItems(itemType.tear)
 
+        this.showItems();
+    }
+
+    logicUpdate(dt) {
+
+        // this.checkItemPos();
+    }
+
+    //显示已获得的物品
+    showItems() {
         let list = settingBasic.game.inventory;
 
         this.picList.forEach(pic => {
             this.spriteFrameList[pic.name] = pic;
-
         })
 
         list.forEach(item => {
@@ -68,13 +78,8 @@ export default class NewClass extends LogicBasicComponent {
             this.itemList.push(node);
 
         });
-        // console.log("=========0==len= " + this.itemList[2].getComponent("itemControllor").getItemType())
     }
 
-    logicUpdate(dt) {
-
-        // this.checkItemPos();
-    }
     //检测点击区域是否包含道具
     public checkItemArea(touchWorldPos: cc.Vec2): cc.Node {
         //不同camera 下的左坐标比较
@@ -105,5 +110,41 @@ export default class NewClass extends LogicBasicComponent {
             this.itemList[this.currCtrlIndex].active = true;
         }
     }
+
+
+    /**
+     *从场景活动道具 
+     * @param type :item类别
+     * @param fun 回调函数
+     */
+    getItemFromScene(type: number, fun: Function) {
+        let item = new cc.Node();
+        let sprite = item.addComponent(cc.Sprite);
+        switch (type) {
+            case itemType.flower:
+                sprite.spriteFrame = this.spriteFrameList["flower"];
+                break;
+            case itemType.gear:
+                sprite.spriteFrame = this.spriteFrameList["gear"];
+                break;
+            case itemType.tear:
+                sprite.spriteFrame = this.spriteFrameList["tear"];
+                break;
+            default:
+                break;
+        }
+        item.setPosition(cc.Vec2.ZERO);
+        item.active = true;
+        this.cameraNode.addChild(item);
+        item.scale = 0.1;
+
+        cc.tween(item).to(1, { scale: 1 }).delay(3).
+            to(2, { position: cc.v2(0, -1000), scale: 0.1 }).call(() => {
+                settingBasic.fun.addItems(type);
+                //执行回调函数
+                fun(true);
+            }).start();
+    }
+
 
 }

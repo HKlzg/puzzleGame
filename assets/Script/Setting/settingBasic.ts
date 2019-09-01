@@ -140,7 +140,18 @@ const settingBasic = {
         },
         //增加物品
         addItems(itemType: number) {
-            settingBasic.game.inventory.push(itemType);
+            let list = settingBasic.game.inventory;
+            let hasItem = false;
+            for (let index = 0; index < list.length; index++) {
+                const element = list[index];
+                if (element == itemType) {
+                    hasItem = true;
+                    return;
+                }
+            }
+            if (!hasItem) {
+                settingBasic.game.inventory.push(itemType);
+            }
         }
     },
 
@@ -182,6 +193,8 @@ const settingBasic = {
         monsterStopPlayAction: "monsterStopPlayAction",
         //
         jumpStartEvent: "jumpStartEvent",
+        //itemBag
+        getItemEvent: "getItemEvent",
     },
 
 

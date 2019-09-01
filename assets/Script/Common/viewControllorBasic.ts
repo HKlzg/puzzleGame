@@ -60,7 +60,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
         var draw = cc.PhysicsManager.DrawBits;
         // cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
         // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
-        // cc.director.getCollisionManager().enabledDebugDraw = true; //碰撞区域 
+        cc.director.getCollisionManager().enabledDebugDraw = true; //碰撞区域 
         // 开启碰撞检测
         cc.director.getCollisionManager().enabled = true;
 
@@ -150,6 +150,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
                 console.log("==========GAME NORMAL==========")
                 break;
             case this.stateType.NEXT:
+                    console.log("==========GAME NEXT==========")
                 //切换到下一个场景
                 let nextLevel = this.level + 1;
                 //开启引导镜头
