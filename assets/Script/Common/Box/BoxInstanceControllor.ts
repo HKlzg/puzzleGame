@@ -13,6 +13,7 @@ export default class NewClass extends LogicBasicComponent {
 
     brotherNode: cc.Node = null;
     camera: cc.Camera = null;
+    cameraNode: cc.Node = null;
     maskNode: cc.Node = null;
     canvas: cc.Node = null;
     circular: cc.Node = null;
@@ -28,11 +29,15 @@ export default class NewClass extends LogicBasicComponent {
     isDeath: boolean = false;
 
     preTouchId: number = 0;
+    followObject: cc.Node = null;//跟随的物体
+
+    isforegContrl: any = null; //脚本对象
     start() {
 
         this.canvas = cc.find("Canvas");
         this.maskNode = this.canvas.getChildByName("Mask");
-        this.camera = this.canvas.getChildByName("Camera").getComponent(cc.Camera);
+        this.cameraNode = this.canvas.getChildByName("Camera")
+        this.camera = this.cameraNode.getComponent(cc.Camera);
         this.brotherNode = this.maskNode.getChildByName("Brother");
         this.circular = this.canvas.getChildByName("Circular");
         this.grap = this.circular.getChildByName("DrawLine").getComponent(cc.Graphics)
@@ -47,6 +52,10 @@ export default class NewClass extends LogicBasicComponent {
         this.node.on(cc.Node.EventType.TOUCH_END, this.touchEnd, this);
         this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.touchEnd, this);
 
+        //
+        this.isforegContrl = this.node.addComponent("foregroundControllor");
+        this.isforegContrl.setMoveSpeed(0);
+
     }
 
     logicUpdate(dt) {
@@ -54,7 +63,7 @@ export default class NewClass extends LogicBasicComponent {
             this.node.destroy()
         }
         this.isDeath = settingBasic.game.State == settingBasic.setting.stateType.REBORN;
-  
+
     }
     setBoxPos(touchPos) {
         let centerPos = this.brotherNode.convertToWorldSpace(cc.Vec2.ZERO);
@@ -77,7 +86,7 @@ export default class NewClass extends LogicBasicComponent {
         this.preTouchId = event.getID();
         //是否死亡
         this.preBoxPos = this.node.position;
-        
+
         if (this.isDeath) return;
 
         let touchPos = event.getLocation();
@@ -151,5 +160,57 @@ export default class NewClass extends LogicBasicComponent {
         this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
     }
 
+    //找到挂载 前景脚本的 父节点
+    getForgoundParent(node: cc.Node, callBackfun: Function): cc.Node {
+        if (!node) return null;
+        if (node instanceof cc.Node) {
+            let ctrl = node.getComponent("foregroundControllor");
+            if (ctrl) {
+                // console.log("==1==name=" + node.name)
+                callBackfun(node);
+                return node;
+            } else {
+                if (node.parent) {
+                    this.getForgoundParent(node.parent, callBackfun);
+                } else {
+                    return null;
+                }
+            }
+        } else {
+            return null;
+        }
+    }
 
+    //--------------------------碰撞---Event---------------------
+    onBeginContact(contact, selfCollider, otherCollider) {
+
+        if (this.followObject && this.followObject == otherCollider.node) return;
+
+        if (!this.followObject) {
+            let forgNode = null;
+            this.getForgoundParent(otherCollider.node, (node) => { forgNode = node; });
+
+            if (forgNode) {
+                let forgCtrl = forgNode.getComponent("foregroundControllor");
+                //若碰撞物有 挂载 前景脚本,则和碰撞体同步
+                if (forgCtrl) {
+                    let speed = forgCtrl.getMoveSpeed();
+                    this.followObject = otherCollider.node;
+
+                    this.isforegContrl.setMoveSpeed(speed);
+                    // this.isforegContrl.enabled = true;
+                }
+            }
+        }
+
+    }
+    onEndContact(contact, selfCollider, otherCollider) {
+
+        if (this.followObject) {
+            if (this.followObject == otherCollider.node) {
+                this.followObject = null;
+            }
+        }
+
+    }
 }

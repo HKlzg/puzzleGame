@@ -26,6 +26,8 @@ export default class LeopardControllor extends LogicBasicComponent {
     personNode: cc.Node = null;
     @property(cc.Node)
     monsterNode: cc.Node = null;
+    @property(cc.Node)
+    itemBag: cc.Node = null;
 
     monsterAnimation: cc.Animation = null;
     canvas: cc.Node = null;
@@ -381,7 +383,13 @@ export default class LeopardControllor extends LogicBasicComponent {
                 this.isDoAction = false;
                 this.reduceState(monsterActionType.wait);
                 this.isMonsterActionStart = false;
-                this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.NEXT)
+
+                this.itemBag.emit(setting.gameEvent.getItemEvent, setting.setting.itemType.tear, (isOver) => {
+                    if (isOver) {
+                        this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.NEXT)
+                    }
+                });
+
                 return
             } else {
                 let body: cc.RigidBody = other.node.parent.getComponent(cc.RigidBody)

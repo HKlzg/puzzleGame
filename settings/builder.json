@@ -15,7 +15,13 @@
     "subContext": ""
   },
   "encryptJs": false,
-  "excludeScenes": [],
+  "excludeScenes": [
+    "7e1ea30a-a1e2-4d12-a2a1-e428e8bb4206",
+    "7eaf5d13-c7b0-4d98-b8a0-fe10cf481032",
+    "6cb785f2-1ba5-4924-9771-e4c3fbc1baf1",
+    "d510bdfa-c194-4e60-a0db-dab9a835347d",
+    "85c4fb99-c687-4d5e-ae77-8eae2a6f1845"
+  ],
   "fb-instant-games": {},
   "includeSDKBox": false,
   "inlineSpriteFrames": true,
@@ -35,7 +41,7 @@
     "orientation": "portrait",
     "zip": false
   },
-  "startScene": "7e1ea30a-a1e2-4d12-a2a1-e428e8bb4206",
+  "startScene": "c536a283-b686-473b-823e-8c00ce9e4537",
   "title": "puzzleGame",
   "webOrientation": "portrait",
   "wechatgame": {

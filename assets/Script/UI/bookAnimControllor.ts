@@ -1,18 +1,18 @@
+import settingBasic from "../Setting/settingBasic";
 
 const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class NewClass extends cc.Component {
     @property(cc.Node)
-    bookNode: cc.Node = null;
-    bookList: Array<cc.Node> = [];
-
-    @property(cc.Node)
-    mark: cc.Node = null;
-
+    bookClip: cc.Node = null;
     @property(cc.Node)
     light: cc.Node = null;
 
+    @property(cc.Node)
+    bookMark: cc.Node = null;
+
+    bookList: Array<cc.Node> = [];
     time = 0;
     id = 0;
     isOpen = true;
@@ -22,11 +22,12 @@ export default class NewClass extends cc.Component {
     // onLoad () {}
 
     start() {
-        this.bookList = this.bookNode.children;
-
+        this.bookList = this.bookClip.children;
+        // this.bookMark = this.node.getChildByName("bookmark");
     }
 
     isOpenAnim() {
+        console.log("=====open book===")
         this.isOpen = false;
         this.changePos();
     }
@@ -62,12 +63,14 @@ export default class NewClass extends cc.Component {
         }
     }
 
+    //更改封面pic 显示/关闭
     changePic(id: number) {
         for (let index = 0; index < this.bookList.length; index++) {
             this.bookList[index].active = index == id;
         }
     }
 
+    //通过动画更改 书状态
     changePos() {
         let speed = 0.8;
         var movTo = cc.moveTo(speed, cc.p(26, 93));
@@ -76,25 +79,36 @@ export default class NewClass extends cc.Component {
         this.node.runAction(rTo);
         var scTo = cc.scaleTo(speed, 0.8);//将节点缩放到2倍
         this.node.runAction(scTo);
-        this.mark.active = true;
-        var faTo = cc.fadeTo(speed, 128);
-        this.light.runAction(faTo);
+        this.bookMark.active = true;
+        // var faTo = cc.fadeTo(speed, 128);
+        // this.light.runAction(faTo);
 
     }
 
     public closeBook() {
+        console.log("=====closeBook=====")
         let speed = 0.8;
         this.isClose = false;
 
-        var movTo = cc.moveTo(speed, cc.p(25.363, -217.64));
+        var movTo = cc.moveTo(speed, cc.v2(25.363, -217.64));
         this.node.runAction(movTo);
         var rTo = cc.rotateTo(speed, 364);//第一个参数也是时间参数，将节点旋转180°
         this.node.runAction(rTo);
         var scTo = cc.scaleTo(speed, 0.65);//将节点缩放到2倍
         this.node.runAction(scTo);
-        this.mark.active = false;
+        this.bookMark.active = false;
         var faTo = cc.fadeTo(speed, 255);
         this.light.runAction(faTo);
+
+    }
+
+    //在翻页之后[游戏处于暂停状态] 重新加载场景时 立刻设置书本状态 ->打开
+    openBookImmediately() {
+        this.isOpen = true;
+        this.node.setPosition(cc.v2(26, 93))
+        this.node.angle = 0;
+        this.node.scale = 0.8
+        this.bookMark.active = true;
 
     }
 

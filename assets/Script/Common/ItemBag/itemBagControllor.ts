@@ -136,10 +136,10 @@ export default class NewClass extends LogicBasicComponent {
         item.setPosition(cc.Vec2.ZERO);
         item.active = true;
         this.cameraNode.addChild(item);
-        item.scale = 0.1;
+        item.setContentSize(cc.size(1, 1));
 
-        cc.tween(item).to(1, { scale: 1 }).delay(3).
-            to(2, { position: cc.v2(0, -1000), scale: 0.1 }).call(() => {
+        cc.tween(item).to(1, { width: 100, height: 100 }).delay(2).
+            to(2, { position: cc.v2(0, -1000), width: 50, height: 50 }).call(() => {
                 settingBasic.fun.addItems(type);
                 //执行回调函数
                 fun(true);

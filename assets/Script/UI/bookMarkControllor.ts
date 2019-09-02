@@ -35,18 +35,21 @@ export default class NewClass extends cc.Component {
 
     UICamera: cc.Node = null;
     canvas: cc.Node = null;
-    currPageNum: number = 1; //对应 contentType 1-5  //游戏打开默认显示第一页
-    // onLoad (){}
-
-    start() {
+    currPageNum: number = 1; //对应 contentType 1-5 (关卡) //游戏打开默认显示第一页
+    onLoad (){
+        // console.log("===bookMark onLoad====")
         this.canvas = cc.find("Canvas");
         this.UICamera = this.UIMask.getChildByName("UICamera")
         this.contentList = this.contentNode.children;
     }
 
+    start() {
+    }
+
     // 点击 故事内容 图片 ,开始游戏
     contentMapPicOnclik() {
         if (this.isContentMapClick) {
+
             //开始/继续游戏
             let state = settingBasic.game.State == settingBasic.setting.stateType.READY ?
                 settingBasic.setting.stateType.START :
@@ -55,7 +58,7 @@ export default class NewClass extends cc.Component {
                     settingBasic.setting.stateType.RESUME;
 
             this.canvas.emit(settingBasic.gameEvent.gameStateEvent, state);
-            
+
             if (this.contentList[this.currPageNum]) {
                 let currPagePic: cc.Node = this.contentList[this.currPageNum].getChildByName("PicStory");
                 //mapPicCopy更换为当前页面的图片
@@ -80,6 +83,7 @@ export default class NewClass extends cc.Component {
     //点击 bookMenu 菜单 --暂停游戏
     bookOnClick() {
 
+
         cc.tween(this.UIMask)
             .to(1, { width: 388, height: 236.1 })
             .start();
@@ -93,9 +97,13 @@ export default class NewClass extends cc.Component {
 
                 //暂停游戏
                 this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.PAUSE)
+                // if (settingBasic.game.State == settingBasic.setting.stateType.NEXT) {
+                //     this.nextPageContent()
+                // }
 
             }).start();
         }).start();
+
     }
 
     //==============点击 书签================
@@ -115,17 +123,21 @@ export default class NewClass extends cc.Component {
         this.node.parent.getComponent("bookAnimControllor").closeBook();
     }
 
-    //=============翻页==================
+    //=============翻页======相当于选择关卡============
     prePageContent() { //上一页
         this.currPageNum--;
         this.currPageNum = this.currPageNum > 1 ? this.currPageNum : 1;
-        this.showContent(this.currPageNum);
+        let currLv = --settingBasic.game.currLevel;
+        this.showContent(currLv);
+        cc.director.loadScene("level_" + currLv)
 
     }
     nextPageContent() {//下一页
         this.currPageNum++;
         this.currPageNum = this.currPageNum < 5 ? this.currPageNum : 5;
-        this.showContent(this.currPageNum);
+        let currLv = ++settingBasic.game.currLevel;
+        this.showContent(currLv);
+        cc.director.loadScene("level_" + currLv)
     }
     // 显示content 对应的内容
     showContent(contentId: number) {
@@ -134,8 +146,10 @@ export default class NewClass extends cc.Component {
         }
     }
 
+
     update(dt) {
 
-
     }
+
+
 }

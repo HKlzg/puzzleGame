@@ -17,13 +17,13 @@ export default class NewClass extends LogicBasicComponent {
     }
 
     logicUpdate(dt) { }
-    
+
     startJump(isStart) {
         this.isJump = isStart;
     }
     onCollisionEnter(other, self) {
-        if (this.isJump && (other.node.groupIndex == 2 || other.node.groupIndex == 4)) {
-            //跳跃过程中 踩到箱子或者地面则停止跳跃 
+        if (this.isJump && (other.node.groupIndex == 2 || other.node.groupIndex == 25 || other.node.groupIndex == 4)) {
+            //跳跃过程中 踩到箱子或者地面/木桩 则停止跳跃 
             this.walkNode.getComponent("brotherWalkControllor").jumpEnd();
             this.isJump = false;
         }

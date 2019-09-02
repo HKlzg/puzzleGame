@@ -38,9 +38,7 @@ export abstract class BrotherBasic extends LogicBasicComponent {
 
     //推动的对象
     pushObject: cc.Node = null;
-    //射线检测的X长度
-    rayWidth: number = 40;
-
+   
     //距离推动物体的距离
     pushDistance: number = 0;
     cameraNode: cc.Node = null;

@@ -25,8 +25,9 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
     maxX: number = 0;
     maxY: number = 0;
 
-    // boxShadow: cc.Node = null;
-    // camera: cc.Camera = null;
+    bookNode: cc.Node = null;
+    bookmarkNode: cc.Node = null;
+
     public blackMask: cc.Node = null;
 
     //public 用于给子类调用
@@ -46,24 +47,6 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
     personAudio: [{ actionType: number, name: string }] = null;
 
     onLoad() {
-        console.log("=========SCENE: " + this.level + " ==========")
-        settingBasic.game.currLevel = this.level;
-        settingBasic.fun.setScene("level_" + this.level, cc.director.getScene());
-
-        //加载子包资源
-        this.loadSubPackageDefualt();
-
-        //开启物理系统 ----------必须写在onLoad 里面
-        cc.director.getPhysicsManager().enabled = true;
-
-        // 绘制碰撞区域
-        var draw = cc.PhysicsManager.DrawBits;
-        // cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
-        // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
-        cc.director.getCollisionManager().enabledDebugDraw = true; //碰撞区域 
-        // 开启碰撞检测
-        cc.director.getCollisionManager().enabled = true;
-
         // cc.game.setFrameRate(60);
         this.brotherWalkNode = this.brotherNode.getChildByName("Brother_Walk");
 
@@ -79,6 +62,35 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
         this.deathTip.string = "失败次数:" + currDeath;
         this.blackMask = this.cameraNode.getChildByName("blackMask")
 
+        //书签
+        this.bookNode = this.UICamera.getChildByName("bookNode");
+        this.bookmarkNode = this.bookNode.getChildByName("bookmark");
+
+        //在书本翻页之后 再次初始化时 为暂停状态 此时设置书本菜单为打开状态
+        if (settingBasic.game.State == settingBasic.setting.stateType.PAUSE) {
+            this.bookNode.getComponent("bookAnimControllor").openBookImmediately();
+        }
+
+        console.log("=========SCENE: " + this.level + " ==========")
+        settingBasic.game.currLevel = this.level;
+        settingBasic.fun.setScene("level_" + this.level, cc.director.getScene());
+
+        //加载子包资源
+        this.loadSubPackageDefualt();
+
+        //开启物理系统 ----------必须写在onLoad 里面
+        cc.director.getPhysicsManager().enabled = true;
+
+        // 绘制碰撞区域
+        var draw = cc.PhysicsManager.DrawBits;
+        // cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
+        // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
+        // cc.director.getCollisionManager().enabledDebugDraw = true; //碰撞区域 
+        // 开启碰撞检测
+        cc.director.getCollisionManager().enabled = true;
+
+
+
     };
 
     start() {
@@ -86,8 +98,8 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
         this.toStart();
 
         this.changeGameState(settingBasic.setting.stateType.START);
-
-        this.level == 1 ? this.changeGameState(settingBasic.setting.stateType.PAUSE) : null;
+        this.changeGameState(settingBasic.setting.stateType.PAUSE)
+        // this.level == 1 ? this.changeGameState(settingBasic.setting.stateType.PAUSE) : null;
     };
 
 
@@ -150,8 +162,8 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
                 console.log("==========GAME NORMAL==========")
                 break;
             case this.stateType.NEXT:
-                    console.log("==========GAME NEXT==========")
-                //切换到下一个场景
+                console.log("==========GAME NEXT==========")
+                //回到书本菜单    
                 let nextLevel = this.level + 1;
                 //开启引导镜头
                 settingBasic.fun.openShowKeyPos();
@@ -161,7 +173,10 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
                 } else {
                     settingBasic.game.currLevel = -1; //通关
                 }
-                cc.director.loadScene("loading")
+
+                let bookmarkCtrl = this.bookmarkNode.getComponent("bookMarkControllor");
+                bookmarkCtrl.bookOnClick(); //回到UI菜单
+                // cc.director.loadScene("loading")
                 break;
 
             case this.stateType.PAUSE:
