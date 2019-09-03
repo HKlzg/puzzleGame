@@ -152,7 +152,63 @@ const settingBasic = {
             if (!hasItem) {
                 settingBasic.game.inventory.push(itemType);
             }
-        }
+        },
+        //存储当前游戏状态
+        saveGameRecord() {
+            //当前关卡存档
+            let lvRecord: {} = {};
+            lvRecord["currBoxNum"] = settingBasic.game.currBoxNum;
+            lvRecord["currDeath"] = settingBasic.game.currDeath;
+            lvRecord["isShowKeyPos"] = settingBasic.game.isShowKeyPos;
+
+            let level_key = "currLevelRecords_lv" + settingBasic.game.currLevel;
+            cc.sys.localStorage.setItem(level_key, JSON.stringify(lvRecord));
+
+
+            //游戏总存档
+            let gameRecord: {} = {};
+            gameRecord["totalDeath"] = settingBasic.game.totalDeath;
+            gameRecord["inventory"] = settingBasic.game.inventory;
+
+            let game_key = "allGameRecords_" + settingBasic.game.version;
+            cc.sys.localStorage.setItem(game_key, JSON.stringify(gameRecord));
+
+        },
+        //恢复当前游戏状态
+        loadGameRecord() {
+            let game_key = "allGameRecords_" + settingBasic.game.version;
+            let level_key = "currLevelRecords_lv" + settingBasic.game.currLevel;
+
+            if (settingBasic.game.isClearCurrRecord) {
+                console.log("level_key==" + level_key + "  " + "remove")
+                cc.sys.localStorage.removeItem(level_key);
+            }
+            if (settingBasic.game.isClearGameRecord) {
+                console.log("game_key==" + level_key + "  " + "remove")
+                cc.sys.localStorage.removeItem(game_key);
+            }
+            //当前关数据读取
+            let lvRecordJson = cc.sys.localStorage.getItem(level_key);
+            if (lvRecordJson) {
+                let lvRecord = JSON.parse(lvRecordJson);
+                if (lvRecord) {
+                    settingBasic.game.currBoxNum = lvRecord["currBoxNum"];
+                    settingBasic.game.currDeath = lvRecord["currDeath"];
+                    settingBasic.game.isShowKeyPos = lvRecord["isShowKeyPos"];
+                }
+            }
+
+            //游戏总存档读取
+            let allGameRecordsJson = cc.sys.localStorage.getItem(game_key);
+
+            if (allGameRecordsJson) {
+                let allGameRecords = JSON.parse(allGameRecordsJson);
+                if (allGameRecords) {
+                    settingBasic.game.totalDeath = allGameRecords["totalDeath"];
+                    settingBasic.game.inventory = allGameRecords["inventory"];
+                }
+            }
+        },
     },
 
     //当前游戏运行状态 全局
@@ -165,7 +221,11 @@ const settingBasic = {
         sceneList: {},
         deathRecord: {},//死亡记录 用于存档
         isShowKeyPos: true, //是否显示引导镜头
-        inventory: [], //物品栏
+        inventory: [], //物品栏 //存储物品类别(number类型)
+        isClearCurrRecord: false, //是否在reload 时清除当前关卡records
+        isClearGameRecord: false, //是否在reload 时清除所有records
+
+        version: "001",//版本号
     },
 
     //自定义事件

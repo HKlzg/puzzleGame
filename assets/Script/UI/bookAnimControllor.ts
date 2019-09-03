@@ -73,7 +73,7 @@ export default class NewClass extends cc.Component {
     //通过动画更改 书状态
     changePos() {
         let speed = 0.8;
-        var movTo = cc.moveTo(speed, cc.p(26, 93));
+        var movTo = cc.moveTo(speed, cc.v2(26, 93));
         this.node.runAction(movTo);
         var rTo = cc.rotateTo(speed, 0);//第一个参数也是时间参数，将节点旋转180°
         this.node.runAction(rTo);

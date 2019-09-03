@@ -11,7 +11,6 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
 
     @property({ type: cc.Enum(leveList), displayName: "关卡设定" })
     public level = leveList.lv1;
-
     @property(cc.Node)
     cameraNode: cc.Node = null;
     @property(cc.Node)
@@ -89,8 +88,6 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
         // 开启碰撞检测
         cc.director.getCollisionManager().enabled = true;
 
-
-
     };
 
     start() {
@@ -98,8 +95,16 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
         this.toStart();
 
         this.changeGameState(settingBasic.setting.stateType.START);
+
+        // if (settingBasic.game.State == settingBasic.setting.stateType.PAUSE) {
+        //     settingBasic.fun.loadGameRecord();
+        //     this.changeGameState(settingBasic.setting.stateType.RESUME)
+        // } else {
+        // }
         this.changeGameState(settingBasic.setting.stateType.PAUSE)
+
         // this.level == 1 ? this.changeGameState(settingBasic.setting.stateType.PAUSE) : null;
+
     };
 
 
@@ -184,12 +189,17 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
 
                 // cc.director.pause();
                 this.audioManager.setEnablePlay(false);
+
+                //存储当前游戏状态
+                settingBasic.fun.saveGameRecord();
+
                 break;
             case this.stateType.RESUME:
                 console.log("==========GAME RESUME==========")
                 // cc.director.resume();
                 this.audioManager.setEnablePlay(true);
-
+                //还原游戏状态
+                settingBasic.fun.loadGameRecord();
                 break;
             case this.stateType.REBORN:
                 //只能连续死一次
