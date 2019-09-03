@@ -96,14 +96,10 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
 
         this.changeGameState(settingBasic.setting.stateType.START);
 
-        // if (settingBasic.game.State == settingBasic.setting.stateType.PAUSE) {
-        //     settingBasic.fun.loadGameRecord();
-        //     this.changeGameState(settingBasic.setting.stateType.RESUME)
-        // } else {
-        // }
+        if (settingBasic.game.State == settingBasic.setting.stateType.PAUSE) {
+            settingBasic.fun.loadGameRecord();
+        }
         this.changeGameState(settingBasic.setting.stateType.PAUSE)
-
-        // this.level == 1 ? this.changeGameState(settingBasic.setting.stateType.PAUSE) : null;
 
     };
 
@@ -191,7 +187,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
                 this.audioManager.setEnablePlay(false);
 
                 //存储当前游戏状态
-                settingBasic.fun.saveGameRecord();
+                // settingBasic.fun.saveGameRecord();
 
                 break;
             case this.stateType.RESUME:
@@ -199,7 +195,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
                 // cc.director.resume();
                 this.audioManager.setEnablePlay(true);
                 //还原游戏状态
-                settingBasic.fun.loadGameRecord();
+                // settingBasic.fun.loadGameRecord();
                 break;
             case this.stateType.REBORN:
                 //只能连续死一次
@@ -246,16 +242,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
     //人物移动步骤
     abstract moveStep(setp: number);
 
-    //检测是否包含*步骤
-    isContainsStep(step: string): boolean {
-        // console.log("============stepList =" + this.stepList.toString()+"   step="+step);
-        for (let index = 0; index < this.stepList.length; index++) {
-            if (this.stepList[index] == step) {
-                return true;
-            }
-        }
-        return false;
-    }
+
 
     //写入资料到本地 / 上传资料
     onDestroy() {

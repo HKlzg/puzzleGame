@@ -222,8 +222,8 @@ const settingBasic = {
         deathRecord: {},//死亡记录 用于存档
         isShowKeyPos: true, //是否显示引导镜头
         inventory: [], //物品栏 //存储物品类别(number类型)
-        isClearCurrRecord: false, //是否在reload 时清除当前关卡records
-        isClearGameRecord: false, //是否在reload 时清除所有records
+        isClearCurrRecord: true, //是否在reload 时清除当前关卡records
+        isClearGameRecord: true, //是否在reload 时清除所有records
 
         version: "001",//版本号
     },

@@ -83,7 +83,7 @@ export abstract class LogicBasicComponent extends cc.Component {
     //当前记录的node 信息
     nodeRecords: recordType = null;
     //设定制定分组 才能存储
-    groupIndexList: Array<number> = [3, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17, 19, 23, 24, 25];
+    groupIndexList: Array<number> = [0, 3, 5, 6, 7, 8, 9, 10, 11, 12, 15, 16, 17, 19, 23, 24, 25];
 
     onLoad() { }
     start() { }
@@ -125,7 +125,7 @@ export abstract class LogicBasicComponent extends cc.Component {
         }
 
         //加载Record
-        this.loadNodeRecord();
+        // this.loadNodeRecord();
     }
 
     update(dt) {
@@ -360,6 +360,7 @@ export abstract class LogicBasicComponent extends cc.Component {
     setClearRecord() {
         settingBasic.game.isClearCurrRecord = true;
     }
+    //根据分组来判断是否能此节点序列化
     isCanRecord(groupIndex: number): boolean {
         for (let index = 0; index < this.groupIndexList.length; index++) {
             if (groupIndex == this.groupIndexList[index]) {
