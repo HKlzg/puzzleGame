@@ -6,9 +6,9 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class NewClass extends LogicBasicComponent {
 
-    canvas: cc.Node = null;
+    currScene: cc.Node = null;
     start() {
-        this.canvas = cc.find("Canvas");
+        this.currScene = cc.find("Canvas/"+settingBasic.game.currScene);
     }
     //碰撞检测(传感器)
     onCollisionEnter(other, self) {
@@ -16,8 +16,8 @@ export default class NewClass extends LogicBasicComponent {
         if (other.node.groupIndex == 2) {
             let boxBody = other.node.getComponent(cc.RigidBody);
             if (boxBody.linearVelocity.y < -200) {
-                this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.REBORN);
-                this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.RESTART);
+                this.currScene.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.REBORN);
+                this.currScene.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.RESTART);
             }
 
         }

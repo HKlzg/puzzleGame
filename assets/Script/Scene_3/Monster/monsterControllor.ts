@@ -3,6 +3,7 @@ const { ccclass, property } = cc._decorator;
 import setting from "../../Setting/settingBasic";
 import toolsBasics from "../../Tools/toolsBasics";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
+import settingBasic from "../../Setting/settingBasic";
 
 //monster状态
 const monsterActionType = cc.Enum({
@@ -30,7 +31,7 @@ export default class LeopardControllor extends LogicBasicComponent {
     itemBag: cc.Node = null;
 
     monsterAnimation: cc.Animation = null;
-    canvas: cc.Node = null;
+    currScene: cc.Node = null;
     monsterActionState = monsterActionType.sleep;
 
     isPersonDeath: boolean = false;
@@ -58,7 +59,7 @@ export default class LeopardControllor extends LogicBasicComponent {
 
     isMonsterActionStart: boolean = false;
     start() {
-        this.canvas = cc.find("Canvas");
+        this.currScene = cc.find("Canvas/"+settingBasic.game.currScene);
         this.monsterAnimation = this.monsterNode.getComponent(cc.Animation);
         this.node.on(setting.gameEvent.monsterReduceState, this.setIsSafePos, this);
         this.node.on(setting.gameEvent.monsterStopPlayAction, this.stopPlayAction, this);
@@ -226,9 +227,9 @@ export default class LeopardControllor extends LogicBasicComponent {
                         this.isAttack = false;
                         this.isDoAction = false;
                         this.reduceState();
-                        this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.REBORN);
+                        this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.REBORN);
 
-                        this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.RESTART);
+                        this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.RESTART);
                     })
                     this.node.runAction(cc.sequence(action1, callfun));
                 }
@@ -386,7 +387,7 @@ export default class LeopardControllor extends LogicBasicComponent {
 
                 this.itemBag.emit(setting.gameEvent.getItemEvent, setting.setting.itemType.tear, (isOver) => {
                     if (isOver) {
-                        this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.NEXT)
+                        this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.NEXT)
                     }
                 });
 

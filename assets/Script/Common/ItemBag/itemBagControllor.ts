@@ -7,16 +7,16 @@ const itemType = settingBasic.setting.itemType;
 
 @ccclass
 export default class NewClass extends LogicBasicComponent {
-    @property(cc.Node)
-    cameraNode: cc.Node = null;
+
     @property(cc.Node)
     UICamera: cc.Node = null;
     @property(cc.SpriteFrame)
     picList: Array<cc.SpriteFrame> = [];
-
     @property(cc.Node)
     itemNode: cc.Node = null;
 
+    currScene: cc.Node = null;
+    cameraNode: cc.Node = null
     camera: cc.Camera = null;
     itemList: Array<cc.Node> = [];
     // onLoad () {}
@@ -25,8 +25,9 @@ export default class NewClass extends LogicBasicComponent {
     currCtrlIndex: number = 0; //当前控制的物品 
     start() {
         this.node.on(settingBasic.gameEvent.getItemEvent, this.getItemFromScene, this);
-
-        this.camera = this.cameraNode.getComponent(cc.Camera)
+        this.currScene = cc.find("Canvas/" + settingBasic.game.currScene)
+        this.cameraNode = this.currScene.getChildByName("Camera")
+        this.camera = this.currScene.getComponent(cc.Camera)
 
         //test
         settingBasic.fun.addItems(itemType.flower)

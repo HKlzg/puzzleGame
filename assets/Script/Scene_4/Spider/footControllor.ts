@@ -2,6 +2,7 @@
 const { ccclass, property } = cc._decorator;
 import setting from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
+import settingBasic from "../../Setting/settingBasic";
 
 @ccclass
 export default class NewClass extends LogicBasicComponent {
@@ -9,11 +10,11 @@ export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
     spiderNode: cc.Node = null;
 
-    canvas: cc.Node = null;
+    currScene: cc.Node = null;
     isContact: boolean = false;
 
     start() {
-        this.canvas = cc.find("Canvas")
+        this.currScene = cc.find("Canvas/"+settingBasic.game.currScene)
     }
 
     logicUpdate(dt) { }
@@ -23,8 +24,8 @@ export default class NewClass extends LogicBasicComponent {
             let ctrl = this.spiderNode.getComponent("spiderControllor");
             let isDead = setting.game.State == setting.setting.stateType.REBORN;
             if (!isDead && ctrl && ctrl.isAttack()) {
-                this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.REBORN);
-                this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.RESTART);
+                this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.REBORN);
+                this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.RESTART);
                 this.isContact = true;
             }
         }

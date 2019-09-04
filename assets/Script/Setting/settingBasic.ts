@@ -164,7 +164,6 @@ const settingBasic = {
             let level_key = "currLevelRecords_lv" + settingBasic.game.currLevel;
             cc.sys.localStorage.setItem(level_key, JSON.stringify(lvRecord));
 
-
             //游戏总存档
             let gameRecord: {} = {};
             gameRecord["totalDeath"] = settingBasic.game.totalDeath;
@@ -222,10 +221,12 @@ const settingBasic = {
         deathRecord: {},//死亡记录 用于存档
         isShowKeyPos: true, //是否显示引导镜头
         inventory: [], //物品栏 //存储物品类别(number类型)
-        isClearCurrRecord: true, //是否在reload 时清除当前关卡records
-        isClearGameRecord: true, //是否在reload 时清除所有records
+        isClearCurrRecord: false, //是否在reload 时清除当前关卡records
+        isClearGameRecord: false, //是否在reload 时清除所有records
 
         version: "001",//版本号
+
+        currScene: "Scene1",
     },
 
     //自定义事件

@@ -1,4 +1,5 @@
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
+import settingBasic from "../../Setting/settingBasic";
 
 const { ccclass, property } = cc._decorator;
 const oilPos = cc.Enum({
@@ -36,7 +37,7 @@ export default class NewClass extends LogicBasicComponent {
 
     start() {
         //--test
-        this.mountain = cc.find("Canvas/Background/Mountain_left/right")
+        this.mountain = cc.find("Canvas/"+settingBasic.game.currScene+"Background/Mountain_left/right")
         cc.tween(this.mountain).delay(3).by(1, { y: 87 }).delay(5).
             by(1, { y: - 87 }).delay(0.5).by(1, { y: 87 }).start();
         //--

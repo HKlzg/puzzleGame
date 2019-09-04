@@ -27,7 +27,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
     bookNode: cc.Node = null;
     bookmarkNode: cc.Node = null;
 
-    public blackMask: cc.Node = null;
+    // public blackMask: cc.Node = null;
 
     //public 用于给子类调用
     public boxParent: cc.Node = null;
@@ -37,7 +37,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
 
     public stepList: Array<string> = [];
     public preGameState = 0;
-    public deathTip: cc.Label = null;
+    // public deathTip: cc.Label = null;
     public audioManager = toolsBasics.getAudioManager();
     public brotherWalkNode: cc.Node = null;
     public actionType = settingBasic.setting.actionType;
@@ -56,19 +56,19 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
         this.node.on(settingBasic.gameEvent.setCurrGameStep, this.setCurrGameStep, this);
 
         this.UICamera.parent.active = true;
-        this.deathTip = this.UICamera.getChildByName("deathTip").getComponent(cc.Label);
-        let currDeath = settingBasic.game.currDeath;
-        this.deathTip.string = "失败次数:" + currDeath;
-        this.blackMask = this.cameraNode.getChildByName("blackMask")
+        // this.deathTip = this.UICamera.getChildByName("deathTip").getComponent(cc.Label);
+        // let currDeath = settingBasic.game.currDeath;
+        // this.deathTip.string = "失败次数:" + currDeath;
+        // this.blackMask = this.cameraNode.getChildByName("blackMask")
 
         //书签
         this.bookNode = this.UICamera.getChildByName("bookNode");
         this.bookmarkNode = this.bookNode.getChildByName("bookmark");
 
         //在书本翻页之后 再次初始化时 为暂停状态 此时设置书本菜单为打开状态
-        if (settingBasic.game.State == settingBasic.setting.stateType.PAUSE) {
-            this.bookNode.getComponent("bookAnimControllor").openBookImmediately();
-        }
+        // if (settingBasic.game.State == settingBasic.setting.stateType.PAUSE) {
+        //     this.bookNode.getComponent("bookAnimControllor").openBookImmediately();
+        // }
 
         console.log("=========SCENE: " + this.level + " ==========")
         settingBasic.game.currLevel = this.level;
@@ -82,7 +82,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
 
         // 绘制碰撞区域
         var draw = cc.PhysicsManager.DrawBits;
-        // cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
+        cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
         // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
         // cc.director.getCollisionManager().enabledDebugDraw = true; //碰撞区域 
         // 开启碰撞检测
@@ -96,10 +96,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
 
         this.changeGameState(settingBasic.setting.stateType.START);
 
-        if (settingBasic.game.State == settingBasic.setting.stateType.PAUSE) {
-            settingBasic.fun.loadGameRecord();
-        }
-        this.changeGameState(settingBasic.setting.stateType.PAUSE)
+        this.level == 1 ? this.changeGameState(settingBasic.setting.stateType.PAUSE) : null;
 
     };
 
@@ -147,16 +144,16 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
             case this.stateType.START:
                 console.log("==========GAME START==========")
 
-                this.blackMask.active = true;
+                // this.blackMask.active = true;
 
-                this.blackMask.runAction(
-                    cc.sequence(
-                        cc.fadeOut(2),
-                        cc.callFunc(() => {
-                            this.blackMask.active = false;
-                        })
-                    )
-                );
+                // this.blackMask.runAction(
+                //     cc.sequence(
+                //         cc.fadeOut(2),
+                //         cc.callFunc(() => {
+                //             this.blackMask.active = false;
+                //         })
+                //     )
+                // );
 
                 break;
             case this.stateType.NORMAL:
@@ -165,15 +162,9 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
             case this.stateType.NEXT:
                 console.log("==========GAME NEXT==========")
                 //回到书本菜单    
-                let nextLevel = this.level + 1;
+
                 //开启引导镜头
                 settingBasic.fun.openShowKeyPos();
-
-                if (settingBasic.setting.level[nextLevel]) {
-                    settingBasic.game.currLevel = nextLevel;
-                } else {
-                    settingBasic.game.currLevel = -1; //通关
-                }
 
                 let bookmarkCtrl = this.bookmarkNode.getComponent("bookMarkControllor");
                 bookmarkCtrl.bookOnClick(); //回到UI菜单
@@ -204,7 +195,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
                 this.brotherNode.emit(settingBasic.gameEvent.brotherDeathEvent, true);
                 //记录死亡次数
                 let currDeath = settingBasic.fun.addCurrDeath(this.level)
-                this.deathTip.string = "失败次数: " + currDeath;
+                // this.deathTip.string = "失败次数: " + currDeath;
 
                 console.log("=======GameState===REBORN==========")
 
@@ -215,15 +206,15 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
                 //关闭 引导镜头
                 settingBasic.fun.closeShowKeyPos();
 
-                this.blackMask.active = true;
-                this.blackMask.runAction(
-                    cc.sequence(
-                        cc.fadeIn(2),
-                        cc.callFunc(() => {
-                            cc.director.loadScene("level_" + this.level)
-                        })
-                    )
-                );
+                // this.blackMask.active = true;
+                // this.blackMask.runAction(
+                //     cc.sequence(
+                //         cc.fadeIn(2),
+                //         cc.callFunc(() => {
+                //             cc.director.loadScene("level_" + this.level)
+                //         })
+                //     )
+                // );
 
                 break;
             default:

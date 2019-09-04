@@ -4,7 +4,6 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class NewClass extends ViewControllorBasic {
-    canvas: cc.Node = null;
  
     toStart() {
        

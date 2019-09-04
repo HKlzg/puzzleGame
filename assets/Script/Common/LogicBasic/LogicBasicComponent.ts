@@ -124,8 +124,7 @@ export abstract class LogicBasicComponent extends cc.Component {
             }
         }
 
-        //加载Record
-        // this.loadNodeRecord();
+
     }
 
     update(dt) {
@@ -191,7 +190,7 @@ export abstract class LogicBasicComponent extends cc.Component {
         this.node.stopAllActions();
 
         //记录节点信息
-        this.recordNodeRecord();
+        // this.recordNodeRecord();
     }
     private resumeGame() {
         this.isPause = false;
@@ -201,6 +200,8 @@ export abstract class LogicBasicComponent extends cc.Component {
         });
         this.node.resumeAllActions();
 
+        //加载Record
+        // this.loadNodeRecord();
     }
 
     //记录节点信息
@@ -315,7 +316,8 @@ export abstract class LogicBasicComponent extends cc.Component {
                     this.rigidBody.angularDamping = rigidBody.angularDapming;
                     this.rigidBody.angularVelocity = rigidBody.angularVelocity;
                     this.rigidBody.awake = rigidBody.awake == 1;
-                    this.rigidBody.enabled = rigidBody.enabled == 1;
+                    // this.rigidBody.enabled = rigidBody.enabled == 1;
+                    rigidBody.enabled == 1 ? this.node.active = true : this.rigidBody.enabled = false;
                     this.rigidBody.fixedRotation = rigidBody.fixedRotation == 1;
                     this.rigidBody.gravityScale = rigidBody.gravityScale;
                     this.rigidBody.linearDamping = rigidBody.linearDamping;
@@ -351,7 +353,9 @@ export abstract class LogicBasicComponent extends cc.Component {
 
                 }
 
-
+                if (this.phyColliderBody) {
+                    this.phyColliderBody.apply();
+                }
             }
 
         }

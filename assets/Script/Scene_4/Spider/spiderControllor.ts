@@ -35,10 +35,10 @@ export default class spiderClass extends LogicBasicComponent {
     body: cc.RigidBody = null;
     phyBody: cc.PhysicsPolygonCollider = null;
     isStart: boolean = false;
-    canvas: cc.Node = null;
+    currScene: cc.Node = null;
     scaleX: number = 1;
     start() {
-        this.canvas = cc.find("Canvas");
+        this.currScene = cc.find("Canvas"+settingBasic.game.currScene);
         this.spiderAnimation = this.spider.getComponent(cc.Animation)
         this.body = this.node.getComponent(cc.RigidBody)
         this.phyBody = this.node.getComponent(cc.PhysicsPolygonCollider)
@@ -171,7 +171,7 @@ export default class spiderClass extends LogicBasicComponent {
             let body: cc.RigidBody = other.node.getComponent(cc.RigidBody)
             let vy = body.linearVelocity.y;
             if (vy <= -100) {
-                this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.NEXT);
+                this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.NEXT);
                 this.isStart = false;
             }
         }

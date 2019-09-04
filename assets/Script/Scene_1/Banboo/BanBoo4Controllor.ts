@@ -2,6 +2,7 @@
 
 import setting from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
+import settingBasic from "../../Setting/settingBasic";
 const { ccclass, property } = cc._decorator;
 const direction = cc.Enum({
     Stop: 0,
@@ -24,11 +25,11 @@ export default class NewClass extends LogicBasicComponent {
     fireRightList: Array<cc.Node> = []
 
     waterDirection: number = 0;
-    canvas: cc.Node = null;
+    currScene: cc.Node = null;
 
     start() {
         this.waterDirection = direction.Stop;
-        this.canvas = cc.find("Canvas");
+        this.currScene = cc.find("Canvas/"+settingBasic.game.currScene);
 
     }
 
@@ -109,7 +110,7 @@ export default class NewClass extends LogicBasicComponent {
                             cc.sequence(
                                 cc.fadeOut(2),
                                 cc.callFunc(() => {
-                                    this.canvas.emit(setting.gameEvent.gameMoveStep, 3)
+                                    this.currScene.emit(setting.gameEvent.gameMoveStep, 3)
                                 })
                             )
                         )
@@ -133,7 +134,7 @@ export default class NewClass extends LogicBasicComponent {
                             cc.sequence(
                                 cc.fadeOut(2),
                                 cc.callFunc(() => {
-                                    this.canvas.emit(setting.gameEvent.gameMoveStep, 4)
+                                    this.currScene.emit(setting.gameEvent.gameMoveStep, 4)
                                 })
                             )
                         )

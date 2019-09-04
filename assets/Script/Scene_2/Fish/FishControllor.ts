@@ -22,7 +22,7 @@ export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
     itemBag: cc.Node = null;
 
-    canvas: cc.Node = null;
+    currScene: cc.Node = null;
 
     isStartSwim: boolean = false; //是否开始
 
@@ -46,7 +46,7 @@ export default class NewClass extends LogicBasicComponent {
     isGetOil: boolean = false; //是否碰到油滴
     isBurning: boolean = false;//是否是燃烧状态
     onLoad() {
-        this.canvas = cc.find("Canvas");
+        this.currScene = cc.find("Canvas/"+settingBasic.game.currScene);
         this.prePersonPos = this.personNode.position;
         this.animation = this.node.getComponent(cc.Animation);
         let riverPos = this.river.convertToWorldSpace(cc.Vec2.ZERO);
@@ -183,7 +183,7 @@ export default class NewClass extends LogicBasicComponent {
     onBeginContact(contact, self, other) {
         if (other.node.groupIndex == 6 && !this.isPersonDeath) {
             //检测是否碰撞到人-6
-            this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.REBORN);
+            this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.REBORN);
             this.isPersonDeath = true;
 
         }
@@ -225,7 +225,7 @@ export default class NewClass extends LogicBasicComponent {
                     //获得道具 此关结束
                     this.itemBag.emit(settingBasic.gameEvent.getItemEvent, settingBasic.setting.itemType.gear, (isOver) => {
                         if (isOver) {
-                            this.canvas.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.NEXT);
+                            this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.NEXT);
                         }
                     });
 

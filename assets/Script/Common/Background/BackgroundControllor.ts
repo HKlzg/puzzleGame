@@ -84,7 +84,7 @@ export class BackgroundControllor extends LogicBasicComponent {
         //获取背景大小
         this.BackgroundSize = this.node.getContentSize();
 
-        this.canvas = this.node.parent;
+        this.canvas = cc.find("Canvas");
         let cameraSize = this.canvas.getContentSize();
         //以世界坐标作参考 镜头移动的界限坐标
         let bgWorldPos = this.node.convertToWorldSpace(cc.Vec2.ZERO);

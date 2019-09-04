@@ -38,7 +38,7 @@ export abstract class BrotherBasic extends LogicBasicComponent {
 
     //推动的对象
     pushObject: cc.Node = null;
-   
+
     //距离推动物体的距离
     pushDistance: number = 0;
     cameraNode: cc.Node = null;
@@ -48,7 +48,7 @@ export abstract class BrotherBasic extends LogicBasicComponent {
     deadNum: number = 0;
     isDeath: boolean = false;
     canvas: cc.Node = null;
-
+    currScene: cc.Node = null; //当前场景节点
     onLoad() {
         this.brotherAnimation = this.brotherWalkNode.getComponent(cc.Animation);
         this.node.on(settingBasic.gameEvent.brotherActionEvent, this.brotherAction, this);
@@ -67,7 +67,8 @@ export abstract class BrotherBasic extends LogicBasicComponent {
         this.brotherAnimation.on(cc.Animation.EventType.PLAY, this.animationPlay, this);
         // this.brotherAnimation.on(cc.Animation.EventType.FINISHED, this.animationStop, this);
         this.canvas = cc.find("Canvas");
-        this.cameraNode = this.canvas.getChildByName("Camera");
+        this.currScene = this.canvas.getChildByName(settingBasic.game.currScene)
+        this.cameraNode = this.currScene.getChildByName("Camera");
 
         this.bornPos = this.node.position;//默认值
         this.node.scaleX = 1;
@@ -370,7 +371,7 @@ export abstract class BrotherBasic extends LogicBasicComponent {
             this.isDeath = false;
             this.isPlaying = false;
             //更改游戏状态为-Normal 正常状态
-            this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.NORMAL);
+            this.currScene.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.NORMAL);
             this.order.action = actionType.Wait;
             this.brotherAction(this.order);
         }, 2.5);

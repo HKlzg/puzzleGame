@@ -35,13 +35,13 @@ export default class NewClass extends LogicBasicComponent {
     pictures: Array<cc.SpriteFrame> = [];
 
     step: number = 0;
-    canvas: cc.Node = null;
+    currScene: cc.Node = null;
     operationRecorder: Array<operateDataType> = [];
 
     currPage: number = -1;
     tipsList: {} = {}; //根据图片 设置提示文字 pic-tip对应
     start() {
-        this.canvas = cc.find("Canvas")
+        this.currScene = cc.find("Canvas/"+settingBasic.game.currScene)
 
         this.pictures.forEach((pic) => {
             this.operationRecorder.push(new operateDataType(pic, pic.name, this.tipsList[pic.name] ? this.tipsList[pic.name] : ""));
@@ -92,8 +92,8 @@ export default class NewClass extends LogicBasicComponent {
         console.log("====closeTip======")
         cc.tween(this.node).to(0.5, { position: cc.v2(pos.x - 1000, pos.y) }).call(() => {
             // console.log("===22=closeTip======" + cc.director.isPaused())
-            this.canvas.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.RESUME);
-            settingBasic.fun.closeOperationGuide();
+            this.currScene.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.RESUME);
+            // settingBasic.fun.closeOperationGuide();
             this.node.active = false;
         }).start()
 

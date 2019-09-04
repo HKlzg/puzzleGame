@@ -1,4 +1,5 @@
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
+import settingBasic from "../../Setting/settingBasic";
 
 const { ccclass, property } = cc._decorator;
 
@@ -44,7 +45,7 @@ export default class NewClass extends LogicBasicComponent {
     // onLoad () {}
     start() {
         this.grap = this.node.getChildByName("grap").getComponent(cc.Graphics);
-        this.camera = cc.find("Canvas").getChildByName("Camera").getComponent(cc.Camera);
+        this.camera = cc.find("Canvas/"+settingBasic.game.currScene).getChildByName("Camera").getComponent(cc.Camera);
         this.scheduleOnce(() => {
             this.isStartGame = true;
         }, 2)

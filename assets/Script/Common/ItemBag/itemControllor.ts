@@ -25,6 +25,7 @@ export default class NewClass extends LogicBasicComponent {
     cameraNode: cc.Node = null;
     camera: cc.Camera = null;
     canvas: cc.Node = null;
+    currScene: cc.Node = null;
     brotherNode: cc.Node = null;
     maskNode: cc.Node = null;
     circular: cc.Node = null;
@@ -44,11 +45,12 @@ export default class NewClass extends LogicBasicComponent {
 
     onLoad() {
         this.canvas = cc.find("Canvas");
-        this.cameraNode = this.canvas.getChildByName("Camera");
+        this.currScene = this.canvas.getChildByName(settingBasic.game.currScene);
+        this.cameraNode = this.currScene.getChildByName("Camera");
         this.camera = this.cameraNode.getComponent(cc.Camera);
-        this.maskNode = this.canvas.getChildByName("Mask");
+        this.maskNode = this.currScene.getChildByName("Mask");
         this.brotherNode = this.maskNode.getChildByName("Brother");
-        this.circular = this.canvas.getChildByName("Circular");
+        this.circular = this.currScene.getChildByName("Circular");
         this.body = this.node.getComponent(cc.RigidBody)
         this.gravityScale = this.body.gravityScale;
 

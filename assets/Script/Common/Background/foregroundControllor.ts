@@ -1,4 +1,5 @@
 import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
+import settingBasic from "../../Setting/settingBasic";
 
 const { ccclass, property } = cc._decorator;
 class childType {
@@ -28,11 +29,12 @@ export default class NewClass extends LogicBasicComponent {
     phyChildrens: Array<childType> = [];
     prePos: cc.Vec2 = null;
     preAngle: number = 0;
-
+    currScene: cc.Node = null;
     onLoad() { }
 
     start() {
-        if (!this.cameraNode) this.cameraNode = cc.find("Canvas/Camera");
+        this.currScene = cc.find("Canvas/"+settingBasic.game.currScene);
+        if (!this.cameraNode) this.cameraNode = this.currScene.getChildByName("Camera");
 
         this.preCameraPos = this.cameraNode.position;
 

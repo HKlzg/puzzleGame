@@ -31,31 +31,7 @@ export default class NewClass extends ViewControllorBasic {
     }
     // 重写 设置brother移动步骤
     moveStep(nextStep) {
-
-        let order: { direction: string, action: string } = { direction: "R", action: "WAIT" };
-
-        switch (nextStep) {
-            case 0://等待
-                order = { direction: "R", action: "WAIT" };
-                break;
-            case 1: //向右走
-                order = { direction: "R", action: "WALK" };
-
-                break;
-            case 2://向上爬
-                //先检测是否开启了下面梯子的机关
-                if (this.isContainsStep("1") && this.isContainsStep("2")) {
-                    order = { direction: "U", action: "CLIMB" };
-                }
-                break;
-            case 3://向右走
-                order = { direction: "R", action: "WALK" };
-                break;
-            default:
-                break;
-        }
-        this.brotherNode.emit(this.settingBasic.gameEvent.brotherActionEvent, order)
-        //记录当前开启的机关步骤
+ 
     }
     //重写
     toUpdate() {

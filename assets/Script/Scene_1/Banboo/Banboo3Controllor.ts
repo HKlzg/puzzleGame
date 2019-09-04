@@ -2,6 +2,7 @@
 const { ccclass, property } = cc._decorator;
 import setting from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
+import settingBasic from "../../Setting/settingBasic";
 
 @ccclass
 export default class NewClass extends LogicBasicComponent {
@@ -14,10 +15,10 @@ export default class NewClass extends LogicBasicComponent {
     fireLeftList: Array<cc.Node> = []
 
     hasWater: boolean = false;
-    canvas: cc.Node = null;
+    currScene: cc.Node = null;
 
     start() {
-        this.canvas = cc.find("Canvas");
+        this.currScene = cc.find("Canvas/" + settingBasic.game.currScene);
 
     }
 
@@ -59,7 +60,7 @@ export default class NewClass extends LogicBasicComponent {
                     fire.runAction(cc.sequence(
                         cc.fadeOut(2),
                         cc.callFunc(() => {
-                            this.canvas.emit(setting.gameEvent.gameMoveStep, 2)
+                            this.currScene.emit(setting.gameEvent.gameMoveStep, 2)
                         })
                     )
                     )

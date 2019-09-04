@@ -2,6 +2,7 @@
 const { ccclass, property } = cc._decorator;
 import setting from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
+import settingBasic from "../../Setting/settingBasic";
 @ccclass
 export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
@@ -16,10 +17,10 @@ export default class NewClass extends LogicBasicComponent {
     hasWater: boolean = false;
     maskInitHeight: number = 0;
 
-    canvas: cc.Node = null;
+    currScene: cc.Node = null;
     start() {
         this.maskInitHeight = this.mask.height;
-        this.canvas = cc.find("Canvas");
+        this.currScene = cc.find("Canvas/"+settingBasic.game.currScene);
     }
 
     logicUpdate(dt) {
@@ -60,7 +61,7 @@ export default class NewClass extends LogicBasicComponent {
                 this.fireLeftList.forEach((fire) => {
                     fire.runAction(cc.sequence(cc.fadeOut(2),
                         cc.callFunc(() => {
-                            this.canvas.emit(setting.gameEvent.gameMoveStep, 1)
+                            this.currScene.emit(setting.gameEvent.gameMoveStep, 1)
                         })))
                 })
             }
