@@ -37,9 +37,9 @@ export default class NewClass extends LogicBasicComponent {
 
     start() {
         //--test
-        this.mountain = cc.find("Canvas/"+settingBasic.game.currScene+"Background/Mountain_left/right")
-        cc.tween(this.mountain).delay(3).by(1, { y: 87 }).delay(5).
-            by(1, { y: - 87 }).delay(0.5).by(1, { y: 87 }).start();
+        this.mountain = cc.find("Canvas/" + settingBasic.game.currScene + "/Background/Mountain_left/right")
+        cc.tween(this.mountain).delay(3).by(1, { y: 300 }).delay(5).
+            by(1, { y: - 300 }).delay(0.5).by(1, { y: 300 }).start();
         //--
 
         this.mask[oilPos.left] = this.pipe_left.getChildByName("mask");

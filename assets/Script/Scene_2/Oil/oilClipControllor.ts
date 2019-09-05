@@ -10,8 +10,9 @@ export default class NewClass extends LogicBasicComponent {
     }
 
     logicUpdate(dt) {
-        let pos = this.node.convertToWorldSpaceAR(cc.Vec2.ZERO)
-        if (pos.y <= 200) {
+        let pos = this.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
+        this.node.x = 0;
+        if (pos.y <= -500) {
             this.node.destroy();
         }
     }

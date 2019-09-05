@@ -21,6 +21,11 @@ export default class NewClass extends LogicBasicComponent {
     mask2InitHeight: number = 0;
 
     maskTag: number = 0;
+
+    onEnable() {
+        this.node.parent.getComponent(cc.WheelJoint).apply();
+    }
+
     onLoad() {
 
         this.mask1InitHeight = this.waterMaskNode1.height;
@@ -34,8 +39,8 @@ export default class NewClass extends LogicBasicComponent {
 
     logicUpdate(dt) {
         this.waterMaskContrl();
-
-    }
+ 
+    }   
 
     //水流 遮罩控制
     waterMaskContrl() {

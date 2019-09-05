@@ -19,7 +19,6 @@ export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
     fire: cc.Node = null;
 
-    @property(cc.Node)
     itemBag: cc.Node = null;
 
     currScene: cc.Node = null;
@@ -46,6 +45,7 @@ export default class NewClass extends LogicBasicComponent {
     isGetOil: boolean = false; //是否碰到油滴
     isBurning: boolean = false;//是否是燃烧状态
     onLoad() {
+        this.itemBag = cc.find("UIMask/UICamera/itemsBag")
         this.currScene = cc.find("Canvas/"+settingBasic.game.currScene);
         this.prePersonPos = this.personNode.position;
         this.animation = this.node.getComponent(cc.Animation);

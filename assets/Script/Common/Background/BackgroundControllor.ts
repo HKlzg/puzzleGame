@@ -12,7 +12,7 @@ export class BackgroundControllor extends LogicBasicComponent {
 
     @property(cc.Node)
     cameraNode: cc.Node = null;
-    @property(cc.Node)
+  
     UICamera: cc.Node = null;
     //box
     @property(cc.Prefab)
@@ -111,6 +111,7 @@ export class BackgroundControllor extends LogicBasicComponent {
         this.drawline = this.circular.getChildByName("DrawLine");
         this.rDis = this.circular.width / 2;
         this.boxMaxNum = settingBasic.fun.getBoxNumByLv(settingBasic.game.currLevel);
+        this.UICamera = cc.find("UIMask").getChildByName("UICamera")
         this.boxTip = this.UICamera.getChildByName("boxTip").getComponent(cc.Label);
         this.boxTip.string = "箱子数量:" + this.boxMaxNum;
 
@@ -118,7 +119,7 @@ export class BackgroundControllor extends LogicBasicComponent {
 
     start() {
         this.moveCamera();
-     };
+    };
 
     //#endregion
     logicUpdate(dt) {

@@ -14,9 +14,8 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
     @property(cc.Node)
     cameraNode: cc.Node = null;
     @property(cc.Node)
-    UICamera: cc.Node = null;
-    @property(cc.Node)
     brotherNode: cc.Node = null;
+    UICamera: cc.Node = null;
 
     //Brother Move 
     minX: number = 0;
@@ -55,7 +54,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
         this.node.on(settingBasic.gameEvent.gameMoveStep, this.moveStep, this);
         this.node.on(settingBasic.gameEvent.setCurrGameStep, this.setCurrGameStep, this);
 
-        this.UICamera.parent.active = true;
+        this.UICamera = cc.find("UIMask").getChildByName("UICamera")
         // this.deathTip = this.UICamera.getChildByName("deathTip").getComponent(cc.Label);
         // let currDeath = settingBasic.game.currDeath;
         // this.deathTip.string = "失败次数:" + currDeath;
@@ -65,13 +64,9 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
         this.bookNode = this.UICamera.getChildByName("bookNode");
         this.bookmarkNode = this.bookNode.getChildByName("bookmark");
 
-        //在书本翻页之后 再次初始化时 为暂停状态 此时设置书本菜单为打开状态
-        // if (settingBasic.game.State == settingBasic.setting.stateType.PAUSE) {
-        //     this.bookNode.getComponent("bookAnimControllor").openBookImmediately();
-        // }
-
         console.log("=========SCENE: " + this.level + " ==========")
         settingBasic.game.currLevel = this.level;
+        settingBasic.game.currScene = this.node.name;
         settingBasic.fun.setScene("level_" + this.level, cc.director.getScene());
 
         //加载子包资源
@@ -82,7 +77,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
 
         // 绘制碰撞区域
         var draw = cc.PhysicsManager.DrawBits;
-        cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
+        // cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
         // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
         // cc.director.getCollisionManager().enabledDebugDraw = true; //碰撞区域 
         // 开启碰撞检测
@@ -96,7 +91,11 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
 
         this.changeGameState(settingBasic.setting.stateType.START);
 
-        this.level == 1 ? this.changeGameState(settingBasic.setting.stateType.PAUSE) : null;
+        //第一次加载场景时暂停
+        if (settingBasic.game.isFirstLoad) {
+            this.changeGameState(settingBasic.setting.stateType.PAUSE);
+            settingBasic.game.isFirstLoad = false;
+        }
 
     };
 

@@ -38,6 +38,7 @@ export default class spiderClass extends LogicBasicComponent {
     currScene: cc.Node = null;
     scaleX: number = 1;
     start() {
+        
         this.currScene = cc.find("Canvas"+settingBasic.game.currScene);
         this.spiderAnimation = this.spider.getComponent(cc.Animation)
         this.body = this.node.getComponent(cc.RigidBody)

@@ -227,6 +227,7 @@ const settingBasic = {
         version: "001",//版本号
 
         currScene: "Scene1",
+        isFirstLoad:true,//是否是第一次加载
     },
 
     //自定义事件

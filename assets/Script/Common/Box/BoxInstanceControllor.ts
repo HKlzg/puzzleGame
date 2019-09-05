@@ -165,15 +165,15 @@ export default class NewClass extends LogicBasicComponent {
     //找到挂载 前景脚本的 父节点
     getForgoundParent(node: cc.Node, callBackfun: Function): cc.Node {
         if (!node) return null;
-        if (node.parent && node.parent instanceof cc.Scene) return null;
+        if (node && node instanceof cc.Scene) return null;
+
         if (node instanceof cc.Node) {
             let ctrl = node.getComponent("foregroundControllor");
             if (ctrl) {
-                // console.log("==1==name=" + node.name)
+                // console.log("=1=follow==name=" + node.name)
                 callBackfun(node);
                 return node;
             } else {
-
                 if (node.parent) {
                     this.getForgoundParent(node.parent, callBackfun);
                 } else {
@@ -188,23 +188,26 @@ export default class NewClass extends LogicBasicComponent {
     //--------------------------碰撞---Event---------------------
     onBeginContact(contact, selfCollider, otherCollider) {
 
-        if (this.followObject && this.followObject == otherCollider.node) return;
+        if (this.followObject && this.followObject == otherCollider.node || otherCollider.node.groupIndex == 6) return;
 
         if (!this.followObject) {
             let forgNode = null;
-            forgNode = this.getForgoundParent(otherCollider.node, (node) => { forgNode = node; });
-
-            if (forgNode && forgNode instanceof cc.Node) {
-                let forgCtrl = forgNode.getComponent("foregroundControllor");
-                //若碰撞物有 挂载 前景脚本,则和碰撞体同步
-                if (forgCtrl) {
-                    let speed = forgCtrl.getMoveSpeed();
-                    this.followObject = otherCollider.node;
-
-                    this.isforegContrl.setMoveSpeed(speed);
-                    // this.isforegContrl.enabled = true;
+            this.getForgoundParent(otherCollider.node, (node) => { 
+                forgNode = node; 
+                // console.log("=2=follow==forgNode=" + forgNode.name)
+                if (forgNode && forgNode instanceof cc.Node) {
+                    let forgCtrl = forgNode.getComponent("foregroundControllor");
+                    //若碰撞物有 挂载 前景脚本,则和碰撞体同步
+                    if (forgCtrl) {
+                        let speed = forgCtrl.getMoveSpeed();
+                        this.followObject = otherCollider.node;
+    
+                        this.isforegContrl.setMoveSpeed(speed);
+                        // this.isforegContrl.enabled = true;
+                    }
                 }
-            }
+            
+            });
         }
 
     }

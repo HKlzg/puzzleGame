@@ -553,6 +553,11 @@
   "design-resolution-height": 1280,
   "design-resolution-width": 720,
   "excluded-modules": [
+    "ParticleSystem",
+    "Spine Skeleton",
+    "DragonBones",
+    "VideoPlayer",
+    "WebView",
     "Geom Utils",
     "3D",
     "3D Primitive"

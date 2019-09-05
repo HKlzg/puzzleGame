@@ -16,9 +16,9 @@ const contentType = cc.Enum({
 
 @ccclass
 export default class NewClass extends cc.Component {
+
     @property(cc.Node)
     contentNode: cc.Node = null;
-    contentList: Array<cc.Node> = []
 
     @property(cc.Node)
     UIMask: cc.Node = null;
@@ -26,8 +26,8 @@ export default class NewClass extends cc.Component {
     @property(cc.Node)
     mapPicCopy: cc.Node = null;
 
-    @property(cc.Node)
     sceneList: cc.Node[] = [];
+    contentList: Array<cc.Node> = []
     isContentMapClick: boolean = true; //当前图片是否可点击
 
     // LIFE-CYCLE CALLBACKS:
@@ -36,17 +36,29 @@ export default class NewClass extends cc.Component {
     currScene: cc.Node = null;
     currPageNum: number = 1; //对应 contentType 1-5 (关卡) //游戏打开默认显示第一页
 
+    canvas: cc.Node = null;
     onLoad() {
         // console.log("===bookMark onLoad====")
-        this.currScene = this.sceneList[0];
+        //从canvas 获取加载的scenelist
+        this.canvas = cc.find("Canvas");
+        this.sceneList = this.canvas.getComponent("CanvasControllor").getSceneList();
+        if (this.sceneList) {
+            this.currScene = this.sceneList[0];
+            this.loadSceneNode(this.currPageNum - 1);
+        }
         this.UICamera = this.UIMask.getChildByName("UICamera");
         this.contentList = this.contentNode.children;
-        this.loadSceneNode(this.currPageNum - 1);
     }
 
     start() {
     }
-
+    update(dt) {
+        if (!this.sceneList) {
+            this.sceneList = this.canvas.getComponent("CanvasControllor").getSceneList();
+            this.currScene = this.sceneList[0];
+            this.loadSceneNode(this.currPageNum - 1);
+        }
+    }
     // 点击 故事内容 图片 ,开始游戏
     contentMapPicOnclik() {
         if (this.isContentMapClick) {
@@ -66,14 +78,18 @@ export default class NewClass extends cc.Component {
             if (this.contentList[this.currPageNum]) {
                 let currPagePic: cc.Node = this.contentList[this.currPageNum].getChildByName("PicStory");
                 //mapPicCopy更换为当前页面的图片
-                this.mapPicCopy.getComponent(cc.Sprite).spriteFrame = currPagePic.getComponent(cc.Sprite).spriteFrame;
+                if (!this.mapPicCopy.getComponent(cc.Sprite).spriteFrame) {
+                    this.mapPicCopy.getComponent(cc.Sprite).spriteFrame = currPagePic.getComponent(cc.Sprite).spriteFrame;
+                } else if (this.mapPicCopy.getComponent(cc.Sprite).spriteFrame != currPagePic.getComponent(cc.Sprite).spriteFrame) {
+                    this.mapPicCopy.getComponent(cc.Sprite).spriteFrame = currPagePic.getComponent(cc.Sprite).spriteFrame;
+                }
             }
 
             this.isContentMapClick = false;
             this.mapPicCopy.active = true;
             this.mapPicCopy.getComponent(cc.Button).enabled = false;
 
-            this.mapPicCopy.runAction(cc.fadeTo(1.5, 0));
+            this.mapPicCopy.runAction(cc.fadeTo(1, 0));
             this.UIMask.getComponent(cc.Mask).enabled = true;
 
             cc.tween(this.UIMask)
@@ -154,21 +170,18 @@ export default class NewClass extends cc.Component {
 
         for (let index = 0; index < this.sceneList.length; index++) {
             if (id == index) {
-
-                this.sceneList[index].active = true;
-                settingBasic.game.currScene = this.sceneList[index].name;
                 this.currScene = this.sceneList[index];
-
+                //先更改全局currScene,再激活currScene
+                settingBasic.game.currScene = this.sceneList[index].name;
+                this.currScene.active = true;
             } else {
                 this.sceneList[index].active = false;
             }
         }
-        // console.log("===2===id== " + id + " ====scene name = " + this.currScene.name + "  this.UIMask= " + this.UICamera.parent.active)
+        console.log("===2===id== " + id + " ====scene name = " + this.currScene.name)
     }
 
-    update(dt) {
 
-    }
 
 
 }

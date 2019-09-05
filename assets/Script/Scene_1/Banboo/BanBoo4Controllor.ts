@@ -30,35 +30,18 @@ export default class NewClass extends LogicBasicComponent {
     start() {
         this.waterDirection = direction.Stop;
         this.currScene = cc.find("Canvas/"+settingBasic.game.currScene);
-
     }
-
+    onEnable() {
+        this.node.parent.getComponent(cc.WheelJoint).apply();
+    }
     logicUpdate(dt) {
         this.waterContrl()
-
-        // if (this.waterDirection == direction.Stop) {
-
-        // } else if (this.waterDirection == direction.Left) {
-
-        // } else if (this.waterDirection == direction.Right) {
-
-        // }
-
-
     }
     onPostSolve(contact, selfCollider, otherCollider) {
         selfCollider.node.getComponent(cc.RigidBody).linearVelocity = cc.v2(0, 0)
         let angle = selfCollider.node.getComponent(cc.RigidBody).angularVelocity;
         selfCollider.node.getComponent(cc.RigidBody).angularVelocity = angle * 0.8;
-        // let vel: cc.Vec2 = otherCollider.node.getComponent(cc.RigidBody).linearVelocity;
-        // let maxVel = vel.normalize().mul(100);
-        // let linearVelocity = otherCollider.node.getComponent(cc.RigidBody);
-        //.linearVelocity = vel > maxVel ? maxVel : vel;
-        // if (linearVelocity.y >= -50 && linearVelocity.y < 0) {
-        //     otherCollider.node.getComponent(cc.RigidBody).linearVelocity = cc.v2(0, 0)
-        // } else {
-        // }
-        // otherCollider.node.getComponent(cc.RigidBody).linearVelocity = vel > maxVel ? maxVel : vel;
+ 
     }
 
 

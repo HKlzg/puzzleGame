@@ -8,7 +8,7 @@ const itemType = settingBasic.setting.itemType;
 @ccclass
 export default class NewClass extends LogicBasicComponent {
 
-    @property(cc.Node)
+ 
     UICamera: cc.Node = null;
     @property(cc.SpriteFrame)
     picList: Array<cc.SpriteFrame> = [];
@@ -24,6 +24,7 @@ export default class NewClass extends LogicBasicComponent {
 
     currCtrlIndex: number = 0; //当前控制的物品 
     start() {
+        this.UICamera = cc.find("UIMask").getChildByName("UICamera")
         this.node.on(settingBasic.gameEvent.getItemEvent, this.getItemFromScene, this);
         this.currScene = cc.find("Canvas/" + settingBasic.game.currScene)
         this.cameraNode = this.currScene.getChildByName("Camera")

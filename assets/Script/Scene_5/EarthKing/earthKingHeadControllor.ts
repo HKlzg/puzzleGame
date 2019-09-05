@@ -18,54 +18,82 @@ export default class NewClass extends LogicBasicComponent {
     person: cc.Node = null;
     // LIFE-CYCLE CALLBACKS:
 
-    bodyWidth: number = 1100;
-    isMovingEye_L: boolean = false;
-    isMovingEye_R: boolean = false;
-
-    isStartGame: boolean = false;
+    bodyWidth: number = 800; //body 的宽度
+    isStartGame: boolean = false; //是否开始执行update
+    isWhatching: boolean = false; //是否是注视中
+    isInQuiet: boolean = false; //是否是平静中
+    isFlashing: boolean = false;//是否正在闪烁中;
 
     grap: cc.Graphics = null;
     camera: cc.Camera = null;
+
+    redLight_left: cc.Node = null;
+    redLight_right: cc.Node = null;
+
+    redLightAngle = { max: 30, min: -30 };
+    redlightSprite = { L: null, R: null }
+
     //相对父节点的位置 眼睛初始位置以及最大位置
     initEye = {
-        initPos_L: { L: cc.v2(-118.187, -39.436), M: cc.v2(-91.675, -45.554), R: cc.v2(-64.483, -53.032) },
-        initPos_R: { L: cc.v2(77.354, -53.032), M: cc.v2(99.787, -45.554), R: cc.v2(131.058, -39.436) },
+        initPos_L: { L: cc.Vec2.ZERO, M: cc.Vec2.ZERO, R: cc.Vec2.ZERO },
+        initPos_R: { L: cc.Vec2.ZERO, M: cc.Vec2.ZERO, R: cc.Vec2.ZERO },
         tempPos: { //中间 位置 与两边的相对坐标
             eye_L: {
-                m_l: cc.v2(-91.675, -45.554).subSelf(cc.v2(-118.187, -39.436)),
-                m_r: cc.v2(-91.675, -45.554).subSelf(cc.v2(-64.483, -53.032))
+                m_l: cc.v2(26.512, -6.118),
+                m_r: cc.v2(-27.1919, 7.4779)
             },
             eye_R: {
-                m_l: cc.v2(99.787, -45.554).subSelf(cc.v2(77.354, -53.032)),
-                m_r: cc.v2(99.787, -45.554).subSelf(cc.v2(131.058, -39.436))
+                m_l: cc.v2(22.433, 7.4779),
+                m_r: cc.v2(-31.2709, -6.118)
             },
         }
     }
 
-    // onLoad () {}
+    onLoad() {
+        this.initEye.initPos_L.M = this.eye_left.position;
+        this.initEye.initPos_L.L = this.eye_left.position.sub(this.initEye.tempPos.eye_L.m_l);
+        this.initEye.initPos_L.R = this.eye_left.position.sub(this.initEye.tempPos.eye_L.m_r);
+
+        this.initEye.initPos_R.M = this.eye_right.position;
+        this.initEye.initPos_R.L = this.eye_right.position.sub(this.initEye.tempPos.eye_R.m_l);
+        this.initEye.initPos_R.R = this.eye_right.position.sub(this.initEye.tempPos.eye_R.m_r);
+
+        //红色射线
+        this.redLight_left = this.eye_left.getChildByName("redLight");
+        this.redLight_right = this.eye_right.getChildByName("redLight");
+        this.redlightSprite.L = this.redLight_left.getComponent(cc.Sprite);
+        this.redlightSprite.R = this.redLight_right.getComponent(cc.Sprite);
+        this.redlightSprite.L.enabled = false;
+        this.redlightSprite.R.enabled = false;
+        this.redLight_left.opacity = 50;//透明度
+        this.redLight_right.opacity = 50;//透明度
+    }
     start() {
         this.grap = this.node.getChildByName("grap").getComponent(cc.Graphics);
-        this.camera = cc.find("Canvas/"+settingBasic.game.currScene).getChildByName("Camera").getComponent(cc.Camera);
+        this.camera = cc.find("Canvas/" + settingBasic.game.currScene).getChildByName("Camera").getComponent(cc.Camera);
         this.scheduleOnce(() => {
             this.isStartGame = true;
+
         }, 2)
+        this.schedule(() => { this.earthquake(); }, 2)
     }
 
     logicUpdate(dt) {
         if (!this.isStartGame) return;
 
         this.stareAtPerson();
-     }
+        this.flashingLight();
+    }
 
     //盯着人转动眼睛
-     stareAtPerson() {
+    stareAtPerson() {
         let personPos = this.person.convertToWorldSpaceAR(cc.Vec2.ZERO);
         let selfPos = this.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
 
         let distX = personPos.x - selfPos.x
         //人在左边
         if (distX < 0 && distX >= -this.bodyWidth / 2) {
-
+            this.isWhatching = true;
             let rate_L = distX / (-this.bodyWidth / 2);
             rate_L = rate_L >= 1 ? 1 : rate_L
             rate_L = rate_L <= 0 ? 0 : rate_L
@@ -95,11 +123,19 @@ export default class NewClass extends LogicBasicComponent {
             if (posMid_R.x > this.initEye.initPos_R.L.x && posMid_R.x < this.initEye.initPos_R.R.x) {
                 this.eye_right.position = posMid_R;
             }
+
+            let light_ang = rate_L * this.redLightAngle.min;
+            // console.log("light_ang==="+light_ang)
+            //射线角度
+            if (light_ang >= this.redLightAngle.min && light_ang <= 0) {
+                this.redLight_left.angle = light_ang;
+                this.redLight_right.angle = light_ang;
+
+            }
         }
-
-        //人在右边
-        if (distX > 0 && distX <= this.bodyWidth / 2) {
-
+        else if (distX >= 0 && distX <= this.bodyWidth / 2) {
+            //人在右边
+            this.isWhatching = true;
             let rate_R = distX / (this.bodyWidth / 2);
             rate_R = rate_R >= 1 ? 1 : rate_R
             rate_R = rate_R <= 0 ? 0 : rate_R
@@ -123,12 +159,86 @@ export default class NewClass extends LogicBasicComponent {
             let posMid_R = this.initEye.initPos_R.M.clone();
             posMid_R.x -= tmpV_R.x;
             posMid_R.y -= tmpV_R.y;
-             
+
             if (posMid_R.x > this.initEye.initPos_R.L.x && posMid_R.x < this.initEye.initPos_R.R.x) {
                 this.eye_right.position = posMid_R;
 
             }
+
+            let light_ang = rate_R * this.redLightAngle.max;
+
+            //射线角度
+            if (light_ang >= 0 && light_ang <= this.redLightAngle.max) {
+                this.redLight_left.angle = light_ang;
+                this.redLight_right.angle = light_ang;
+
+            }
+        } else {
+            // 从注视范围 出来之后
+            if (!this.isInQuiet && this.isWhatching) {
+                this.isWhatching = false;
+                this.isInQuiet = true;
+                let speed = 0.5;
+                cc.tween(this.eye_left).to(speed, { position: this.initEye.initPos_L.M }).start()
+                cc.tween(this.eye_right).to(speed, { position: this.initEye.initPos_R.M }).start()
+                cc.tween(this.redLight_left).to(speed, { angle: 0 }).start()
+                cc.tween(this.redLight_right).to(speed, { angle: 0 }).call(() => {
+                    this.isInQuiet = false;
+                    this.redlightSprite.L.enabled = false;
+                    this.redlightSprite.R.enabled = false;
+                    this.redLight_left.opacity = 50;//透明度
+                    this.redLight_right.opacity = 50;//透明度
+                }).start()
+            }
+        }
+
+    }
+
+    // 闪烁
+    flashingLight() {
+        //快速闪烁2次 持续显示3s 关闭2秒 再重复
+        if (this.isWhatching && !this.isFlashing) {
+            this.isFlashing = true;
+
+            cc.tween(this.node).call(() => {
+                this.redlightSprite.L.enabled = true;
+                this.redlightSprite.R.enabled = true;
+            }).delay(0.1).call(() => {
+                this.redlightSprite.L.enabled = false;
+                this.redlightSprite.R.enabled = false;
+            }).delay(0.1).call(() => {
+                this.redlightSprite.L.enabled = true;
+                this.redlightSprite.R.enabled = true;
+                cc.tween(this.redLight_left).to(0.5, { opacity: 255 }).start();
+                cc.tween(this.redLight_right).to(0.5, { opacity: 255 }).start();
+            }).delay(4).call(() => {
+                this.redlightSprite.L.enabled = false;
+                this.redlightSprite.R.enabled = false;
+                this.redLight_left.opacity = 50;//透明度
+                this.redLight_right.opacity = 50;//透明度
+            }).delay(2).call(() => {
+                this.isFlashing = false;
+            }).start()
+
         }
     }
- 
+
+    public getIsWhatching(): boolean {
+        return this.isWhatching;
+    }
+
+    // 地震效果
+    earthquake() {
+        let currScene = cc.find("Canvas/" + settingBasic.game.currScene);
+        let pos = currScene.position;
+        let speedUp = 0.2;
+        let speedDown = 0.1;
+        cc.tween(currScene)
+            .to(speedUp, { y: pos.y + 30 }).to(speedDown, { y: pos.y })
+            .to(speedUp, { y: pos.y + 30 }).to(speedDown, { y: pos.y })
+            .to(speedUp, { y: pos.y + 30 }).to(speedDown, { y: pos.y })
+            .to(speedUp, { y: pos.y + 30 }).to(speedDown, { y: pos.y }).start();
+
+    }
+
 }

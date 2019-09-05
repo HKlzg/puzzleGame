@@ -16,13 +16,12 @@ class childType {
 @ccclass
 export default class NewClass extends LogicBasicComponent {
 
-    @property(cc.Node)
-    cameraNode: cc.Node = null;
     @property(cc.Integer)
     speed: number = 0; //默认值
     @property(cc.Node) //需要跟随的子节点 
     followNodeList: cc.Node[] = [];
-
+    
+    cameraNode: cc.Node = null;
     preCameraPos: cc.Vec2 = null;
 
     //包含rigidBody 的子节点
@@ -33,8 +32,8 @@ export default class NewClass extends LogicBasicComponent {
     onLoad() { }
 
     start() {
-        this.currScene = cc.find("Canvas/"+settingBasic.game.currScene);
-        if (!this.cameraNode) this.cameraNode = this.currScene.getChildByName("Camera");
+        this.currScene = cc.find("Canvas/" + settingBasic.game.currScene);
+        this.cameraNode = this.currScene.getChildByName("Camera");
 
         this.preCameraPos = this.cameraNode.position;
 
@@ -76,7 +75,7 @@ export default class NewClass extends LogicBasicComponent {
 
 
     //-------------- 同步 子节点位置 ----------s------
-    //添加含有rigidBody 的子节点 
+    //添加含有rigidBody 的子节点 []
     addPhyChildrens(nodeList: cc.Node[]) {
         if (!nodeList) return;
         nodeList.forEach((node) => {
@@ -85,6 +84,13 @@ export default class NewClass extends LogicBasicComponent {
 
             }
         });
+    }
+    //添加含有rigidBody 的子节点 
+    addPhyChild(node: cc.Node) {
+        if (!node) return;
+        if (node.getComponent(cc.RigidBody)) {
+            this.phyChildrens.push(new childType(node, node.position, node.angle));
+        }
     }
     //同步更新子节点的位置
     updateChildrenBody() {

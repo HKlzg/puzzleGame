@@ -27,7 +27,6 @@ export default class LeopardControllor extends LogicBasicComponent {
     personNode: cc.Node = null;
     @property(cc.Node)
     monsterNode: cc.Node = null;
-    @property(cc.Node)
     itemBag: cc.Node = null;
 
     monsterAnimation: cc.Animation = null;
@@ -59,7 +58,8 @@ export default class LeopardControllor extends LogicBasicComponent {
 
     isMonsterActionStart: boolean = false;
     start() {
-        this.currScene = cc.find("Canvas/"+settingBasic.game.currScene);
+        this.itemBag = cc.find("UIMask/UICamera/itemsBag")
+        this.currScene = cc.find("Canvas/" + settingBasic.game.currScene);
         this.monsterAnimation = this.monsterNode.getComponent(cc.Animation);
         this.node.on(setting.gameEvent.monsterReduceState, this.setIsSafePos, this);
         this.node.on(setting.gameEvent.monsterStopPlayAction, this.stopPlayAction, this);
