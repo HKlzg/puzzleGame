@@ -2,18 +2,30 @@ import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent
 import settingBasic from "../../Setting/settingBasic";
 
 const { ccclass, property } = cc._decorator;
+const attackType = cc.Enum({
+    attack: 0,
+    fullAttack: 1
+})
+//动作指令类型
+class actionOrder {
+    action: number;
+    delay: number; //延迟
+    constructor(action: number, delay?: number) {
+        this.action = action;
+        this.delay = delay ? delay : 0;
+    }
+}
 
 @ccclass
 export default class NewClass extends LogicBasicComponent {
-
+    @property(cc.Node)
+    earthKingNode: cc.Node = null;
     @property(cc.Node)
     eye_left: cc.Node = null;
     @property(cc.Node)
     eye_right: cc.Node = null;
-
     @property(cc.Node)
     mouth: cc.Node = null;
-
     @property(cc.Node)
     person: cc.Node = null;
     // LIFE-CYCLE CALLBACKS:
@@ -32,6 +44,8 @@ export default class NewClass extends LogicBasicComponent {
 
     redLightAngle = { max: 30, min: -30 };
     redlightSprite = { L: null, R: null }
+
+    isOrdered: boolean = false; //是否已发送指令
 
     //相对父节点的位置 眼睛初始位置以及最大位置
     initEye = {
@@ -71,18 +85,17 @@ export default class NewClass extends LogicBasicComponent {
     start() {
         this.grap = this.node.getChildByName("grap").getComponent(cc.Graphics);
         this.camera = cc.find("Canvas/" + settingBasic.game.currScene).getChildByName("Camera").getComponent(cc.Camera);
-        this.scheduleOnce(() => {
-            this.isStartGame = true;
 
-        }, 2)
-        this.schedule(() => { this.earthquake(); }, 2)
+        cc.tween(this.node).delay(2).call(() => {
+            this.isStartGame = true;
+        }).start();
     }
 
     logicUpdate(dt) {
         if (!this.isStartGame) return;
-
         this.stareAtPerson();
         this.flashingLight();
+        this.doAction();
     }
 
     //盯着人转动眼睛
@@ -209,13 +222,14 @@ export default class NewClass extends LogicBasicComponent {
             }).delay(0.1).call(() => {
                 this.redlightSprite.L.enabled = true;
                 this.redlightSprite.R.enabled = true;
-                cc.tween(this.redLight_left).to(0.5, { opacity: 255 }).start();
-                cc.tween(this.redLight_right).to(0.5, { opacity: 255 }).start();
+                cc.tween(this.redLight_left).to(0.5, { opacity: 200 }).start();
+                cc.tween(this.redLight_right).to(0.5, { opacity: 200 }).start();
             }).delay(4).call(() => {
-                this.redlightSprite.L.enabled = false;
-                this.redlightSprite.R.enabled = false;
-                this.redLight_left.opacity = 50;//透明度
-                this.redLight_right.opacity = 50;//透明度
+                cc.tween(this.redLight_left).to(0.2, { opacity: 50 }).start();
+                cc.tween(this.redLight_right).to(0.2, { opacity: 50 }).call(() => {
+                    this.redlightSprite.L.enabled = false;
+                    this.redlightSprite.R.enabled = false;
+                }).start();
             }).delay(2).call(() => {
                 this.isFlashing = false;
             }).start()
@@ -223,22 +237,33 @@ export default class NewClass extends LogicBasicComponent {
         }
     }
 
+    //发送动作指令
+    doAction() {
+        //进入攻击范围
+        if (this.isWhatching) {
+            if (!this.isOrdered) {
+                this.isOrdered = true;
+                let ctrl = this.earthKingNode.getComponent("earthKingControllor");
+                //随机生成一组动作
+                let orderNum = Math.random() * 10; //指令次数
+                orderNum = orderNum >= 5 ? 5 : (orderNum <= 2 ? 2 : orderNum);
+                for (let index = 0; index < orderNum; index++) {
+                    let action = Math.random() >= 0.5 ? 1 : 0;
+                    let delay = Math.random() >= 0.5 ? 3 : 2;
+                    ctrl.addActionOrder(new actionOrder(action, delay));
+                }
+            }
+        } else {
+            //离开攻击范围
+            this.isOrdered = false;
+        }
+
+    }
+
     public getIsWhatching(): boolean {
         return this.isWhatching;
     }
 
-    // 地震效果
-    earthquake() {
-        let currScene = cc.find("Canvas/" + settingBasic.game.currScene);
-        let pos = currScene.position;
-        let speedUp = 0.2;
-        let speedDown = 0.1;
-        cc.tween(currScene)
-            .to(speedUp, { y: pos.y + 30 }).to(speedDown, { y: pos.y })
-            .to(speedUp, { y: pos.y + 30 }).to(speedDown, { y: pos.y })
-            .to(speedUp, { y: pos.y + 30 }).to(speedDown, { y: pos.y })
-            .to(speedUp, { y: pos.y + 30 }).to(speedDown, { y: pos.y }).start();
 
-    }
 
 }

@@ -1,7 +1,6 @@
 
 const { ccclass, property } = cc._decorator;
 import settingBasic from "../../Setting/settingBasic";
-import tools from "../../Tools/toolsBasics";
 import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 
 class AudioType {
@@ -27,8 +26,9 @@ export default class NewClass extends LogicBasicComponent {
     jumpXdist: number = 0;//水平跳跃距离
     audioName: AudioType = new AudioType();
 
-    audioManager = tools.getAudioManager();
+    audioManager: any = null;
     start() {
+        this.audioManager = cc.find("UICamera/audio").getComponent("audioControllor");
         this.parentGravityScale = this.node.parent.getComponent(cc.RigidBody).gravityScale;
         this.node.on(settingBasic.gameEvent.brotherJumpEvent, this.setJumpX, this)
         this.node.on(settingBasic.gameEvent.brotherSetAudio, this.setWalkAudioName, this)
@@ -61,7 +61,7 @@ export default class NewClass extends LogicBasicComponent {
 
     }
 
-    logicUpdate (dt) {}
+    logicUpdate(dt) { }
     //--------------climbBox------------------暂时取消------------
     climbBoxStart() {
         if (this.isClimbBox) return;

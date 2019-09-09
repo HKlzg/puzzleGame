@@ -23,14 +23,14 @@ export default class NewClass extends cc.Component {
         let self = this;
         cc.loader.loadResDir('Perfabs', cc.Prefab, function (err, perfabList) {
             if (err) {
-                console.log("加载perfab 失败:" + err);
+                console.log("加载perfab 失败:" + JSON.stringify(err));
             }
 
             for (let i = 0; i < perfabList.length; i++) {
                 let nameIndex: string = perfabList[i].name.substr(5, 1);
                 let index = Number(nameIndex);
                 self.scenePerfabList[index] = perfabList[i];
-
+                console.log("===加载====:" + perfabList[i].name);
             }
 
             self.scenePerfabList.forEach(e => {

@@ -37,7 +37,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
     public stepList: Array<string> = [];
     public preGameState = 0;
     // public deathTip: cc.Label = null;
-    public audioManager = toolsBasics.getAudioManager();
+    public audioManager: any = null;
     public brotherWalkNode: cc.Node = null;
     public actionType = settingBasic.setting.actionType;
 
@@ -45,9 +45,10 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
     personAudio: [{ actionType: number, name: string }] = null;
 
     onLoad() {
+        this.audioManager = cc.find("UICamera/audio").getComponent("audioControllor");
         // cc.game.setFrameRate(60);
         this.brotherWalkNode = this.brotherNode.getChildByName("Brother_Walk");
-
+        
         // 自定义事件 控制游戏状态 
         this.node.on(settingBasic.gameEvent.gameStateEvent, this.changeGameState, this);
         this.node.on(settingBasic.gameEvent.gameStepEvent, this.gameStep, this);
@@ -68,7 +69,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
         settingBasic.game.currLevel = this.level;
         settingBasic.game.currScene = this.node.name;
         settingBasic.fun.setScene("level_" + this.level, cc.director.getScene());
-
+        this.audioManager.setCurrScene();
         //加载子包资源
         this.loadSubPackageDefualt();
 
@@ -93,10 +94,9 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
 
         //第一次加载场景时暂停
         if (settingBasic.game.isFirstLoad) {
-            this.changeGameState(settingBasic.setting.stateType.PAUSE);
+            // this.changeGameState(settingBasic.setting.stateType.PAUSE);
             settingBasic.game.isFirstLoad = false;
         }
-
     };
 
 

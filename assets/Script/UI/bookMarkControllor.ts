@@ -1,4 +1,5 @@
 import settingBasic from "../Setting/settingBasic";
+import toolsBasics from "../Tools/toolsBasics";
 
 const { ccclass, property } = cc._decorator;
 
@@ -37,6 +38,7 @@ export default class NewClass extends cc.Component {
     currPageNum: number = 1; //对应 contentType 1-5 (关卡) //游戏打开默认显示第一页
 
     canvas: cc.Node = null;
+    UIAudioResorce = toolsBasics.getUIAudioManager();
     onLoad() {
         // console.log("===bookMark onLoad====")
         //从canvas 获取加载的scenelist
@@ -44,25 +46,26 @@ export default class NewClass extends cc.Component {
         this.sceneList = this.canvas.getComponent("CanvasControllor").getSceneList();
         if (this.sceneList) {
             this.currScene = this.sceneList[0];
-            this.loadSceneNode(this.currPageNum - 1);
+            // this.loadSceneNode(0);
         }
         this.UICamera = this.UIMask.getChildByName("UICamera");
         this.contentList = this.contentNode.children;
     }
 
     start() {
+       
     }
     update(dt) {
         if (!this.sceneList) {
             this.sceneList = this.canvas.getComponent("CanvasControllor").getSceneList();
             this.currScene = this.sceneList[0];
-            this.loadSceneNode(this.currPageNum - 1);
+            // this.loadSceneNode(0);
         }
     }
     // 点击 故事内容 图片 ,开始游戏
     contentMapPicOnclik() {
         if (this.isContentMapClick) {
-            console.log("===currLevel=" + settingBasic.game.currLevel + " ==currPageNum= " + this.currPageNum)
+            // console.log("===currLevel=" + settingBasic.game.currLevel + " ==currPageNum= " + this.currPageNum)
 
             this.loadSceneNode(this.currPageNum - 1);
             //开始/继续游戏
@@ -87,7 +90,6 @@ export default class NewClass extends cc.Component {
 
             this.isContentMapClick = false;
             this.mapPicCopy.active = true;
-            this.mapPicCopy.getComponent(cc.Button).enabled = false;
 
             this.mapPicCopy.runAction(cc.fadeTo(1, 0));
             this.UIMask.getComponent(cc.Mask).enabled = true;
@@ -100,9 +102,9 @@ export default class NewClass extends cc.Component {
                 .start();
         }
     }
-    //点击 bookMenu 菜单 --暂停游戏
+    // 点击 bookMenu 菜单 --暂停游戏
     bookOnClick() {
-        // console.log("=================click=bookMenu===========" + settingBasic.game.currScene + "  " + settingBasic.game.currLevel)
+        // console.log("================bookOnClick===========" + settingBasic.game.currScene + "  " + settingBasic.game.currLevel)
 
         cc.tween(this.UIMask)
             .to(1, { width: 388, height: 236.1 })
@@ -113,10 +115,10 @@ export default class NewClass extends cc.Component {
             cc.tween(this.mapPicCopy).then(cc.fadeOut(0.5)).call(() => {
                 this.mapPicCopy.active = false;
                 this.isContentMapClick = true;
-                this.mapPicCopy.getComponent(cc.Button).enabled = true;
 
                 //暂停游戏
                 this.currScene.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.PAUSE)
+
                 if (settingBasic.game.State == settingBasic.setting.stateType.NEXT) {
                     this.nextPageContent()
                 }
@@ -124,6 +126,11 @@ export default class NewClass extends cc.Component {
             }).start();
         }).start();
 
+    }
+
+    //设置pic 为可点击状态
+    public showBookMark() {
+        this.isContentMapClick = true;
     }
 
     //==============点击 书签================
@@ -151,12 +158,13 @@ export default class NewClass extends cc.Component {
         this.showContent(currLv);
 
     }
-    nextPageContent() {//下一页
+    public nextPageContent() {//下一页
+        console.log("===1=="+this.currPageNum)
         this.currPageNum++;
         this.currPageNum = this.currPageNum < 5 ? this.currPageNum : 5;
         let currLv = ++settingBasic.game.currLevel;
         this.showContent(currLv);
-
+        console.log("===2==currLv "+currLv)
     }
     // 显示content 对应的内容
     showContent(contentId: number) {
@@ -178,7 +186,7 @@ export default class NewClass extends cc.Component {
                 this.sceneList[index].active = false;
             }
         }
-        console.log("===2===id== " + id + " ====scene name = " + this.currScene.name)
+        // console.log("===2===id== " + id + " ====scene name = " + this.currScene.name)
     }
 
 

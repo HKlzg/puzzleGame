@@ -20,7 +20,7 @@ export default class NewClass extends LogicBasicComponent {
     speed: number = 0; //默认值
     @property(cc.Node) //需要跟随的子节点 
     followNodeList: cc.Node[] = [];
-    
+
     cameraNode: cc.Node = null;
     preCameraPos: cc.Vec2 = null;
 
@@ -79,7 +79,7 @@ export default class NewClass extends LogicBasicComponent {
     addPhyChildrens(nodeList: cc.Node[]) {
         if (!nodeList) return;
         nodeList.forEach((node) => {
-            if (node.getComponent(cc.RigidBody)) {
+            if (node && node.getComponent(cc.RigidBody)) {
                 this.phyChildrens.push(new childType(node, node.position, node.angle));
 
             }

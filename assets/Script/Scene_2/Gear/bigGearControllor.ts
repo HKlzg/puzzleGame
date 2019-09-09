@@ -36,7 +36,7 @@ export default class NewClass extends LogicBasicComponent {
     step: number = 20;
 
     tmpHeight: number = 0;
-    audioManager = tools.getAudioManager();
+    audioManager: any = null;
     audioTargetId: number;
 
     //包含rigidBody 的子节点
@@ -50,6 +50,8 @@ export default class NewClass extends LogicBasicComponent {
     isOpen: boolean = false;
 
     start() {
+        this.audioManager = cc.find("UICamera/audio").getComponent("audioControllor");
+
         this.addPhyChildrens(this.node);
         this.prePos = this.node.position;
         this.preAngle = this.node.angle;

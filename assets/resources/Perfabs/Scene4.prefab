@@ -3794,9 +3794,6 @@
       "__id__": 85
     },
     "_enabled": true,
-    "cameraNode": {
-      "__id__": 6
-    },
     "speed": 1,
     "followNodeList": [],
     "_id": ""
@@ -3915,9 +3912,6 @@
       "__id__": 106
     },
     "_enabled": true,
-    "cameraNode": {
-      "__id__": 6
-    },
     "speed": 1,
     "followNodeList": [],
     "_id": ""
@@ -4320,9 +4314,6 @@
       "__id__": 110
     },
     "_enabled": true,
-    "cameraNode": {
-      "__id__": 6
-    },
     "speed": 2,
     "followNodeList": [],
     "_id": ""
@@ -4441,9 +4432,6 @@
       "__id__": 122
     },
     "_enabled": true,
-    "cameraNode": {
-      "__id__": 6
-    },
     "speed": 2,
     "followNodeList": [],
     "_id": ""
@@ -7205,9 +7193,6 @@
       "__id__": 210
     },
     "_enabled": true,
-    "cameraNode": {
-      "__id__": 6
-    },
     "speed": -2,
     "followNodeList": [],
     "_id": ""
@@ -7326,9 +7311,6 @@
       "__id__": 214
     },
     "_enabled": true,
-    "cameraNode": {
-      "__id__": 6
-    },
     "speed": 1,
     "followNodeList": [],
     "_id": ""
@@ -7447,9 +7429,6 @@
       "__id__": 218
     },
     "_enabled": true,
-    "cameraNode": {
-      "__id__": 6
-    },
     "speed": 1.5,
     "followNodeList": [],
     "_id": ""
@@ -7568,9 +7547,6 @@
       "__id__": 222
     },
     "_enabled": true,
-    "cameraNode": {
-      "__id__": 6
-    },
     "speed": 2,
     "followNodeList": [],
     "_id": ""
@@ -8039,9 +8015,6 @@
       "__id__": 227
     },
     "_enabled": true,
-    "cameraNode": {
-      "__id__": 6
-    },
     "speed": 2,
     "followNodeList": [],
     "_id": ""
@@ -11456,9 +11429,6 @@
       "__id__": 329
     },
     "_enabled": true,
-    "cameraNode": {
-      "__id__": 6
-    },
     "speed": 4,
     "followNodeList": [],
     "_id": ""
@@ -11577,9 +11547,6 @@
       "__id__": 341
     },
     "_enabled": true,
-    "cameraNode": {
-      "__id__": 6
-    },
     "speed": 4,
     "followNodeList": [],
     "_id": ""
@@ -11698,9 +11665,6 @@
       "__id__": 345
     },
     "_enabled": true,
-    "cameraNode": {
-      "__id__": 6
-    },
     "speed": 4,
     "followNodeList": [],
     "_id": ""

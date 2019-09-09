@@ -1,5 +1,5 @@
 import settingBasic from "../Setting/settingBasic";
-
+import toolsBasics from "../Tools/toolsBasics";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
@@ -12,6 +12,9 @@ export default class NewClass extends cc.Component {
     @property(cc.Node)
     bookMark: cc.Node = null;
 
+    audio = toolsBasics.getUIAudioManager();
+
+
     bookList: Array<cc.Node> = [];
     time = 0;
     id = 0;
@@ -22,11 +25,14 @@ export default class NewClass extends cc.Component {
     // onLoad () {}
 
     start() {
-        this.bookList = this.bookClip.children;
+        this.bookList = this.bookClip.children;        
+    }
+    onLoad(){
+        this.audio.playLoopBGM("bgm");
     }
 
     isOpenAnim() {
-        console.log("=====open book===")
+        this.playAudio();
         this.isOpen = false;
         this.changePos();
     }
@@ -63,7 +69,7 @@ export default class NewClass extends cc.Component {
     }
 
     //更改封面pic 显示/关闭
-    changePic(id: number) {
+    changePic(id: number) {        
         for (let index = 0; index < this.bookList.length; index++) {
             this.bookList[index].active = index == id;
         }
@@ -81,10 +87,10 @@ export default class NewClass extends cc.Component {
         this.bookMark.active = true;
         // var faTo = cc.fadeTo(speed, 128);
         // this.light.runAction(faTo);
-
     }
 
     public closeBook() {
+        this.playAudio();
         console.log("=====closeBook=====")
         let speed = 0.8;
         this.isClose = false;
@@ -99,6 +105,10 @@ export default class NewClass extends cc.Component {
         var faTo = cc.fadeTo(speed, 255);
         this.light.runAction(faTo);
 
+    }
+
+    playAudio(){
+        this.audio.playAudio("openBook");
     }
 
     //在翻页之后[游戏处于暂停状态] 重新加载场景时 立刻设置书本状态 ->打开

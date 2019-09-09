@@ -39,14 +39,15 @@ export default class NewClass extends LogicBasicComponent {
 
     minX: number = 0;
     maxX: number = 0;
-    audioManager = tools.getAudioManager();
+    audioManager: any = null;
     //
     lifeNum: number = 2;
     isGetOil: boolean = false; //是否碰到油滴
     isBurning: boolean = false;//是否是燃烧状态
     onLoad() {
+        this.audioManager = cc.find("UICamera/audio").getComponent("audioControllor");
         this.itemBag = cc.find("UIMask/UICamera/itemsBag")
-        this.currScene = cc.find("Canvas/"+settingBasic.game.currScene);
+        this.currScene = cc.find("Canvas/" + settingBasic.game.currScene);
         this.prePersonPos = this.personNode.position;
         this.animation = this.node.getComponent(cc.Animation);
         let riverPos = this.river.convertToWorldSpace(cc.Vec2.ZERO);
@@ -60,7 +61,9 @@ export default class NewClass extends LogicBasicComponent {
         this.animation.play("SwimClip");
 
         //游戏开始*秒之后再 执行
-        this.scheduleOnce(() => { this.isStartSwim = true }, 10);
+        cc.tween(this.node).delay(10).call(() => {
+            this.isStartSwim = true
+        }).start();
     }
 
     logicUpdate(dt) {
@@ -72,7 +75,9 @@ export default class NewClass extends LogicBasicComponent {
 
             if (this.isObserve && this.isStartSwim && !this.isBurning) {
                 this.isObserve = false;
-                this.scheduleOnce(() => { this.observePerson(); }, 2);
+                cc.tween(this.node).delay(2).call(() => {
+                    this.observePerson();
+                }).start();
             }
 
             //左右游动
@@ -183,8 +188,8 @@ export default class NewClass extends LogicBasicComponent {
     onBeginContact(contact, self, other) {
         if (other.node.groupIndex == 6 && !this.isPersonDeath) {
             //检测是否碰撞到人-6
-            this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.REBORN);
             this.isPersonDeath = true;
+            this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.RESTART);
 
         }
 

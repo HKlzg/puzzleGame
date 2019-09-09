@@ -17,12 +17,13 @@ export default class NewClass extends LogicBasicComponent {
     // onLoad () {}
     isJump: boolean = false;
 
-    audioManager = tools.getAudioManager();
+    audioManager: any = null;
     start() {
+        this.audioManager = cc.find("UICamera/audio").getComponent("audioControllor");
 
     }
 
-    logicUpdate (dt) {}
+    logicUpdate(dt) { }
 
     jumpStart() {
         if (this.isJump) return
@@ -32,16 +33,16 @@ export default class NewClass extends LogicBasicComponent {
     jumpEnd() { //attack End
         this.isJump = false;
         let parent = this.node.parent;
-        parent.emit(setting.gameEvent.monsterStopPlayAction,false)
+        parent.emit(setting.gameEvent.monsterStopPlayAction, false)
     }
 
     standUpEnd() {
         let parent = this.node.parent;
-        parent.emit(setting.gameEvent.monsterStopPlayAction,false)
+        parent.emit(setting.gameEvent.monsterStopPlayAction, false)
     }
     lieDownEnd() {
         let parent = this.node.parent;
-        parent.emit(setting.gameEvent.monsterStopPlayAction,false)
+        parent.emit(setting.gameEvent.monsterStopPlayAction, false)
     }
 
 }

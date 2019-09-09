@@ -210,12 +210,8 @@ export abstract class BrotherBasic extends LogicBasicComponent {
 
                         break;
                     case actionType.Walk:
-                        // this.node.scaleX > 0 ? this.node.x += 2
-                        //     : this.node.x -= 2;
-                        let temp = this.node.scaleX > 0 ? 2 : -2;
-                        let pos = this.node.position;
-                        this.node.runAction(cc.moveTo(dt, cc.v2(pos.x + temp, pos.y)));
-
+                        this.node.scaleX > 0 ? this.node.x += 2
+                            : this.node.x -= 2;
 
                         break;
                     case actionType.Push:
@@ -253,8 +249,11 @@ export abstract class BrotherBasic extends LogicBasicComponent {
     isOnGround() {
 
         if (!this.isPlaying && this.rigidBody.linearVelocity.y < -250) {
+            let lineVec = this.rigidBody.linearVelocity;
             this.order.action = actionType.Wait;
-            this.brotherAction(this.order)
+            this.brotherAction(this.order);
+            this.rigidBody.linearVelocity = lineVec;
+
         }
     }
     //取消推的动作检测
@@ -344,6 +343,24 @@ export abstract class BrotherBasic extends LogicBasicComponent {
 
     }
 
+    //在物理碰撞之前调用
+    onPreSolve(contact, self, other) {
+        //防止碰撞之后 被弹飞的速度过大
+        let lineVec = this.rigidBody.linearVelocity;
+        if (lineVec.y > 0) {
+            let vecMin = lineVec.normalize().mul(150);
+            lineVec = lineVec > vecMin ? vecMin : lineVec;
+            this.rigidBody.linearVelocity = lineVec;
+            this.rigidBody.linearDamping = 0.5;
+            // lineVec > cc.Vec2.ZERO ?
+            //     console.log("====lineVec: " + lineVec) : null;
+        }
+        if (lineVec.x > 150) {
+            this.rigidBody.linearVelocity.x = 150;
+            this.rigidBody.linearDamping = 0.5;
+        }
+    }
+
 
     //重生
     reBirth(isReborn) {
@@ -357,8 +374,7 @@ export abstract class BrotherBasic extends LogicBasicComponent {
         // let camera = this.cameraNode.getComponent(cc.Camera);
         this.deadNum++;
         //更改游戏状态 -重生中
-        this.scheduleOnce(() => {
-
+        cc.tween(this.node).delay(2.5).call(() => {
             this.order.action = actionType.Wait;
             this.brotherAction(this.order);
             this.node.position = cc.v2(pos.x, pos.y + this.node.height);
@@ -374,7 +390,8 @@ export abstract class BrotherBasic extends LogicBasicComponent {
             this.currScene.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.NORMAL);
             this.order.action = actionType.Wait;
             this.brotherAction(this.order);
-        }, 2.5);
+        }).start();
+
     }
 
     //动画播放完之后调用  更改状态

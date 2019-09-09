@@ -576,7 +576,7 @@
   "fit-width": true,
   "group-list": [
     "default",
-    "绳子",
+    "不在Camera中显示",
     "箱子",
     "【除了人物都能碰到】",
     "地面",
@@ -602,13 +602,13 @@
     "火焰Lv2",
     "木桩lv3"
   ],
-  "last-module-event-record-time": 1567220724240,
+  "last-module-event-record-time": 1567841332447,
   "simulator-orientation": false,
   "simulator-resolution": {
     "height": 640,
     "width": 960
   },
+  "start-scene": "current",
   "use-customize-simulator": true,
-  "use-project-simulator-setting": false,
-  "start-scene": "current"
+  "use-project-simulator-setting": false
 }

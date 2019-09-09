@@ -12,7 +12,7 @@ export class BackgroundControllor extends LogicBasicComponent {
 
     @property(cc.Node)
     cameraNode: cc.Node = null;
-  
+
     UICamera: cc.Node = null;
     //box
     @property(cc.Prefab)
@@ -591,5 +591,12 @@ export class BackgroundControllor extends LogicBasicComponent {
         }
     }
 
+    //箱子被销毁之后 数量恢复+1
+    addBoxNum() {
+        let maxNum = settingBasic.fun.getBoxNumByLv(settingBasic.game.currLevel);
+        this.boxMaxNum++;
+        this.boxMaxNum = this.boxMaxNum > maxNum ? maxNum : this.boxMaxNum;
+
+    }
 
 }

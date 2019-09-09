@@ -1,12 +1,15 @@
 
 import AudioControllor from "../Common/Audio/audioControllor"
+import UIAudioControllor from "../Common/Audio/UIAudioControllor"
+
 //---------------------公共方法---------------------
 export const toolsBasics = {
+
     /**
-     * 获取音频管理对象
-     */
-    getAudioManager: function (): AudioControllor {
-        return AudioControllor.getAudioManager();
+    * 获取UI音频管理对象
+    */
+    getUIAudioManager: function (): UIAudioControllor {
+        return UIAudioControllor.getUIAudioManager();
     },
 
     /** 产生绳子
@@ -82,6 +85,44 @@ export const toolsBasics = {
         }
 
         return newJoint;
+    },
+
+    /**
+     * 用于update 中调用 循环显示出水流的效果
+     * @param node1 
+     * @param speed 负数表示向左
+     * @param initX 
+     */
+    playLoopFlow(node1: cc.Node, speed: number, initX?: number) {
+        initX = initX ? initX : 0;
+
+        let bgList: cc.Node[] = node1.parent.children;
+        if (bgList.length == 1) {
+            let el2 = cc.instantiate(node1)
+            speed < 0 ?
+                el2.position = cc.v2(node1.x + node1.width, node1.y) :
+                el2.position = cc.v2(node1.x - node1.width, node1.y);
+            node1.parent.addChild(el2)
+        } else if (bgList.length == 2) {
+
+            bgList[0].x += speed;
+            speed < 0 ?
+                bgList[1].x = bgList[0].x + bgList[0].width :
+                bgList[1].x = bgList[0].x - bgList[0].width;
+
+            if (speed > 0) { //向右移动
+                if (bgList[0].x >= initX + bgList[0].width) {
+                    bgList.push(bgList.shift());
+                    bgList[1].x = initX - bgList[0].width + speed;
+                }
+            } else { //向左移动
+                if (bgList[0].x < -(initX + bgList[0].width)) {
+                    bgList.push(bgList.shift());
+                    bgList[1].x = initX + bgList[0].width + speed;
+                }
+            }
+        }
+
     },
 
     /**

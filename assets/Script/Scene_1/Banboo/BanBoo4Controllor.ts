@@ -3,6 +3,7 @@
 import setting from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 import settingBasic from "../../Setting/settingBasic";
+import toolsBasics from "../../Tools/toolsBasics";
 const { ccclass, property } = cc._decorator;
 const direction = cc.Enum({
     Stop: 0,
@@ -24,26 +25,50 @@ export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
     fireRightList: Array<cc.Node> = []
 
+    isAudioPlaying: boolean = false;
+    time: number = 1.1;
+
+    audio:any = null;
+
+
     waterDirection: number = 0;
     currScene: cc.Node = null;
 
     start() {
+        this.audio = cc.find("UICamera/audio").getComponent("audioControllor");
         this.waterDirection = direction.Stop;
-        this.currScene = cc.find("Canvas/"+settingBasic.game.currScene);
+        this.currScene = cc.find("Canvas/" + settingBasic.game.currScene);
     }
     onEnable() {
         this.node.parent.getComponent(cc.WheelJoint).apply();
     }
     logicUpdate(dt) {
         this.waterContrl()
+        if (this.isAudioPlaying) {
+            if (this.time < 1) {
+                this.time += 0.1;
+            } else {
+                this.isAudioPlaying = false;
+            }
+        }
     }
     onPostSolve(contact, selfCollider, otherCollider) {
         selfCollider.node.getComponent(cc.RigidBody).linearVelocity = cc.v2(0, 0)
         let angle = selfCollider.node.getComponent(cc.RigidBody).angularVelocity;
         selfCollider.node.getComponent(cc.RigidBody).angularVelocity = angle * 0.8;
- 
     }
 
+    onBeginContact(contact, selfCollider, otherCollider) {
+        if (otherCollider.node.groupIndex == 2 && this.time > 1) {
+            let boxCtrl = otherCollider.node.getComponent("BoxInstanceControllor");
+            let isInstance = boxCtrl.getIsInstance();
+            if(isInstance){
+                this.time = 0;
+                this.isAudioPlaying = true;
+                let id = this.audio.playAudio("climbs");
+            }
+        }
+    }
 
     waterContrl() {
         if (this.banboo2Water.active) {
@@ -126,6 +151,5 @@ export default class NewClass extends LogicBasicComponent {
             }
         }, 4)
     }
-
 
 }

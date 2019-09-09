@@ -1,7 +1,7 @@
-import ArrowsService from "../../Tools/toolsBasics"
+import ArrowsService, { toolsBasics } from "../../Tools/toolsBasics"
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class NewClass extends LogicBasicComponent {
@@ -12,30 +12,27 @@ export default class NewClass extends LogicBasicComponent {
     time = 0;
     @property(cc.SpriteFrame)
     sprtelist = []
-    
-    
+
     lable = 0;
+ 
     // LIFE-CYCLE CALLBACKS:
-
-    // onLoad () {}
-
-    start () {
-
-    }
-
-    logicUpdate (dt) {
+   
+  
+    logicUpdate(dt) {
         this.time += 0.01;
         if (this.lable <= this.sprtelist.length - 1) {
+
             if (this.time >= 0.08) {
                 this.sprite.spriteFrame = this.sprtelist[this.lable];
                 this.lable += 1;
-                this.time =0;
+                this.time = 0;
             }
-        }else{
+        } else {
             this.lable = 0;
         }
     }
 
-    
+
+
 
 }

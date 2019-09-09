@@ -213,7 +213,7 @@ const settingBasic = {
     //当前游戏运行状态 全局
     game: {
         State: 0,
-        currLevel: 0,
+        currLevel: 1, //初始值
         currBoxNum: 0,
         currDeath: 0, //当前关卡死亡数
         totalDeath: 0, //游戏死亡总数
@@ -228,6 +228,7 @@ const settingBasic = {
 
         currScene: "Scene1",
         isFirstLoad:true,//是否是第一次加载
+        audioManager:{},
     },
 
     //自定义事件

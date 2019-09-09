@@ -3,6 +3,7 @@ const { ccclass, property } = cc._decorator;
 import setting from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 import settingBasic from "../../Setting/settingBasic";
+import toolsBasics from "../../Tools/toolsBasics";
 @ccclass
 export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
@@ -16,11 +17,14 @@ export default class NewClass extends LogicBasicComponent {
 
     hasWater: boolean = false;
     maskInitHeight: number = 0;
-
+    time:number = 1.1;
+    isAudioPlaying:boolean =false;
+    audio :any = null;
     currScene: cc.Node = null;
     start() {
         this.maskInitHeight = this.mask.height;
         this.currScene = cc.find("Canvas/"+settingBasic.game.currScene);
+        this.audio = cc.find("UICamera/audio").getComponent("audioControllor");
     }
     onEnable() {
         this.node.parent.getComponent(cc.WheelJoint).apply();
@@ -28,12 +32,29 @@ export default class NewClass extends LogicBasicComponent {
     logicUpdate(dt) {
         this.waterContrl();
         this.maskContrl();
+        if(this.isAudioPlaying){
+            if(this.time<1){
+                this.time+=0.1;
+            }else{
+                this.isAudioPlaying = false;
+            }
+        }
     }
     onPostSolve(contact, selfCollider, otherCollider) {
         selfCollider.node.getComponent(cc.RigidBody).linearVelocity = cc.v2(0, 0)
    
     }
-
+    onBeginContact(contact, selfCollider, otherCollider){
+        if (otherCollider.node.groupIndex == 2&&this.time>1) {            
+            let boxCtrl = otherCollider.node.getComponent("BoxInstanceControllor");
+            let isInstance = boxCtrl.getIsInstance();
+            if(isInstance){
+                this.time = 0;
+                this.isAudioPlaying = true;
+                let id = this.audio.playAudio("climbs");
+            }
+        }
+    }
     waterContrl() {
         let angle = this.node.angle
         angle = angle >= 360 ? angle % 360 : angle;

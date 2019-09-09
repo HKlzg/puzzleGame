@@ -49,7 +49,7 @@ export default class LeopardControllor extends LogicBasicComponent {
     isPlayWaringAudio: boolean = false;
     isJumpBack: boolean = false;
 
-    audioManager = toolsBasics.getAudioManager();
+    audioManager: any = null;
 
     //是否处于播放动画 状态
     isDoAction: boolean = false;
@@ -58,6 +58,7 @@ export default class LeopardControllor extends LogicBasicComponent {
 
     isMonsterActionStart: boolean = false;
     start() {
+        this.audioManager = cc.find("UICamera/audio").getComponent("audioControllor");
         this.itemBag = cc.find("UIMask/UICamera/itemsBag")
         this.currScene = cc.find("Canvas/" + settingBasic.game.currScene);
         this.monsterAnimation = this.monsterNode.getComponent(cc.Animation);
@@ -65,7 +66,9 @@ export default class LeopardControllor extends LogicBasicComponent {
         this.node.on(setting.gameEvent.monsterStopPlayAction, this.stopPlayAction, this);
 
         //初始化1S后启动
-        this.scheduleOnce(() => { this.isMonsterActionStart = true; }, 1)
+        cc.tween(this.node).delay(1).call(() => {
+            this.isMonsterActionStart = true;
+        }).start();
     }
 
     logicUpdate(dt) {
@@ -80,10 +83,11 @@ export default class LeopardControllor extends LogicBasicComponent {
             if (this.isSafePos) {
                 if (!this.isReduceState) {
                     this.isReduceState = true;
-                    this.scheduleOnce(() => {
+
+                    cc.tween(this.node).delay(2).call(() => {
                         this.isReduceState = false;
                         this.reduceState();
-                    }, 2)
+                    }).start()
                 }
             } else {
 
@@ -104,12 +108,11 @@ export default class LeopardControllor extends LogicBasicComponent {
                         actionTime = 1;
                     }
 
-                    this.scheduleOnce(() => {
-                        // console.log("=======Observe Person====")
+                    cc.tween(this.node).delay(actionTime).call(() => {
                         this.isObservePerson = false;
                         //获取人物的状态
                         this.getPersonAction();
-                    }, actionTime)
+                    }).start();
                 }
             }
 
@@ -124,20 +127,23 @@ export default class LeopardControllor extends LogicBasicComponent {
             case monsterActionType.sleep:
                 if (!this.isSnoring) {
                     this.isSnoring = true;
-                    this.scheduleOnce(() => {
+                    cc.tween(this.node).delay(3).call(() => {
                         this.audioManager.playAudio("tigerSnoring") //鼾声
-                        this.scheduleOnce(() => { this.isSnoring = false; }, 2);
-                    }, 3)
+                        cc.tween(this.node).delay(2).call(() => {
+                            this.isSnoring = false;
+                        }).start();
+                    }).start();
                 }
 
                 break;
             case monsterActionType.warning:
                 if (!this.isPlayWaringAudio) {
                     this.isPlayWaringAudio = true;
-                    this.scheduleOnce(() => {
+
+                    cc.tween(this.node).delay(1).call(() => {
                         this.isPlayWaringAudio = false;
                         this.audioManager.playAudio("heartBeat");
-                    }, 1)
+                    }).start();
                 }
 
                 let pos = this.node.position;

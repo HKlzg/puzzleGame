@@ -1,4 +1,5 @@
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
+import toolsBasics from "../../Tools/toolsBasics";
 
 const { ccclass, property } = cc._decorator;
 
@@ -19,28 +20,49 @@ export default class NewClass extends LogicBasicComponent {
 
     mask1InitHeight: number = 0;
     mask2InitHeight: number = 0;
+    time: number = 1.1;
+    isAudioPlaying: boolean = false;
+    audio :any = null;
 
     maskTag: number = 0;
 
+    
+    onLoad() {
+        this.audio = cc.find("UICamera/audio").getComponent("audioControllor");
+        this.mask1InitHeight = this.waterMaskNode1.height;
+        this.mask2InitHeight = this.waterMaskNode2.height;
+        
+    }
+    
     onEnable() {
         this.node.parent.getComponent(cc.WheelJoint).apply();
     }
-
-    onLoad() {
-
-        this.mask1InitHeight = this.waterMaskNode1.height;
-        this.mask2InitHeight = this.waterMaskNode2.height;
-
-    }
-
     start() {
 
     }
 
     logicUpdate(dt) {
         this.waterMaskContrl();
- 
-    }   
+        if (this.isAudioPlaying) {
+            if (this.time < 1) {
+                this.time += 0.1;
+            } else {
+                this.isAudioPlaying = false;
+            }
+        }
+    }
+
+    onBeginContact(contact, selfCollider, otherCollider) {
+        if (otherCollider.node.groupIndex == 2 && this.time > 1) {
+            let boxCtrl = otherCollider.node.getComponent("BoxInstanceControllor");
+            let isInstance = boxCtrl.getIsInstance();
+            if(isInstance){
+                this.time = 0;
+                this.isAudioPlaying = true;
+                let id = this.audio.playAudio("climbs");
+            }
+        }
+    }
 
     //水流 遮罩控制
     waterMaskContrl() {

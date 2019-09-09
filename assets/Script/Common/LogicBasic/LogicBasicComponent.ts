@@ -188,7 +188,7 @@ export abstract class LogicBasicComponent extends cc.Component {
             node.pauseAllActions();
         })
         this.node.stopAllActions();
-
+        
         //记录节点信息
         // this.recordNodeRecord();
     }
@@ -204,72 +204,6 @@ export abstract class LogicBasicComponent extends cc.Component {
         // this.loadNodeRecord();
     }
 
-    //记录节点信息
-    recordNodeRecord() {
-        if (!this.isCanRecord(this.node.groupIndex)) return
-
-        let record: recordType = new recordType();
-        let node: nodeRecord = new nodeRecord();
-        let rigidBody: rigidBodyRecord = new rigidBodyRecord();
-        let phyColliderBody: phyColliderRecord = new phyColliderRecord();
-        let colliderBody: colliderRecord = new colliderRecord();
-        //------记录信息
-        //Node
-        node.angle = this.node.angle;
-        node.active = this.node.active ? 1 : 0;
-        node.anchorX = this.node.anchorX;
-        node.anchorY = this.node.anchorY;
-        node.groupIndex = this.node.groupIndex;
-        node.width = this.node.width;
-        node.height = this.node.height;
-        node.opacity = this.node.opacity;
-        node.worldPos = this.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
-        node.scale = this.node.scale;
-        node.scaleX = this.node.scaleX;
-        node.scaleY = this.node.scaleY;
-        //RigidBody
-        if (this.rigidBody) {
-            rigidBody.active = this.rigidBody.active ? 1 : 0;
-            rigidBody.allowSpeep = this.rigidBody.allowSleep ? 1 : 0;
-            rigidBody.angularDapming = this.rigidBody.angularDamping;
-            rigidBody.angularVelocity = this.rigidBody.angularVelocity;
-            rigidBody.awake = this.rigidBody.awake ? 1 : 0;
-            rigidBody.enabled = this.rigidBody.enabled ? 1 : 0;
-            rigidBody.fixedRotation = this.rigidBody.fixedRotation ? 1 : 0;
-            rigidBody.gravityScale = this.rigidBody.gravityScale;
-            rigidBody.linearDamping = this.rigidBody.linearDamping;
-            rigidBody.linearVelocity = this.rigidBody.linearVelocity;
-        }
-        //phycisCollider
-        if (this.phyColliderBody) {
-            phyColliderBody.enabled = this.phyColliderBody.enabled ? 1 : 0;
-            phyColliderBody.density = this.phyColliderBody.density;
-            phyColliderBody.friction = this.phyColliderBody.friction;
-            phyColliderBody.restitution = this.phyColliderBody.restitution;
-            phyColliderBody.sensor = this.phyColliderBody.sensor ? 1 : 0;
-            phyColliderBody.offset = this.phyColliderBody.offset;
-            if (this.phyColliderType == colliderTypes.circle) {
-                phyColliderBody.radius = this.phyColliderBody.radius;
-            } else {
-                phyColliderBody.size = this.phyColliderBody.size;
-            }
-        }
-        //colliderBody
-        if (this.colliderBody) {
-            colliderBody.enabled = this.colliderBody.enabled ? 1 : 0;
-            colliderBody.offset = this.colliderBody.offset;
-            if (this.colliderType == colliderTypes.circle) {
-                colliderBody.radius = this.colliderBody.radius;
-            } else {
-                colliderBody.size = this.colliderBody.size;
-            }
-        }
-        record.node = node;
-        record.rigidBody = rigidBody;
-        record.phyColliderBody = phyColliderBody;
-        let key = this.node.uuid + settingBasic.game.currLevel;
-        cc.sys.localStorage.setItem(key, JSON.stringify(record));
-    }
     removeNodeRecord() {
         let key = this.node.uuid + settingBasic.game.currLevel;
         cc.sys.localStorage.removeItem(key);
@@ -279,87 +213,7 @@ export abstract class LogicBasicComponent extends cc.Component {
 
 
     //加载信息 还原
-    loadNodeRecord() {
-        if (!this.isCanRecord(this.node.groupIndex)) return
-
-        // console.log(this.node.name + "==-------------2-------loadNodeRecord----------------------=== ")
-        let key = this.node.uuid + settingBasic.game.currLevel;
-        let recordJson = cc.sys.localStorage.getItem(key);
-
-        if (recordJson) {
-            // console.log(this.node.name + " ==:=== " + recordJson);
-            let record: recordType = JSON.parse(recordJson);
-            if (record) {
-                let node: nodeRecord = record.node;
-                let rigidBody: rigidBodyRecord = record.rigidBody;
-                let phyColliderBody: phyColliderRecord = record.phyColliderBody
-                let colliderBody: colliderRecord = record.phyColliderBody;
-                //设定信息
-                if (node) {
-                    this.node.angle = node.angle;
-                    this.node.active = node.active == 1;
-                    this.node.anchorX = node.anchorX;
-                    this.node.anchorY = node.anchorY;
-                    this.node.groupIndex = node.groupIndex;
-                    this.node.width = node.width;
-                    this.node.height = node.height;
-                    this.node.position = this.node.parent.convertToNodeSpaceAR(cc.v2(node.worldPos.x, node.worldPos.y));
-                    this.node.opacity = node.opacity;
-                    this.node.scale = node.scale;
-                    this.node.scaleX = node.scaleX;
-                    this.node.scaleY = node.scaleY;
-                }
-                //rigidBody
-                if (this.rigidBody && rigidBody) {
-                    this.rigidBody.active = rigidBody.active == 1;
-                    this.rigidBody.allowSleep = rigidBody.allowSpeep == 1;
-                    this.rigidBody.angularDamping = rigidBody.angularDapming;
-                    this.rigidBody.angularVelocity = rigidBody.angularVelocity;
-                    this.rigidBody.awake = rigidBody.awake == 1;
-                    // this.rigidBody.enabled = rigidBody.enabled == 1;
-                    rigidBody.enabled == 1 ? this.node.active = true : this.rigidBody.enabled = false;
-                    this.rigidBody.fixedRotation = rigidBody.fixedRotation == 1;
-                    this.rigidBody.gravityScale = rigidBody.gravityScale;
-                    this.rigidBody.linearDamping = rigidBody.linearDamping;
-                    this.rigidBody.linearVelocity = rigidBody.linearVelocity;
-
-                    //phycisCollider
-                    if (this.phyColliderBody && phyColliderBody) {
-                        this.phyColliderBody.enabled = phyColliderBody.enabled == 1;
-                        this.phyColliderBody.density = phyColliderBody.density;
-                        this.phyColliderBody.friction = phyColliderBody.friction;
-                        this.phyColliderBody.restitution = phyColliderBody.restitution;
-                        this.phyColliderBody.sensor = phyColliderBody.sensor == 1;
-                        phyColliderBody.offset ? this.phyColliderBody.offset = cc.v2(phyColliderBody.offset.x, phyColliderBody.offset.y) : null;
-
-                        if (this.phyColliderType == colliderTypes.circle) {
-                            this.phyColliderBody.radius = phyColliderBody.radius;
-                        } else {
-                            phyColliderBody.size ? this.phyColliderBody.size = cc.size(phyColliderBody.size.width, phyColliderBody.size.height) : null;
-                        }
-                    }
-
-                    //colliderBody
-                    if (this.colliderBody && colliderBody) {
-                        this.colliderBody.enabled = colliderBody.enabled == 1;
-                        colliderBody.offset ? this.colliderBody.offset = cc.v2(colliderBody.offset.x, colliderBody.offset.y) : null;
-
-                        if (this.colliderType == colliderTypes.circle) {
-                            this.colliderBody.radius = colliderBody.radius;
-                        } else {
-                            colliderBody.size ? this.colliderBody.size = cc.size(colliderBody.size.width, colliderBody.size.height) : null;
-                        }
-                    }
-
-                }
-
-                if (this.phyColliderBody) {
-                    this.phyColliderBody.apply();
-                }
-            }
-
-        }
-    }
+    
     //设置下次重新 载入时 清除record
     setClearRecord() {
         settingBasic.game.isClearCurrRecord = true;
