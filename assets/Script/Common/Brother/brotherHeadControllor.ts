@@ -16,7 +16,7 @@ export default class NewClass extends LogicBasicComponent {
         if (other.node.groupIndex == 2) {
             let boxBody = other.node.getComponent(cc.RigidBody);
             if (boxBody.linearVelocity.y < -200) {
-                this.currScene.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.REBORN);
+                 
                 this.currScene.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.RESTART);
             }
 

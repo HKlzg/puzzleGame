@@ -22,6 +22,7 @@ export default class NewClass extends LogicBasicComponent {
     mask2InitHeight: number = 0;
     time: number = 1.1;
     isAudioPlaying: boolean = false;
+
     audio :any = null;
 
     maskTag: number = 0;

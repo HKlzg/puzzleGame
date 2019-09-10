@@ -55,7 +55,33 @@ export default class NewClass extends cc.Component {
     getSceneList(): cc.Node[] {
         return this.sceneList;
     }
+    //重新加载当前场景
+    getSceneByCurrLv(callBack: Function) {
+        let index = settingBasic.game.currLevel - 1;
+        let currSceneName = settingBasic.game.currScene;
+        let self = this;
+        let siblingIndex = this.sceneList[index].getSiblingIndex();
+        cc.loader.loadResDir('Perfabs', cc.Prefab, function (err, perfabList) {
+            if (err) {
+                console.log("加载perfab 失败:" + JSON.stringify(err));
+            }
+            for (let i = 0; i < perfabList.length; i++) {
+                if (perfabList[i].name == currSceneName) {
+                    let scene = cc.instantiate(perfabList[i]);
+                    scene.active = false;
+                    self.node.removeChild(self.sceneList[index])
+                    self.node.addChild(scene);
+                    scene.setSiblingIndex(siblingIndex);
+                    self.sceneList[index] = scene;
 
+                    callBack(scene);
+                    break;
+                }
+            }
+
+        });
+
+    }
     compare(a, b): number {
         return a - b;
     }

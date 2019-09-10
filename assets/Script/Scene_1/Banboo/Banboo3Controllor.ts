@@ -21,6 +21,7 @@ export default class NewClass extends LogicBasicComponent {
     audio: any = null
     hasWater: boolean = false;
 
+
     start() {
         this.audio = cc.find("UICamera/audio").getComponent("audioControllor");
 
@@ -73,22 +74,30 @@ export default class NewClass extends LogicBasicComponent {
 
     waterStream() {
         this.waterLeft.active = true;
+        let self = this;
         //持续浇水4S 火才能熄灭
         this.schedule(() => {
-            //4S之后检测水是否处于开启状态
+            //3S之后检测水是否处于开启状态
             if (this.waterLeft.active) {
-                this.fireLeftList.forEach((fire) => {
-                    fire.runAction(cc.sequence(
-                        cc.fadeOut(2),
-                        cc.callFunc(() => {
-                            this.map.active = true;
-                        })
-                    )
-                    )
-                })
+
+                for (let index = 0; index < this.fireLeftList.length; index++) {
+                    const fire = this.fireLeftList[index];
+                    if (fire.active) {
+                        cc.tween(fire).then(cc.fadeOut(2)).call(() => {
+                            fire.active = false;
+                            self.map.active = true;
+                            cc.tween(this.map).then(cc.fadeIn(0.5)).call(() => {
+                                self.map.getComponent(cc.Button).enabled = true;
+                            }).start();
+
+                        }).start();
+                    }
+                }
+
             }
 
-        }, 4)
+        }, 3)
+
     }
 
 

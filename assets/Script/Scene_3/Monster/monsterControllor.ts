@@ -27,7 +27,6 @@ export default class LeopardControllor extends LogicBasicComponent {
     personNode: cc.Node = null;
     @property(cc.Node)
     monsterNode: cc.Node = null;
-    itemBag: cc.Node = null;
 
     monsterAnimation: cc.Animation = null;
     currScene: cc.Node = null;
@@ -59,7 +58,6 @@ export default class LeopardControllor extends LogicBasicComponent {
     isMonsterActionStart: boolean = false;
     start() {
         this.audioManager = cc.find("UICamera/audio").getComponent("audioControllor");
-        this.itemBag = cc.find("UIMask/UICamera/itemsBag")
         this.currScene = cc.find("Canvas/" + settingBasic.game.currScene);
         this.monsterAnimation = this.monsterNode.getComponent(cc.Animation);
         this.node.on(setting.gameEvent.monsterReduceState, this.setIsSafePos, this);
@@ -233,8 +231,6 @@ export default class LeopardControllor extends LogicBasicComponent {
                         this.isAttack = false;
                         this.isDoAction = false;
                         this.reduceState();
-                        this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.REBORN);
-
                         this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.RESTART);
                     })
                     this.node.runAction(cc.sequence(action1, callfun));
@@ -391,11 +387,7 @@ export default class LeopardControllor extends LogicBasicComponent {
                 this.reduceState(monsterActionType.wait);
                 this.isMonsterActionStart = false;
 
-                this.itemBag.emit(setting.gameEvent.getItemEvent, setting.setting.itemType.tear, (isOver) => {
-                    if (isOver) {
-                        this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.NEXT)
-                    }
-                });
+                //下一关
 
                 return
             } else {

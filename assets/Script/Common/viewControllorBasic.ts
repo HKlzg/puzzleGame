@@ -3,6 +3,7 @@ const { ccclass, property } = cc._decorator;
 import toolsBasics from "../Tools/toolsBasics";
 import settingBasic from "../Setting/settingBasic";
 import { LogicBasicComponent } from "./LogicBasic/LogicBasicComponent";
+import AchievementControllor from "./Achievement/achievementControllor";
 
 const leveList = settingBasic.setting.level
 
@@ -26,7 +27,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
     bookNode: cc.Node = null;
     bookmarkNode: cc.Node = null;
 
-    // public blackMask: cc.Node = null;
+    public blackMask: cc.Node = null;
 
     //public 用于给子类调用
     public boxParent: cc.Node = null;
@@ -40,15 +41,17 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
     public audioManager: any = null;
     public brotherWalkNode: cc.Node = null;
     public actionType = settingBasic.setting.actionType;
+    public achieveManager = AchievementControllor.getAchieveManager();
+    public achieveTypes = settingBasic.setting.achievements;
 
     isSetAudio: boolean = false;
+    isRestarting: boolean = false;
     personAudio: [{ actionType: number, name: string }] = null;
-
     onLoad() {
         this.audioManager = cc.find("UICamera/audio").getComponent("audioControllor");
         // cc.game.setFrameRate(60);
         this.brotherWalkNode = this.brotherNode.getChildByName("Brother_Walk");
-        
+
         // 自定义事件 控制游戏状态 
         this.node.on(settingBasic.gameEvent.gameStateEvent, this.changeGameState, this);
         this.node.on(settingBasic.gameEvent.gameStepEvent, this.gameStep, this);
@@ -59,7 +62,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
         // this.deathTip = this.UICamera.getChildByName("deathTip").getComponent(cc.Label);
         // let currDeath = settingBasic.game.currDeath;
         // this.deathTip.string = "失败次数:" + currDeath;
-        // this.blackMask = this.cameraNode.getChildByName("blackMask")
+        this.blackMask = this.cameraNode.getChildByName("blackMask")
 
         //书签
         this.bookNode = this.UICamera.getChildByName("bookNode");
@@ -68,7 +71,6 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
         console.log("=========SCENE: " + this.level + " ==========")
         settingBasic.game.currLevel = this.level;
         settingBasic.game.currScene = this.node.name;
-        settingBasic.fun.setScene("level_" + this.level, cc.director.getScene());
         this.audioManager.setCurrScene();
         //加载子包资源
         this.loadSubPackageDefualt();
@@ -79,8 +81,8 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
         // 绘制碰撞区域
         var draw = cc.PhysicsManager.DrawBits;
         // cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
-        // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
         // cc.director.getCollisionManager().enabledDebugDraw = true; //碰撞区域 
+        // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
         // 开启碰撞检测
         cc.director.getCollisionManager().enabled = true;
 
@@ -92,11 +94,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
 
         this.changeGameState(settingBasic.setting.stateType.START);
 
-        //第一次加载场景时暂停
-        if (settingBasic.game.isFirstLoad) {
-            // this.changeGameState(settingBasic.setting.stateType.PAUSE);
-            settingBasic.game.isFirstLoad = false;
-        }
+        AchievementControllor.getAchieveManager();
     };
 
 
@@ -143,16 +141,16 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
             case this.stateType.START:
                 console.log("==========GAME START==========")
 
-                // this.blackMask.active = true;
+                this.blackMask.active = true;
 
-                // this.blackMask.runAction(
-                //     cc.sequence(
-                //         cc.fadeOut(2),
-                //         cc.callFunc(() => {
-                //             this.blackMask.active = false;
-                //         })
-                //     )
-                // );
+                this.blackMask.runAction(
+                    cc.sequence(
+                        cc.fadeOut(2),
+                        cc.callFunc(() => {
+                            this.blackMask.active = false;
+                        })
+                    )
+                );
 
                 break;
             case this.stateType.NORMAL:
@@ -187,33 +185,38 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
                 //还原游戏状态
                 // settingBasic.fun.loadGameRecord();
                 break;
-            case this.stateType.REBORN:
+            case this.stateType.REBORN: //取消此状态
                 //只能连续死一次
-                if (this.preGameState == this.stateType.REBORN) return;
+                // if (this.preGameState == this.stateType.REBORN) return;
 
-                this.brotherNode.emit(settingBasic.gameEvent.brotherDeathEvent, true);
-                //记录死亡次数
-                let currDeath = settingBasic.fun.addCurrDeath(this.level)
-                // this.deathTip.string = "失败次数: " + currDeath;
+                // this.brotherNode.emit(settingBasic.gameEvent.brotherDeathEvent, true);
+                // //记录死亡次数
+                // let currDeath = settingBasic.fun.addCurrDeath(this.level)
+                // // this.deathTip.string = "失败次数: " + currDeath;
 
                 console.log("=======GameState===REBORN==========")
 
                 break;
-            case this.stateType.RESTART:
+            case this.stateType.RESTART: //人物死亡之后调用 
+                if (this.isRestarting) return;
+                this.isRestarting = true;
                 console.log("==========GAME RESTART =========")
 
+                this.brotherNode.emit(settingBasic.gameEvent.brotherDeathEvent, true);
                 //关闭 引导镜头
                 settingBasic.fun.closeShowKeyPos();
 
-                // this.blackMask.active = true;
-                // this.blackMask.runAction(
-                //     cc.sequence(
-                //         cc.fadeIn(2),
-                //         cc.callFunc(() => {
-                //             cc.director.loadScene("level_" + this.level)
-                //         })
-                //     )
-                // );
+                this.blackMask.active = true;
+                this.blackMask.runAction(
+                    cc.sequence(
+                        cc.fadeIn(2),
+                        cc.callFunc(() => {
+                            let bookmarkCtrl = this.bookmarkNode.getComponent("bookMarkControllor");
+                            bookmarkCtrl.restartCurrLevel();
+
+                        })
+                    )
+                );
 
                 break;
             default:
@@ -232,10 +235,12 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
     //人物移动步骤
     abstract moveStep(setp: number);
 
-
-
-    //写入资料到本地 / 上传资料
     onDestroy() {
-
+        this.achieveManager.saveToLocalStorage();
     }
+
+    onDisable() {
+        this.achieveManager.saveToLocalStorage();
+    }
+
 }

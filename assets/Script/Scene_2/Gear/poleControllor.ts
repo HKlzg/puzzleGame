@@ -9,8 +9,8 @@ const type = cc.Enum({
 @ccclass
 export default class NewClass extends LogicBasicComponent {
 
-    // @property(cc.Node)
-    // gear: cc.Node = null;
+    @property(cc.Node)
+    gear: cc.Node = null;
 
     // LIFE-CYCLE CALLBACKS:
     @property({ type: type })
@@ -20,9 +20,8 @@ export default class NewClass extends LogicBasicComponent {
 
     // onLoad () {}
     start() {
-        // this.grap = this.node.parent.getChildByName("referencePos").getComponent(cc.Graphics);
 
-        this.referencePos = this.node.parent.getChildByName("referencePos").convertToWorldSpaceAR(cc.Vec2.ZERO)
+        this.referencePos = this.node.parent.convertToWorldSpaceAR(cc.Vec2.ZERO)
     }
 
     logicUpdate(dt) { }
@@ -32,8 +31,8 @@ export default class NewClass extends LogicBasicComponent {
 
         //碰撞到箱子 而且 只有水平 位置的有效
         if (other.node.groupIndex == 2 && this.poleType == type.H) {
-            let parentCtrl = this.node.parent.getComponent("bigGearControllor");
-            let isRotation = parentCtrl.getIsRotation();
+            let gearCtrl = this.gear.getComponent("bigGearControllor");
+            let isRotation = gearCtrl.getIsRotation();
             if (!isRotation) {
                 let otherBody: cc.RigidBody = other.node.getComponent(cc.RigidBody);
 
@@ -48,8 +47,7 @@ export default class NewClass extends LogicBasicComponent {
                         ang = -90;
                     }
                     //旋转 整个父节点
-                    parentCtrl.rotation(ang);
-
+                    gearCtrl.rotation(ang);
 
                 }
             }

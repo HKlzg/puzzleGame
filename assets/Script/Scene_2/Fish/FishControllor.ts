@@ -19,8 +19,6 @@ export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
     fire: cc.Node = null;
 
-    itemBag: cc.Node = null;
-
     currScene: cc.Node = null;
 
     isStartSwim: boolean = false; //是否开始
@@ -46,7 +44,6 @@ export default class NewClass extends LogicBasicComponent {
     isBurning: boolean = false;//是否是燃烧状态
     onLoad() {
         this.audioManager = cc.find("UICamera/audio").getComponent("audioControllor");
-        this.itemBag = cc.find("UIMask/UICamera/itemsBag")
         this.currScene = cc.find("Canvas/" + settingBasic.game.currScene);
         this.prePersonPos = this.personNode.position;
         this.animation = this.node.getComponent(cc.Animation);
@@ -228,11 +225,7 @@ export default class NewClass extends LogicBasicComponent {
             }).delay(2).
                 call(() => {
                     //获得道具 此关结束
-                    this.itemBag.emit(settingBasic.gameEvent.getItemEvent, settingBasic.setting.itemType.gear, (isOver) => {
-                        if (isOver) {
-                            this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.NEXT);
-                        }
-                    });
+
 
                 }).start();
 

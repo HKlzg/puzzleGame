@@ -81,6 +81,61 @@ const settingBasic = {
             tear: 2
         }),
 
+        //成就类别设定
+        achievements: {
+            lv1: cc.Enum({
+                TimeCollector: 0,
+                SadnessMessenger: 1,
+            }),
+            lv2: cc.Enum({
+                StomachLover: 0,
+                IAmWaterGhost: 1,
+            }),
+            lv3: cc.Enum({
+                EscapeFromTigerMouth: 0,
+                IAmFood: 1,
+                CuteTiger: 2,
+            }),
+            lv4: cc.Enum({
+                SpiderHunter: 0,
+                Slowly: 1,
+                Overnight: 2,
+            }),
+            lv5: cc.Enum({
+                GraceOfTheEarth: 0,
+                MomentsOfEternal: 1,
+                TheDeadUnderTheFist: 2,
+                Smartboy: 3,
+            }),
+        },
+        //数组顺序和 achievements 对应 //初始值，用于初始化
+        achievementsInit: {
+            lv1: [
+                { type: 0, name: "采时者", isGet: false, count: 0, needNum: 1 },
+                { type: 1, name: "悲伤的使者", isGet: false, count: 0, needNum: 1 }
+            ],
+            lv2: [
+                { type: 0, name: "鱼腹爱好者", isGet: false, count: 0, needNum: 5 },
+                { type: 1, name: "我是水鬼", isGet: false, count: 0, needNum: 3 }
+            ],
+            lv3: [
+                { type: 0, name: "虎口脱险", isGet: false, count: 0, needNum: 3 },
+                { type: 1, name: "我是食物", isGet: false, count: 0, needNum: 3 },
+                { type: 2, name: "乖乖虎", isGet: false, count: 0, needNum: 1 },
+            ],
+            lv4: [
+                { type: 0, name: "蜘蛛猎人", isGet: false, count: 0, needNum: 1 },
+                { type: 1, name: "慢吞吞的", isGet: false, count: 0, needNum: 1 },
+                { type: 2, name: "一蹴而就", isGet: false, count: 0, needNum: 1 },
+            ],
+            lv5: [
+                { type: 0, name: "大地的恩泽", isGet: false, count: 0, needNum: 1 },
+                { type: 1, name: "生命永恒", isGet: false, count: 0, needNum: 1 },
+                { type: 2, name: "锤下亡魂", isGet: false, count: 0, needNum: 1 },
+                { type: 3, name: "机灵鬼", isGet: false, count: 0, needNum: 3 },
+            ],
+        }
+
     },
 
 
@@ -92,29 +147,15 @@ const settingBasic = {
             let num = setting["lv" + lv];
             return num;
         },
-        //记录场景
-        setScene(name: string, scene: cc.Scene) {
-            let list = settingBasic.game.sceneList;
-            if (!list[name]) {
-                list[name] = scene;
-            }
-            // console.log("----------------sceneList name: " + name)
+        //获取指定关卡的成就
+        getAchievementByLv(lv) {
+            let achieve = settingBasic.setting.achievements;
+            return achieve["lv" + lv];
         },
-
-        getSceneByName(name: string) {
-            let list = settingBasic.game.sceneList;
-            return list[name] ? list[name] : null;
-        },
-
-        nextScene() {
-            let level = settingBasic.game.currLevel;
-            let name = "level_" + (level + 1);
-            cc.director.loadScene(name);
-
-        },
-        reLoade() {
-            let name = "level_" + settingBasic.game.currLevel;
-            cc.director.loadScene(name)
+        //获取成就名称
+        getAchieveCN(lv: number, achieveType: number) {
+            let achievements = settingBasic.setting.achievementsInit;
+            return achievements["lv" + lv][achieveType].name;
         },
 
         /**
@@ -217,9 +258,8 @@ const settingBasic = {
         currBoxNum: 0,
         currDeath: 0, //当前关卡死亡数
         totalDeath: 0, //游戏死亡总数
-        sceneList: {},
         deathRecord: {},//死亡记录 用于存档
-        isShowKeyPos: true, //是否显示引导镜头
+        isShowKeyPos: false, //是否显示引导镜头
         inventory: [], //物品栏 //存储物品类别(number类型)
         isClearCurrRecord: false, //是否在reload 时清除当前关卡records
         isClearGameRecord: false, //是否在reload 时清除所有records
@@ -227,8 +267,7 @@ const settingBasic = {
         version: "001",//版本号
 
         currScene: "Scene1",
-        isFirstLoad:true,//是否是第一次加载
-        audioManager:{},
+
     },
 
     //自定义事件

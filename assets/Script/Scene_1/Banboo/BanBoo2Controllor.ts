@@ -14,16 +14,15 @@ export default class NewClass extends LogicBasicComponent {
     banboo3Node: cc.Node = null;
     @property(cc.Node)
     fireLeftList: Array<cc.Node> = []
-
     hasWater: boolean = false;
     maskInitHeight: number = 0;
-    time:number = 1.1;
-    isAudioPlaying:boolean =false;
-    audio :any = null;
+    time: number = 1.1;
+    isAudioPlaying: boolean = false;
+    audio: any = null;
     currScene: cc.Node = null;
     start() {
         this.maskInitHeight = this.mask.height;
-        this.currScene = cc.find("Canvas/"+settingBasic.game.currScene);
+        this.currScene = cc.find("Canvas/" + settingBasic.game.currScene);
         this.audio = cc.find("UICamera/audio").getComponent("audioControllor");
     }
     onEnable() {
@@ -32,23 +31,23 @@ export default class NewClass extends LogicBasicComponent {
     logicUpdate(dt) {
         this.waterContrl();
         this.maskContrl();
-        if(this.isAudioPlaying){
-            if(this.time<1){
-                this.time+=0.1;
-            }else{
+        if (this.isAudioPlaying) {
+            if (this.time < 1) {
+                this.time += 0.1;
+            } else {
                 this.isAudioPlaying = false;
             }
         }
     }
     onPostSolve(contact, selfCollider, otherCollider) {
         selfCollider.node.getComponent(cc.RigidBody).linearVelocity = cc.v2(0, 0)
-   
+
     }
-    onBeginContact(contact, selfCollider, otherCollider){
-        if (otherCollider.node.groupIndex == 2&&this.time>1) {            
+    onBeginContact(contact, selfCollider, otherCollider) {
+        if (otherCollider.node.groupIndex == 2 && this.time > 1) {
             let boxCtrl = otherCollider.node.getComponent("BoxInstanceControllor");
             let isInstance = boxCtrl.getIsInstance();
-            if(isInstance){
+            if (isInstance) {
                 this.time = 0;
                 this.isAudioPlaying = true;
                 let id = this.audio.playAudio("climbs");
@@ -78,14 +77,18 @@ export default class NewClass extends LogicBasicComponent {
             //4S之后检测水是否处于开启状态
             if (this.waterLeft.active) {
                 this.fireLeftList.forEach((fire) => {
-                    fire.runAction(cc.sequence(cc.fadeOut(2),
-                        cc.callFunc(() => {
-                            this.currScene.emit(setting.gameEvent.gameMoveStep, 1)
-                        })))
+                    if (fire.active) {
+                         
+                        fire.runAction(cc.sequence(cc.fadeOut(2),
+                            cc.callFunc(() => {
+                                fire.active = false;
+                                this.currScene.emit(setting.gameEvent.gameMoveStep, 1)
+                            })))
+                    }
                 })
             }
 
-        }, 4)
+        }, 2.5)
     }
 
     maskContrl() {

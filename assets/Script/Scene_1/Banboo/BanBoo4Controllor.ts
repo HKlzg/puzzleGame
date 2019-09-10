@@ -24,11 +24,13 @@ export default class NewClass extends LogicBasicComponent {
     fireLeftList: Array<cc.Node> = []
     @property(cc.Node)
     fireRightList: Array<cc.Node> = []
-
+    @property(cc.Node)
+    paper: cc.Node = null;
     isAudioPlaying: boolean = false;
+
     time: number = 1.1;
 
-    audio:any = null;
+    audio: any = null;
 
 
     waterDirection: number = 0;
@@ -62,7 +64,7 @@ export default class NewClass extends LogicBasicComponent {
         if (otherCollider.node.groupIndex == 2 && this.time > 1) {
             let boxCtrl = otherCollider.node.getComponent("BoxInstanceControllor");
             let isInstance = boxCtrl.getIsInstance();
-            if(isInstance){
+            if (isInstance) {
                 this.time = 0;
                 this.isAudioPlaying = true;
                 let id = this.audio.playAudio("climbs");
@@ -106,6 +108,7 @@ export default class NewClass extends LogicBasicComponent {
 
     leftStream() {
         this.waterLeft.active = true;
+
         //持续浇水4S 火才能熄灭
         this.schedule(() => {
             //指定角度才能浇灭
@@ -114,19 +117,27 @@ export default class NewClass extends LogicBasicComponent {
                 //4S之后检测水是否处于开启状态
                 if (this.waterLeft.active) {
                     this.fireLeftList.forEach((fire) => {
-                        fire.runAction(
-                            cc.sequence(
-                                cc.fadeOut(2),
-                                cc.callFunc(() => {
-                                    this.currScene.emit(setting.gameEvent.gameMoveStep, 3)
-                                })
+                        if (fire.active) {
+                            fire.runAction(
+                                cc.sequence(
+                                    cc.fadeOut(2),
+                                    cc.callFunc(() => {
+                                        fire.active = false;
+                                        this.paper.active = true;
+                                        cc.tween(this.paper).then(cc.fadeIn(0.5)).call(() => {
+                                            this.paper.getComponent(cc.Button).enabled = true;
+                                        }).start();
+                                        this.currScene.emit(setting.gameEvent.gameMoveStep, 3)
+                                    })
+                                )
                             )
-                        )
+                        }
                     })
                 }
             }
 
-        }, 4)
+        }, 2.5)
+
 
     }
     rightStream() {
@@ -138,18 +149,21 @@ export default class NewClass extends LogicBasicComponent {
             if (angle >= -16 && angle < 0) {
                 if (this.waterRight.active) {
                     this.fireRightList.forEach((fire) => {
-                        fire.runAction(
-                            cc.sequence(
-                                cc.fadeOut(2),
-                                cc.callFunc(() => {
-                                    this.currScene.emit(setting.gameEvent.gameMoveStep, 4)
-                                })
+                        if (fire.active) {
+                            fire.runAction(
+                                cc.sequence(
+                                    cc.fadeOut(2),
+                                    cc.callFunc(() => {
+                                        fire.active = false;
+                                        this.currScene.emit(setting.gameEvent.gameMoveStep, 4)
+                                    })
+                                )
                             )
-                        )
+                        }
                     })
                 }
             }
-        }, 4)
+        }, 2.5)
     }
 
 }

@@ -23,7 +23,6 @@ export default class NewClass extends LogicBasicComponent {
         if (!this.isContact && other.node.groupIndex == 6) { //人碰到 就over
             let vy = this.body.linearVelocity.y
             if (vy < this.deathVyMax) {
-                this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.REBORN);
                 this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.RESTART);
                 this.isContact = true;
             }

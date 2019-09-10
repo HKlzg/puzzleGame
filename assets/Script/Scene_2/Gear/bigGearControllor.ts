@@ -14,9 +14,7 @@ class childType {
 }
 @ccclass
 export default class NewClass extends LogicBasicComponent {
-
-    @property(cc.Node)
-    gear: cc.Node = null;
+ 
 
     @property(cc.Node)
     poleH: cc.Node = null;
@@ -115,27 +113,27 @@ export default class NewClass extends LogicBasicComponent {
     }
     //开启机关
     public openMachine() {
-        if (this.isOpen) return;
-        this.isOpen = true;
-        cc.tween(this.poleH).to(1, { scaleX: 1.5 }).
-            delay(0.5).
-            call(() => {
-                cc.tween(this.poleH).to(0.2, { scaleX: 2.5 }).
-                    call(() => {
-                        this.poleH.groupIndex = 5; //只与箱子碰撞
-                        this.poleH.getComponent(cc.PhysicsBoxCollider).apply()
-                    }).start();
-            }).start()
+        // if (this.isOpen) return;
+        // this.isOpen = true;
+        // cc.tween(this.poleH).to(1, { scaleX: 1.5 }).
+        //     delay(0.5).
+        //     call(() => {
+        //         cc.tween(this.poleH).to(0.2, { scaleX: 2.5 }).
+        //             call(() => {
+        //                 this.poleH.groupIndex = 5; //只与箱子碰撞
+        //                 this.poleH.getComponent(cc.PhysicsBoxCollider).apply()
+        //             }).start();
+        //     }).start()
 
-        cc.tween(this.poleV).to(1, { scaleX: 1.5 }).
-            delay(0.5).
-            call(() => {
-                cc.tween(this.poleV).to(0.2, { scaleX: 2.5 }).
-                    call(() => {
-                        this.poleV.groupIndex = 5; //只与箱子碰撞
-                        this.poleV.getComponent(cc.PhysicsBoxCollider).apply()
-                    }).start();
-            }).start()
+        // cc.tween(this.poleV).to(1, { scaleX: 1.5 }).
+        //     delay(0.5).
+        //     call(() => {
+        //         cc.tween(this.poleV).to(0.2, { scaleX: 2.5 }).
+        //             call(() => {
+        //                 this.poleV.groupIndex = 5; //只与箱子碰撞
+        //                 this.poleV.getComponent(cc.PhysicsBoxCollider).apply()
+        //             }).start();
+        //     }).start()
     }
 
     //

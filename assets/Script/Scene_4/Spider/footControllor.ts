@@ -24,7 +24,6 @@ export default class NewClass extends LogicBasicComponent {
             let ctrl = this.spiderNode.getComponent("spiderControllor");
             let isDead = setting.game.State == setting.setting.stateType.REBORN;
             if (!isDead && ctrl && ctrl.isAttack()) {
-                this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.REBORN);
                 this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.RESTART);
                 this.isContact = true;
             }

@@ -16,10 +16,7 @@ export default class NewClass extends cc.Component {
         this.currScene = cc.find("Canvas/" + settingBasic.game.currScene);
         this.cameraNode = this.currScene.getChildByName("Camera");
     }
-    onEnable() {
-        this.node.getComponent(cc.Button).enabled = true;
-
-    }
+    
     // update (dt) {}
 
     onClick(e) {
@@ -29,7 +26,7 @@ export default class NewClass extends cc.Component {
             this.node.scale = scale;
             this.node.groupIndex = 21; //UI
 
-            cc.tween(this.node).to(0.5, { position: cc.v2(0, 0), angle: 0, scale: 0.5 }, { easing: "sineIn" }).call(() => {
+            cc.tween(this.node).to(0.5, { position: cc.v2(0, 0), angle: 0, scale: 1 }, { easing: "sineIn" }).call(() => {
                 this.currScene.emit(settingBasic.gameEvent.gameMoveStep, 2)
             }).start();
             this.clickCount++;

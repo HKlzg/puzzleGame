@@ -53,7 +53,7 @@ export default class NewClass extends cc.Component {
     }
 
     start() {
-       
+
     }
     update(dt) {
         if (!this.sceneList) {
@@ -159,12 +159,12 @@ export default class NewClass extends cc.Component {
 
     }
     public nextPageContent() {//下一页
-        console.log("===1=="+this.currPageNum)
+        console.log("===1==" + this.currPageNum)
         this.currPageNum++;
         this.currPageNum = this.currPageNum < 5 ? this.currPageNum : 5;
         let currLv = ++settingBasic.game.currLevel;
         this.showContent(currLv);
-        console.log("===2==currLv "+currLv)
+        console.log("===2==currLv " + currLv)
     }
     // 显示content 对应的内容
     showContent(contentId: number) {
@@ -189,6 +189,21 @@ export default class NewClass extends cc.Component {
         // console.log("===2===id== " + id + " ====scene name = " + this.currScene.name)
     }
 
+    //重玩当前关卡
+    restartCurrLevel() {
+        let index = settingBasic.game.currLevel;
+        //回调
+        let self = this;
+        let callBack = function (scene) {
+            if (scene) {
+                self.sceneList[index - 1] = scene;
+                self.currScene = scene;
+                self.currScene.active = true;
+                console.log("===重新加载====:" + scene.name);
+            }
+        }
+        this.canvas.getComponent("CanvasControllor").getSceneByCurrLv(callBack);
+    }
 
 
 
