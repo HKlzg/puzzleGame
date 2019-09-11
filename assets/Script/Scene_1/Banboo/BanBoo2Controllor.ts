@@ -3,7 +3,6 @@ const { ccclass, property } = cc._decorator;
 import setting from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 import settingBasic from "../../Setting/settingBasic";
-import toolsBasics from "../../Tools/toolsBasics";
 @ccclass
 export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
@@ -14,6 +13,9 @@ export default class NewClass extends LogicBasicComponent {
     banboo3Node: cc.Node = null;
     @property(cc.Node)
     fireLeftList: Array<cc.Node> = []
+    @property(cc.Node)
+    footPrints: cc.Node = null;
+
     hasWater: boolean = false;
     maskInitHeight: number = 0;
     time: number = 1.1;
@@ -78,10 +80,14 @@ export default class NewClass extends LogicBasicComponent {
             if (this.waterLeft.active) {
                 this.fireLeftList.forEach((fire) => {
                     if (fire.active) {
-                         
+
                         fire.runAction(cc.sequence(cc.fadeOut(2),
                             cc.callFunc(() => {
+                                this.footPrints.active = true;
                                 fire.active = false;
+                                cc.tween(this.footPrints).then(cc.fadeIn(0.5)).call(() => {
+                                    this.footPrints.getComponent(cc.Button).enabled = true;
+                                }).start();
                                 this.currScene.emit(setting.gameEvent.gameMoveStep, 1)
                             })))
                     }

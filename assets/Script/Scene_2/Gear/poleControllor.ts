@@ -21,7 +21,7 @@ export default class NewClass extends LogicBasicComponent {
     // onLoad () {}
     start() {
 
-        this.referencePos = this.node.parent.convertToWorldSpaceAR(cc.Vec2.ZERO)
+        this.referencePos = this.node.convertToWorldSpaceAR(cc.Vec2.ZERO)
     }
 
     logicUpdate(dt) { }

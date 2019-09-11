@@ -62,7 +62,7 @@
     },
     "_is3DNode": true,
     "groupIndex": 0,
-    "autoReleaseAssets": false,
+    "autoReleaseAssets": true,
     "_id": "774ed620-032f-4bc0-837d-b227e46f5e99"
   },
   {
@@ -809,6 +809,9 @@
     "bookMark": {
       "__id__": 20
     },
+    "UIMask": {
+      "__id__": 23
+    },
     "_id": "cdPAkIsw9NEJmWD2aLbYmf"
   },
   {
@@ -1480,8 +1483,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -171.915003,
-      "y": -319.2820015,
+      "x": -226.868,
+      "y": -330.273,
       "z": 0
     },
     "_scale": {
@@ -1838,8 +1841,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 104,
-      "height": 50.4
+      "width": 85.31,
+      "height": 32.5
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1891,8 +1894,10 @@
     "_fontSize": 25.99999999999988,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "5912a295-f8c9-4dca-85c8-649d22037f28"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
@@ -1928,8 +1933,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 298.34,
-      "height": 50.4
+      "width": 253.75,
+      "height": 25
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -1938,7 +1943,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -40.139,
+      "x": -51.041,
       "y": 138.691,
       "z": 0
     },
@@ -1976,13 +1981,15 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "行走->手势操作按住屏幕左右滑动",
-    "_N$string": "行走->手势操作按住屏幕左右滑动",
+    "_string": "行走---手势操作按住屏幕左右滑动",
+    "_N$string": "行走---手势操作按住屏幕左右滑动",
     "_fontSize": 20,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "5912a295-f8c9-4dca-85c8-649d22037f28"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
@@ -2018,8 +2025,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 218.34,
-      "height": 50.4
+      "width": 180,
+      "height": 25
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2028,7 +2035,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -78.772,
+      "x": -84.223,
       "y": 82.155,
       "z": 0
     },
@@ -2066,13 +2073,15 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "跳跃->按住屏幕向上滑动",
-    "_N$string": "跳跃->按住屏幕向上滑动",
+    "_string": "跳跃--按住屏幕向上滑动",
+    "_N$string": "跳跃--按住屏幕向上滑动",
     "_fontSize": 20,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "5912a295-f8c9-4dca-85c8-649d22037f28"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
@@ -2108,8 +2117,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 218.34,
-      "height": 50.4
+      "width": 186.25,
+      "height": 25
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2118,7 +2127,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -78.772,
+      "x": -79.317,
       "y": 17.139,
       "z": 0
     },
@@ -2156,13 +2165,15 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "侧跳->按住屏幕斜向滑动",
-    "_N$string": "侧跳->按住屏幕斜向滑动",
+    "_string": "侧跳---按住屏幕斜向滑动",
+    "_N$string": "侧跳---按住屏幕斜向滑动",
     "_fontSize": 20,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "5912a295-f8c9-4dca-85c8-649d22037f28"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
@@ -2198,8 +2209,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 330.58,
-      "height": 50.4
+      "width": 274.38,
+      "height": 25
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2208,7 +2219,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -21.294,
+      "x": -37.102,
       "y": -45.051,
       "z": 0
     },
@@ -2246,13 +2257,15 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "放置道具->按住屏幕1s 之后滑动 放手",
-    "_N$string": "放置道具->按住屏幕1s 之后滑动 放手",
+    "_string": "放置道具---按住屏幕1秒之后滑动放手",
+    "_N$string": "放置道具---按住屏幕1秒之后滑动放手",
     "_fontSize": 20,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "5912a295-f8c9-4dca-85c8-649d22037f28"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
@@ -2334,8 +2347,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 176,
-      "height": 50.4
+      "width": 209.38,
+      "height": 31.25
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2394,8 +2407,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 387.2,
-      "height": 114.1
+      "width": 371.88,
+      "height": 66.56
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2404,8 +2417,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 102.027,
-      "y": -92.793,
+      "x": 85.694,
+      "y": -63.142,
       "z": 0
     },
     "_scale": {
@@ -2442,13 +2455,15 @@
       }
     ],
     "_useOriginalSize": false,
-    "_string": "回到村庄，我不敢相信我看到的一切，村庄里燃烧\n起了熊熊大火！村里的人也不只所踪! 我必须找到\n一些线索，",
-    "_N$string": "回到村庄，我不敢相信我看到的一切，村庄里燃烧\n起了熊熊大火！村里的人也不只所踪! 我必须找到\n一些线索，",
-    "_fontSize": 17.599999999999913,
+    "_string": "回到村庄，我不敢相信我看到的一切，村庄里燃烧\n起了熊熊大火！村里的人也不只所踪，我必须找到\n一些线索，",
+    "_N$string": "回到村庄，我不敢相信我看到的一切，村庄里燃烧\n起了熊熊大火！村里的人也不只所踪，我必须找到\n一些线索，",
+    "_fontSize": 20,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "5912a295-f8c9-4dca-85c8-649d22037f28"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 0,
@@ -2484,8 +2499,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 228.8,
-      "height": 44.1
+      "width": 208.13,
+      "height": 22.19
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2494,8 +2509,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 102.027,
-      "y": -126.008,
+      "x": 81.237,
+      "y": -82.935,
       "z": 0
     },
     "_scale": {
@@ -2534,11 +2549,13 @@
     "_useOriginalSize": false,
     "_string": "看起来只能先把火灭掉才行！",
     "_N$string": "看起来只能先把火灭掉才行！",
-    "_fontSize": 17.599999999999913,
+    "_fontSize": 20,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "5912a295-f8c9-4dca-85c8-649d22037f28"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 0,
@@ -2752,8 +2769,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 52.8,
-      "height": 44.1
+      "width": 42.35,
+      "height": 19.52
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2805,7 +2822,9 @@
     "_fontSize": 17.599999999999913,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "5912a295-f8c9-4dca-85c8-649d22037f28"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -2927,8 +2946,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 52.8,
-      "height": 44.1
+      "width": 42.35,
+      "height": 19.52
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -2937,7 +2956,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 176,
+      "x": 253.218,
       "y": -475,
       "z": 0
     },
@@ -2980,8 +2999,10 @@
     "_fontSize": 17.599999999999913,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "5912a295-f8c9-4dca-85c8-649d22037f28"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 0,
@@ -3089,11 +3110,13 @@
     "_useOriginalSize": false,
     "_string": "第一章：格兰村的大火",
     "_N$string": "第一章：格兰村的大火",
-    "_fontSize": 17.599999999999913,
+    "_fontSize": 25,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
-    "_isSystemFontUsed": true,
+    "_N$file": {
+      "__uuid__": "5912a295-f8c9-4dca-85c8-649d22037f28"
+    },
+    "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
     "_N$horizontalAlign": 1,
@@ -3145,8 +3168,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 176,
-      "height": 50.4
+      "width": 211.72,
+      "height": 31.25
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3205,8 +3228,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 352,
-      "height": 79.1
+      "width": 336.88,
+      "height": 44.38
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3215,8 +3238,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 82.968,
-      "y": -76.29,
+      "x": 68.523,
+      "y": -50.441,
       "z": 0
     },
     "_scale": {
@@ -3255,10 +3278,12 @@
     "_useOriginalSize": false,
     "_string": "不知道什么时候起，村里的老人们说断风崖的\n河里有条会吃人的鱼，禁止我们去那儿...",
     "_N$string": "不知道什么时候起，村里的老人们说断风崖的\n河里有条会吃人的鱼，禁止我们去那儿...",
-    "_fontSize": 17.599999999999913,
+    "_fontSize": 20,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "0eb81a40-21ab-47b5-baa3-4fdd1f0a399a"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -3295,8 +3320,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 250.48,
-      "height": 44.1
+      "width": 239.38,
+      "height": 22.19
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3305,8 +3330,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 32.807,
-      "y": -127.207,
+      "x": 18.362,
+      "y": -84.632,
       "z": 0
     },
     "_scale": {
@@ -3345,10 +3370,12 @@
     "_useOriginalSize": false,
     "_string": "不过听说它的鱼鳞可以反射光芒!",
     "_N$string": "不过听说它的鱼鳞可以反射光芒!",
-    "_fontSize": 17.599999999999913,
+    "_fontSize": 20,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "0eb81a40-21ab-47b5-baa3-4fdd1f0a399a"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -3563,8 +3590,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 52.8,
-      "height": 44.1
+      "width": 42.35,
+      "height": 19.52
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3573,7 +3600,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -45,
+      "x": -67.532,
       "y": -474,
       "z": 0
     },
@@ -3616,7 +3643,9 @@
     "_fontSize": 17.599999999999913,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "0eb81a40-21ab-47b5-baa3-4fdd1f0a399a"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -3738,8 +3767,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 52.8,
-      "height": 44.1
+      "width": 42.35,
+      "height": 19.52
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3748,7 +3777,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 176,
+      "x": 253.895,
       "y": -475,
       "z": 0
     },
@@ -3791,7 +3820,9 @@
     "_fontSize": 17.599999999999913,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "0eb81a40-21ab-47b5-baa3-4fdd1f0a399a"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -3900,10 +3931,12 @@
     "_useOriginalSize": false,
     "_string": "第二章：梅尔河的危机",
     "_N$string": "第二章：梅尔河的危机",
-    "_fontSize": 17.599999999999913,
+    "_fontSize": 25,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "0eb81a40-21ab-47b5-baa3-4fdd1f0a399a"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -3956,8 +3989,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 140.8,
-      "height": 50.4
+      "width": 168.75,
+      "height": 31.25
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -3966,7 +3999,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -115.778,
+      "x": -118.905,
       "y": 231.262,
       "z": 0
     },
@@ -4016,8 +4049,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 387.2,
-      "height": 79.1
+      "width": 368.75,
+      "height": 44.38
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -4026,8 +4059,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 118.35,
-      "y": -74.883,
+      "x": 105.268,
+      "y": -51.444,
       "z": 0
     },
     "_scale": {
@@ -4066,10 +4099,12 @@
     "_useOriginalSize": false,
     "_string": "传说幽暗丛林里面住着一只老虎：克摩尔，克摩尔\n对声音非常敏感，听到风铃的声音就会暴走",
     "_N$string": "传说幽暗丛林里面住着一只老虎：克摩尔，克摩尔\n对声音非常敏感，听到风铃的声音就会暴走",
-    "_fontSize": 17.599999999999913,
+    "_fontSize": 20,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "0eb81a40-21ab-47b5-baa3-4fdd1f0a399a"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -4106,8 +4141,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 387.2,
-      "height": 79.1
+      "width": 370.63,
+      "height": 44.38
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -4116,8 +4151,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 118.048,
-      "y": -145.475,
+      "x": 104.966,
+      "y": -95.326,
       "z": 0
     },
     "_scale": {
@@ -4156,10 +4191,12 @@
     "_useOriginalSize": false,
     "_string": "只有于静祥的香气才能使得它稳定下来，听说郁金\n香还能使它流出眼泪...",
     "_N$string": "只有于静祥的香气才能使得它稳定下来，听说郁金\n香还能使它流出眼泪...",
-    "_fontSize": 17.599999999999913,
+    "_fontSize": 20,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "0eb81a40-21ab-47b5-baa3-4fdd1f0a399a"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -4374,8 +4411,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 52.8,
-      "height": 44.1
+      "width": 42.35,
+      "height": 19.52
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -4384,8 +4421,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -27,
-      "y": -473,
+      "x": -46.194,
+      "y": -474.324,
       "z": 0
     },
     "_scale": {
@@ -4427,7 +4464,9 @@
     "_fontSize": 17.599999999999913,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "0eb81a40-21ab-47b5-baa3-4fdd1f0a399a"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -4549,8 +4588,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 52.8,
-      "height": 44.1
+      "width": 42.35,
+      "height": 19.52
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -4559,8 +4598,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 194,
-      "y": -473,
+      "x": 275.22,
+      "y": -475.647,
       "z": 0
     },
     "_scale": {
@@ -4602,7 +4641,9 @@
     "_fontSize": 17.599999999999913,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "0eb81a40-21ab-47b5-baa3-4fdd1f0a399a"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -4711,10 +4752,12 @@
     "_useOriginalSize": false,
     "_string": "第三章：幽暗丛林",
     "_N$string": "第三章：幽暗丛林",
-    "_fontSize": 17.599999999999913,
+    "_fontSize": 25,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "0eb81a40-21ab-47b5-baa3-4fdd1f0a399a"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -4767,8 +4810,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 123.2,
-      "height": 50.4
+      "width": 145.31,
+      "height": 31.25
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -4777,7 +4820,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -125.06,
+      "x": -130.532,
       "y": 231.262,
       "z": 0
     },
@@ -4827,8 +4870,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 387.2,
-      "height": 79.1
+      "width": 368.13,
+      "height": 44.38
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -4837,8 +4880,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 128.922,
-      "y": -75.369,
+      "x": 117.588,
+      "y": -51.529,
       "z": 0
     },
     "_scale": {
@@ -4877,10 +4920,12 @@
     "_useOriginalSize": false,
     "_string": "没什么人来过这里，因为来过这里的人要么被那大\n蜘蛛：古扎伊吃掉了，如果不小心来了这里",
     "_N$string": "没什么人来过这里，因为来过这里的人要么被那大\n蜘蛛：古扎伊吃掉了，如果不小心来了这里",
-    "_fontSize": 17.599999999999913,
+    "_fontSize": 20,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "52be0588-b237-4189-a3b8-5c362eab148f"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -4917,8 +4962,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 369.6,
-      "height": 79.1
+      "width": 354.38,
+      "height": 44.38
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -4927,8 +4972,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 120.29,
-      "y": -145.125,
+      "x": 109.347,
+      "y": -95.491,
       "z": 0
     },
     "_scale": {
@@ -4967,10 +5012,12 @@
     "_useOriginalSize": false,
     "_string": "一定要跑快点，它可不会给我们留时间的，听说\n它死了之后会有郁金香绽放...",
     "_N$string": "一定要跑快点，它可不会给我们留时间的，听说\n它死了之后会有郁金香绽放...",
-    "_fontSize": 17.599999999999913,
+    "_fontSize": 20,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "52be0588-b237-4189-a3b8-5c362eab148f"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -5185,8 +5232,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 52.8,
-      "height": 44.1
+      "width": 42.35,
+      "height": 19.52
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -5195,8 +5242,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -18,
-      "y": -472,
+      "x": -34.216,
+      "y": -474.411,
       "z": 0
     },
     "_scale": {
@@ -5238,7 +5285,9 @@
     "_fontSize": 17.599999999999913,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "52be0588-b237-4189-a3b8-5c362eab148f"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -5360,8 +5409,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 52.8,
-      "height": 44.1
+      "width": 42.35,
+      "height": 19.52
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -5370,8 +5419,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 203,
-      "y": -473,
+      "x": 286.945,
+      "y": -475.892,
       "z": 0
     },
     "_scale": {
@@ -5413,7 +5462,9 @@
     "_fontSize": 17.599999999999913,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "52be0588-b237-4189-a3b8-5c362eab148f"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -5522,10 +5573,12 @@
     "_useOriginalSize": false,
     "_string": "第四章：断风崖",
     "_N$string": "第四章：断风崖",
-    "_fontSize": 17.599999999999913,
+    "_fontSize": 25,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "52be0588-b237-4189-a3b8-5c362eab148f"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -5578,8 +5631,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 140.8,
-      "height": 50.4
+      "width": 165.63,
+      "height": 31.25
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -5588,7 +5641,7 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -116.219,
+      "x": -120.49,
       "y": 231.262,
       "z": 0
     },
@@ -5638,8 +5691,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 369.6,
-      "height": 44.1
+      "width": 343.13,
+      "height": 22.19
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -5648,8 +5701,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 110.952,
-      "y": -56.361,
+      "x": 94.928,
+      "y": -40.728,
       "z": 0
     },
     "_scale": {
@@ -5688,10 +5741,12 @@
     "_useOriginalSize": false,
     "_string": "这里住着温和的大地之王，它守护者生命之树！",
     "_N$string": "这里住着温和的大地之王，它守护者生命之树！",
-    "_fontSize": 17.599999999999913,
+    "_fontSize": 20,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "52be0588-b237-4189-a3b8-5c362eab148f"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -5728,8 +5783,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 369.6,
-      "height": 79.1
+      "width": 353.75,
+      "height": 44.38
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -5738,8 +5793,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 112.183,
-      "y": -109.975,
+      "x": 98.504,
+      "y": -95.906,
       "z": 0
     },
     "_scale": {
@@ -5778,10 +5833,12 @@
     "_useOriginalSize": false,
     "_string": "枯萎的生命之树只有可摩尔的眼泪浇灌和最狡黠\n的月光照射才能重新生长！",
     "_N$string": "枯萎的生命之树只有可摩尔的眼泪浇灌和最狡黠\n的月光照射才能重新生长！",
-    "_fontSize": 17.599999999999913,
+    "_fontSize": 20,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "52be0588-b237-4189-a3b8-5c362eab148f"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -5996,8 +6053,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 52.8,
-      "height": 44.1
+      "width": 42.35,
+      "height": 19.52
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -6006,8 +6063,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -27,
-      "y": -473,
+      "x": -43.842,
+      "y": -474.531,
       "z": 0
     },
     "_scale": {
@@ -6049,7 +6106,9 @@
     "_fontSize": 17.599999999999913,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "52be0588-b237-4189-a3b8-5c362eab148f"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -6171,8 +6230,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 52.8,
-      "height": 44.1
+      "width": 42.35,
+      "height": 19.52
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -6224,7 +6283,9 @@
     "_fontSize": 17.599999999999913,
     "_lineHeight": 35.5,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "52be0588-b237-4189-a3b8-5c362eab148f"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,
@@ -6333,10 +6394,12 @@
     "_useOriginalSize": false,
     "_string": "第五章：符文洞穴",
     "_N$string": "第五章：符文洞穴",
-    "_fontSize": 17.599999999999913,
+    "_fontSize": 25,
     "_lineHeight": 40,
     "_enableWrapText": true,
-    "_N$file": null,
+    "_N$file": {
+      "__uuid__": "52be0588-b237-4189-a3b8-5c362eab148f"
+    },
     "_isSystemFontUsed": false,
     "_spacingX": 0,
     "_batchAsBitmap": false,

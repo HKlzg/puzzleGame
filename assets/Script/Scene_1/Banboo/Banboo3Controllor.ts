@@ -1,9 +1,6 @@
 
 const { ccclass, property } = cc._decorator;
-import setting from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
-import settingBasic from "../../Setting/settingBasic";
-import toolsBasics from "../../Tools/toolsBasics";
 
 @ccclass
 export default class NewClass extends LogicBasicComponent {

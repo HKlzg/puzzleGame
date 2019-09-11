@@ -95,9 +95,9 @@ export default class NewClass extends cc.Component {
             this.UIMask.getComponent(cc.Mask).enabled = true;
 
             cc.tween(this.UIMask)
-                .to(1.5, { width: 4577, height: 4000 })
+                .to(1, { width: 4577, height: 4000 })
                 .call(() => {
-
+                    this.UIMask.active = false;
                 })
                 .start();
         }
@@ -105,7 +105,7 @@ export default class NewClass extends cc.Component {
     // 点击 bookMenu 菜单 --暂停游戏
     bookOnClick() {
         // console.log("================bookOnClick===========" + settingBasic.game.currScene + "  " + settingBasic.game.currLevel)
-
+        this.UIMask.active = true;
         cc.tween(this.UIMask)
             .to(1, { width: 388, height: 236.1 })
             .start();

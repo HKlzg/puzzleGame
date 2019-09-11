@@ -553,9 +553,11 @@
   "design-resolution-height": 1280,
   "design-resolution-width": 720,
   "excluded-modules": [
+    "Label Effect",
     "ParticleSystem",
     "Spine Skeleton",
     "DragonBones",
+    "RichText",
     "VideoPlayer",
     "WebView",
     "Geom Utils",
@@ -608,7 +610,7 @@
     "height": 640,
     "width": 960
   },
-  "start-scene": "current",
   "use-customize-simulator": true,
-  "use-project-simulator-setting": false
+  "use-project-simulator-setting": false,
+  "start-scene": "current"
 }

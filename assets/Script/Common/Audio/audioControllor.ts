@@ -139,13 +139,17 @@ export default class AudioManager extends cc.Component {
         cc.audioEngine.stopAllEffects();
     }
 
-    //设置是否播放/停止
+    //设置是否播放/暂停
     setEnablePlay(enable: boolean) {
 
         this.isEnablePlay = enable;
-        this.isEnablePlay && this.currMusicName ?
-            cc.audioEngine.playMusic(this.audioList[this.currMusicName], true) :
-            cc.audioEngine.stopAll();
+        if (this.isEnablePlay && this.currMusicName) {
+            cc.audioEngine.resumeMusic();
+            cc.audioEngine.resumeAllEffects();
+        } else {
+            cc.audioEngine.pauseMusic();
+            cc.audioEngine.pauseAllEffects();
+        }
     }
 
     getEnable(): boolean {
