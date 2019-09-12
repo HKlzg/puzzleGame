@@ -402,6 +402,7 @@ export abstract class BrotherBasic extends LogicBasicComponent {
         if (this.order.action != actionType.Wait) {
             this.order.action = actionType.Wait;
             this.brotherAction(this.order);
+
         }
     }
 

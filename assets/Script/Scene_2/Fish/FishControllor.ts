@@ -15,9 +15,10 @@ export default class NewClass extends LogicBasicComponent {
 
     @property(cc.Node)
     oilPollution: cc.Node = null;
-
     @property(cc.Node)
     fire: cc.Node = null;
+    @property(cc.Node)
+    map: cc.Node = null;
 
     currScene: cc.Node = null;
 
@@ -58,9 +59,10 @@ export default class NewClass extends LogicBasicComponent {
         this.animation.play("SwimClip");
 
         //游戏开始*秒之后再 执行
-        cc.tween(this.node).delay(10).call(() => {
+        cc.tween(this.node).delay(8).call(() => {
             this.isStartSwim = true
         }).start();
+
     }
 
     logicUpdate(dt) {
@@ -218,18 +220,28 @@ export default class NewClass extends LogicBasicComponent {
             this.moveSpeed = 2; //减缓速度
 
             cc.tween(this.node).delay(3).call(() => {
-                //自由下落
-                this.node.getComponent(cc.RigidBody).type = cc.RigidBodyType.Dynamic;
-                this.node.getComponent(cc.PhysicsPolygonCollider).apply();
+                this.moveSpeed = 0;
+                cc.tween(this.fire).then(cc.fadeOut(0.5)).start();
+                //掉进水中
+                let posRiver = this.river.convertToWorldSpaceAR(cc.Vec2.ZERO);
+                let pos = this.node.position;
+                let pos2 = this.node.parent.convertToNodeSpaceAR(posRiver);
+                cc.tween(this.node).to(0.5, { position: cc.v2(pos.x, pos2.y - 100) }).call(() => {
+                    //显示地图
+                    this.map.active = true;
+                    pos = this.node.convertToWorldSpaceAR(cc.Vec2.ZERO)
+                    this.map.position = this.map.parent.convertToNodeSpaceAR(cc.v2(pos.x, pos.y));
 
-            }).delay(2).
-                call(() => {
-                    //获得道具 此关结束
+                    let mapPos = this.map.position;
+                    cc.tween(this.map).to(1.5, { position: cc.v2(mapPos.x, mapPos.y + 160) }).call(() => {
+                        this.map.getComponent(cc.Button).enabled = true;
+                    }).start();
+                }).start()
 
-
-                }).start();
+            }).start();
 
         }
     }
+
 
 }

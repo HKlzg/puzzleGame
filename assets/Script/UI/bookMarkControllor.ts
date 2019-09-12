@@ -11,7 +11,7 @@ const contentType = cc.Enum({
     page_3: 3,
     page_4: 4,
     page_5: 5,
-    map: 6,
+    items: 6,
     achievement: 7,
 })
 
@@ -144,7 +144,7 @@ export default class NewClass extends cc.Component {
         this.showContent(contentType.achievement);
     }
     mapMarkOnClick() {
-        this.showContent(contentType.map);
+        this.showContent(contentType.items);
     }
     exitMarkClick() {
         this.node.parent.getComponent("bookAnimControllor").closeBook();
@@ -159,12 +159,12 @@ export default class NewClass extends cc.Component {
 
     }
     public nextPageContent() {//下一页
-        console.log("===1==" + this.currPageNum)
+        // console.log("===1==" + this.currPageNum)
         this.currPageNum++;
         this.currPageNum = this.currPageNum < 5 ? this.currPageNum : 5;
         let currLv = ++settingBasic.game.currLevel;
         this.showContent(currLv);
-        console.log("===2==currLv " + currLv)
+        // console.log("===2==currLv " + currLv)
     }
     // 显示content 对应的内容
     showContent(contentId: number) {

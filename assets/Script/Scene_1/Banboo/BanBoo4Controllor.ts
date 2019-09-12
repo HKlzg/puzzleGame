@@ -26,6 +26,9 @@ export default class NewClass extends LogicBasicComponent {
     fireRightList: Array<cc.Node> = []
     @property(cc.Node)
     paper: cc.Node = null;
+    @property(cc.Node)
+    gear: cc.Node = null;
+
     isAudioPlaying: boolean = false;
 
     time: number = 1.1;
@@ -155,6 +158,10 @@ export default class NewClass extends LogicBasicComponent {
                                     cc.fadeOut(2),
                                     cc.callFunc(() => {
                                         fire.active = false;
+                                        this.gear.active = true;
+                                        cc.tween(this.gear).then(cc.fadeIn(0.5)).call(() => {
+                                            this.gear.getComponent(cc.Button).enabled = true;
+                                        }).start();
                                         this.currScene.emit(setting.gameEvent.gameMoveStep, 4)
                                     })
                                 )

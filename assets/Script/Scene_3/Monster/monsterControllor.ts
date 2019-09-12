@@ -116,7 +116,7 @@ export default class LeopardControllor extends LogicBasicComponent {
 
         }
 
-        this.loopAction(dt)
+        // this.loopAction(dt)
     }
     //根据状态 播放音效 播放持续动画
     loopAction(dt) {
@@ -305,7 +305,7 @@ export default class LeopardControllor extends LogicBasicComponent {
         }
 
         //根据当前状态 做出相应的动作
-        this.doOnceAction();
+        // this.doOnceAction();
     }
 
     //降低 警戒值(状态) 、//只有在安全区域 才会降低警戒值
@@ -379,28 +379,32 @@ export default class LeopardControllor extends LogicBasicComponent {
 
     onCollisionEnter(other, self) {
 
+        // if()
+
+
+
         //碰到笼子边缘回跳 /碰到中间传感器 捕捉成功
-        if (other.node.groupIndex == 18) {
-            if (other.node.name == "sensorM") {
-                this.isAttack = false;
-                this.isDoAction = false;
-                this.reduceState(monsterActionType.wait);
-                this.isMonsterActionStart = false;
+        // if (other.node.groupIndex == 18) {
+        //     if (other.node.name == "sensorM") {
+        //         this.isAttack = false;
+        //         this.isDoAction = false;
+        //         this.reduceState(monsterActionType.wait);
+        //         this.isMonsterActionStart = false;
 
-                //下一关
+        //         //下一关
 
-                return
-            } else {
-                let body: cc.RigidBody = other.node.parent.getComponent(cc.RigidBody)
-                let vy = body.linearVelocity.y;
-                if (vy <= 10) {
-                    if (!this.isJumpBack) {
-                        this.isJumpBack = true;
-                        this.jumpBack();
-                    }
-                }
-            }
-        }
+        //         return
+        //     } else {
+        //         let body: cc.RigidBody = other.node.parent.getComponent(cc.RigidBody)
+        //         let vy = body.linearVelocity.y;
+        //         if (vy <= 10) {
+        //             if (!this.isJumpBack) {
+        //                 this.isJumpBack = true;
+        //                 this.jumpBack();
+        //             }
+        //         }
+        //     }
+        // }
 
     }
 

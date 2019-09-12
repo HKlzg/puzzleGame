@@ -739,5 +739,11 @@
       }
     }
   },
-  "events": []
+  "events": [
+    {
+      "frame": 0,
+      "func": "walk",
+      "params": []
+    }
+  ]
 }

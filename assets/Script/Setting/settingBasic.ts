@@ -74,13 +74,19 @@ const settingBasic = {
             Down_left: 8,
         }),
 
-        //可控制的道具类型
-        itemType: cc.Enum({
-            flower: 0,
-            gear: 1,
-            tear: 2
-        }),
 
+        //物品种类
+        itemType: cc.Enum({
+            map_1: 1,
+            map_2: 2,
+            map_3: 3,
+            map_4: 4,
+            footPrints: 5,
+            gear: 6,
+            Lv1_paper: 7,
+            Lv2_paper: 8,
+
+        }),
         //成就类别设定
         achievements: {
             lv1: cc.Enum({
@@ -180,18 +186,18 @@ const settingBasic = {
             settingBasic.game.isShowKeyPos = false;
         },
         //增加物品
-        addItems(itemType: number) {
+        addItems(mapType: number) {
             let list = settingBasic.game.inventory;
             let hasItem = false;
             for (let index = 0; index < list.length; index++) {
                 const element = list[index];
-                if (element == itemType) {
+                if (element == mapType) {
                     hasItem = true;
                     return;
                 }
             }
             if (!hasItem) {
-                settingBasic.game.inventory.push(itemType);
+                settingBasic.game.inventory.push(mapType);
             }
         },
         //存储当前游戏状态
