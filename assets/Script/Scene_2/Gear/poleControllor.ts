@@ -1,4 +1,5 @@
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
+import settingBasic from "../../Setting/settingBasic";
 
 const { ccclass, property } = cc._decorator;
 const type = cc.Enum({
@@ -12,16 +13,11 @@ export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
     gear: cc.Node = null;
 
-    // LIFE-CYCLE CALLBACKS:
     @property({ type: type })
     poleType = type.H;
-    // grap: cc.Graphics = null;
-    referencePos: cc.Vec2 = null; //中心参考点
 
     // onLoad () {}
     start() {
-
-        this.referencePos = this.node.convertToWorldSpaceAR(cc.Vec2.ZERO)
     }
 
     logicUpdate(dt) { }
@@ -38,10 +34,10 @@ export default class NewClass extends LogicBasicComponent {
 
                 if (otherBody.linearVelocity.y < -50) {
                     let otherPos = other.node.convertToWorldSpaceAR(cc.Vec2.ZERO)
-                    let gearPos = this.referencePos;
+                    let referencePos = this.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
 
                     let ang = 0;
-                    if (otherPos.x < gearPos.x) {//逆时针旋转 angle ++
+                    if (otherPos.x < referencePos.x) {//逆时针旋转 angle ++
                         ang = 90;
                     } else {
                         ang = -90;

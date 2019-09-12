@@ -16,13 +16,15 @@ export default class NewClass extends cc.Component {
         this.currScene = cc.find("Canvas/" + settingBasic.game.currScene);
         this.cameraNode = this.currScene.getChildByName("Camera");
     }
-    
+
     // update (dt) {}
 
     onClick(e) {
         if (this.clickCount == 0) {
             let scale = this.node.scale * this.node.parent.scale;
+            let pos = this.node.convertToWorldSpaceAR(cc.Vec2.ZERO)
             this.node.parent = this.cameraNode;
+            this.node.position = this.cameraNode.convertToNodeSpaceAR(pos);
             this.node.scale = scale;
             this.node.groupIndex = 21; //UI
 

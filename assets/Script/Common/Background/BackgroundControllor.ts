@@ -242,6 +242,7 @@ export class BackgroundControllor extends LogicBasicComponent {
     //事件分发
     //----------------------------touch event ---------------------------
     touchStart(event) {
+
         if (!this.isStartGame) return;
         //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
         if (this.preTouchId && event.getID() != this.preTouchId) return
