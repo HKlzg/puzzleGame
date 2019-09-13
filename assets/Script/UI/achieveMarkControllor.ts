@@ -52,6 +52,7 @@ export default class NewClass extends cc.Component {
     // LIFE-CYCLE CALLBACKS:
 
     onLoad() {
+        this.achieveManager.setAchieveNode(this);
         //将page节点存入this.pageNodeList
         this.node.children.forEach(e => {
             e.name.substr(0, 4) == "page" ? this.pageNodeList.push(e) : null;
@@ -66,11 +67,17 @@ export default class NewClass extends cc.Component {
                 }
             })
         })
-        //读取所有成就信息
-        this.allAchieveMentList = this.achieveManager.getAllAchievements();
+
+    }
+    start() {
+        this.refrush();
+        //翻页
+        this.changePage(this.currPage)
     }
 
-    start() {
+    public refrush() {
+        //读取所有成就信息
+        this.allAchieveMentList = this.achieveManager.getAllAchievements();
         //根据记录显示成就节点
         this.allAchieveMentList.forEach(achieveList => {
             if (achieveList.lv > 0) {
@@ -82,8 +89,6 @@ export default class NewClass extends cc.Component {
             }
         })
 
-        //翻页
-        this.changePage(this.currPage)
     }
 
     //显示成就节点

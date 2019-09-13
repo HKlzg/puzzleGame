@@ -16,7 +16,7 @@ export default class NewClass extends ViewControllorBasic {
 
         //成就时间 10min
         this.scheduleOnce(() => {
-            this.achieveManager.addRecord(this.level, this.achieveTypes.lv1.TimeCollector)
+            this.achieveManager.addRecord(this.level, this.achieveTypes.TimeCollector)
         }, 600)
     }
     loadSubPackage() {
@@ -31,14 +31,9 @@ export default class NewClass extends ViewControllorBasic {
             this.fires["" + setp] = setp;
             this.fireNum++;
         }
-        // console.log("=============setp="+ JSON.stringify(this.fires)+"    ===this.fireNum= "+this.fireNum)
         //当所有火被浇灭之后 过关
         if (this.fireNum == 4) {
-            // this.changeGameState(this.settingBasic.setting.stateType.NEXT);
-
-            //test:
-            // this.cameraNode.getChildByName("test").getComponent(cc.Label).string = "已通关，谢谢体验";
-            this.achieveManager.addRecord(this.level, this.achieveTypes.lv1.SadnessMessenger)
+            this.achieveManager.addRecord(this.level, this.achieveTypes.SadnessMessenger)
         }
     }
 

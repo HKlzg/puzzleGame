@@ -18,19 +18,20 @@ export default class DeadLineBasic extends LogicBasicComponent {
     }
 
     logicUpdate(dt) {
-        this.isContact = settingBasic.game.State == settingBasic.setting.stateType.REBORN;
+
     }
     onCollisionEnter(other, self) {
-
-        // 和人物碰撞 
-        if (other.node.groupIndex == 6 && !this.isContact) {
+        let state = settingBasic.setting.stateType;
+        let isPersonDeath = (settingBasic.game.State == state.REBORN || settingBasic.game.State == state.RESTART)
+        // 和人物碰撞  非重生、死亡状态菜有效
+        if (other.node.groupIndex == 6 && !this.isContact && !isPersonDeath) {
             this.isContact = true;
             let currLv = settingBasic.game.currLevel;
             let achieveTypes = settingBasic.setting.achievements;
             switch (currLv) {
                 case 2:
                     //第二关 掉进水中 死亡-> 成就:我是水鬼
-                    this.achieveManager.addRecord(2, achieveTypes.lv2.IAmWaterGhost);
+                    this.achieveManager.addRecord(2, achieveTypes.IAmWaterGhost);
                     break;
 
                 default:

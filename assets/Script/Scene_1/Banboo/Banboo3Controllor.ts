@@ -1,6 +1,7 @@
 
 const { ccclass, property } = cc._decorator;
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
+import settingBasic from "../../Setting/settingBasic";
 
 @ccclass
 export default class NewClass extends LogicBasicComponent {
@@ -17,10 +18,12 @@ export default class NewClass extends LogicBasicComponent {
     isAudioPlaying: boolean = false;
     audio: any = null
     hasWater: boolean = false;
+    currScene: cc.Node = null;
 
 
     start() {
         this.audio = cc.find("UICamera/audio").getComponent("audioControllor");
+        this.currScene = cc.find("Canvas/" + settingBasic.game.currScene);
 
     }
     onEnable() {
@@ -86,7 +89,7 @@ export default class NewClass extends LogicBasicComponent {
                             cc.tween(this.map).then(cc.fadeIn(0.5)).call(() => {
                                 self.map.getComponent(cc.Button).enabled = true;
                             }).start();
-
+                            this.currScene.emit(settingBasic.gameEvent.gameMoveStep, 2)
                         }).start();
                     }
                 }

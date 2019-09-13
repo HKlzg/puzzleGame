@@ -34,43 +34,41 @@ export default class AchievementControllor {
     public itemKey = settingBasic.setting.storageKey.achievement;
     //所有的成就
     public achieveRecords: levelAchievements[] = [new levelAchievements(0, [])];
-    //已经获得了的成就
-    public activeAchievements: levelAchievements[] = [new levelAchievements(0, [])];
+
     //单例 唯一的对象
     private static achieveManager = new AchievementControllor();
 
+    private achieveTipNode: cc.Node = null; //UIcamera下的显示节点
+    private achieveNode: cc.Node = null; //book里面的 成就页面节点
+
+
     constructor() {
-        // cc.sys.localStorage.removeItem(this.itemKey) //清除所有记录
+
+        // cc.sys.localStorage.removeItem(this.itemKey) //清除所有成就记录 test
+        //先根据成就设定 初始化
+        for (let lv = 1; lv <= 5; lv++) {
+            let achieves: [achievement] = settingBasic.setting.achievementsInit["lv" + lv];
+            let record = new levelAchievements(lv, achieves);
+            this.achieveRecords.push(record);
+        }
+
         //从本地加载记录 保存到achieveRecords 对象中; key- achievementRecords
         let records = cc.sys.localStorage.getItem(this.itemKey);
         if (records) {
             this.achieveRecords = JSON.parse(records);
-            //将获得的成就记录到activeAchievements中
-            this.achieveRecords.forEach(e => {
-                e.achievements.forEach(ach => {
-                    if (ach.isGet) {
-                        this.activeAchievements.push(new levelAchievements(e.lv, []));
-                        this.activeAchievements[e.lv].achievements.push(ach);
-                    }
-                })
-            });
-
-        } else {
-            //没有找到记录 则初始化一次
-            for (let lv = 1; lv <= 5; lv++) {
-                let achieves: [achievement] = settingBasic.setting.achievementsInit["lv" + lv];
-                let record = new levelAchievements(lv, achieves);
-                this.achieveRecords.push(record);
-            }
         }
-        // console.log("=====achieveRecords=" + JSON.stringify(this.achieveRecords))
-        // console.log("=====activeAchievements=" + JSON.stringify(this.activeAchievements))
+        console.log("===加载成就 achieveRecords : " + JSON.stringify(this.achieveRecords))
     }
-    //由viewcontrl 的update 调用来更新
-    public toUpdate(info: {}, lv: number) {
+    //初始化值
+    public setAchieveTipNode(achieveTipNode) {
+        this.achieveTipNode = achieveTipNode;
+    }
+    public setAchieveNode(achieveNode) {
+        this.achieveNode = achieveNode;
     }
 
-    //清除记录
+
+    //清除指定关卡记录
     public clearRecord(lv?: number) {
         if (lv > 0) { //初始化一关
             this.achieveRecords[lv] = settingBasic.setting.achievementsInit["lv" + lv];
@@ -84,7 +82,7 @@ export default class AchievementControllor {
     }
     /**
      * 增加成就的记录 +1
-     * @param lv 关卡
+     * @param lv 关卡 和 对应achieveRecords下标对应 从1 开始
      * @param type 成就类型
      */
     public addRecord(lv: number, type: number) {
@@ -93,9 +91,16 @@ export default class AchievementControllor {
             let achieve = lvAchievements[index]
             if (achieve.type == type && !achieve.isGet) {
                 //累计次数达到指定次数之后 获得成就
-                if (1 + achieve.count >= achieve.needNum) {
+                achieve.count++;
+                console.log("=====[" + achieve.name + "]成就点+1" + "  当前点数:" + achieve.count)
+                if (achieve.count >= achieve.needNum) {
                     achieve.isGet = true;
-                    // console.log("====获得成就: " + achieve.name)
+                    console.log("====获得成就: " + achieve.name)
+                    //刷新成就页面
+                    this.achieveNode.getComponent("achieveMarkControllor").refrush();
+                    //UI提示
+                    this.achieveTipNode.getComponent("achievementTipControllor").showAchievement(achieve.name);
+
                     this.saveToLocalStorage();
                     return;
                 }

@@ -39,7 +39,7 @@ export default class NewClass extends cc.Component {
                 if (tips) {
                     tips.active = true; //显示描述
                     tips.setContentSize(this.node.getContentSize());
-                    tips.y += (this.node.height*this.node.scaleY)/2;
+                    tips.y += (this.node.height * this.node.scaleY) / 2;
                 }
             }).start();
             this.clickCount++;
@@ -47,6 +47,11 @@ export default class NewClass extends cc.Component {
             cc.tween(this.node).to(0.5, { position: cc.v2(288.39, 545.794), scale: 0.01 }, { easing: "sineIn" }).call(() => {
                 this.itemsNode = cc.find("UIMask/UICamera/bookNode/content/items");
                 this.itemsNode.getComponent("itemsMarkControllor").getitem(this.currItemType);
+
+                //当获得的是map 道具时(0-3)则表示次关卡已通关 自动跳到book页面
+                if(this.currItemType<=3){
+                    this.currScene.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.NEXT)
+                }
 
                 this.node.destroy()
             }).start()

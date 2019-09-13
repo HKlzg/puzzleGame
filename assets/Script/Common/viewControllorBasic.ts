@@ -187,9 +187,9 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
                 break;
             case this.stateType.REBORN: //取消此状态
                 //只能连续死一次
-                // if (this.preGameState == this.stateType.REBORN) return;
+                if (this.preGameState == this.stateType.REBORN) return;
 
-                // this.brotherNode.emit(settingBasic.gameEvent.brotherDeathEvent, true);
+                this.brotherNode.emit(settingBasic.gameEvent.brotherDeathEvent, true);
                 // //记录死亡次数
                 // let currDeath = settingBasic.fun.addCurrDeath(this.level)
                 // // this.deathTip.string = "失败次数: " + currDeath;
@@ -202,7 +202,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
                 this.isRestarting = true;
                 console.log("==========GAME RESTART =========")
                 //播放人物死亡动画
-                this.brotherNode.emit(settingBasic.gameEvent.brotherDeathEvent, true);
+                this.changeGameState(this.stateType.REBORN);
                 //关闭 引导镜头
                 settingBasic.fun.closeShowKeyPos();
 
@@ -213,7 +213,6 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
                         cc.callFunc(() => {
                             let bookmarkCtrl = this.bookmarkNode.getComponent("bookMarkControllor");
                             bookmarkCtrl.restartCurrLevel();
-
                         })
                     )
                 );

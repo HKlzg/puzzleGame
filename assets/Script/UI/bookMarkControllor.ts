@@ -27,6 +27,9 @@ export default class NewClass extends cc.Component {
     @property(cc.Node)
     mapPicCopy: cc.Node = null;
 
+    @property(cc.Node)
+    achievement: cc.Node = null;
+
     sceneList: cc.Node[] = [];
     contentList: Array<cc.Node> = []
     isContentMapClick: boolean = true; //当前图片是否可点击
@@ -143,6 +146,8 @@ export default class NewClass extends cc.Component {
         this.showContent(this.currPageNum);
     }
     achievementMarkOnClick() {
+        //刷新
+        this.achievement.getComponent("achieveMarkControllor").refrush();
         this.showContent(contentType.achievement);
     }
     mapMarkOnClick() {
