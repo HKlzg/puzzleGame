@@ -1,7 +1,7 @@
 import settingBasic from "../../Setting/settingBasic";
 
 const { ccclass, property } = cc._decorator;
-const itemType = settingBasic.setting.itemType; //和等级一致
+const itemType = settingBasic.setting.itemType;
 //scene1 map
 @ccclass
 export default class NewClass extends cc.Component {
@@ -16,13 +16,13 @@ export default class NewClass extends cc.Component {
     onLoad() {
     }
     start() {
-        
+
     }
 
     // update (dt) {}
 
     onClick(e) {
-        if (this.clickCount == 0) {
+        if (this.clickCount == 0) { //显示在屏幕中间
             this.currScene = cc.find("Canvas/" + settingBasic.game.currScene);
             this.cameraNode = this.currScene.getChildByName("Camera");
 
@@ -34,10 +34,16 @@ export default class NewClass extends cc.Component {
             this.node.groupIndex = 21; //UI
 
             cc.tween(this.node).to(0.5, { position: cc.v2(0, 0), angle: 0, scale: 1 }, { easing: "sineIn" }).call(() => {
-                this.currScene.emit(settingBasic.gameEvent.gameMoveStep, 2)
+                // this.currScene.emit(settingBasic.gameEvent.gameMoveStep, 2)
+                let tips = this.node.getChildByName("tips");
+                if (tips) {
+                    tips.active = true; //显示描述
+                    tips.setContentSize(this.node.getContentSize());
+                    tips.y += (this.node.height*this.node.scaleY)/2;
+                }
             }).start();
             this.clickCount++;
-        } else if (this.clickCount == 1) {
+        } else if (this.clickCount == 1) { //放入道具背包
             cc.tween(this.node).to(0.5, { position: cc.v2(288.39, 545.794), scale: 0.01 }, { easing: "sineIn" }).call(() => {
                 this.itemsNode = cc.find("UIMask/UICamera/bookNode/content/items");
                 this.itemsNode.getComponent("itemsMarkControllor").getitem(this.currItemType);

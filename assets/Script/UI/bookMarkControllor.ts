@@ -46,10 +46,13 @@ export default class NewClass extends cc.Component {
         this.sceneList = this.canvas.getComponent("CanvasControllor").getSceneList();
         if (this.sceneList) {
             this.currScene = this.sceneList[0];
-            // this.loadSceneNode(0);
         }
         this.UICamera = this.UIMask.getChildByName("UICamera");
         this.contentList = this.contentNode.children;
+        this.contentList.forEach(e => {
+            e.active = false;
+        })
+        this.contentList[0].active = true;
     }
 
     start() {
@@ -59,7 +62,6 @@ export default class NewClass extends cc.Component {
         if (!this.sceneList) {
             this.sceneList = this.canvas.getComponent("CanvasControllor").getSceneList();
             this.currScene = this.sceneList[0];
-            // this.loadSceneNode(0);
         }
     }
     // 点击 故事内容 图片 ,开始游戏
@@ -203,6 +205,10 @@ export default class NewClass extends cc.Component {
             }
         }
         this.canvas.getComponent("CanvasControllor").getSceneByCurrLv(callBack);
+
+        if (settingBasic.game.State == settingBasic.setting.stateType.PAUSE) {
+            this.contentMapPicOnclik();
+        }
     }
 
 
