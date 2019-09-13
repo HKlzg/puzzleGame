@@ -6,7 +6,7 @@
   "_duration": 4.633333333333334,
   "sample": 60,
   "speed": 0.7,
-  "wrapMode": 2,
+  "wrapMode": 0,
   "curveData": {
     "props": {
       "angle": [
@@ -489,12 +489,12 @@
       "params": []
     },
     {
-      "frame": 2.783333333333333,
+      "frame": 2.816666666666667,
       "func": "fullAttackFinishedmax",
       "params": []
     },
     {
-      "frame": 2.95,
+      "frame": 2.8666666666666667,
       "func": "fullAttackFinishedmaxend",
       "params": []
     }

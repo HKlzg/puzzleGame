@@ -201,7 +201,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
                 if (this.isRestarting) return;
                 this.isRestarting = true;
                 console.log("==========GAME RESTART =========")
-
+                //播放人物死亡动画
                 this.brotherNode.emit(settingBasic.gameEvent.brotherDeathEvent, true);
                 //关闭 引导镜头
                 settingBasic.fun.closeShowKeyPos();

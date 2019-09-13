@@ -16,7 +16,7 @@ export default class NewClass extends ViewControllorBasic {
 
         //成就时间 10min
         this.scheduleOnce(() => {
-            this.achieveManager.addRecord(this.level, this.achieveTypes.lv1.TimeCollector, 1)
+            this.achieveManager.addRecord(this.level, this.achieveTypes.lv1.TimeCollector)
         }, 600)
     }
     loadSubPackage() {
@@ -38,7 +38,7 @@ export default class NewClass extends ViewControllorBasic {
 
             //test:
             // this.cameraNode.getChildByName("test").getComponent(cc.Label).string = "已通关，谢谢体验";
-            this.achieveManager.addRecord(this.level, this.achieveTypes.lv1.SadnessMessenger, 1)
+            this.achieveManager.addRecord(this.level, this.achieveTypes.lv1.SadnessMessenger)
         }
     }
 
@@ -46,5 +46,5 @@ export default class NewClass extends ViewControllorBasic {
 
     }
 
- 
+
 }

@@ -40,7 +40,7 @@ export default class MapControllor extends cc.Component {
     allItemList: itemNode[] = [];  //所有item节点
     allItemRecordList: item[] = []; //所有item记录
 
-    private mapStorageKey: string = "mapStorageKey";
+    private itemStorageKey: string = settingBasic.setting.storageKey.item;
 
 
     onLoad() {
@@ -78,7 +78,7 @@ export default class MapControllor extends cc.Component {
         })
 
         //从本地存储加载记录
-        let records = cc.sys.localStorage.getItem(this.mapStorageKey)
+        let records = cc.sys.localStorage.getItem(this.itemStorageKey)
         if (records) {
             let itemlist: item[] = JSON.parse(records);
             if (itemlist.length > 0) {
@@ -101,9 +101,9 @@ export default class MapControllor extends cc.Component {
 
                 })
             }
-            console.log("==== " + records)
+            // console.log("==load== " + records)
         }
-        console.log("==== " + JSON.stringify(this.allItemRecordList))
+        // console.log("==== " + JSON.stringify(this.allItemRecordList))
         //默认显示第一页
         this.changePage(this.currPage);
     }
@@ -155,10 +155,10 @@ export default class MapControllor extends cc.Component {
     }
 
     saveRecords() {
-        cc.sys.localStorage.setItem(this.mapStorageKey, JSON.stringify(this.allItemRecordList))
+        cc.sys.localStorage.setItem(this.itemStorageKey, JSON.stringify(this.allItemRecordList))
     }
     clearRecords() {
-        cc.sys.localStorage.removeItem(this.mapStorageKey)
+        cc.sys.localStorage.removeItem(this.itemStorageKey)
     }
 
 

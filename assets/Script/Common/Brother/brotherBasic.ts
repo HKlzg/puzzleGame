@@ -118,7 +118,12 @@ export abstract class BrotherBasic extends LogicBasicComponent {
                 break;
 
             case actionType.QuietlyWalk:
-                this.brotherAnimation.play("SquatClip");
+                let currLv = settingBasic.game.currLevel;
+                if(currLv == 3){ //仅第三关使用 QuietlyWalk
+                    this.brotherAnimation.play("SquatClip");
+                }else{
+                    this.brotherAnimation.play("WalkClip");
+                }
                 this.isMove = true;
                 this.isPlaying = false;
                 this.Circerl.active = false;

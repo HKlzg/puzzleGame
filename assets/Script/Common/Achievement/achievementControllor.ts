@@ -29,15 +29,15 @@ class levelAchievements {//每关的 成就信息
     }
 }
 
-//成就系统
+//成就系统 用于存储记录 无需绑定节点
 export default class AchievementControllor {
-    public itemKey = "achievementRecords";
+    public itemKey = settingBasic.setting.storageKey.achievement;
     //所有的成就
     public achieveRecords: levelAchievements[] = [new levelAchievements(0, [])];
     //已经获得了的成就
-    public getAchievements: levelAchievements[] = [new levelAchievements(0, [])];
+    public activeAchievements: levelAchievements[] = [new levelAchievements(0, [])];
     //单例 唯一的对象
-    public static achieveManager = new AchievementControllor();
+    private static achieveManager = new AchievementControllor();
 
     constructor() {
         // cc.sys.localStorage.removeItem(this.itemKey) //清除所有记录
@@ -45,12 +45,12 @@ export default class AchievementControllor {
         let records = cc.sys.localStorage.getItem(this.itemKey);
         if (records) {
             this.achieveRecords = JSON.parse(records);
-            //将获得的成就记录到getAchievements中
+            //将获得的成就记录到activeAchievements中
             this.achieveRecords.forEach(e => {
                 e.achievements.forEach(ach => {
                     if (ach.isGet) {
-                        this.getAchievements.push(new levelAchievements(e.lv, []));
-                        this.getAchievements[e.lv].achievements.push(ach);
+                        this.activeAchievements.push(new levelAchievements(e.lv, []));
+                        this.activeAchievements[e.lv].achievements.push(ach);
                     }
                 })
             });
@@ -64,7 +64,7 @@ export default class AchievementControllor {
             }
         }
         // console.log("=====achieveRecords=" + JSON.stringify(this.achieveRecords))
-        // console.log("=====getAchievements=" + JSON.stringify(this.getAchievements))
+        // console.log("=====activeAchievements=" + JSON.stringify(this.activeAchievements))
     }
     //由viewcontrl 的update 调用来更新
     public toUpdate(info: {}, lv: number) {
@@ -82,14 +82,18 @@ export default class AchievementControllor {
             }
         }
     }
-    //增加成就的记录 
-    public addRecord(lv: number, type: number, addNum: number) {
+    /**
+     * 增加成就的记录 +1
+     * @param lv 关卡
+     * @param type 成就类型
+     */
+    public addRecord(lv: number, type: number) {
         let lvAchievements = this.achieveRecords[lv].achievements;
         for (let index = 0; index < lvAchievements.length; index++) {
             let achieve = lvAchievements[index]
             if (achieve.type == type && !achieve.isGet) {
                 //累计次数达到指定次数之后 获得成就
-                if (addNum + achieve.count >= achieve.needNum) {
+                if (1 + achieve.count >= achieve.needNum) {
                     achieve.isGet = true;
                     // console.log("====获得成就: " + achieve.name)
                     this.saveToLocalStorage();
@@ -108,4 +112,10 @@ export default class AchievementControllor {
     saveToLocalStorage() {
         cc.sys.localStorage.setItem(this.itemKey, JSON.stringify(this.achieveRecords))
     }
+
+    //获取所有成就记录
+    public getAllAchievements(): levelAchievements[] {
+        return this.achieveRecords;
+    }
+
 }

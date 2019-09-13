@@ -88,32 +88,21 @@ const settingBasic = {
 
         }),
         //成就类别设定
-        achievements: {
-            lv1: cc.Enum({
-                TimeCollector: 0,
-                SadnessMessenger: 1,
-            }),
-            lv2: cc.Enum({
-                StomachLover: 0,
-                IAmWaterGhost: 1,
-            }),
-            lv3: cc.Enum({
-                EscapeFromTigerMouth: 0,
-                IAmFood: 1,
-                CuteTiger: 2,
-            }),
-            lv4: cc.Enum({
-                SpiderHunter: 0,
-                Slowly: 1,
-                Overnight: 2,
-            }),
-            lv5: cc.Enum({
-                GraceOfTheEarth: 0,
-                MomentsOfEternal: 1,
-                TheDeadUnderTheFist: 2,
-                Smartboy: 3,
-            }),
-        },
+        achievements: cc.Enum({
+            TimeCollector: 0,
+            SadnessMessenger: 1,
+            StomachLover: 2,
+            IAmWaterGhost: 3,
+            IAmFood: 4,
+            CuteTiger: 5,
+            SpiderHunter: 6,
+            Slowly: 7,
+            Overnight: 8,
+            GraceOfTheEarth: 9,
+            MomentsOfEternal: 10,
+            TheDeadUnderTheFist: 11,
+            Smartboy: 12,
+        }),
         //数组顺序和 achievements 对应 //初始值，用于初始化
         achievementsInit: {
             lv1: [
@@ -121,26 +110,32 @@ const settingBasic = {
                 { type: 1, name: "悲伤的使者", isGet: false, count: 0, needNum: 1 }
             ],
             lv2: [
-                { type: 0, name: "鱼腹爱好者", isGet: false, count: 0, needNum: 5 },
-                { type: 1, name: "我是水鬼", isGet: false, count: 0, needNum: 3 }
+                { type: 2, name: "鱼腹爱好者", isGet: false, count: 0, needNum: 5 },
+                { type: 3, name: "我是水鬼", isGet: false, count: 0, needNum: 3 }
             ],
             lv3: [
-                { type: 0, name: "虎口脱险", isGet: false, count: 0, needNum: 3 },
-                { type: 1, name: "我是食物", isGet: false, count: 0, needNum: 3 },
-                { type: 2, name: "乖乖虎", isGet: false, count: 0, needNum: 1 },
+                { type: 4, name: "我是食物", isGet: false, count: 0, needNum: 3 },
+                { type: 5, name: "乖乖虎", isGet: false, count: 0, needNum: 1 },
             ],
             lv4: [
-                { type: 0, name: "蜘蛛猎人", isGet: false, count: 0, needNum: 1 },
-                { type: 1, name: "慢吞吞的", isGet: false, count: 0, needNum: 1 },
-                { type: 2, name: "一蹴而就", isGet: false, count: 0, needNum: 1 },
+                { type: 6, name: "蜘蛛猎人", isGet: false, count: 0, needNum: 1 },
+                { type: 7, name: "慢吞吞的", isGet: false, count: 0, needNum: 1 },
+                { type: 8, name: "一蹴而就", isGet: false, count: 0, needNum: 1 },
             ],
             lv5: [
-                { type: 0, name: "大地的恩泽", isGet: false, count: 0, needNum: 1 },
-                { type: 1, name: "生命永恒", isGet: false, count: 0, needNum: 1 },
-                { type: 2, name: "锤下亡魂", isGet: false, count: 0, needNum: 1 },
-                { type: 3, name: "机灵鬼", isGet: false, count: 0, needNum: 3 },
+                { type: 9, name: "大地的恩泽", isGet: false, count: 0, needNum: 1 },
+                { type: 10, name: "生命永恒", isGet: false, count: 0, needNum: 1 },
+                { type: 11, name: "锤下亡魂", isGet: false, count: 0, needNum: 1 },
+                { type: 12, name: "机灵鬼", isGet: false, count: 0, needNum: 3 },
             ],
+        },
+
+        //存储到本地记录的 key 
+        storageKey: {
+            achievement: "achievementRecords",
+            item: "itemStorageKey",
         }
+
 
     },
 
@@ -152,16 +147,6 @@ const settingBasic = {
             let setting = settingBasic.setting.boxNum;
             let num = setting["lv" + lv];
             return num;
-        },
-        //获取指定关卡的成就
-        getAchievementByLv(lv) {
-            let achieve = settingBasic.setting.achievements;
-            return achieve["lv" + lv];
-        },
-        //获取成就名称
-        getAchieveCN(lv: number, achieveType: number) {
-            let achievements = settingBasic.setting.achievementsInit;
-            return achievements["lv" + lv][achieveType].name;
         },
 
         /**
@@ -203,57 +188,57 @@ const settingBasic = {
         //存储当前游戏状态
         saveGameRecord() {
             //当前关卡存档
-            let lvRecord: {} = {};
-            lvRecord["currBoxNum"] = settingBasic.game.currBoxNum;
-            lvRecord["currDeath"] = settingBasic.game.currDeath;
-            lvRecord["isShowKeyPos"] = settingBasic.game.isShowKeyPos;
+            // let lvRecord: {} = {};
+            // lvRecord["currBoxNum"] = settingBasic.game.currBoxNum;
+            // lvRecord["currDeath"] = settingBasic.game.currDeath;
+            // lvRecord["isShowKeyPos"] = settingBasic.game.isShowKeyPos;
 
-            let level_key = "currLevelRecords_lv" + settingBasic.game.currLevel;
-            cc.sys.localStorage.setItem(level_key, JSON.stringify(lvRecord));
+            // let level_key = "currLevelRecords_lv" + settingBasic.game.currLevel;
+            // cc.sys.localStorage.setItem(level_key, JSON.stringify(lvRecord));
 
-            //游戏总存档
-            let gameRecord: {} = {};
-            gameRecord["totalDeath"] = settingBasic.game.totalDeath;
-            gameRecord["inventory"] = settingBasic.game.inventory;
+            // //游戏总存档
+            // let gameRecord: {} = {};
+            // gameRecord["totalDeath"] = settingBasic.game.totalDeath;
+            // gameRecord["inventory"] = settingBasic.game.inventory;
 
-            let game_key = "allGameRecords_" + settingBasic.game.version;
-            cc.sys.localStorage.setItem(game_key, JSON.stringify(gameRecord));
+            // let game_key = "allGameRecords_" + settingBasic.game.version;
+            // cc.sys.localStorage.setItem(game_key, JSON.stringify(gameRecord));
 
         },
         //恢复当前游戏状态
         loadGameRecord() {
-            let game_key = "allGameRecords_" + settingBasic.game.version;
-            let level_key = "currLevelRecords_lv" + settingBasic.game.currLevel;
+            // let game_key = "allGameRecords_" + settingBasic.game.version;
+            // let level_key = "currLevelRecords_lv" + settingBasic.game.currLevel;
 
-            if (settingBasic.game.isClearCurrRecord) {
-                console.log("level_key==" + level_key + "  " + "remove")
-                cc.sys.localStorage.removeItem(level_key);
-            }
-            if (settingBasic.game.isClearGameRecord) {
-                console.log("game_key==" + level_key + "  " + "remove")
-                cc.sys.localStorage.removeItem(game_key);
-            }
-            //当前关数据读取
-            let lvRecordJson = cc.sys.localStorage.getItem(level_key);
-            if (lvRecordJson) {
-                let lvRecord = JSON.parse(lvRecordJson);
-                if (lvRecord) {
-                    settingBasic.game.currBoxNum = lvRecord["currBoxNum"];
-                    settingBasic.game.currDeath = lvRecord["currDeath"];
-                    settingBasic.game.isShowKeyPos = lvRecord["isShowKeyPos"];
-                }
-            }
+            // if (settingBasic.game.isClearCurrRecord) {
+            //     console.log("level_key==" + level_key + "  " + "remove")
+            //     cc.sys.localStorage.removeItem(level_key);
+            // }
+            // if (settingBasic.game.isClearGameRecord) {
+            //     console.log("game_key==" + level_key + "  " + "remove")
+            //     cc.sys.localStorage.removeItem(game_key);
+            // }
+            // //当前关数据读取
+            // let lvRecordJson = cc.sys.localStorage.getItem(level_key);
+            // if (lvRecordJson) {
+            //     let lvRecord = JSON.parse(lvRecordJson);
+            //     if (lvRecord) {
+            //         settingBasic.game.currBoxNum = lvRecord["currBoxNum"];
+            //         settingBasic.game.currDeath = lvRecord["currDeath"];
+            //         settingBasic.game.isShowKeyPos = lvRecord["isShowKeyPos"];
+            //     }
+            // }
 
-            //游戏总存档读取
-            let allGameRecordsJson = cc.sys.localStorage.getItem(game_key);
+            // //游戏总存档读取
+            // let allGameRecordsJson = cc.sys.localStorage.getItem(game_key);
 
-            if (allGameRecordsJson) {
-                let allGameRecords = JSON.parse(allGameRecordsJson);
-                if (allGameRecords) {
-                    settingBasic.game.totalDeath = allGameRecords["totalDeath"];
-                    settingBasic.game.inventory = allGameRecords["inventory"];
-                }
-            }
+            // if (allGameRecordsJson) {
+            //     let allGameRecords = JSON.parse(allGameRecordsJson);
+            //     if (allGameRecords) {
+            //         settingBasic.game.totalDeath = allGameRecords["totalDeath"];
+            //         settingBasic.game.inventory = allGameRecords["inventory"];
+            //     }
+            // }
         },
     },
 

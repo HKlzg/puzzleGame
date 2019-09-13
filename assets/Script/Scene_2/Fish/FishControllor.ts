@@ -3,6 +3,7 @@ import tools from "../../Tools/toolsBasics";
 import setting from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 import settingBasic from "../../Setting/settingBasic";
+import AchievementControllor from "../../Common/Achievement/achievementControllor";
 @ccclass
 export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
@@ -43,6 +44,8 @@ export default class NewClass extends LogicBasicComponent {
     lifeNum: number = 2;
     isGetOil: boolean = false; //是否碰到油滴
     isBurning: boolean = false;//是否是燃烧状态
+
+    achieveTypes = settingBasic.setting.achievements;
     onLoad() {
         this.audioManager = cc.find("UICamera/audio").getComponent("audioControllor");
         this.currScene = cc.find("Canvas/" + settingBasic.game.currScene);
@@ -52,6 +55,8 @@ export default class NewClass extends LogicBasicComponent {
 
         this.minX = this.node.parent.convertToNodeSpaceAR(riverPos).x - this.node.width;
         this.maxX = this.minX + this.river.width;
+
+
     }
 
     start() {
@@ -188,6 +193,9 @@ export default class NewClass extends LogicBasicComponent {
         if (other.node.groupIndex == 6 && !this.isPersonDeath) {
             //检测是否碰撞到人-6
             this.isPersonDeath = true;
+            //增加获取成就的次数 :
+            AchievementControllor.getAchieveManager().addRecord(2, this.achieveTypes.lv2.StomachLover);
+
             this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.RESTART);
 
         }
