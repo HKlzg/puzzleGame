@@ -8,9 +8,11 @@ const attackType = cc.Enum({
 })
 //动作指令类型
 class actionOrder {
+    id: number; //一组动作的标志ID
     action: number;
     delay: number; //延迟
-    constructor(action: number, delay?: number) {
+    constructor(id: number, action: number, delay?: number) {
+        this.id = id;
         this.action = action;
         this.delay = delay ? delay : 0;
     }
@@ -46,7 +48,7 @@ export default class NewClass extends LogicBasicComponent {
     redlightSprite = { L: null, R: null }
 
     isOrdered: boolean = false; //是否已发送指令
-
+    actionID: number = 0; //用于action分组的id
     //相对父节点的位置 眼睛初始位置以及最大位置
     initEye = {
         initPos_L: { L: cc.Vec2.ZERO, M: cc.Vec2.ZERO, R: cc.Vec2.ZERO },
@@ -240,18 +242,24 @@ export default class NewClass extends LogicBasicComponent {
     //发送动作指令
     doAction() {
         //进入攻击范围
+
         if (this.isWhatching) {
             if (!this.isOrdered) {
                 this.isOrdered = true;
                 let ctrl = this.earthKingNode.getComponent("earthKingControllor");
                 //随机生成一组动作
                 let orderNum = Math.random() * 10; //指令次数
-                orderNum = orderNum >= 5 ? 5 : (orderNum <= 2 ? 2 : orderNum);
+                orderNum = orderNum >= 3 ? 3 : (orderNum <= 2 ? 2 : orderNum);
                 for (let index = 0; index < orderNum; index++) {
                     let action = Math.random() >= 0.5 ? 1 : 0;
-                    let delay = Math.random() >= 0.5 ? 3 : 2;
-                    ctrl.addActionOrder(new actionOrder(action, delay));
+                    let delay = Math.random() >= 0.5 ? 6 : 8;
+                    //若添加指令失败 直接返回
+                    if (index == 0) delay = 1; //第一个指令等待时间
+                    if (!ctrl.addActionOrder(new actionOrder(this.actionID, action, delay))) {
+                        return;
+                    }
                 }
+                this.actionID++;
             }
         } else {
             //离开攻击范围
