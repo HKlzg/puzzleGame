@@ -604,13 +604,13 @@
     "火焰Lv2",
     "木桩lv3"
   ],
-  "last-module-event-record-time": 1567841332447,
+  "last-module-event-record-time": 1568511997123,
   "simulator-orientation": false,
   "simulator-resolution": {
     "height": 640,
     "width": 960
   },
+  "start-scene": "current",
   "use-customize-simulator": true,
-  "use-project-simulator-setting": false,
-  "start-scene": "current"
+  "use-project-simulator-setting": false
 }

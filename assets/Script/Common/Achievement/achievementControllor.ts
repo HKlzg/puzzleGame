@@ -57,7 +57,7 @@ export default class AchievementControllor {
         if (records) {
             this.achieveRecords = JSON.parse(records);
         }
-        console.log("===加载成就 achieveRecords : " + JSON.stringify(this.achieveRecords))
+        // console.log("===加载成就 achieveRecords : " + JSON.stringify(this.achieveRecords))
     }
     //初始化值
     public setAchieveTipNode(achieveTipNode) {

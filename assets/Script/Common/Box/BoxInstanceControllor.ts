@@ -231,10 +231,8 @@ export default class NewClass extends LogicBasicComponent {
         if (this.followObject && this.followObject == otherCollider.node || otherCollider.node.groupIndex == 6) return;
 
         if (!this.followObject) {
-            let forgNode = null;
-            this.getForgoundParent(otherCollider.node, (node) => {
-                forgNode = node;
-                // console.log("=2=follow==forgNode=" + forgNode.name)
+            this.getForgoundParent(otherCollider.node, (forgNode) => {
+                // console.log("=2=follow==forgNode=" + forgNode.name + "  collidor : " + otherCollider.name)
                 if (forgNode && forgNode instanceof cc.Node) {
                     let forgCtrl = forgNode.getComponent("foregroundControllor");
                     //若碰撞物有 挂载 前景脚本,则和碰撞体同步
@@ -255,6 +253,7 @@ export default class NewClass extends LogicBasicComponent {
 
         if (this.followObject) {
             if (this.followObject == otherCollider.node) {
+                this.isforegContrl.setMoveSpeed(0)
                 this.followObject = null;
             }
         }
