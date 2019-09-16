@@ -470,32 +470,22 @@
   "events": [
     {
       "frame": 1.0166666666666666,
-      "func": "fullAttackFinished",
-      "params": []
-    },
-    {
-      "frame": 1.1666666666666667,
-      "func": "fullAttackFinishedend",
+      "func": "leftAttack",
       "params": []
     },
     {
       "frame": 1.5166666666666666,
-      "func": "fullAttackFinishedmid",
-      "params": []
-    },
-    {
-      "frame": 1.65,
-      "func": "fullAttackFinishedmidend",
+      "func": "rightAttack",
       "params": []
     },
     {
       "frame": 2.816666666666667,
-      "func": "fullAttackFinishedmax",
+      "func": "fullAttack",
       "params": []
     },
     {
-      "frame": 2.8666666666666667,
-      "func": "fullAttackFinishedmaxend",
+      "frame": 4.633333333333334,
+      "func": "fullAttackFinished",
       "params": []
     }
   ]

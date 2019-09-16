@@ -17,7 +17,7 @@ export default class NewClass extends LogicBasicComponent {
     body: cc.RigidBody = null;
     phyBody: cc.PhysicsBoxCollider = null;
     cageBody: cc.RigidBody = null;
-    cagePhyBody: cc.PhysicsBoxCollider = null;
+    cagePhyBody: cc.PhysicsPolygonCollider = null;
 
     start() {
         this.maxPos = this.node.position;
@@ -25,7 +25,7 @@ export default class NewClass extends LogicBasicComponent {
         this.body = this.node.getComponent(cc.RigidBody);
         this.phyBody = this.node.getComponent(cc.PhysicsBoxCollider);
         this.cageBody = this.cage.getComponent(cc.RigidBody);
-        this.cagePhyBody = this.cage.getComponent(cc.PhysicsBoxCollider);
+        this.cagePhyBody = this.cage.getComponent(cc.PhysicsPolygonCollider);
     }
 
     logicUpdate(dt) {

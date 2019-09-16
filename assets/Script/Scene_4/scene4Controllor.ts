@@ -23,4 +23,5 @@ export default class NewClass extends ViewControllorBasic {
     }
 
     toUpdate() { }
+
 }

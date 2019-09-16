@@ -29,40 +29,50 @@ export default class NewClass extends LogicBasicComponent {
 
     attackFinished() {
         this.earthkingNode.getComponent("earthKingControllor").actionFinished();
-
         // console.log("======attackFinished")
     }
-    fullAttackFinished() {
+    //左手攻击
+    leftAttack() {
         this.area_1.active = true;
+        cc.tween(this.node).delay(0.1).call(() => {
+            this.area_1.active = false;
+        }).start()
         this.doEarthquake();
-    }
-    fullAttackFinishedend() {
-        this.area_1.active = false;
-    }
-
-    fullAttackFinishedmid() {
-        this.area_2.active = true;
-        this.doEarthquake();
-    }
-    fullAttackFinishedmidend() {
-        this.area_2.active = false;
-    }
-    fullAttackFinishedmax() {
-        this.area_1.active = true;
-        this.area_2.active = true;
-    }
-
-    fullAttackFinishedmaxend() {
+        let currentClip = this.earthkingAnim.currentClip;
+        currentClip ? console.log("=========currentClip+" + currentClip.name) : null;
         //掉落石头
         this.dynamicStone.getComponent("dynamicStoneControllor").createStone();
+    }
+
+    //右手攻击
+    rightAttack() {
+        this.area_2.active = true;
+        cc.tween(this.node).delay(0.1).call(() => {
+            this.area_2.active = false;
+        }).start()
+        this.doEarthquake();
+    }
+    //全力攻击
+    fullAttack() {
+        this.area_1.active = true;
+        this.area_2.active = true;
+        cc.tween(this.node).delay(0.1).call(() => {
+            this.area_1.active = false;
+            this.area_2.active = false;
+        }).start()
 
         this.doEarthquake();
-        this.area_1.active = false;
-        this.area_2.active = false;
+        //掉落石头
+        this.dynamicStone.getComponent("dynamicStoneControllor").createStone();
+    }
+
+    //动作结束
+    fullAttackFinished() {
         this.earthkingNode.getComponent("earthKingControllor").actionFinished();
     }
-    doEarthquake() {
 
+    doEarthquake() {
+        
 
         let speed = 0.1;
         let pos = this.camera.position;

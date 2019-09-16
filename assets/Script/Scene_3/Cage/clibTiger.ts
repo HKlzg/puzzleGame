@@ -13,19 +13,31 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class NewClass extends cc.Component {
 
-    @property(cc.Label)
-    label: cc.Label = null;
+    @property(cc.Animation)
+    monster: cc.Animation = null;
+    @property(cc.Node)
+    area: cc.Animation = null;
 
-    @property
-    text: string = 'hello';
 
-    // LIFE-CYCLE CALLBACKS:
-
-    // onLoad () {}
-
+    close = false;
     start () {
 
     }
 
-    // update (dt) {}
+    
+    onCollisionEnter(other, self) {
+        if(other.node.name == "Tiger"){
+            this.monster.getComponent("monsterClipControllor").setIsclose(true);
+            this.area.getComponent("InductionAreaControl").setIsclose(true);
+        }
+    }
+    onCollisionStay(other, self) {
+
+    }
+    onCollisionExit(other, self) {
+        if(other.node.name == "Tiger"){
+            this.monster.getComponent("monsterClipControllor").setIsclose(false);
+            this.area.getComponent("InductionAreaControl").setIsclose(false);
+        }
+    }
 }

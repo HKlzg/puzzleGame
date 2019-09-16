@@ -83,6 +83,8 @@ export default class NewClass extends LogicBasicComponent {
         this.redlightSprite.R.enabled = false;
         this.redLight_left.opacity = 50;//透明度
         this.redLight_right.opacity = 50;//透明度
+        this.redLight_left.scaleX = 0.5//宽度
+        this.redLight_right.scaleX = 0.5//
     }
     start() {
         this.grap = this.node.getChildByName("grap").getComponent(cc.Graphics);
@@ -203,6 +205,8 @@ export default class NewClass extends LogicBasicComponent {
                     this.redlightSprite.R.enabled = false;
                     this.redLight_left.opacity = 50;//透明度
                     this.redLight_right.opacity = 50;//透明度
+                    this.redLight_left.scaleX = 0.5//宽度
+                    this.redLight_right.scaleX = 0.5//
                 }).start()
             }
         }
@@ -211,7 +215,7 @@ export default class NewClass extends LogicBasicComponent {
 
     // 闪烁
     flashingLight() {
-        //快速闪烁2次 持续显示3s 关闭2秒 再重复
+        //快速闪烁2次 持续显示3s 关闭5秒 再重复
         if (this.isWhatching && !this.isFlashing) {
             this.isFlashing = true;
 
@@ -224,15 +228,15 @@ export default class NewClass extends LogicBasicComponent {
             }).delay(0.1).call(() => {
                 this.redlightSprite.L.enabled = true;
                 this.redlightSprite.R.enabled = true;
-                cc.tween(this.redLight_left).to(0.5, { opacity: 200 }).start();
-                cc.tween(this.redLight_right).to(0.5, { opacity: 200 }).start();
+                cc.tween(this.redLight_left).to(0.5, { opacity: 200, scaleX: 1 }).start();
+                cc.tween(this.redLight_right).to(0.5, { opacity: 200, scaleX: 1 }).start();
             }).delay(4).call(() => {
-                cc.tween(this.redLight_left).to(0.2, { opacity: 50 }).start();
-                cc.tween(this.redLight_right).to(0.2, { opacity: 50 }).call(() => {
+                cc.tween(this.redLight_left).to(0.2, { opacity: 50, scaleX: 0.5 }).start();
+                cc.tween(this.redLight_right).to(0.2, { opacity: 50, scaleX: 0.5 }).call(() => {
                     this.redlightSprite.L.enabled = false;
                     this.redlightSprite.R.enabled = false;
                 }).start();
-            }).delay(2).call(() => {
+            }).delay(5).call(() => {
                 this.isFlashing = false;
             }).start()
 
@@ -248,11 +252,10 @@ export default class NewClass extends LogicBasicComponent {
                 this.isOrdered = true;
                 let ctrl = this.earthKingNode.getComponent("earthKingControllor");
                 //随机生成一组动作
-                let orderNum = Math.random() * 10; //指令次数
-                orderNum = orderNum >= 3 ? 3 : (orderNum <= 2 ? 2 : orderNum);
+                let orderNum = Math.random() > 0.5 ? 2 : 4;
                 for (let index = 0; index < orderNum; index++) {
-                    let action = Math.random() >= 0.5 ? 1 : 0;
-                    let delay = Math.random() >= 0.5 ? 6 : 8;
+                    let action = Math.random() >= 0.8 ? attackType.attack : attackType.fullAttack;
+                    let delay = Math.random() >= 0.5 ? 4 : 6;
                     //若添加指令失败 直接返回
                     if (index == 0) delay = 1; //第一个指令等待时间
                     if (!ctrl.addActionOrder(new actionOrder(this.actionID, action, delay))) {

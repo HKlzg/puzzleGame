@@ -91,6 +91,11 @@ export default class NewClass extends cc.Component {
                 } else if (this.mapPicCopy.getComponent(cc.Sprite).spriteFrame != currPagePic.getComponent(cc.Sprite).spriteFrame) {
                     this.mapPicCopy.getComponent(cc.Sprite).spriteFrame = currPagePic.getComponent(cc.Sprite).spriteFrame;
                 }
+                if (currPagePic) {
+                    let pos = null;
+                    pos = this.UICamera.getComponent(cc.Camera).getCameraToWorldPoint(currPagePic.position, pos);
+                    this.mapPicCopy.position = pos;
+                }
             }
 
             this.isContentMapClick = false;

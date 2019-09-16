@@ -31,17 +31,19 @@ export default class NewClass extends LogicBasicComponent {
     }
 
     onCollisionEnter(other, self) {
-        this.isContact = true
+        if (other.name.substr(0, 5) != "sqera")
+            this.isContact = true
     }
     onCollisionStay(other, self) {
-        this.isContact = true
+        if (other.name.substr(0, 5) != "sqera")
+            this.isContact = true
     }
     onCollisionExit(other, self) {
         this.isContact = false
     }
 
 
-    changePic(msg,fun?:any ) {
+    changePic(msg, fun?: any) {
 
         if (this.isOK) {
             let box = cc.instantiate(this.boxInstancePerfab)
@@ -50,7 +52,7 @@ export default class NewClass extends LogicBasicComponent {
                 this.boxParent.addChild(box);
                 box.setPosition(this.node.position);
             }
-            fun(true); 
+            fun(true);
         }
 
         this.node.destroy();

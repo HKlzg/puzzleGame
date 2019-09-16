@@ -2,18 +2,23 @@ import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent
 
 const { ccclass, property } = cc._decorator;
 const stoneType = cc.Enum({
-    square: 0,
-    triangle: 1
+    square: 1,
+    triangle: 2,
 })
 
 class stoneClass {
+    static lastPos: cc.Vec2;
+
     type: number;
     node: cc.Node;
     rigidBody: cc.RigidBody;
     phyBody: cc.PhysicsBoxCollider | cc.PhysicsPolygonCollider;
-    lineVec: cc.Vec2 = cc.Vec2.ZERO;
 
-    isSlowAction: boolean = false; //是否在执行slow动画
+    lineVec: cc.Vec2 = cc.Vec2.ZERO;
+    isBigStone: boolean = false;
+    isSlowAction: boolean = false;
+    currSqera: cc.Node = null;
+    slowAction: cc.NewTween = null;
 
     constructor(nodeSquera: cc.Node, nodeAngle: cc.Node, parent) {
         let type = Math.random() > 0.5 ? stoneType.square : stoneType.triangle;
@@ -34,35 +39,64 @@ class stoneClass {
     }
     createSize(type) {
         let random = Math.random();
-        let posX = (random < 0.5 ? 0.5 : 1) * 300 * (random > 0.5 ? 1 : -1);
+        let lastPosX = stoneClass.lastPos ? stoneClass.lastPos.x : 0;
+        let lastPosY = stoneClass.lastPos ? stoneClass.lastPos.y : 0;
 
-        this.node.position = cc.v2(posX, this.node.y + (type == stoneType.square ? 200 : 0));
-        this.node.angle = random > 0.6 ? -30 : (random > 0.3 ? 30 : 0);
+        let posX = random * 100 * (random >= 0.5 ? -1 : 1);
+
+        this.node.position = cc.v2(posX, this.node.y + (lastPosY == 0 ? 200 : 0));
         this.node.scale = random < 0.2 ? 0.2 : random;
+        this.node.angle = random > 0.5 ? this.node.angle : -this.node.angle;
+
+        if (this.node.scale >= 0.6) {
+            this.isBigStone = true;
+            this.node.groupIndex = 13;  //可被碰撞
+        } else {
+            this.node.groupIndex = 0;
+        }
+        stoneClass.lastPos = this.node.position;
     }
 
     setStatic() {
         this.rigidBody.type = cc.RigidBodyType.Static;
+        this.rigidBody.angularVelocity = this.node.angle > 0 ? 1 : -1;
         this.lineVec = this.rigidBody.linearVelocity;
+        let children = this.node.children;
+        children[0].active = true;
+        this.currSqera = children[0];
+
         this.phyBody.apply()
     }
     setDynamic() {
+        let children = this.node.children;
+        children[0].active = false;
+
+        this.currSqera = null;
         this.rigidBody.type = cc.RigidBodyType.Dynamic;
-        this.rigidBody.linearVelocity = cc.v2(this.lineVec.x, this.lineVec.y - 100);
+        this.rigidBody.angularVelocity = this.node.angle > 0 ? 10 : -10;
+        this.rigidBody.linearVelocity = cc.v2(this.lineVec.x, this.lineVec.y - 200);
         this.phyBody.apply()
     }
 
-    //缓动 每个stone 只执行一次
+    //对大石块缓动 每个stone 只执行一次
     moveSlow() {
-        if (!this.isSlowAction) {
+        if (!this.isSlowAction && this.isBigStone) {
             this.isSlowAction = true;
             this.setStatic();
-            cc.tween(this.node).by(3, { y: -200 })
+            this.slowAction = cc.tween(this.node)
+                .by(5, { y: -300 })
                 .call(() => {
                     this.setDynamic();
                 })
                 .start();
         }
+    }
+    //取消缓动
+    stopSlow() {
+        this.slowAction.stop();
+        //设置横向速度
+        this.rigidBody.linearVelocity.x += this.node.x > 0 ? 200 : -200;
+        this.setDynamic();
     }
 
 }
@@ -92,8 +126,15 @@ export default class DynamicStoneControllor extends LogicBasicComponent {
         for (let index = 0; index < this.stoneList.length; index++) {
             const stone = this.stoneList[index];
             //缓动
-            if (stone.node && stone.node.y <= -300) {
+            if (stone.node && stone.node.y <= -400) {
                 stone.moveSlow();
+                if (stone.isSlowAction && stone.currSqera) {
+                    let ctrl = stone.currSqera.getComponent("stoneSqeraControllor");
+                    //获取放置的箱子
+                    if (ctrl.getBox()) {
+                        stone.stopSlow();
+                    }
+                }
             }
 
             //销毁
@@ -109,7 +150,8 @@ export default class DynamicStoneControllor extends LogicBasicComponent {
 
     //生成一组石头
     public createStone() {
-        for (let index = 0; index < 2; index++) {
+        let num = Math.random() > 0.5 ? 2 : 4;
+        for (let index = 0; index < num; index++) {
             this.stoneList.push(new stoneClass(this.stoneSquare, this.stoneTriangle, this.node));
         }
     }

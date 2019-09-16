@@ -128,7 +128,7 @@ export default class AudioManager extends cc.Component {
     }
     //停止音效
     stopAudioById(id: number) {
-        cc.audioEngine.stopEffect(id);
+        if (id) cc.audioEngine.stopEffect(id);
     }
     //停止音效
     // stopEffectByID(id: number) {

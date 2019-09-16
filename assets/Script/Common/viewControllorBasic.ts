@@ -58,11 +58,11 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
         this.node.on(settingBasic.gameEvent.gameMoveStep, this.moveStep, this);
         this.node.on(settingBasic.gameEvent.setCurrGameStep, this.setCurrGameStep, this);
 
-        this.UICamera = cc.find("UIMask").getChildByName("UICamera")
+        this.UICamera = cc.find("UIMask").getChildByName("UICamera") //UIMask下面的camera
         // this.deathTip = this.UICamera.getChildByName("deathTip").getComponent(cc.Label);
         // let currDeath = settingBasic.game.currDeath;
         // this.deathTip.string = "失败次数:" + currDeath;
-        this.blackMask = this.cameraNode.getChildByName("blackMask")
+        this.blackMask = cc.find("UICamera").getChildByName("blackMask")
 
         //书签
         this.bookNode = this.UICamera.getChildByName("bookNode");

@@ -6,36 +6,34 @@ import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent
 @ccclass
 export default class NewClass extends LogicBasicComponent {
 
+    @property(cc.Animation)
+    monster: cc.Animation = null;
+
     @property(cc.Node)
-    monster: cc.Node = null;
-
+    area: cc.Node = null;
     start() {
-
+    
     }
 
     logicUpdate(dt) { }
     //物理碰撞
     onPreSolve(contact, self, other) {
-        if (other.node.groupIndex == 6) { //忽略 和人的碰撞
-            contact.disabled = true;
-        }
+
     }
     //传感器
 
     onCollisionEnter(other, self) {
-        if (other.node.groupIndex == 6) { //人 - 6
-
-            this.monster.emit(setting.gameEvent.monsterReduceState, true)
+        if(other.node.name == "Tiger"){
+            this.area.getComponent("InductionAreaControl").changeStop(true);
+            this.monster.getComponent("monsterClipControllor").changeStop(true);
         }
     }
     onCollisionStay(other, self) {
-        if (other.node.groupIndex == 6) { //人 - 6
-            this.monster.emit(setting.gameEvent.monsterReduceState, true)
-        }
+
     }
     onCollisionExit(other, self) {
-        if (other.node.groupIndex == 6) {
-            this.monster.emit(setting.gameEvent.monsterReduceState, false)
+        if(other.node.name == "Tiger"){
+            this.area.getComponent("InductionAreaControl").changeStop(false);
         }
     }
 

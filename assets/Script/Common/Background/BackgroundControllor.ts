@@ -115,7 +115,8 @@ export class BackgroundControllor extends LogicBasicComponent {
     };
 
     start() {
-        this.moveCamera();
+        // this.moveCamera();
+        this.isStartGame = true;
     };
 
     //#endregion

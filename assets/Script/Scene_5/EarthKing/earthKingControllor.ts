@@ -53,7 +53,7 @@ export default class NewClass extends LogicBasicComponent {
             switch (actionType) {
                 case attackType.attack:
                     this.earthkingAnim.play("attackClip")
-
+                    
                     break;
                 case attackType.fullAttack:
                     this.earthkingAnim.play("fullAttackClip")
