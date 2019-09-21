@@ -126,13 +126,13 @@
       true,
       true,
       false,
-      null,
       true,
       true,
+      true,
       null,
       null,
       null,
-      null,
+      true,
       null,
       true
     ],
@@ -345,7 +345,7 @@
       false,
       false,
       false,
-      false,
+      true,
       false,
       true,
       false,
@@ -482,7 +482,7 @@
       false,
       false,
       false,
-      false,
+      true,
       false,
       false,
       false,
@@ -607,8 +607,8 @@
     "蜘蛛爬行地面",
     "UI",
     "-tips- 可碰撞 不受引导camera",
-    "油滴Lv2",
-    "火焰Lv2",
+    "火焰",
+    "",
     "木桩lv3"
   ],
   "last-module-event-record-time": 1568511997123,
@@ -618,5 +618,6 @@
     "width": 960
   },
   "use-customize-simulator": true,
-  "use-project-simulator-setting": false
+  "use-project-simulator-setting": false,
+  "start-scene": "current"
 }

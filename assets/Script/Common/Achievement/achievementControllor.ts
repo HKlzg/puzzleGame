@@ -5,18 +5,21 @@ const achieveTyps = settingBasic.setting.achievements;
 class achievement { //每个成就的详细信息
     type: number;
     name: string;
+    desc: string;
     isGet: boolean;
     count: number;
     needNum: number;
     otherInfo: any;
-    constructor({ type, name, isGet, count, needNum, otherInfo }) {
+    constructor({ type, name,desc, isGet, count, needNum, otherInfo }) {
         this.type = type;
         this.name = name;
+        this.desc = desc;
         this.isGet = isGet;
         this.count = count;
         this.needNum = needNum;
         this.otherInfo = otherInfo;
     }
+    
 }
 
 class levelAchievements {//每关的 成就信息
@@ -29,7 +32,7 @@ class levelAchievements {//每关的 成就信息
     }
 }
 
-//成就系统 用于存储记录 无需绑定节点
+//成就系统 仅仅用于存储记录 无需绑定节点
 export default class AchievementControllor {
     public itemKey = settingBasic.setting.storageKey.achievement;
     //所有的成就

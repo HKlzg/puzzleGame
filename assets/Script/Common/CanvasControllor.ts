@@ -10,6 +10,8 @@ export default class NewClass extends cc.Component {
     UIcamera: cc.Node = null;
     @property(cc.Node)
     UIMask: cc.Node = null;
+    @property(cc.Node)
+    backMask: cc.Node = null;
 
     scenePerfabList: cc.Prefab[] = [];
 
@@ -50,8 +52,6 @@ export default class NewClass extends cc.Component {
 
     }
 
-    // update (dt) {}
-
     getSceneList(): cc.Node[] {
         return this.sceneList;
     }
@@ -73,7 +73,6 @@ export default class NewClass extends cc.Component {
                     self.node.addChild(scene);
                     scene.setSiblingIndex(siblingIndex);
                     self.sceneList[index] = scene;
-
                     callBack(scene);
                     break;
                 }
@@ -82,8 +81,41 @@ export default class NewClass extends cc.Component {
         });
 
     }
-    compare(a, b): number {
-        return a - b;
+
+    //切换下一个场景 -过场黑幕动画
+    loadNextScene() {
+        let cursen = this.sceneList[settingBasic.game.currLevel - 1];
+        this.backMask.active = true;
+        cursen.getChildByName("Background").getComponent("backgroundControllor").closeAllEvents(1, () => {
+            cc.tween(this.backMask).then(cc.fadeIn(2)).call(() => {
+                let nextsen = this.sceneList[settingBasic.game.currLevel];
+                if (cursen)
+                    cursen.active = false;
+                if (nextsen) {
+                    nextsen.active = true;
+                    nextsen.getChildByName("Background").getComponent("backgroundControllor").closeAllEvents(1, null, 0, "IN");
+                }
+            }).then(cc.fadeOut(2)).call(() => {
+            }).start();
+        }, 0, "OUT");
+    }
+    //切换上一个场景 -过场黑幕动画
+    loadLastScene() {
+        this.backMask.active = true;
+        let cursen = this.sceneList[settingBasic.game.currLevel - 1];
+        cursen.getChildByName("Background").getComponent("backgroundControllor").closeAllEvents(-1, () => {
+
+            cc.tween(this.backMask).then(cc.fadeIn(2)).call(() => {
+                let lastsen = this.sceneList[settingBasic.game.currLevel - 2];
+                if (cursen)
+                    cursen.active = false;
+                if (lastsen) {
+                    lastsen.active = true;
+                    lastsen.getChildByName("Background").getComponent("backgroundControllor").closeAllEvents(-1, null, 0, "OUT");
+                }
+            }).then(cc.fadeOut(2)).call(() => {
+            }).start();
+        }, 0, "IN");
     }
 
 }

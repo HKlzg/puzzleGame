@@ -1,28 +1,37 @@
 import settingBasic from "../../Setting/settingBasic";
+import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
 
 const { ccclass, property } = cc._decorator;
-const itemType = settingBasic.setting.itemType;
+const itemID = settingBasic.setting.item.id;
+const items = settingBasic.setting.item.data;
+
 //scene1 map
 @ccclass
-export default class NewClass extends cc.Component {
-    @property({ type: cc.Enum(itemType), displayName: "物品类别" })
-    currItemType: Number = 0;
+export default class NewClass extends LogicBasicComponent {
+
+    @property({ type: cc.Enum(itemID), displayName: "物品ID" })
+    itemID: number = 0;
 
     cameraNode: cc.Node = null;
     // LIFE-CYCLE CALLBACKS:
     currScene: cc.Node = null;
     clickCount: number = 0;
     itemsNode: cc.Node = null;
+    isTouch: Boolean = false;
+    actionMask: cc.Node = null;
     onLoad() {
     }
     start() {
 
     }
 
-    // update (dt) {}
+    logicUpdate(dt) {
 
-    onClick(e) {
-        if (this.clickCount == 0) { //显示在屏幕中间
+    }
+
+    onCollisionEnter(other, self) {
+        if (other.node.name == "Brother") {
+
             this.currScene = cc.find("Canvas/" + settingBasic.game.currScene);
             this.cameraNode = this.currScene.getChildByName("Camera");
 
@@ -41,22 +50,23 @@ export default class NewClass extends cc.Component {
                     tips.setContentSize(this.node.getContentSize());
                     tips.y += (this.node.height * this.node.scaleY) / 2;
                 }
+                this.isTouch = true;
             }).start();
-            this.clickCount++;
-        } else if (this.clickCount == 1) { //放入道具背包
-            cc.tween(this.node).to(0.5, { position: cc.v2(288.39, 545.794), scale: 0.01 }, { easing: "sineIn" }).call(() => {
-                this.itemsNode = cc.find("UIMask/UICamera/bookNode/content/items");
-                this.itemsNode.getComponent("itemsMarkControllor").getitem(this.currItemType);
-
-                //当获得的是map 道具时(0-3)则表示次关卡已通关 自动跳到book页面
-                if(this.currItemType<=3){
-                    this.currScene.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.NEXT)
-                }
-
-                this.node.destroy()
-            }).start()
-
-            this.clickCount++;
         }
+    }
+
+    onClick() {
+        if (!this.isTouch) return;
+
+        cc.tween(this.node).to(0.5, { position: cc.v2(288.39, 545.794), scale: 0.01 }, { easing: "sineIn" }).call(() => {
+            this.itemsNode = cc.find("UIMask/UICamera/bookNode/content/items");
+
+            let item = settingBasic.fun.getItemByID(this.itemID)
+            item.isShow = true;
+            this.itemsNode.getComponent("itemsMarkControllor").additem(item);
+
+            this.node.destroy()
+        }).start()
+
     }
 }

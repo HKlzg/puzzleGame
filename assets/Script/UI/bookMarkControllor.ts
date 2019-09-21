@@ -114,7 +114,10 @@ export default class NewClass extends cc.Component {
     }
     // 点击 bookMenu 菜单 --暂停游戏
     bookOnClick() {
-        // console.log("================bookOnClick===========" + settingBasic.game.currScene + "  " + settingBasic.game.currLevel)
+        //根据当前的关卡 自动切换页签
+        this.currPageNum = settingBasic.game.currLevel;
+        this.showContent(this.currPageNum);
+
         this.UIMask.active = true;
         cc.tween(this.UIMask)
             .to(1, { width: 388, height: 236.1 })
@@ -212,6 +215,8 @@ export default class NewClass extends cc.Component {
                 self.currScene = scene;
                 self.currScene.active = true;
                 console.log("===重新加载====:" + scene.name);
+                //开头动画
+                self.currScene.getChildByName("Background").getComponent("backgroundControllor").closeAllEvents(1, null, 0, "IN");
             }
         }
         this.canvas.getComponent("CanvasControllor").getSceneByCurrLv(callBack);

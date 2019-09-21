@@ -100,8 +100,6 @@ export default class NewClass extends LogicBasicComponent {
     }
 
     onDestroy() {
-        //箱子被销毁之后恢复数量
-        this.background.getComponent("backgroundControllor").addBoxNum();
     }
 
     setBoxPos(touchPos) {
@@ -120,7 +118,7 @@ export default class NewClass extends LogicBasicComponent {
 
     //-----------------------event----------------
     touchStart(event) {
-
+     
         if (this.preTouchId && event.getID() != this.preTouchId) return
         this.preTouchId = event.getID();
         //是否死亡

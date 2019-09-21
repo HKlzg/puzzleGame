@@ -7,12 +7,18 @@ const actionType = settingBasic.setting.actionType;
 const actionDirection = settingBasic.setting.actionDirection;
 
 @ccclass
-export abstract class BrotherBasic extends LogicBasicComponent {
+export class BrotherBasic extends LogicBasicComponent {
     @property(cc.Node)
     brotherWalkNode: cc.Node = null; //行走动画对象
     // @property(cc.Node)
     @property(cc.Node)
     Circerl: cc.Node = null;
+
+    @property(cc.Node)
+    passIn: cc.Node = null;
+
+    @property(cc.Node)
+    passOut: cc.Node = null;
 
     brotherAnimation: cc.Animation = null;
     isMove: boolean = false;
@@ -49,6 +55,9 @@ export abstract class BrotherBasic extends LogicBasicComponent {
     isDeath: boolean = false;
     canvas: cc.Node = null;
     currScene: cc.Node = null; //当前场景节点
+    //是否正在播放过场动画
+    isPlayAutioClip: boolean = false;
+
     onLoad() {
         this.brotherAnimation = this.brotherWalkNode.getComponent(cc.Animation);
         this.node.on(settingBasic.gameEvent.brotherActionEvent, this.brotherAction, this);
@@ -57,12 +66,13 @@ export abstract class BrotherBasic extends LogicBasicComponent {
         this.node.on(settingBasic.gameEvent.brotherSetBornPos, this.setReBornPosition, this);
         this.node.on(settingBasic.gameEvent.getBrotherAction, this.getBrotherAction, this);
 
+        this.node.on(settingBasic.gameEvent.brotherTransitionEvent, this.transitionAin, this);
         this.order = { direction: actionDirection.Right, action: actionType.Wait };
         //初始状态
 
         this.collider = this.node.getComponent(cc.PhysicsBoxCollider);
         this.rigidBody = this.node.getComponent(cc.RigidBody);
-
+        this.collider.friction = 1;
         //注册事件
         this.brotherAnimation.on(cc.Animation.EventType.PLAY, this.animationPlay, this);
         // this.brotherAnimation.on(cc.Animation.EventType.FINISHED, this.animationStop, this);
@@ -80,7 +90,7 @@ export abstract class BrotherBasic extends LogicBasicComponent {
 
     //更新动作
     brotherAction(msg: { direction: number, action: number }, fun?: any) {
-        if (this.isPlaying || this.isDeath || (this.anmstate && this.anmstate.isPlaying)) return;
+        if (this.isPlayAutioClip||this.isPlaying || this.isDeath || (this.anmstate && this.anmstate.isPlaying)) return;
 
         this.order = msg;
         if (this.order.direction == actionDirection.Left || this.order.direction == actionDirection.Up_Left ||
@@ -100,64 +110,27 @@ export abstract class BrotherBasic extends LogicBasicComponent {
                 break;
             case actionType.Walk:
 
-                if (this.preOrder &&
-                    this.preOrder.action == actionType.ReadyPush
-                    && this.preOrder.direction == this.order.direction
-                ) {
-                    //切换为推
-                    this.order.action = actionType.Push;
-                    this.brotherAction(this.order);
-                    return;
-                } else {
-                    //非准备推的动作时 切换为行走
-                    this.brotherAnimation.play("WalkClip");
-                    this.isPlaying = false;
-                }
+                this.brotherAnimation.play("WalkClip");
+                this.isPlaying = false;
                 this.isMove = true;
                 this.Circerl.active = false;
                 break;
 
             case actionType.QuietlyWalk:
                 let currLv = settingBasic.game.currLevel;
-                if(currLv == 3){ //仅第三关使用 QuietlyWalk
+                if (currLv == 3) { //仅第三关使用 QuietlyWalk
                     this.brotherAnimation.play("SquatClip");
-                }else{
-                    this.brotherAnimation.play("WalkClip");
+                } else {
+                    this.order.action = actionType.Walk;
+                    this.brotherAction(this.order, fun);
                 }
                 this.isMove = true;
                 this.isPlaying = false;
                 this.Circerl.active = false;
                 break;
-
-            case actionType.Push:
-                this.anmstate = this.brotherAnimation.play("PushClip");
-                this.isMove = true;
-                this.Circerl.active = false;
-                break;
-
-            case actionType.ReadyPush://准备 推箱子
-
-                this.anmstate = this.brotherAnimation.play("ReadyPushClip");
-                this.isMove = true;
-                this.Circerl.active = false;
-
-                this.isReadyClimbBox = false;
-
-                let pos1 = this.pushObject.convertToNodeSpace(cc.Vec2.ZERO);
-                let pos2 = this.brotherWalkNode.convertToNodeSpace(cc.Vec2.ZERO);
-                this.pushDistance = Math.abs(pos1.x - pos2.x);
-                break;
-
-            // case actionType.ClimbBox: //爬箱子
-            //      
-            //     this.isPlaying = true;
-            //     this.anmstate = this.brotherAnimation.play("ClimbBoxClip");
-            //     this.isMove = true;
-            //     this.Circerl.active = false;
-            //     break;
-
             case actionType.Jump: //跳跃
-                // console.log("=============jump==Start=")
+                //禁止空中连跳
+                if (this.rigidBody.linearVelocity.y <= -400) return
 
                 this.isPlaying = true;
                 let x = 0;
@@ -215,40 +188,21 @@ export abstract class BrotherBasic extends LogicBasicComponent {
 
                         break;
                     case actionType.Walk:
-                        this.node.scaleX > 0 ? this.node.x += 2
-                            : this.node.x -= 2;
+                        this.node.scaleX > 0 ? this.node.x += 3
+                            : this.node.x -= 3;
 
                         break;
-                    case actionType.Push:
-                        this.node.scaleX > 0 ? this.node.x += 2
-                            : this.node.x -= 2;
-                        break;
+
                     default:
                         break;
                 }
             }
 
-            // //射线检测
-            // if (!this.isReadyClimbBox &&
-            //     (this.preOrder && this.preOrder.action != actionType.ReadyPush &&
-            //         !this.isPlaying && this.preOrder.action != actionType.Push)
-            // ) {
-            //     this.rayCheck();
-            // }
-
-            // this.pushCheck();
-            this.toUpdate();
             this.isOnGround();
         }
 
-
         this.collider ? this.collider.apply() : null;
-
     }
-
-    abstract toUpdate(dt?);
-    //射线检测
-    // abstract rayCheck();
 
     //离地检测
     isOnGround() {
@@ -261,47 +215,7 @@ export abstract class BrotherBasic extends LogicBasicComponent {
 
         }
     }
-    //取消推的动作检测
-    pushCheck() {
-        if (this.order &&
-            (this.order.action != actionType.ReadyPush ||
-                this.order.action != actionType.Push &&
-                this.isReadyClimbBox
-            )
-        ) {
-            this.isReadyClimbBox = false;
-            this.pushObject = null;
-            // console.log("=====0=====cancle push ===")
-            return;
-        }
 
-        // 若左右切换方向时 准备推的动作取消
-        if (this.preOrder && this.order &&
-            this.preOrder.action == actionType.ReadyPush &&
-            this.preOrder.direction != this.order.direction
-        ) {
-            this.isReadyClimbBox = false;
-            this.pushObject = null;
-            // console.log("=====1=====cancle push ===")
-            return;
-        }
-        //推动物体的距离大于 指定距离 取消推 的动作 ,替换为走
-        if (this.pushObject && this.preOrder &&
-            this.preOrder.action != actionType.Wait
-        ) {
-            let pos1 = this.pushObject.convertToWorldSpaceAR(cc.Vec2.ZERO);
-            let pos2 = this.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
-            let dist = Math.abs(pos1.x - pos2.x)
-            if (dist > this.pushDistance + 10) {
-                this.order.action = actionType.Wait;
-                this.brotherAction(this.order);
-                this.pushObject = null;
-                // console.log("=====2=====cancle push ===dist: " + dist + "  dist2: " + this.pushDistance)
-                return;
-            }
-        }
-
-    }
     //-------------Animation--Event---------
     animationPlay(event) {
         if (this.order.action == actionType.Jump ||
@@ -312,23 +226,6 @@ export abstract class BrotherBasic extends LogicBasicComponent {
         }
     }
 
-    //此事件触发异常
-    animationStop(event) {
-        if (this.order.action == actionType.Jump ||
-            this.order.action == actionType.ClimbBox ||
-            this.order.action == actionType.Climb) {
-
-            this.isPlaying = false;
-            switch (this.order.action) {
-                case actionType.Jump:
-                    this.brotherAction({ direction: this.order.direction, action: actionType.Wait })
-                    break;
-                default:
-                    break;
-            }
-        }
-
-    }
 
     //物理碰撞检测
     onBeginContact(contact, self, other) {
@@ -350,19 +247,16 @@ export abstract class BrotherBasic extends LogicBasicComponent {
 
     //在物理碰撞之前调用
     onPreSolve(contact, self, other) {
-        //防止碰撞之后 被弹飞的速度过大
-        let lineVec = this.rigidBody.linearVelocity;
-        if (lineVec.y > 0) {
-            let vecMin = lineVec.normalize().mul(150);
-            lineVec = lineVec > vecMin ? vecMin : lineVec;
-            this.rigidBody.linearVelocity = lineVec;
-            this.rigidBody.linearDamping = 0.5;
-            // lineVec > cc.Vec2.ZERO ?
-            //     console.log("====lineVec: " + lineVec) : null;
-        }
-        if (lineVec.x > 150) {
-            this.rigidBody.linearVelocity.x = 150;
-            this.rigidBody.linearDamping = 0.5;
+
+        if (other.node.groupIndex == 2) {
+
+            //防止碰撞之后 被弹飞的速度过大
+            let lineVec = this.rigidBody.linearVelocity;
+
+            if (Math.abs(lineVec.x) > 30) {
+                let vx = this.rigidBody.linearVelocity.x;
+                this.rigidBody.linearVelocity.x = vx > 0 ? 30 : -30;
+            }
         }
     }
 
@@ -416,10 +310,56 @@ export abstract class BrotherBasic extends LogicBasicComponent {
         this.bornPos = pos ? pos : this.bornPos;
     }
 
+    //外部获取人物状态
     getBrotherAction(msg, fun?) {
         if (fun) {
             fun(this.order.action)
         }
-
     }
+
+    //场景切换过渡行走动画 
+    transitionAin(distance, time, direction, fun, passType) {
+        this.isPlayAutioClip = true;
+        this.node.scaleX = direction;
+        this.brotherAnimation.play("WalkClip");
+        this.isMove = false;
+        this.isPlaying = false;
+        //
+        let passWidth = 0;
+        let pos = this.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
+        let passPos = pos; //默认值
+        let dist = 350; //默认距离
+        if (!distance || distance == 0) {
+            try {
+                if (passType == "IN") {
+                    passWidth = this.passIn.width;
+                    passPos = this.passIn.convertToWorldSpaceAR(cc.Vec2.ZERO);
+                } else {
+                    passWidth = this.passOut.width;
+                    passPos = this.passOut.convertToWorldSpaceAR(cc.Vec2.ZERO);
+                }
+            } catch (error) {
+                console.log("=[error]==passOut / passIn== 为空=")
+            }
+            if (direction > 0) {
+                //向右走 人在pass左边 人物宽度20 
+                dist = passPos.x - pos.x + 20 + passWidth / 2 + 50;
+            } else {
+                dist = pos.x - passPos.x + 20 + passWidth / 2 + 50;
+            }
+        } else {
+            dist = distance;
+        }
+        // console.log("=====dist= " + dist * direction)
+        cc.tween(this.node).by(time, { x: dist * direction }).call(() => {
+            fun ? fun() : null;
+            this.isPlayAutioClip = false;
+            this.order.action = actionType.Wait;
+            this.order.direction = direction > 0 ? actionDirection.Right : actionDirection.Left;
+            this.brotherAction(this.order);
+
+        }).start();
+    }
+
+
 }

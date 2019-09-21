@@ -12,8 +12,6 @@ export class BackgroundControllor extends LogicBasicComponent {
 
     @property(cc.Node)
     cameraNode: cc.Node = null;
-
-    UICamera: cc.Node = null;
     //box
     @property(cc.Prefab)
     boxShadowPerfab: cc.Prefab = null;
@@ -23,12 +21,13 @@ export class BackgroundControllor extends LogicBasicComponent {
     // Mask: cc.Node = null;
     @property(cc.Node)
     circular: cc.Node = null;
-    @property(cc.Node)
-    boxParent: cc.Node = null;
 
     @property(cc.Node)
     keyNodeList: Array<cc.Node> = [];
 
+    UICamera: cc.Node = null;
+    actionMask: cc.Node = null;
+    boxParent: cc.Node = null;
     //Brother Move 
     minX: number = 0;
     minY: number = 0;
@@ -82,6 +81,7 @@ export class BackgroundControllor extends LogicBasicComponent {
         this.BackgroundSize = this.node.getContentSize();
 
         this.canvas = cc.find("Canvas");
+        this.actionMask = cc.find("UICamera/actionMask")
         let cameraSize = this.canvas.getContentSize();
         //以世界坐标作参考 镜头移动的界限坐标
         let bgWorldPos = this.node.convertToWorldSpace(cc.Vec2.ZERO);
@@ -95,12 +95,6 @@ export class BackgroundControllor extends LogicBasicComponent {
         this.cameraNode.setPosition(pos);
         this.cameraControllor();
         this.initCameraPos = this.cameraNode.position;
-        //使用background 注册事件,是为了 防止点击canvas区域之外时无效的情况
-        //触摸事件
-        this.node.on(cc.Node.EventType.TOUCH_START, this.touchStart, this)
-        this.node.on(cc.Node.EventType.TOUCH_MOVE, this.touchMove, this)
-        this.node.on(cc.Node.EventType.TOUCH_END, this.touchEnd, this)
-        this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.touchEnd, this)
 
         this.playerState = this.playerStateType.Stop;
 
@@ -109,14 +103,19 @@ export class BackgroundControllor extends LogicBasicComponent {
         this.rDis = this.circular.width / 2;
         this.boxMaxNum = settingBasic.fun.getBoxNumByLv(settingBasic.game.currLevel);
         this.UICamera = cc.find("UIMask").getChildByName("UICamera")
-        this.boxTip = this.UICamera.getChildByName("boxTip").getComponent(cc.Label);
-        this.boxTip.string = "箱子数量:" + this.boxMaxNum;
 
+        //自动根据此背景大小修正box mask 大小
+        this.node.parent.getChildByName("Box").setContentSize(this.node.getContentSize())
     };
 
     start() {
         // this.moveCamera();
         this.isStartGame = true;
+        this.closeAllEvents(1, null, 350); //test
+        if (settingBasic.game.currLevel == 1) {
+        }
+        
+
     };
 
     //#endregion
@@ -125,65 +124,8 @@ export class BackgroundControllor extends LogicBasicComponent {
         if (this.playerState != this.playerStateType.LongTouch) {
             this.cameraControllor();
         }
-        if (this.isLongTouchBegin) {
-            this.longTouchTime++;
 
-            if (this.startpos.equals(this.endpos) && this.longTouchTime > 20) {
-                this.isLongTouchBegin = false;
-                this.playerState = this.playerStateType.LongTouch;
-
-                //产生boxShadow
-                this.createBoxShadow();
-
-
-            }
-        }
     };
-
-    //引导镜头 显示关键点
-    moveCamera() {
-        let isShow = settingBasic.game.isShowKeyPos;
-
-        if (!isShow || !this.keyNodeList || (this.keyNodeList && this.keyNodeList.length == 0)) {
-            cc.tween(this.cameraNode).to(1, { position: this.initCameraPos }, { easing: "cubicInOut" }).start();
-            this.isStartGame = true;
-
-            return
-        } else {
-            let cameraPos = this.cameraNode.position;
-            let cameraWorPos = this.cameraNode.convertToWorldSpace(cc.Vec2.ZERO);
-
-            let keyNode = this.keyNodeList[this.keyNodeIndex];
-            let keyPos = keyNode.convertToWorldSpaceAR(cc.Vec2.ZERO);
-
-            let dist = Math.abs(cameraWorPos.x - keyPos.x);
-            let time = 4 * dist / 1200;
-            time = time > 4 ? 4 : time;
-            time = time < 0.5 ? 0.5 : time;
-
-            //镜头放大缩小    
-            cc.tween(this.cameraNode).delay(time + 0.3).call(() => {
-                this.cameraAnimation.play("zoomInOut").speed = 0.8;
-            }).start();
-
-            keyPos = this.cameraNode.parent.convertToNodeSpaceAR(keyPos);
-            keyPos.y = cameraPos.y;
-
-            cc.tween(this.cameraNode).to(time, { position: keyPos }, { easing: "quartInOut" }).call(() => {
-            }).delay(2).call(() => {
-                this.keyNodeIndex++;
-                if (this.keyNodeIndex == this.keyNodeList.length) {
-                    cc.tween(this.cameraNode).to(1, { position: this.initCameraPos }, { easing: "cubicInOut" }).start();
-                    this.isStartGame = true;
-
-                } else {
-                    this.moveCamera();
-                }
-            }).start();
-
-
-        }
-    }
 
     cameraControllor() {
         //限定相机移动区域 防止越界 世界坐标系
@@ -214,31 +156,10 @@ export class BackgroundControllor extends LogicBasicComponent {
                 movePos = this.node.convertToNodeSpaceAR(cc.v2(this.maxX, cameraPos.y));
             }
         }
-        //Y
-        // if (cameraPos.y >= this.minY && cameraPos.y <= this.maxY) {
 
-        //     if (broPosWorld.y >= this.minY
-        //         && broPosWorld.y <= this.maxY) {
-
-        //         movePos = cc.v2(movePos.x, this.brotherNode.y);
-        //     } else {
-        //         movePos = cc.v2(movePos.x, this.cameraNode.y);
-        //     }
-        // } else {
-        //     let pos = cc.v2(0, 0);
-        //     if (cameraPos.y < this.minY) {
-        //         pos = this.node.convertToNodeSpaceAR(cc.v2(0, this.minY));
-        //     }
-        //     if (cameraPos.y > this.maxY) {
-        //         pos = this.node.convertToNodeSpaceAR(cc.v2(0, this.maxY));
-        //     }
-        //     movePos = cc.v2(movePos.x, pos.y)
-        // }
-        // console.log("======cameraPos=" + cameraPos + "        movePos ==" + movePos)
         this.cameraNode.setPosition(movePos);
 
     }
-
 
     //事件分发
     //----------------------------touch event ---------------------------
@@ -247,7 +168,6 @@ export class BackgroundControllor extends LogicBasicComponent {
         if (!this.isStartGame) return;
         //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
         if (this.preTouchId && event.getID() != this.preTouchId) return
-        // this.preTouchId = event.getID();
         //是否在重生中 (死亡状态)
         this.isDeath = settingBasic.game.State == settingBasic.setting.stateType.REBORN;
 
@@ -257,10 +177,7 @@ export class BackgroundControllor extends LogicBasicComponent {
         if (this.playerState != this.playerStateType.LongTouch) {
             this.playerStart(event);
         }
-        //可以触发箱子触摸事件
-        if (this.playerState == this.playerStateType.Stop) {
-            this.boxTouchStart(event);
-        }
+
 
     }
 
@@ -268,14 +185,11 @@ export class BackgroundControllor extends LogicBasicComponent {
         if (!this.isStartGame) return;
         if (this.isDeath) return
         this.playerMove(event);
-        this.boxTouchMove(event);
     }
 
     touchEnd(event) {
         if (!this.isStartGame) return;
         this.playerStop(event);
-        this.boxTouchEnd(event);
-
     }
 
 
@@ -404,102 +318,32 @@ export class BackgroundControllor extends LogicBasicComponent {
         this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
     }
 
-    //-------------------------------Box Event----------------------------
-    boxToDistanceBoY(): cc.Vec2 {
-        //拿到borther和box的位置求距离来限制箱子生成的范围
-        let vector = cc.Vec2.ZERO;
-        let bortherpos = this.brotherNode.convertToWorldSpaceAR(cc.v2(0, 0));
-        let boxpos = this.endpos;
-        let gra = this.drawline.getComponent(cc.Graphics);
 
-        //切换动作
-        let dire = boxpos.x >= bortherpos.x ? actionDirection.Right : actionDirection.Left;
-        this.brotherNode.scaleX = boxpos.x >= bortherpos.x ? 1 : -1;
-        let order: { direction: number, action: number } = { direction: dire, action: actionType.MAGIC }
-        this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
+    //屏蔽所有事件 3秒之后再次启用
+    /**
+     * 
+     * @param direction 人物方向 1/-1 
+     * @param fun 回调函数
+     * @param dist 行走距离 ,不给或者给0 时,自动计算距离
+     * @param passType 通道类型 "IN"/"OUT"
+     */
+    closeAllEvents(direction, fun?, dist?, passType?) {
 
-        vector = toolsBasics.calcBoxPosFromCircle(bortherpos, boxpos, this.rDis, gra, this.boxParent);
-        return vector;
-    }
-
-    // 产生箱子
-    createBoxShadow() {
-        if (this.boxMaxNum > 0) {
-            this.playerState = this.playerStateType.LongTouch
-            this.boxShadow ? this.boxShadow.destroy() : null;
-            let touchPos = this.longTouchStartPos;
-            this.camera.getCameraToWorldPoint(touchPos, touchPos)
-            this.boxShadow = cc.instantiate(this.boxShadowPerfab)
-            this.boxShadow.scale = 0.1
-            this.boxShadow.parent = this.boxParent;
-            this.boxShadow.runAction(cc.scaleTo(0.1, 1, 1));
-
-            // touchPos = this.boxParent.convertToNodeSpaceAR(touchPos);
-            this.boxShadow.setPosition(this.boxToDistanceBoY());
-
-        } else {
-            let bortherpos = this.brotherNode.convertToWorldSpaceAR(cc.v2(0, 0));
-            let boxpos = this.endpos;
-
-            //切换动作
-            let dire = boxpos.x >= bortherpos.x ? actionDirection.Right : actionDirection.Left;
-            let order: { direction: number, action: number } = { direction: dire, action: actionType.No_Magic }
-            this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
-
-        }
-
-    }
-
-    boxTouchStart(event) {
-        this.longTouchStartPos = event.touch.getLocation();
-        this.isLongTouchBegin = true;
-        this.longTouchTime = 0;
-
-
-    }
-
-    boxTouchMove(event) {
-
-        if (this.playerState == this.playerStateType.Moving) return
-        //若当前事件的touchID 和其他触摸事件ID 不一致 则返回
-        if (this.preTouchId && event.getID() != this.preTouchId) return
-
-        this.isLongTouchBegin = false;
-
-        if (!this.boxShadow) return;
-
-        this.boxShadow.setPosition(this.boxToDistanceBoY());
-    }
-
-    boxTouchEnd(event) {
-        this.playerState = this.playerStateType.Stop
-        this.isLongTouchBegin = false;
-        this.longTouchTime = 0;
-        this.drawline.getComponent(cc.Graphics).clear();
-
-        //控制的是Box
-        if (this.boxShadow) {
-            this.boxShadow.emit(settingBasic.gameEvent.instanceBoxEvent, "", (isOk) => {
-                if (this.boxMaxNum == 0) return;
-                isOk ? this.boxMaxNum-- : null;
-                this.boxTip.string = "箱子数量:" + this.boxMaxNum;
-            });
-            //设置isPlaying = false
-            this.brotherNode.emit(settingBasic.gameEvent.brotherPlayState, false)
-            let dire = this.brotherNode.scaleX > 0 ? actionDirection.Right : actionDirection.Left;
-            this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, { direction: dire, action: actionType.Wait })
-        }
-        this.boxShadow = null;
-        if (this.boxShadow) {
-            this.boxShadow.destroy()
-        }
-    }
-
-    //箱子被销毁之后 数量恢复+1
-    addBoxNum() {
-        let maxNum = settingBasic.fun.getBoxNumByLv(settingBasic.game.currLevel);
-        this.boxMaxNum++;
-        this.boxMaxNum = this.boxMaxNum > maxNum ? maxNum : this.boxMaxNum;
+        this.actionMask.active = true;
+        //#region 
+        this.node.off(cc.Node.EventType.TOUCH_START, this.touchStart, this)
+        this.node.off(cc.Node.EventType.TOUCH_MOVE, this.touchMove, this)
+        this.node.off(cc.Node.EventType.TOUCH_END, this.touchEnd, this)
+        this.node.off(cc.Node.EventType.TOUCH_CANCEL, this.touchEnd, this)
+        //#endregion
+        this.brotherNode.emit(settingBasic.gameEvent.brotherTransitionEvent, dist, 2, direction, () => {
+            this.node.on(cc.Node.EventType.TOUCH_START, this.touchStart, this)
+            this.node.on(cc.Node.EventType.TOUCH_MOVE, this.touchMove, this)
+            this.node.on(cc.Node.EventType.TOUCH_END, this.touchEnd, this)
+            this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.touchEnd, this)
+            this.actionMask.active = false;
+            fun ? fun() : null;
+        }, passType)
 
     }
 

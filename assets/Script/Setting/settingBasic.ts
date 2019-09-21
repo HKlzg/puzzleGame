@@ -1,3 +1,4 @@
+import MapControllor from "../UI/itemsMarkControllor";
 
 const settingBasic = {
 
@@ -10,6 +11,7 @@ const settingBasic = {
         chordMax: -50,
         //角色偏转最大角度
         rotationMax: 45,
+
         //运行状态枚举值
         stateType: cc.Enum({
             READY: 0, //准备
@@ -29,14 +31,11 @@ const settingBasic = {
         }),
         //设定每关箱子的数量
         boxNum: {
-            lv1: 2,
-            lv2: 2,
-            lv3: 2,
-            lv4: 2,
-            lv5: 2,
-            lv6: 2,
-            lv7: 2,
-            lv8: 2,
+            lv1: 0,
+            lv2: 0,
+            lv3: 0,
+            lv4: 0,
+            lv5: 0,
         },
         //等级枚举 枚举值 只能是数字
         level: cc.Enum({
@@ -45,9 +44,7 @@ const settingBasic = {
             lv3: 3,
             lv4: 4,
             lv5: 5,
-            lv6: 6,
-            lv7: 7,
-            lv8: 8,
+
         }),
         //人物动作枚举值
         actionType: cc.Enum({
@@ -62,6 +59,7 @@ const settingBasic = {
             Push: 9,
             QuietlyWalk: 10, //悄悄走
         }),
+
         //人物动作方向
         actionDirection: cc.Enum({
             Left: 1,
@@ -74,19 +72,70 @@ const settingBasic = {
             Down_left: 8,
         }),
 
+        item: {
+            //物品种类
+            id: cc.Enum({
+                map_1: 1,
+                map_2: 2,
+                map_3: 3,
+                map_4: 4,
+                footPrints: 5,
+                lv1_paper: 6,
+                lv2_paper: 7,
+                lv3_paper: 8,
+                lv4_paper: 9,
+            }),
+            //物品名称 与 物品种类对应关系
+            data: [
+                {
+                    id: 1, kind: "map", name: "map_1",
+                    desc: "地图碎片",
+                    isShow: false
+                },
+                {
+                    id: 2, kind: "map", name: "map_2",
+                    desc: "地图碎片",
+                    isShow: false
+                },
+                {
+                    id: 3, kind: "map", name: "map_3",
+                    desc: "地图碎片",
+                    isShow: false
+                },
+                {
+                    id: 4, kind: "map", name: "map_4",
+                    desc: "地图碎片",
+                    isShow: false,
+                },
+                {
+                    id: 5, kind: "item", name: "footprints",
+                    desc: "这是森林深处魔兽的脚印，他们好像来村子，村民失踪肯定和他们有关系",
+                    isShow: false,
+                },
+                {
+                    id: 6, kind: "paper", name: "lv1_paper",
+                    desc: "神秘纸条",
+                    isShow: false,
+                },
+                {
+                    id: 7, kind: "paper", name: "lv2_paper",
+                    desc: "神秘纸条",
+                    isShow: false,
+                },
+                {
+                    id: 8, kind: "paper", name: "lv3_paper",
+                    desc: "神秘纸条",
+                    isShow: false,
+                },
+                {
+                    id: 9, kind: "paper", name: "lv4_paper",
+                    desc: "神秘纸条",
+                    isShow: false,
+                },
+            ],
 
-        //物品种类
-        itemType: cc.Enum({
-            map_1: 1,
-            map_2: 2,
-            map_3: 3,
-            map_4: 4,
-            footPrints: 5,
-            gear: 6,
-            Lv1_paper: 7,
-            Lv2_paper: 8,
+        },
 
-        }),
         //成就类别设定
         achievements: cc.Enum({
             TimeCollector: 0,
@@ -106,27 +155,79 @@ const settingBasic = {
         //数组顺序和 achievements 对应 //初始值，用于初始化
         achievementsInit: {
             lv1: [
-                { type: 0, name: "采时者", isGet: false, count: 0, needNum: 1 },
-                { type: 1, name: "悲伤的使者", isGet: false, count: 0, needNum: 1 }
+                {
+                    type: 0, name: "采时者",
+                    desc: "超过5分钟还没有灭火",
+                    isGet: false, count: 0, needNum: 1
+                },
+                {
+                    type: 1, name: "悲伤的使者",
+                    desc: "获取隐藏道具书页",
+                    isGet: false, count: 0, needNum: 1
+                }
             ],
             lv2: [
-                { type: 2, name: "鱼腹爱好者", isGet: false, count: 0, needNum: 5 },
-                { type: 3, name: "我是水鬼", isGet: false, count: 0, needNum: 3 }
+                {
+                    type: 2, name: "鱼腹爱好者",
+                    desc: "被鱼吃死5次",
+                    isGet: false, count: 0, needNum: 5
+                },
+                {
+                    type: 3, name: "我是水鬼",
+                    desc: "被水淹死3次",
+                    isGet: false, count: 0, needNum: 3
+                }
             ],
             lv3: [
-                { type: 4, name: "我是食物", isGet: false, count: 0, needNum: 3 },
-                { type: 5, name: "乖乖虎", isGet: false, count: 0, needNum: 1 },
+                {
+                    type: 4, name: "我是食物",
+                    desc: "葬身虎口3次",
+                    isGet: false, count: 0, needNum: 3
+                },
+                {
+                    type: 5, name: "乖乖虎",
+                    desc: "成功捕捉老虎",
+                    isGet: false, count: 0, needNum: 1
+                },
             ],
             lv4: [
-                { type: 6, name: "蜘蛛猎人", isGet: false, count: 0, needNum: 1 },
-                { type: 7, name: "慢吞吞的", isGet: false, count: 0, needNum: 1 },
-                { type: 8, name: "一蹴而就", isGet: false, count: 0, needNum: 1 },
+                {
+                    type: 6, name: "蜘蛛猎人",
+                    desc: "杀死蜘蛛",
+                    isGet: false, count: 0, needNum: 1
+                },
+                {
+                    type: 7, name: "慢吞吞的",
+                    desc: "被蜘蛛追上戳死",
+                    isGet: false, count: 0, needNum: 1
+                },
+                {
+                    type: 8, name: "一蹴而就",
+                    desc: "第一次玩当前关卡就通关",
+                    isGet: false, count: 0, needNum: 1
+                },
             ],
             lv5: [
-                { type: 9, name: "大地的恩泽", isGet: false, count: 0, needNum: 1 },
-                { type: 10, name: "生命永恒", isGet: false, count: 0, needNum: 1 },
-                { type: 11, name: "锤下亡魂", isGet: false, count: 0, needNum: 1 },
-                { type: 12, name: "机灵鬼", isGet: false, count: 0, needNum: 3 },
+                {
+                    type: 9, name: "大地的恩泽",
+                    desc: "释放了村子里面的人",
+                    isGet: false, count: 0, needNum: 1
+                },
+                {
+                    type: 10, name: "生命永恒",
+                    desc: "复活的生命之树",
+                    isGet: false, count: 0, needNum: 1
+                },
+                {
+                    type: 11, name: "锤下亡魂",
+                    desc: "被大地之王砸死",
+                    isGet: false, count: 0, needNum: 1
+                },
+                {
+                    type: 12, name: "机灵鬼",
+                    desc: "躲避石头三次",
+                    isGet: false, count: 0, needNum: 3
+                },
             ],
         },
 
@@ -170,19 +271,13 @@ const settingBasic = {
         closeShowKeyPos() {
             settingBasic.game.isShowKeyPos = false;
         },
-        //增加物品
-        addItems(mapType: number) {
-            let list = settingBasic.game.inventory;
-            let hasItem = false;
-            for (let index = 0; index < list.length; index++) {
-                const element = list[index];
-                if (element == mapType) {
-                    hasItem = true;
-                    return;
+        //获取物品信息
+        getItemByID(id: number) {
+            let items = settingBasic.setting.item.data;
+            for (let index = 0; index < items.length; index++) {
+                if (items[index].id == id) {
+                    return items[index];
                 }
-            }
-            if (!hasItem) {
-                settingBasic.game.inventory.push(mapType);
             }
         },
         //存储当前游戏状态
@@ -274,6 +369,10 @@ const settingBasic = {
         brotherPlayState: "brotherPlayState",
         brotherJumpEvent: "brotherJumpEvent",
         brotherDeathEvent: "brotherDeathEvent",
+
+        //进入下一关
+        brotherTransitionEvent:"brotherTransitionEvent",
+
         brotherSetBornPos: "brotherSetBornPos",
         brotherSetAudio: "brotherSetAudio",
         getBrotherAction: "getBrotherAction",

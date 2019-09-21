@@ -79,7 +79,7 @@ export default class NewClass extends LogicBasicComponent {
 
             if (this.isObserve && this.isStartSwim && !this.isBurning) {
                 this.isObserve = false;
-                cc.tween(this.node).delay(2).call(() => {
+                cc.tween(this.node).delay(4).call(() => {
                     this.observePerson();
                 }).start();
             }

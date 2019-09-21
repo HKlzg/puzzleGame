@@ -10,14 +10,14 @@ export default class NewClass extends ViewControllorBasic {
         this.audioManager.playLoopBGM("river");
         //每个关卡 单独设置人物动作的声音
         let msg: [{ actionType: number, name: string }] = [{ actionType: 0, name: "" }];
-        msg.push({ actionType: this.actionType.Walk, name: "null" });
-        msg.push({ actionType: this.actionType.Jump, name: "walkInRiver" });
+        msg.push({ actionType: this.actionType.Walk, name: "jumpOnFloor" });
+        msg.push({ actionType: this.actionType.Jump, name: "jumpOnFloor" });
         this.setPersonAudioName(msg);
 
-        //成就时间 10min
+        //成就时间 5min
         this.scheduleOnce(() => {
             this.achieveManager.addRecord(this.level, this.achieveTypes.TimeCollector)
-        }, 600)
+        }, 300)
     }
     loadSubPackage() {
 
@@ -32,8 +32,7 @@ export default class NewClass extends ViewControllorBasic {
             this.fireNum++;
         }
         //当所有火被浇灭之后 过关
-        if (this.fireNum == 4) {
-            this.achieveManager.addRecord(this.level, this.achieveTypes.SadnessMessenger)
+        if (this.fireNum == 4) {            
         }
     }
 

@@ -111,7 +111,7 @@ export default class NewClass extends LogicBasicComponent {
 
     onCollisionEnter(other, self) {
         if (this.isawake && other.node.name == "Brother"&&!this.close) {            
-            this.currScene.emit(setting.gameEvent.gameStateEvent,setting.setting.stateType.REBORN);
+            // this.currScene.emit(setting.gameEvent.gameStateEvent,setting.setting.stateType.REBORN);
             this.currScene.emit(setting.gameEvent.gameStateEvent,setting.setting.stateType.RESTART);
         }
     }

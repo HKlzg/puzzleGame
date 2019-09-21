@@ -183,25 +183,10 @@ export abstract class LogicBasicComponent extends cc.Component {
     private pauseGame() {
         //暂停游戏  停用update 逻辑 
         this.isPause = true;
-
-        this.actionNodeList.forEach(node => {
-            node.pauseAllActions();
-        })
-        this.node.stopAllActions();
-        
-        //记录节点信息
-        // this.recordNodeRecord();
     }
     private resumeGame() {
         this.isPause = false;
 
-        this.actionNodeList.forEach(node => {
-            node.resumeAllActions();
-        });
-        this.node.resumeAllActions();
-
-        //加载Record
-        // this.loadNodeRecord();
     }
 
     removeNodeRecord() {

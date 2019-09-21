@@ -4,6 +4,9 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class NewClass extends ViewControllorBasic {
 
+    
+
+
     toStart() {
         this.audioManager.playLoopBGM("river");
 

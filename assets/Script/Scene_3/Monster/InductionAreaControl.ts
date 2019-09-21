@@ -63,7 +63,7 @@ export default class NewClass extends LogicBasicComponent {
         this.startpos = this.node.convertToWorldSpace(new cc.Vec2(this.node.width / 2, this.node.height / 2));
         this.endpos = other.node.convertToWorldSpace(new cc.Vec2(other.node.width / 2, other.node.height / 2));
         if(!this.isclose){
-            if (other.node.name == "Brother" && !this.isclose && !this.isstop) {        
+            if (other.node.name == "Brother"&& !this.isstop) {        
                 this.getclip();
                 if (!this.quiet && !this.awake) {
                     this.awake = true;
@@ -120,8 +120,7 @@ export default class NewClass extends LogicBasicComponent {
             }
         }else{
             this.tigerAni.play("CatchClip");
-        }
-      
+        }      
     }
 
     
