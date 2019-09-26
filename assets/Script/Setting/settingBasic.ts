@@ -1,4 +1,3 @@
-import MapControllor from "../UI/itemsMarkControllor";
 
 const settingBasic = {
 
@@ -263,14 +262,7 @@ const settingBasic = {
         clearCurrDeath() {
             settingBasic.game.currDeath = 0;
         },
-        //显示引导镜头
-        openShowKeyPos() {
-            settingBasic.game.isShowKeyPos = true;
-        },
-        //关闭引导镜头
-        closeShowKeyPos() {
-            settingBasic.game.isShowKeyPos = false;
-        },
+
         //获取物品信息
         getItemByID(id: number) {
             let items = settingBasic.setting.item.data;
@@ -345,7 +337,6 @@ const settingBasic = {
         currDeath: 0, //当前关卡死亡数
         totalDeath: 0, //游戏死亡总数
         deathRecord: {},//死亡记录 用于存档
-        isShowKeyPos: false, //是否显示引导镜头
         inventory: [], //物品栏 //存储物品类别(number类型)
         isClearCurrRecord: false, //是否在reload 时清除当前关卡records
         isClearGameRecord: false, //是否在reload 时清除所有records
@@ -371,13 +362,11 @@ const settingBasic = {
         brotherDeathEvent: "brotherDeathEvent",
 
         //进入下一关
-        brotherTransitionEvent:"brotherTransitionEvent",
+        brotherTransitionEvent: "brotherTransitionEvent",
 
         brotherSetBornPos: "brotherSetBornPos",
-        brotherSetAudio: "brotherSetAudio",
         getBrotherAction: "getBrotherAction",
-        //Box
-        instanceBoxEvent: "instanceBoxEvent",
+
         //Circle
         changeCircleColor: "changeCircleColor",
         //lv3 monster

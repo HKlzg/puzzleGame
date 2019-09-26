@@ -4,7 +4,8 @@ const { ccclass, property } = cc._decorator;
 
 const sensorType = cc.Enum({
     start: 0,
-    mid1: 1
+    mid1: 1,
+    mid2: 2,
 })
 
 @ccclass
@@ -24,12 +25,12 @@ export default class NewClass extends LogicBasicComponent {
 
     }
 
-    logicUpdate (dt) {}
+    logicUpdate(dt) { }
     onCollisionEnter(other, self) {
 
         switch (this.type) {
             case sensorType.start:
-
+                //蜘蛛下落
                 if (!this.isContact && other.node.groupIndex == 6) {
                     let contrl = this.spiderNode.getComponent("spiderControllor");
                     if (contrl) {
@@ -38,7 +39,7 @@ export default class NewClass extends LogicBasicComponent {
                     }
                 }
                 break;
-
+ 
             default:
                 break;
         }

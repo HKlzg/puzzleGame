@@ -4,6 +4,7 @@ import setting from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 import settingBasic from "../../Setting/settingBasic";
 import AchievementControllor from "../../Common/Achievement/achievementControllor";
+import audioSetting from "../../Common/Audio/audioSetting";
 @ccclass
 export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
@@ -132,7 +133,7 @@ export default class NewClass extends LogicBasicComponent {
                 this.node.runAction(cc.sequence(
                     //警告声音
                     cc.callFunc(() => {
-                        warnId = this.audioManager.playAudio("fishWarning");
+                        warnId = this.audioManager.playAudio(audioSetting.other.lv2.fish.warning);
                     }),
                     moveAction,
                     cc.spawn(downAction, rotaAction),
@@ -156,12 +157,12 @@ export default class NewClass extends LogicBasicComponent {
                                     //跳跃前
                                     cc.callFunc(() => {
                                         this.audioManager.stopAudioById(warnId);
-                                        this.audioManager.playAudio("outWater")
+                                        this.audioManager.playAudio(audioSetting.other.lv2.fish.jumpOut)
                                     }),
                                     cc.spawn(jumpAction, cc.sequence(rotaAction1, rotaAction2)),
                                     //跳跃后
                                     cc.callFunc(() => {
-                                        this.audioManager.playAudio("fallIntoWater");
+                                        this.audioManager.playAudio(audioSetting.other.lv2.fish.jumpIn);
 
                                     }),
                                 )

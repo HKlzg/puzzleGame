@@ -4,6 +4,7 @@ import toolsBasics from "../Tools/toolsBasics";
 import settingBasic from "../Setting/settingBasic";
 import { LogicBasicComponent } from "./LogicBasic/LogicBasicComponent";
 import AchievementControllor from "./Achievement/achievementControllor";
+import audioSetting from "./Audio/audioSetting";
 
 const leveList = settingBasic.setting.level
 
@@ -73,15 +74,19 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
         this.loadSubPackageDefualt();
 
         //开启物理系统 ----------必须写在onLoad 里面
-        cc.director.getPhysicsManager().enabled = true;
+        let manager = cc.director.getPhysicsManager();
+        manager.enabledAccumulator = true;
+        manager.enabled = true;
+        // 开启碰撞检测
+        cc.director.getCollisionManager().enabled = true;
 
         // 绘制碰撞区域
         var draw = cc.PhysicsManager.DrawBits;
         // cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
         // cc.director.getCollisionManager().enabledDebugDraw = true; //碰撞区域 
         // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
-        // 开启碰撞检测
-        cc.director.getCollisionManager().enabled = true;
+
+
     };
     onEnable() {
         console.log("======Curr===SCENE: " + this.level + " ==========")
@@ -90,6 +95,9 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
     }
 
     start() {
+        let currBgm = audioSetting.fun.getCurrList().BGM;
+        // console.log("======currBgm : " + currBgm + " ==========")
+        this.audioManager.playLoopBGM(currBgm);
         //test
         this.toStart();
         this.changeGameState(settingBasic.setting.stateType.START);
@@ -102,18 +110,10 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
 
     //#endregion
     logicUpdate(dt) {
-
         this.toUpdate();
-        if (this.personAudio && this.brotherWalkNode.hasEventListener(settingBasic.gameEvent.brotherSetAudio) && !this.isSetAudio) {
-            this.brotherWalkNode.emit(this.settingBasic.gameEvent.brotherSetAudio, this.personAudio);
-            this.isSetAudio = true;
-        }
     };
 
-    //设置人物 动作对应的音效
-    setPersonAudioName(msg: [{ actionType: number, name: string }]) {
-        this.personAudio = msg;
-    };
+
     abstract toUpdate();
 
     loadSubPackageDefualt() {

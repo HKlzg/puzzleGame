@@ -2,6 +2,7 @@
 const { ccclass, property } = cc._decorator;
 import settingBasic from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
+import audioSetting from "../Audio/audioSetting";
 
 @ccclass
 export default class NewClass extends LogicBasicComponent {
@@ -15,12 +16,21 @@ export default class NewClass extends LogicBasicComponent {
     @property(cc.SpriteFrame)
     spriteRed: cc.SpriteFrame = null;
 
+    @property(cc.Boolean)
+    isAudio = false;
+
     sprite: cc.Sprite = null;
-    rdis: number = 0
+    rdis: number = 0;
+    audioManager: any = null;
+
     start() {
         this.node.on(settingBasic.gameEvent.changeCircleColor, this.changeColor, this);
         this.sprite = this.node.getComponent(cc.Sprite);
         this.rdis = this.node.width;
+        if (this.isAudio) {
+            this.audioManager = cc.find("UICamera/audio").getComponent("audioControllor");
+            this.audioManager.playAudio(audioSetting.other.lv1.waterWheel, true)
+        }
     }
 
     logicUpdate(dt) {
@@ -44,5 +54,6 @@ export default class NewClass extends LogicBasicComponent {
         this.node.width = this.rdis;
         this.node.height = this.rdis;
     }
+
 
 }

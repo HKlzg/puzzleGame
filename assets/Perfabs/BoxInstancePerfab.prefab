@@ -152,7 +152,7 @@
     "_density": 5,
     "_sensor": false,
     "_friction": 1,
-    "_restitution": 0.01,
+    "_restitution": 0,
     "body": null,
     "_offset": {
       "__type__": "cc.Vec2",

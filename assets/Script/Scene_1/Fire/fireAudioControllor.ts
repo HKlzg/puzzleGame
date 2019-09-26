@@ -1,5 +1,6 @@
+import audioSetting from "../../Common/Audio/audioSetting";
+import audioControllor from "../../Common/Audio/audioControllor";
 
-import tools from "../../Tools/toolsBasics";
 const { ccclass, property } = cc._decorator;
 
 @ccclass
@@ -10,13 +11,14 @@ export default class NewClass extends cc.Component {
     @property(cc.Float)
     minVolume: number = 0.05;
 
-    audioSource: any = null;
+    audioSource: audioControllor = null;
     id: number = 0;
     // onLoad () {}
     start() {
-        this.audioSource = cc.find("UICamera/audio").getComponent("audioControllor");
 
-        this.id = this.audioSource.playAudio("fire", true, this.maxVolume, this.minVolume, this.node, true);
+        this.audioSource = cc.find("UICamera/audio").getComponent("audioControllor");
+        let fireName = audioSetting.other.lv1.fire.burning;
+        this.id = this.audioSource.playAudio(fireName, true, this.maxVolume, this.minVolume, this.node, true);
 
     }
     onDisable() {

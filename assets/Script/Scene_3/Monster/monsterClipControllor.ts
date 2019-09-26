@@ -43,18 +43,20 @@ export default class NewClass extends LogicBasicComponent {
 
     jumpStart() {
         this.getclip();
-        if (this.lable == 0 && this.isawake) {     
-            this.anglefif();                   
+        if (this.lable == 0 && this.isawake) {
+            this.anglefif();
             let parent = this.node.parent;
-            parent.setSiblingIndex(this.player.parent.getSiblingIndex()-1);
+            parent.setSiblingIndex(this.player.parent.getSiblingIndex() - 1);
             parent.scaleX = this.angle;
             let playerpos = this.player.convertToWorldSpace(cc.v2(0, 0));
             playerpos = this.canves.convertToNodeSpace(playerpos);
-            let jump = cc.jumpTo(0.88,playerpos, parent.position.y-100, 1);
+            let pos = cc.v2(playerpos.x,13);
+            let jump = cc.jumpTo(0.88, pos, parent.position.y +100, 1);
             parent.runAction(jump);
-            this.lable=1;
+            this.lable = 1;
         }
     }
+    
     jumpEnd() { //attack End
         this.isJump = false;
         let parent = this.node.parent;

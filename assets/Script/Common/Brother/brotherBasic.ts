@@ -2,10 +2,24 @@
 const { ccclass, property } = cc._decorator;
 import settingBasic from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
+import audioSetting from "../Audio/audioSetting";
+import audioControllor from "../Audio/audioControllor";
 
 const actionType = settingBasic.setting.actionType;
 const actionDirection = settingBasic.setting.actionDirection;
-
+//人物音效
+class AudioType {
+    walkName: string;
+    jumpName: string;
+    magicName: string;
+    ClimbName: string;
+    constructor(walkName?, jumpName?, magicName?, ClimbName?) {
+        this.walkName = walkName;
+        this.jumpName = jumpName;
+        this.magicName = magicName;
+        this.ClimbName = ClimbName;
+    }
+}
 @ccclass
 export class BrotherBasic extends LogicBasicComponent {
     @property(cc.Node)
@@ -57,8 +71,9 @@ export class BrotherBasic extends LogicBasicComponent {
     currScene: cc.Node = null; //当前场景节点
     //是否正在播放过场动画
     isPlayAutioClip: boolean = false;
-
+    audioSource: audioControllor = null;
     onLoad() {
+        this.audioSource = cc.find("UICamera/audio").getComponent("audioControllor");
         this.brotherAnimation = this.brotherWalkNode.getComponent(cc.Animation);
         this.node.on(settingBasic.gameEvent.brotherActionEvent, this.brotherAction, this);
         this.node.on(settingBasic.gameEvent.brotherPlayState, this.setPlayState, this);
@@ -90,7 +105,7 @@ export class BrotherBasic extends LogicBasicComponent {
 
     //更新动作
     brotherAction(msg: { direction: number, action: number }, fun?: any) {
-        if (this.isPlayAutioClip||this.isPlaying || this.isDeath || (this.anmstate && this.anmstate.isPlaying)) return;
+        if (this.isPlayAutioClip || this.isPlaying || this.isDeath || (this.anmstate && this.anmstate.isPlaying)) return;
 
         this.order = msg;
         if (this.order.direction == actionDirection.Left || this.order.direction == actionDirection.Up_Left ||
@@ -117,16 +132,11 @@ export class BrotherBasic extends LogicBasicComponent {
                 break;
 
             case actionType.QuietlyWalk:
-                let currLv = settingBasic.game.currLevel;
-                if (currLv == 3) { //仅第三关使用 QuietlyWalk
-                    this.brotherAnimation.play("SquatClip");
-                } else {
-                    this.order.action = actionType.Walk;
-                    this.brotherAction(this.order, fun);
-                }
-                this.isMove = true;
+                this.brotherAnimation.play("WalkClip");
                 this.isPlaying = false;
+                this.isMove = true;
                 this.Circerl.active = false;
+                this.order.action = actionType.Walk;
                 break;
             case actionType.Jump: //跳跃
                 //禁止空中连跳
@@ -140,7 +150,7 @@ export class BrotherBasic extends LogicBasicComponent {
                     x = this.order.direction == actionDirection.Up_Left ? -150 : 150;
                 }
                 this.brotherWalkNode.emit(settingBasic.gameEvent.brotherJumpEvent, x);
-
+                this.brotherAnimation.stop();
                 this.anmstate = this.brotherAnimation.play("JumpClip").speed = 1.5;
 
                 this.isMove = true;
@@ -226,13 +236,57 @@ export class BrotherBasic extends LogicBasicComponent {
         }
     }
 
+    //在物理碰撞之前调用
+    onPreSolve(contact, self, other) {
+
+
+    }
 
     //物理碰撞检测
     onBeginContact(contact, self, other) {
-        if (other.node.groupIndex == 4) {
-            //地面
-            let pos = this.node.position;
-            this.bornPos = cc.v2(pos.x, pos.y + 10)
+        // console.log("============brother========物理碰撞检测===")
+        let contrl = null;
+        let audioObj = null;
+        let jumpName = "";
+        switch (other.node.groupIndex) {
+            case 4: //地面
+                contrl = this.brotherWalkNode.getComponent("brotherWalkControllor");
+                //设置行走、跳跃音效
+                if (settingBasic.game.currLevel == 2) { //第二关将地面替换为草地声音
+                    audioObj = new AudioType(audioSetting.player.walk.onGrass, audioSetting.player.jump.onGrass);
+                    jumpName = audioSetting.player.jump.onGrass;
+                } else {                                //其他关卡设置为普通地面声音
+                    audioObj = new AudioType(audioSetting.player.walk.onGround, audioSetting.player.jump.onGround);
+                    jumpName = audioSetting.player.jump.onGround;
+                }
+                break;
+            case 2: //箱子
+                contrl = this.brotherWalkNode.getComponent("brotherWalkControllor");
+                //设置行走、跳跃音效
+                audioObj = new AudioType(audioSetting.player.walk.onWood, audioSetting.player.jump.onWood);
+                jumpName = audioSetting.player.jump.onWood;
+                break;
+            case 12: //石头可推动
+                contrl = this.brotherWalkNode.getComponent("brotherWalkControllor");
+                //设置行走、跳跃音效
+                audioObj = new AudioType(audioSetting.player.walk.onStone, audioSetting.player.jump.onStone);
+                jumpName = audioSetting.player.jump.onStone;
+                break;
+            default:
+                break;
+        }
+        if (jumpName != "") {
+            contrl ? contrl.setWalkAudioName(audioObj) : "";
+            let vy1 = this.rigidBody.linearVelocity.y;
+            let vy2 = other.node.getComponent(cc.RigidBody).linearVelocity.y;
+            if (vy1 <= -100) {
+                let volum = 0.8;
+                if (vy1 < 400) {
+                    volum = vy1 / 400 * volum;
+                    volum = volum <= 0.1 ? 0.1 : volum;
+                }
+                this.audioSource.playAudio(jumpName, false, volum, volum);
+            }
         }
 
     }
@@ -245,20 +299,7 @@ export class BrotherBasic extends LogicBasicComponent {
 
     }
 
-    //在物理碰撞之前调用
-    onPreSolve(contact, self, other) {
 
-        if (other.node.groupIndex == 2) {
-
-            //防止碰撞之后 被弹飞的速度过大
-            let lineVec = this.rigidBody.linearVelocity;
-
-            if (Math.abs(lineVec.x) > 30) {
-                let vx = this.rigidBody.linearVelocity.x;
-                this.rigidBody.linearVelocity.x = vx > 0 ? 30 : -30;
-            }
-        }
-    }
 
 
     //重生

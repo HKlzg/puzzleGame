@@ -69,6 +69,7 @@ export default class NewClass extends cc.Component {
     }
     // 点击 故事内容 图片 ,开始游戏
     contentMapPicOnclik() {
+        if (!this.currScene) return;
         if (this.isContentMapClick) {
             // console.log("===currLevel=" + settingBasic.game.currLevel + " ==currPageNum= " + this.currPageNum)
 
@@ -114,6 +115,8 @@ export default class NewClass extends cc.Component {
     }
     // 点击 bookMenu 菜单 --暂停游戏
     bookOnClick() {
+        //暂停游戏
+        this.currScene.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.PAUSE)
         //根据当前的关卡 自动切换页签
         this.currPageNum = settingBasic.game.currLevel;
         this.showContent(this.currPageNum);
@@ -129,8 +132,7 @@ export default class NewClass extends cc.Component {
                 this.mapPicCopy.active = false;
                 this.isContentMapClick = true;
 
-                //暂停游戏
-                this.currScene.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.PAUSE)
+
 
                 if (settingBasic.game.State == settingBasic.setting.stateType.NEXT) {
                     this.nextPageContent()

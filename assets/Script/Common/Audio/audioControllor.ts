@@ -28,6 +28,7 @@ export default class AudioManager extends cc.Component {
     background: cc.Node = null;
     backgroundInfo = { size: null, maxX: 0, minX: 0 }; //背景信息
     currScene: cc.Node = null;
+    preAudio: string = "";
 
     onLoad() {
         let self = this;
@@ -90,6 +91,14 @@ export default class AudioManager extends cc.Component {
      * @param isDynamic 是否动态调整音量
       */
     playAudio(name: string, isLoop?: boolean, maxVolume?: number, minVolume?: number, audioNode?: cc.Node, isDynamic?: boolean): number {
+        //在0.2s 时间内 同一个音频只能播放一次
+        if (this.preAudio == name) {
+            return 0
+        }
+        this.preAudio = name;
+        cc.tween(this.node).delay(0.1).call(() => {
+            this.preAudio = "";
+        }).start();
 
         if (this.isEnablePlay && this.audioList[name]) {
             let loop = isLoop ? isLoop : false;
@@ -128,7 +137,9 @@ export default class AudioManager extends cc.Component {
     }
     //停止音效
     stopAudioById(id: number) {
-        if (id) cc.audioEngine.stopEffect(id);
+        if (id) {
+            cc.audioEngine.stopEffect(id);
+        }
     }
     //停止音效
     // stopEffectByID(id: number) {

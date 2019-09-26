@@ -4,15 +4,8 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class NewClass extends ViewControllorBasic {
 
-    
-
-
     toStart() {
-        this.audioManager.playLoopBGM("river");
 
-        let msg: [{ actionType: number, name: string }] = [{ actionType: 0, name: "" }];
-        msg.push({ actionType: this.actionType.Jump, name: "walkInRiver" });
-        this.setPersonAudioName(msg);
     }
     //重写
     loadSubPackage() {
@@ -34,7 +27,7 @@ export default class NewClass extends ViewControllorBasic {
     }
     // 重写 设置brother移动步骤
     moveStep(nextStep) {
- 
+
     }
     //重写
     toUpdate() {

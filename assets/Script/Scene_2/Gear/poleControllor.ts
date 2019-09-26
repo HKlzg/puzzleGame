@@ -1,5 +1,6 @@
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
-import settingBasic from "../../Setting/settingBasic";
+import audioControllor from "../../Common/Audio/audioControllor";
+import audioSetting from "../../Common/Audio/audioSetting";
 
 const { ccclass, property } = cc._decorator;
 const type = cc.Enum({
@@ -15,9 +16,12 @@ export default class NewClass extends LogicBasicComponent {
 
     @property({ type: type })
     poleType = type.H;
-
+    audioSource: audioControllor = null;
+    isPlaying = false;
     // onLoad () {}
     start() {
+        this.audioSource = cc.find("UICamera/audio").getComponent("audioControllor");
+
     }
 
     logicUpdate(dt) { }
@@ -27,6 +31,14 @@ export default class NewClass extends LogicBasicComponent {
 
         //碰撞到箱子 而且 只有水平 位置的有效
         if (other.node.groupIndex == 2 && this.poleType == type.H) {
+            //音效
+            let vy = other.node.getComponent(cc.RigidBody).linearVelocity.y;
+
+            // if (vy < -0.1 && !this.isPlaying) {
+            //     this.isPlaying = true;
+            //     this.audioSource.playAudio(audioSetting.box.crash.onWood);
+            // }
+
             let gearCtrl = this.gear.getComponent("bigGearControllor");
             let isRotation = gearCtrl.getIsRotation();
             if (!isRotation) {
@@ -50,7 +62,19 @@ export default class NewClass extends LogicBasicComponent {
         }
     }
 
+    onBeginContact(con, self, other) {
+        if (other.node.groupIndex == 2 && this.poleType == type.H) {
+            //音效
+            let vy = other.node.getComponent(cc.RigidBody).linearVelocity.y;
+            if (vy < -10 && !this.isPlaying) {
+                this.isPlaying = true;
+                this.audioSource.playAudio(audioSetting.box.crash.onWood,false,0.2,0.2);
+            }
+        }
+    }
+
     onPostSolve(contact, self, other) {
+        this.isPlaying = false;
     }
 
     public changePoleType() {

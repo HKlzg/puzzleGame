@@ -1,0 +1,492 @@
+{
+  "__type__": "cc.AnimationClip",
+  "_name": "fastAttackClip",
+  "_objFlags": 0,
+  "_native": "",
+  "_duration": 4.633333333333334,
+  "sample": 60,
+  "speed": 0.7,
+  "wrapMode": 0,
+  "curveData": {
+    "props": {
+      "angle": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 0.8333333333333334,
+          "value": 0
+        },
+        {
+          "frame": 1.2666666666666666,
+          "value": 0
+        },
+        {
+          "frame": 4,
+          "value": 0
+        },
+        {
+          "frame": 4.233333333333333,
+          "value": 0
+        },
+        {
+          "frame": 4.633333333333334,
+          "value": 0
+        }
+      ],
+      "y": [
+        {
+          "frame": 0,
+          "value": 0
+        },
+        {
+          "frame": 0.8333333333333334,
+          "value": -45.05
+        },
+        {
+          "frame": 1.0333333333333334,
+          "value": -53.913
+        },
+        {
+          "frame": 1.2666666666666666,
+          "value": -45.05
+        },
+        {
+          "frame": 1.55,
+          "value": -53.913
+        },
+        {
+          "frame": 2.2,
+          "value": -47.929
+        },
+        {
+          "frame": 2.6166666666666667,
+          "value": -95.802
+        },
+        {
+          "frame": 2.816666666666667,
+          "value": -44.937
+        },
+        {
+          "frame": 3.8,
+          "value": -35.961
+        },
+        {
+          "frame": 4,
+          "value": 0
+        },
+        {
+          "frame": 4.166666666666667,
+          "value": -8.976
+        },
+        {
+          "frame": 4.233333333333333,
+          "value": 0
+        },
+        {
+          "frame": 4.566666666666666,
+          "value": -8.976
+        },
+        {
+          "frame": 4.633333333333334,
+          "value": 0
+        }
+      ]
+    },
+    "paths": {
+      "body": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.4,
+              "value": -2
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body/head": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 2
+            },
+            {
+              "frame": 0.4,
+              "value": 0
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": 2
+            }
+          ]
+        }
+      },
+      "body/head/eyes_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body/head/eyes_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "body/head/chin": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": -205.433
+            },
+            {
+              "frame": 0.3333333333333333,
+              "value": -205.109
+            },
+            {
+              "frame": 0.5,
+              "value": -231.871
+            },
+            {
+              "frame": 0.75,
+              "value": -231.871
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": -206.122
+            }
+          ]
+        }
+      },
+      "body/head/grap": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            }
+          ]
+        }
+      },
+      "shoudler_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.5666666666666667,
+              "value": 0
+            },
+            {
+              "frame": 1.35,
+              "value": -110
+            },
+            {
+              "frame": 1.5166666666666666,
+              "value": -19.263999999999996
+            },
+            {
+              "frame": 2.183333333333333,
+              "value": -19.263999999999996
+            },
+            {
+              "frame": 2.6666666666666665,
+              "value": -110
+            },
+            {
+              "frame": 2.783333333333333,
+              "value": -19.263999999999996
+            },
+            {
+              "frame": 3.783333333333333,
+              "value": -19.263999999999996
+            },
+            {
+              "frame": 4.216666666666667,
+              "value": 0
+            },
+            {
+              "frame": 4.533333333333333,
+              "value": 0
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": -40
+            },
+            {
+              "frame": 0.5666666666666667,
+              "value": -40
+            },
+            {
+              "frame": 3.783333333333333,
+              "value": -40
+            },
+            {
+              "frame": 4.2,
+              "value": 28.691
+            },
+            {
+              "frame": 4.533333333333333,
+              "value": -40
+            }
+          ]
+        }
+      },
+      "shoudler_right/joints_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 1.35,
+              "value": -27.045999999999996
+            },
+            {
+              "frame": 3.783333333333333,
+              "value": -27.045999999999996
+            },
+            {
+              "frame": 4.2,
+              "value": 0
+            },
+            {
+              "frame": 4.533333333333333,
+              "value": 0
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": -149.703
+            },
+            {
+              "frame": 3.783333333333333,
+              "value": -149.703
+            },
+            {
+              "frame": 4.2,
+              "value": -100.367
+            },
+            {
+              "frame": 4.533333333333333,
+              "value": -149.703
+            }
+          ]
+        }
+      },
+      "shoudler_right/joints_right/leg_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 1.35,
+              "value": -7.494
+            },
+            {
+              "frame": 4.533333333333333,
+              "value": 0
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": -36.77
+            },
+            {
+              "frame": 4.533333333333333,
+              "value": -36.77
+            }
+          ]
+        }
+      },
+      "shoulder_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": 104
+            },
+            {
+              "frame": 1.0166666666666666,
+              "value": 5.638000000000005
+            },
+            {
+              "frame": 2.183333333333333,
+              "value": 5.638000000000005
+            },
+            {
+              "frame": 2.65,
+              "value": 104
+            },
+            {
+              "frame": 2.8,
+              "value": 5.638000000000005
+            },
+            {
+              "frame": 3.5166666666666666,
+              "value": 5.638000000000005
+            },
+            {
+              "frame": 3.783333333333333,
+              "value": 0
+            },
+            {
+              "frame": 4.2,
+              "value": 0
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": -48
+            },
+            {
+              "frame": 3.5,
+              "value": -48
+            },
+            {
+              "frame": 3.783333333333333,
+              "value": 7.776
+            },
+            {
+              "frame": 4.2,
+              "value": -48
+            }
+          ]
+        }
+      },
+      "shoulder_left/joints_left": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 0.8333333333333334,
+              "value": 48.746
+            },
+            {
+              "frame": 3.5166666666666666,
+              "value": 48.746
+            },
+            {
+              "frame": 3.8,
+              "value": 0
+            },
+            {
+              "frame": 4.2,
+              "value": 0
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": -136
+            },
+            {
+              "frame": 3.5166666666666666,
+              "value": -136
+            },
+            {
+              "frame": 3.8,
+              "value": -93.096
+            },
+            {
+              "frame": 4.2,
+              "value": -136
+            }
+          ]
+        }
+      },
+      "shoulder_left/joints_left/leg_right": {
+        "props": {
+          "angle": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 4.2,
+              "value": 0
+            }
+          ],
+          "y": [
+            {
+              "frame": 0,
+              "value": -28.964
+            },
+            {
+              "frame": 3.8,
+              "value": -28.964
+            },
+            {
+              "frame": 4.2,
+              "value": -28.964
+            }
+          ]
+        }
+      }
+    }
+  },
+  "events": [
+    {
+      "frame": 1.0166666666666666,
+      "func": "leftSlowAttack",
+      "params": []
+    },
+    {
+      "frame": 1.75,
+      "func": "rightSlowAttack",
+      "params": []
+    },
+    {
+      "frame": 2.816666666666667,
+      "func": "fullAttack",
+      "params": []
+    },
+    {
+      "frame": 4.633333333333334,
+      "func": "fullAttackFinished",
+      "params": []
+    }
+  ]
+}

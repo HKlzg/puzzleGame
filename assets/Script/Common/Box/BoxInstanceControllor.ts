@@ -1,6 +1,7 @@
 import toolsBasics from "../../Tools/toolsBasics";
 import settingBasic from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
+import audioSetting from "../Audio/audioSetting";
 const { ccclass, property } = cc._decorator;
 const actionType = settingBasic.setting.actionType;
 const actionDirection = settingBasic.setting.actionDirection;
@@ -36,6 +37,10 @@ export default class NewClass extends LogicBasicComponent {
     isforegContrl: any = null; //脚本对象
     background: cc.Node = null;
     backgroundRange = { maxX: 0, maxY: 0, minX: 0, minY: 0 };
+
+    audioSource: any = null;
+
+    isPlayAudio = false;
     start() {
 
         this.canvas = cc.find("Canvas");
@@ -62,41 +67,12 @@ export default class NewClass extends LogicBasicComponent {
         this.isforegContrl = this.node.addComponent("foregroundControllor");
         this.isforegContrl.setMoveSpeed(0);
 
-        //计算背景的实际范围
-        let actualSize: cc.Size = cc.size(this.background.width * this.background.scaleX, this.background.height * this.background.scaleY)
-        let backPos = this.background.position;
-        this.backgroundRange.maxX = actualSize.width / 2 + backPos.x;
-        this.backgroundRange.minX = -(actualSize.width / 2 - backPos.x);
-        this.backgroundRange.maxY = actualSize.height / 2 + backPos.y;
-        this.backgroundRange.minY = -(actualSize.height / 2 - backPos.y);
-
+        this.audioSource = cc.find("UICamera/audio").getComponent("audioControllor");
     }
 
     logicUpdate(dt) {
 
-        // this.checkBoxRange();
         this.isDeath = settingBasic.game.State == settingBasic.setting.stateType.REBORN;
-
-    }
-
-    //检测箱子是否越界 //待定---9.9
-    checkBoxRange() {
-        let pos = null;
-        pos = this.camera.getCameraToWorldPoint(this.node.position, pos);
-
-        if (pos.x < this.backgroundRange.minX || pos.x > this.backgroundRange.maxX
-            || pos.y < this.backgroundRange.minY || pos.y > this.backgroundRange.maxY) {
-            console.log("checkBoxRange===boxPos" + pos + "   back=" + JSON.stringify(this.backgroundRange))
-            if (this.boxShadow) {
-                this.boxShadow.destroy();
-
-                let dire = this.node.scaleX < 0 ? actionDirection.Right : actionDirection.Left;
-                let order: { direction: number, action: number } = { direction: dire, action: actionType.Wait }
-                this.brotherNode.emit(settingBasic.gameEvent.brotherPlayState, false) //取消isPlaying 状态
-                this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
-            }
-            this.node.destroy();
-        }
     }
 
     onDestroy() {
@@ -118,7 +94,7 @@ export default class NewClass extends LogicBasicComponent {
 
     //-----------------------event----------------
     touchStart(event) {
-     
+
         if (this.preTouchId && event.getID() != this.preTouchId) return
         this.preTouchId = event.getID();
         //是否死亡
@@ -126,6 +102,8 @@ export default class NewClass extends LogicBasicComponent {
 
         if (this.isDeath) return;
 
+        this.isPlayAudio = false;
+        this.isInstance = false;
         let touchPos = event.getLocation();
         this.camera.getCameraToWorldPoint(touchPos, touchPos);
         this.node.setPosition(this.node.parent.convertToNodeSpaceAR(touchPos))
@@ -137,16 +115,18 @@ export default class NewClass extends LogicBasicComponent {
         this.boxCollider.enabled = false;
         this.phyBoxCollider.apply();
 
+
         //还原为shadow显示
         this.boxShadow = cc.instantiate(this.boxShadowPerfab);
         this.node.parent.addChild(this.boxShadow);
         this.boxShadow.setPosition(this.node.position);
         this.boxShadow.active = true;
         this.boxShadow.angle = this.node.angle;
-        this.node.getComponent(cc.Sprite).spriteFrame = null;
-        this.isInstance = false;
+        this.node.getComponent(cc.Sprite).enabled = false;
+
     }
     touchMove(event) {
+        this.isInstance = false;
         if (this.preTouchId && event.getID() != this.preTouchId) return
         if (this.isDeath || !this.boxShadow) return;
 
@@ -168,7 +148,8 @@ export default class NewClass extends LogicBasicComponent {
         this.body.gravityScale = this.gravityScale;
         this.body.type = cc.RigidBodyType.Dynamic;
         //还原为BoxInstante显示
-        this.node.getComponent(cc.Sprite).spriteFrame = this.spriteFrame;
+        this.rigidBody.enabledContactListener = true;
+        this.node.getComponent(cc.Sprite).enabled = true;
         this.node.angle = this.boxShadow.angle;
         this.phyBoxCollider.sensor = false;
         this.boxCollider.enabled = true;
@@ -194,10 +175,11 @@ export default class NewClass extends LogicBasicComponent {
 
         let dire = touchPos.x >= centerPos.x ? actionDirection.Right : actionDirection.Left;
         let order: { direction: number, action: number } = { direction: dire, action: actionType.Wait }
-        this.brotherNode.emit(settingBasic.gameEvent.brotherPlayState, false) //取消isPlaying 状态
+        this.brotherNode.emit(settingBasic.gameEvent.brotherPlayState, false) //取消人物isPlaying 状态
         this.brotherNode.emit(settingBasic.gameEvent.brotherActionEvent, order)
 
         this.isInstance = true;
+
     }
 
     //找到挂载 前景脚本的 父节点
@@ -225,7 +207,34 @@ export default class NewClass extends LogicBasicComponent {
 
     //--------------------------碰撞---Event---------------------
     onBeginContact(contact, selfCollider, otherCollider) {
+        if (this.isInstance) {
 
+            // ----------音效---------
+            if (!this.isPlayAudio) {
+                let vy1 = otherCollider.node.getComponent(cc.RigidBody).linearVelocity.y;
+                let vy2 = selfCollider.node.getComponent(cc.RigidBody).linearVelocity.y;
+                if (Math.abs(vy1 - vy2) > 50) {
+                    if (otherCollider.node.groupIndex == 2 || otherCollider.node.groupIndex == 25) { //箱子、木桩
+                        this.audioSource.playAudio(audioSetting.box.crash.onWood, false, 0.2, 0.2);
+                    }
+                    if (otherCollider.node.groupIndex == 4) { //地面 /草地
+                        if (settingBasic.game.currLevel == 2) {//lv2 ->草地
+                            this.audioSource.playAudio(audioSetting.box.crash.onGrass);
+                        } else {                               //地面
+                            this.audioSource.playAudio(audioSetting.box.crash.onGround, false, 0.2, 0.2);
+                        }
+                    }
+                    if (otherCollider.node.groupIndex == 12 || otherCollider.node.groupIndex == 13) { //石头
+                        this.audioSource.playAudio(audioSetting.box.crash.onStone);
+                    }
+                    this.isPlayAudio = true;
+                }
+
+            }
+        }
+
+
+        //-------------跟随--------------
         if (this.followObject && this.followObject == otherCollider.node || otherCollider.node.groupIndex == 6) return;
 
         if (!this.followObject) {
@@ -255,6 +264,8 @@ export default class NewClass extends LogicBasicComponent {
                 this.followObject = null;
             }
         }
+
+        this.isPlayAudio = false;
 
     }
 

@@ -18,7 +18,7 @@ export default class UIAudioManager {
                 console.log("===Audio/UI load fail:" + err.message)
             } else {
                 for (let i = 0; i < clips.length; i++) {
-                    console.log("===UI name :" + clips[i].name)
+                    // console.log("===UI name :" + clips[i].name)
                     UIAudioManager.UIAudioManager.addAudio(clips[i].name, clips[i]);
                 }
             }

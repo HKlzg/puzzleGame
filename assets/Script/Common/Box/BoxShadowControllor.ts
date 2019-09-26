@@ -21,13 +21,10 @@ export default class NewClass extends LogicBasicComponent {
     isContact: boolean = false;
     boxParent: cc.Node = null;
     start() {
-        this.node.on(setting.gameEvent.instanceBoxEvent, this.changePic, this);
         this.body = this.node.getComponent(cc.RigidBody);
         this.clider = this.node.getComponent(cc.BoxCollider);
         this.sprite = this.node.getComponent(cc.Sprite);
-
         this.clider.enabled = true;
-        cc.director.getCollisionManager().enabled = true
     }
 
     onCollisionEnter(other, self) {
@@ -40,22 +37,6 @@ export default class NewClass extends LogicBasicComponent {
     }
     onCollisionExit(other, self) {
         this.isContact = false
-    }
-
-
-    changePic(msg, fun?: any) {
-
-        if (this.isOK) {
-            let box = cc.instantiate(this.boxInstancePerfab)
-            this.boxParent = this.node.parent;
-            if (this.boxParent) {
-                this.boxParent.addChild(box);
-                box.setPosition(this.node.position);
-            }
-            fun(true);
-        }
-
-        this.node.destroy();
     }
 
     logicUpdate() {

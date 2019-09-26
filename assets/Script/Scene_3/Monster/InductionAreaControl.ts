@@ -3,6 +3,7 @@ const { ccclass, property } = cc._decorator;
 import audio from "../../Common/Audio//audioControllor"
 import setting from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
+import audioSetting from "../../Common/Audio/audioSetting";
 const personActionType = setting.setting.actionType;
 @ccclass
 export default class NewClass extends LogicBasicComponent {
@@ -12,7 +13,7 @@ export default class NewClass extends LogicBasicComponent {
     tigerAni: cc.Animation = null;
     @property(cc.Node)
     monster: cc.Node = null;
-    
+
     ID = null;
     ID2 = null;
     ID3 = null;
@@ -43,7 +44,7 @@ export default class NewClass extends LogicBasicComponent {
     }
 
     onCollisionEnter(other, self) {
-        if ( other.node.name == "Brother") {
+        if (other.node.name == "Brother") {
             this.getclip();
             if (!this.quiet && !this.awake) {
                 this.awake = true;
@@ -55,15 +56,15 @@ export default class NewClass extends LogicBasicComponent {
 
     }
 
-    changeStop(stop){
+    changeStop(stop) {
         this.isstop = stop;
     }
 
     onCollisionStay(other, self) {
         this.startpos = this.node.convertToWorldSpace(new cc.Vec2(this.node.width / 2, this.node.height / 2));
         this.endpos = other.node.convertToWorldSpace(new cc.Vec2(other.node.width / 2, other.node.height / 2));
-        if(!this.isclose){
-            if (other.node.name == "Brother"&& !this.isstop) {        
+        if (!this.isclose) {
+            if (other.node.name == "Brother" && !this.isstop) {
                 this.getclip();
                 if (!this.quiet && !this.awake) {
                     this.awake = true;
@@ -72,41 +73,41 @@ export default class NewClass extends LogicBasicComponent {
                     this.tigerAni.getComponent("monsterClipControllor").setIsawake(this.awake);
                     this.dis = toolsBasics.distanceVector(this.startpos, this.endpos);
                     if (this.index == cc.audioEngine.AudioState.STOPPED && this.dis < 700 && this.dis > 500) {
-                        console.log("StandUpClip")
+                        // console.log("StandUpClip")
                         this.tigerAni.play("StandUpClip");
                         this.audioManager.stopAudioById(this.ID2);
                         this.audioManager.stopAudioById(this.ID3);
-                        this.ID = this.audioManager.playAudio("heartBeat_1", true);
-                        if(this.ID)
-                        this.index = cc.audioEngine.getState(this.ID);
-                        if(this.ID2)
-                        this.index2 =  cc.audioEngine.getState(this.ID2);
-                        if(this.ID3)
-                        this.index3 =  cc.audioEngine.getState(this.ID3);
+                        this.ID = this.audioManager.playAudio(audioSetting.player.heartbeat.heartBeat1, true);
+                        if (this.ID)
+                            this.index = cc.audioEngine.getState(this.ID);
+                        if (this.ID2)
+                            this.index2 = cc.audioEngine.getState(this.ID2);
+                        if (this.ID3)
+                            this.index3 = cc.audioEngine.getState(this.ID3);
                     }
                     else if (this.index2 == cc.audioEngine.AudioState.STOPPED && this.dis < 500 && this.dis > 300) {
                         this.tigerAni.play("WalkClip");
                         this.audioManager.stopAudioById(this.ID);
                         this.audioManager.stopAudioById(this.ID3);
-                        this.ID2 = this.audioManager.playAudio("heartBeat_2", true);
-                        if(this.ID2)
-                        this.index2 = cc.audioEngine.getState(this.ID2);
-                        if(this.ID)
-                        this.index = cc.audioEngine.getState(this.ID);
-                        if(this.ID3)
-                        this.index3 =  cc.audioEngine.getState(this.ID3);
+                        this.ID2 = this.audioManager.playAudio(audioSetting.player.heartbeat.heartBeat2, true);
+                        if (this.ID2)
+                            this.index2 = cc.audioEngine.getState(this.ID2);
+                        if (this.ID)
+                            this.index = cc.audioEngine.getState(this.ID);
+                        if (this.ID3)
+                            this.index3 = cc.audioEngine.getState(this.ID3);
                     }
                     else if (this.index3 == cc.audioEngine.AudioState.STOPPED && this.dis < 300 && this.dis > 0) {
                         this.tigerAni.play("ReadyAttackClip");
                         this.audioManager.stopAudioById(this.ID);
                         this.audioManager.stopAudioById(this.ID2);
-                        this.ID3 = this.audioManager.playAudio("heartBeat_3", true);
-                        if(this.ID2)
-                        this.index2 = cc.audioEngine.getState(this.ID2);
-                        if(this.ID)
-                        this.index = cc.audioEngine.getState(this.ID)
-                        if(this.ID3)
-                        this.index3 =  cc.audioEngine.getState(this.ID3);
+                        this.ID3 = this.audioManager.playAudio(audioSetting.player.heartbeat.heartBeat3, true);
+                        if (this.ID2)
+                            this.index2 = cc.audioEngine.getState(this.ID2);
+                        if (this.ID)
+                            this.index = cc.audioEngine.getState(this.ID)
+                        if (this.ID3)
+                            this.index3 = cc.audioEngine.getState(this.ID3);
                     }
                 } else {
                     return;
@@ -115,22 +116,24 @@ export default class NewClass extends LogicBasicComponent {
                 //     this.monster.position.x += 10;
                 // }
             }
-            else if(other.node.name == "Brother" && this.isstop){
+            else if (other.node.name == "Brother" && this.isstop) {
                 this.tigerAni.stop();
             }
-        }else{
+        } else {
             this.tigerAni.play("CatchClip");
-        }      
+            this.audioManager.playAudio(audioSetting.other.lv3.tiger.attack)
+        }
     }
 
-    
-    setIsclose(close){
+
+    setIsclose(close) {
         this.isclose = close;
     }
 
     onCollisionExit(other, self) {
         if (other.node.name == "Brother") {
             this.tigerAni.play("LieDownClip");
+            this.audioManager.playAudio(audioSetting.other.lv3.tiger.sleep)
             this.stopAudio();
             this.awake = false;
             this.tigerAni.getComponent("monsterClipControllor").setIsawake(this.awake);
@@ -139,9 +142,9 @@ export default class NewClass extends LogicBasicComponent {
 
     stopAudio() {
         this.audioManager.stopAudioById(this.ID);
-        this.index =  cc.audioEngine.AudioState.STOPPED;
-        this.index2 =  cc.audioEngine.AudioState.STOPPED;
-        this.index3 =  cc.audioEngine.AudioState.STOPPED;
+        this.index = cc.audioEngine.AudioState.STOPPED;
+        this.index2 = cc.audioEngine.AudioState.STOPPED;
+        this.index3 = cc.audioEngine.AudioState.STOPPED;
         this.ID = null;
         this.ID2 = null;
         this.ID3 = null;
@@ -149,7 +152,7 @@ export default class NewClass extends LogicBasicComponent {
 
     getclip() {
         this.player.emit(setting.gameEvent.getBrotherAction, "", (action) => { //获取的当前人物动作
-            if (action == personActionType.QuietlyWalk||action == personActionType.Wait) {
+            if (action == personActionType.QuietlyWalk || action == personActionType.Wait) {
                 this.quiet = true;
             } else {
                 this.quiet = false;

@@ -111,7 +111,10 @@ export class BackgroundControllor extends LogicBasicComponent {
     start() {
         // this.moveCamera();
         this.isStartGame = true;
+        //test
         this.closeAllEvents(1, null, 350); //test
+    
+        //test
         if (settingBasic.game.currLevel == 1) {
         }
         

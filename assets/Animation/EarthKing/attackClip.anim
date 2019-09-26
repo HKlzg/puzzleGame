@@ -6,7 +6,7 @@
   "_duration": 0.8333333333333334,
   "sample": 60,
   "speed": 0.7,
-  "wrapMode": 0,
+  "wrapMode": 2,
   "curveData": {
     "props": {
       "angle": [
@@ -304,6 +304,11 @@
     }
   },
   "events": [
+    {
+      "frame": 0.43333333333333335,
+      "func": "attack",
+      "params": []
+    },
     {
       "frame": 0.8333333333333334,
       "func": "attackFinished",

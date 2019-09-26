@@ -1,7 +1,15 @@
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 const attackType = cc.Enum({
     attack: 0,
-    fullAttack: 1
+    fullAttack: 1,
+    fastAttack: 2
+})
+
+const state = cc.Enum({
+    state1: 0,
+    state2: 1,
+    state3: 2,
+    stop: 3,
 })
 //动作指令类型
 class actionOrder {
@@ -21,19 +29,25 @@ const { ccclass, property } = cc._decorator;
 export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
     earthkingClip: cc.Node = null;
+    @property(cc.Node)
+    brother: cc.Node = null;
 
+    currState = state.stop;
     earthkingAnim: cc.Animation = null;
     isDoAction: boolean = false;
     actionQueue: actionOrder[] = []; //动作指令队列 先进先出 执行后删除
     // onLoad () {}
     currActionID: number = -1;//当前执行组的动作ID
+
     start() {
         this.earthkingAnim = this.earthkingClip.getComponent(cc.Animation);
+        // this.doActionOnce(attackType.attack);
     }
 
     logicUpdate(dt) {
-
-        this.doAction();
+        if (this.currState == state.state3) {
+            this.doAction();
+        }
     }
     //按队列顺序执行
     doAction() {
@@ -45,6 +59,8 @@ export default class NewClass extends LogicBasicComponent {
         }
     }
 
+
+
     //执行一次
     doActionOnce(actionType: number) {
         if (!this.isDoAction) {
@@ -53,11 +69,14 @@ export default class NewClass extends LogicBasicComponent {
             switch (actionType) {
                 case attackType.attack:
                     this.earthkingAnim.play("attackClip")
-                    
+
                     break;
                 case attackType.fullAttack:
                     this.earthkingAnim.play("fullAttackClip")
 
+                    break;
+                case attackType.fastAttack:
+                    this.earthkingAnim.play("fastAttackClip")
                     break;
                 default:
                     break;
@@ -65,13 +84,37 @@ export default class NewClass extends LogicBasicComponent {
 
         }
     }
+
+    changeState() {
+        if (this.currState == state.stop) {
+            this.currState = state.state1;
+            this.doActionOnce(attackType.attack);
+        }
+        else if (this.currState == state.state1) {
+            this.currState = state.state2;
+            this.isDoAction = false;
+            cc.tween(this.node).by(1, { y: -700 }).call(() => {
+                this.node.x = 1392;
+            }).by(1, { y: 950 }).call(() => { this.doActionOnce(attackType.fastAttack); }).start();
+        } else if (this.currState == state.state2) {
+            this.currState = state.state3;
+            this.isDoAction = false;
+            cc.tween(this.node).by(1, { y: -950 }).call(() => {
+                this.node.x = 2673;
+            }).by(1.5, { y: 700 }).start();
+        }
+    }
+
+    public getState() {
+        return this.currState;
+    }
+
     //添加动作指令
     public addActionOrder(order: actionOrder): boolean {
         //
-        if (this.currActionID > 0 && order.id != this.currActionID) return false;
+        if (this.actionQueue.length > 4) return false;
         this.actionQueue.push(order);
-        this.currActionID = order.id;
-        // console.log("======add order= " + order.action + "  id=" + order.id)
+        // this.currActionID = order.id;
         return true;
     }
     //外部调用 动作完成
@@ -81,10 +124,8 @@ export default class NewClass extends LogicBasicComponent {
         //从队列中移除第一个
         if (this.actionQueue.length > 0) {
             let order = this.actionQueue.shift();
-            // console.log("====remove order: " + order.action);
-        } else {
-            // console.log("====actionQueue finish======");
-            this.currActionID = -1;
+         } else {
+            // this.currActionID = -1;
         }
     }
 }

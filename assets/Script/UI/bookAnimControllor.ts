@@ -28,6 +28,9 @@ export default class NewClass extends cc.Component {
         this.bookList = this.bookClip.children;        
     }
     onLoad(){
+        
+    }
+    onEnable(){
         this.audio.playLoopBGM("bgm");
     }
 
@@ -91,7 +94,7 @@ export default class NewClass extends cc.Component {
 
     public closeBook() {
         this.playAudio();
-        console.log("=====closeBook=====")
+        // console.log("=====closeBook=====")
         let speed = 0.8;
         this.isClose = false;
 
@@ -111,16 +114,6 @@ export default class NewClass extends cc.Component {
         this.audio.playAudio("openBook");
     }
 
-    //在翻页之后[游戏处于暂停状态] 重新加载场景时 立刻设置书本状态 ->打开
-    // openBookImmediately() {
-    //     this.isOpen = true;
-    //     this.id = 8;
-    //     this.changePic(8);
-    //     this.node.setPosition(cc.v2(26, 93))
-    //     this.node.angle = 0;
-    //     this.node.scale = 0.8
-    //     this.bookMark.active = true;
-
-    // }
+   
 
 }

@@ -2,12 +2,20 @@
 const { ccclass, property } = cc._decorator;
 import settingBasic from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../LogicBasic/LogicBasicComponent";
+import audioSetting from "../Audio/audioSetting";
+import audioControllor from "../Audio/audioControllor";
 
 class AudioType {
     walkName: string;
     jumpName: string;
     magicName: string;
     ClimbName: string;
+    constructor(walkName?, jumpName?, magicName?, ClimbName?) {
+        this.walkName = walkName;
+        this.jumpName = jumpName;
+        this.magicName = magicName;
+        this.ClimbName = ClimbName;
+    }
 }
 
 const actionTags = cc.Enum({
@@ -26,39 +34,34 @@ export default class NewClass extends LogicBasicComponent {
     jumpXdist: number = 0;//水平跳跃距离
     audioName: AudioType = new AudioType();
 
-    audioManager: any = null;
+    audioManager: audioControllor = null;
+
     start() {
         this.audioManager = cc.find("UICamera/audio").getComponent("audioControllor");
         this.parentGravityScale = this.node.parent.getComponent(cc.RigidBody).gravityScale;
         this.node.on(settingBasic.gameEvent.brotherJumpEvent, this.setJumpX, this)
-        this.node.on(settingBasic.gameEvent.brotherSetAudio, this.setWalkAudioName, this)
 
         //设置默认值
-        this.audioName.walkName = "walkInWater";
-        this.audioName.jumpName = "jumpOnFloor";
-        this.audioName.ClimbName = "";
-        this.audioName.magicName = "";
+        if (settingBasic.game.currLevel == 2) {
+            this.audioName.walkName = audioSetting.player.walk.onGrass;
+            this.audioName.jumpName = audioSetting.player.jump.onGrass;
+        } else {
+            this.audioName.walkName = audioSetting.player.walk.onGround;
+            this.audioName.jumpName = audioSetting.player.jump.onGround;
+        }
+
     }
 
     //设置对应动作的声音
-    setWalkAudioName(msgList: [{ actionType: number, name: string }]) {
-        // console.log("=============this.walkAudioName=" + JSON.stringify(msgList))
-        if (!msgList || msgList.length <= 0) return
-
-        let type = settingBasic.setting.actionType;
-        msgList.forEach((msg) => {
-            switch (msg.actionType) {
-                case type.Jump:
-                    this.audioName.jumpName = msg.name;
-                    break;
-                case type.Walk:
-                    this.audioName.walkName = msg.name;
-                    break;
-                default:
-                    break;
+    setWalkAudioName(audioObj: AudioType) {
+        if (audioObj) {
+            if (this.audioName.jumpName != audioObj.jumpName) {
+                this.audioName.jumpName = audioObj.jumpName
             }
-        })
-
+            if (this.audioName.walkName != audioObj.walkName) {
+                this.audioName.walkName = audioObj.walkName
+            }
+        }
     }
 
     logicUpdate(dt) { }
@@ -135,7 +138,13 @@ export default class NewClass extends LogicBasicComponent {
         this.footNode.emit(settingBasic.gameEvent.jumpStartEvent, false);
 
         parent.emit(settingBasic.gameEvent.brotherPlayState, false);
-        this.audioManager.playAudio(this.audioName.jumpName);
+        // let vy = Math.abs(parent.getComponent(cc.RigidBody).linearVelocity.y);
+        // let volum = 0.8;
+        // if (vy < 400) {
+        //     volum = vy / 400 * volum;
+        //     volum = volum <= 0.1 ? 0.1 : volum;
+        // }
+        // this.audioManager.playAudio(this.audioName.jumpName, false, volum, volum);
         this.isJump = false;
     }
     //死亡动画
@@ -160,11 +169,11 @@ export default class NewClass extends LogicBasicComponent {
     //------------------------walk 左脚------------------
 
     walkFootStep1() {
-        this.audioManager.playAudio(this.audioName.walkName);
+        this.audioManager.playAudio(this.audioName.walkName, false, 0.1, 0.1);
     }
     //右脚
     walkFootStep2() {
-        this.audioManager.playAudio(this.audioName.walkName);
+        this.audioManager.playAudio(this.audioName.walkName, false, 0.1, 0.1);
     }
 
 

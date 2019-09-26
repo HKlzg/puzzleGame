@@ -1,6 +1,7 @@
 import tools from "../../Tools/toolsBasics";
 import setting from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
+import audioSetting from "../../Common/Audio/audioSetting";
 const { ccclass, property } = cc._decorator;
 class childType {
     node: cc.Node;
@@ -14,7 +15,7 @@ class childType {
 }
 @ccclass
 export default class NewClass extends LogicBasicComponent {
- 
+
 
     @property(cc.Node)
     poleH: cc.Node = null;
@@ -65,14 +66,17 @@ export default class NewClass extends LogicBasicComponent {
     public rotation(ang: number) {
         if (!this.isRotation) {
             this.isRotation = true;
-            cc.tween(this.node).by(1.5, { angle: ang }, { easing: "sineInOut" }).call(() => {
+            //齿轮旋转音效
+            let gearAudioID = this.audioManager.playAudio(audioSetting.other.lv2.gear);
 
+            cc.tween(this.node).by(1.5, { angle: ang }, { easing: "sineInOut" }).call(() => {
+                this.audioManager.stopAudioById(gearAudioID);
                 //升降
                 if (ang < 0) { //升
                     if (this.tmpHeight <= this.maxHeight - this.step) {
                         cc.tween(this.target).call(() => {
                             //播放山体音效
-                            this.audioTargetId = this.audioManager.playAudio("targetMove", true)
+                            this.audioTargetId = this.audioManager.playAudio(audioSetting.other.lv2.mountainMove, true)
                         }).to(1, { position: cc.v2(this.target.x, this.target.y + this.step) }, { easing: "sineInOut" }).
                             call(() => {
                                 //停止播放山体音效
@@ -88,7 +92,7 @@ export default class NewClass extends LogicBasicComponent {
                     if (this.tmpHeight >= this.minHeight + this.step) {
                         cc.tween(this.target).call(() => {
                             //播放山体音效
-                            this.audioTargetId = this.audioManager.playAudio("targetMove", true)
+                            this.audioTargetId = this.audioManager.playAudio(audioSetting.other.lv2.mountainMove, true)
                         }).to(1, { position: cc.v2(this.target.x, this.target.y - this.step) }, { easing: "sineInOut" }).
                             call(() => {
                                 //停止播放山体音效

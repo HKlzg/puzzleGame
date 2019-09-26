@@ -1,5 +1,6 @@
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 import settingBasic from "../../Setting/settingBasic";
+import audioSetting from "../../Common/Audio/audioSetting";
 
 const { ccclass, property } = cc._decorator;
 
@@ -35,7 +36,7 @@ export default class NewClass extends LogicBasicComponent {
     audio: any = null;
     currScene: cc.Node = null;
 
-
+    waterStreamID = 0; //水流音效ID
     onLoad() {
         this.audio = cc.find("UICamera/audio").getComponent("audioControllor");
         this.mask1InitHeight = this.maskNode.height;
@@ -67,7 +68,7 @@ export default class NewClass extends LogicBasicComponent {
             if (isInstance) {
                 this.time = 0;
                 this.isAudioPlaying = true;
-                let id = this.audio.playAudio("climbs");
+                let id = this.audio.playAudio(audioSetting.box.crash.onBanboo);
             }
         }
     }
@@ -89,21 +90,33 @@ export default class NewClass extends LogicBasicComponent {
             }
             else {
                 this.targetWater.active = false;
+                this.audio.stopAudioById(this.waterStreamID);
             }
         } else {
             this.maskNode.height = this.mask1InitHeight;
             this.targetWater.active = false;
+            this.audio.stopAudioById(this.waterStreamID);
+
         }
-       
+
     }
     targetWaterStream() {
         this.targetWater.active = true;
+        // 水流音效
+        let waterStream = audioSetting.other.lv1.waterStream;
+        this.waterStreamID = this.audio.playAudio(waterStream, true, 0.5, 0.01, this.targetWater, true);
+
         //持续浇水2S 火才能熄灭
         cc.tween(this.node).delay(2).call(() => {
             //2S之后检测水是否处于开启状态
             if (this.targetWater.active) {
                 if (this.fire.active) {
+                    //火熄灭 音效
+                    let fireQuench = audioSetting.other.lv1.fire.burning;
+                    let fireQuench_ID = this.audio.playAudio(fireQuench, true, 0.5, 0.01, this.fire, true);
+
                     cc.tween(this.fire).then(cc.fadeOut(2)).call(() => {
+                        this.audio.stopAudioById(fireQuench_ID);
                         this.fire.active = false;
                         this.currScene.emit(settingBasic.gameEvent.gameMoveStep, 1)
                     }).start();
