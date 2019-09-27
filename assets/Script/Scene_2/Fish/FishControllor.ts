@@ -12,16 +12,6 @@ export default class NewClass extends LogicBasicComponent {
     @property(cc.Node)
     personNode: cc.Node = null;
 
-    @property(cc.Node)
-    attackNode: cc.Node = null;
-
-    @property(cc.Node)
-    oilPollution: cc.Node = null;
-    @property(cc.Node)
-    fire: cc.Node = null;
-    @property(cc.Node)
-    map: cc.Node = null;
-
     currScene: cc.Node = null;
 
     isStartSwim: boolean = false; //是否开始
@@ -204,52 +194,6 @@ export default class NewClass extends LogicBasicComponent {
     }
 
     onCollisionEnter(other, self) {
-        //碰到 油滴 --23
-        if (other.node.groupIndex == 23 && !this.isGetOil) {
-            //oil
-            this.isGetOil = true;
-            this.oilPollution.active = true;
-            this.oilPollution.scale = 0.1;
-            cc.tween(this.oilPollution).to(1, { scale: 1 }).start();
-            cc.tween(this.oilPollution).then(cc.fadeTo(0, 180)).start();
-
-        }
-
-        //碰到 火焰 --24
-        if (other.node.groupIndex == 24 && this.isGetOil && !this.isBurning) {
-            //fire
-            this.isBurning = true;
-            this.fire.active = true;
-            cc.tween(this.fire).then(cc.fadeIn(0.3)).start();
-            let initScale = this.fire.scale;
-            this.fire.scale = 0.1;
-            cc.tween(this.fire).to(0.5, { scale: initScale }, { easing: "backIn" }).start();
-
-            //处于燃烧状态时 
-            this.moveSpeed = 2; //减缓速度
-
-            cc.tween(this.node).delay(3).call(() => {
-                this.moveSpeed = 0;
-                cc.tween(this.fire).then(cc.fadeOut(0.5)).start();
-                //掉进水中
-                let posRiver = this.river.convertToWorldSpaceAR(cc.Vec2.ZERO);
-                let pos = this.node.position;
-                let pos2 = this.node.parent.convertToNodeSpaceAR(posRiver);
-                cc.tween(this.node).to(0.5, { position: cc.v2(pos.x, pos2.y - 100) }).call(() => {
-                    //显示地图
-                    this.map.active = true;
-                    pos = this.node.convertToWorldSpaceAR(cc.Vec2.ZERO)
-                    this.map.position = this.map.parent.convertToNodeSpaceAR(cc.v2(pos.x, pos.y));
-
-                    let mapPos = this.map.position;
-                    cc.tween(this.map).to(1.5, { position: cc.v2(mapPos.x, mapPos.y + 160) }).call(() => {
-                        this.map.getComponent(cc.Button).enabled = true;
-                    }).start();
-                }).start()
-
-            }).start();
-
-        }
     }
 
 

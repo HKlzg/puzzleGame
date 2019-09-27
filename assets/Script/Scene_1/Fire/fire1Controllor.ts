@@ -6,8 +6,8 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class NewClass extends LogicBasicComponent {
 
-    @property(cc.Sprite)
-    sprite: cc.Sprite = null;
+    @property(cc.SpriteFrame)
+    sprite: cc.SpriteFrame = null;
     @property(cc.Float)
     time = 0;
     @property(cc.SpriteFrame)
@@ -23,7 +23,7 @@ export default class NewClass extends LogicBasicComponent {
         if (this.lable <= this.sprtelist.length - 1) {
 
             if (this.time >= 0.08) {
-                this.sprite.spriteFrame = this.sprtelist[this.lable];
+                this.sprite = this.sprtelist[this.lable];
                 this.lable += 1;
                 this.time = 0;
             }

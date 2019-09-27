@@ -278,8 +278,10 @@ export class BrotherBasic extends LogicBasicComponent {
         if (jumpName != "") {
             contrl ? contrl.setWalkAudioName(audioObj) : "";
             let vy1 = this.rigidBody.linearVelocity.y;
-            let vy2 = other.node.getComponent(cc.RigidBody).linearVelocity.y;
-            if (vy1 <= -100) {
+            let pos = this.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
+            let pos2 = other.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
+            let height2 = other.node.height;
+            if (vy1 <= -100 && pos.y - 70 > pos2.y + height2 / 2) {
                 let volum = 0.8;
                 if (vy1 < 400) {
                     volum = vy1 / 400 * volum;
