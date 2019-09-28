@@ -76,11 +76,10 @@ export default class NewClass extends LogicBasicComponent {
                     if (this.tmpHeight <= this.maxHeight - this.step) {
                         cc.tween(this.target).call(() => {
                             //播放山体音效
-                            this.audioTargetId = this.audioManager.playAudio(audioSetting.other.lv2.mountainMove, true)
+                            this.audioTargetId = this.audioManager.playAudio(audioSetting.other.lv2.mountainMove)
                         }).to(1, { position: cc.v2(this.target.x, this.target.y + this.step) }, { easing: "sineInOut" }).
                             call(() => {
-                                //停止播放山体音效
-                                this.audioManager.stopAudioById(this.audioTargetId);
+
                                 this.tmpHeight += this.step;
                                 this.isRotation = false;
                             }).start();
@@ -92,11 +91,10 @@ export default class NewClass extends LogicBasicComponent {
                     if (this.tmpHeight >= this.minHeight + this.step) {
                         cc.tween(this.target).call(() => {
                             //播放山体音效
-                            this.audioTargetId = this.audioManager.playAudio(audioSetting.other.lv2.mountainMove, true)
+                            this.audioTargetId = this.audioManager.playAudio(audioSetting.other.lv2.mountainMove)
                         }).to(1, { position: cc.v2(this.target.x, this.target.y - this.step) }, { easing: "sineInOut" }).
                             call(() => {
-                                //停止播放山体音效
-                                this.audioManager.stopAudioById(this.audioTargetId);
+
                                 this.tmpHeight -= this.step;
                                 this.isRotation = false;
                             }).start();
@@ -115,31 +113,7 @@ export default class NewClass extends LogicBasicComponent {
     public getIsOpen(): boolean {
         return this.isOpen;
     }
-    //开启机关
-    public openMachine() {
-        // if (this.isOpen) return;
-        // this.isOpen = true;
-        // cc.tween(this.poleH).to(1, { scaleX: 1.5 }).
-        //     delay(0.5).
-        //     call(() => {
-        //         cc.tween(this.poleH).to(0.2, { scaleX: 2.5 }).
-        //             call(() => {
-        //                 this.poleH.groupIndex = 5; //只与箱子碰撞
-        //                 this.poleH.getComponent(cc.PhysicsBoxCollider).apply()
-        //             }).start();
-        //     }).start()
-
-        // cc.tween(this.poleV).to(1, { scaleX: 1.5 }).
-        //     delay(0.5).
-        //     call(() => {
-        //         cc.tween(this.poleV).to(0.2, { scaleX: 2.5 }).
-        //             call(() => {
-        //                 this.poleV.groupIndex = 5; //只与箱子碰撞
-        //                 this.poleV.getComponent(cc.PhysicsBoxCollider).apply()
-        //             }).start();
-        //     }).start()
-    }
-
+ 
     //
     public addPhyChild(child: cc.Node) {
         if (child.getComponent(cc.RigidBody)) {

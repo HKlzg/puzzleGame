@@ -31,7 +31,7 @@ export default class DeadLineBasic extends LogicBasicComponent {
             switch (currLv) {
                 case 2:
                     //第二关 掉进水中 死亡-> 成就:我是水鬼
-                    this.achieveManager.addRecord(2, achieveTypes.IAmWaterGhost);
+                    this.achieveManager.addRecord(achieveTypes.IAmWaterGhost);
                     break;
 
                 default:

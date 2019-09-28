@@ -113,11 +113,11 @@ export class BackgroundControllor extends LogicBasicComponent {
         this.isStartGame = true;
         //test
         this.closeAllEvents(1, null, 350); //test
-    
+
         //test
         if (settingBasic.game.currLevel == 1) {
         }
-        
+
 
     };
 
@@ -345,6 +345,7 @@ export class BackgroundControllor extends LogicBasicComponent {
             this.node.on(cc.Node.EventType.TOUCH_END, this.touchEnd, this)
             this.node.on(cc.Node.EventType.TOUCH_CANCEL, this.touchEnd, this)
             this.actionMask.active = false;
+          
             fun ? fun() : null;
         }, passType)
 

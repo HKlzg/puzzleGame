@@ -11,7 +11,7 @@ export default class UIAudioManager {
     currMusicName: string = "";
     protected static UIAudioManager: UIAudioManager = new UIAudioManager();
 
-    constructor() {
+    private constructor() {
         //加载音乐文件
         cc.loader.loadResDir('Audio/UI', cc.AudioClip, function (err, clips) {
             if (err) {

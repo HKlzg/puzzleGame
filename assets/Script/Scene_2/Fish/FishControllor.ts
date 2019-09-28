@@ -185,7 +185,7 @@ export default class NewClass extends LogicBasicComponent {
             //检测是否碰撞到人-6
             this.isPersonDeath = true;
             //增加获取成就的次数 :
-            AchievementControllor.getAchieveManager().addRecord(2, this.achieveTypes.StomachLover);
+            AchievementControllor.getAchieveManager().addRecord(this.achieveTypes.StomachLover);
 
             this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.RESTART);
 

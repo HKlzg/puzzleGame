@@ -11,7 +11,7 @@ export default class NewClass extends ViewControllorBasic {
 
         //成就时间 5min
         this.scheduleOnce(() => {
-            this.achieveManager.addRecord(this.level, this.achieveTypes.TimeCollector)
+            this.achieveManager.addRecord(this.achieveTypes.TimeCollector)
         }, 300)
     }
     loadSubPackage() {

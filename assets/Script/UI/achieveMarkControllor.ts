@@ -11,28 +11,17 @@ class achievement { //每个成就的详细信息
     isGet: boolean;
     count: number;
     needNum: number;
-    otherInfo: any;
-    constructor({ type, name, desc, isGet, count, needNum, otherInfo }) {
+    constructor({ type, name, desc, isGet, count, needNum }) {
         this.type = type;
         this.name = name;
         this.desc = desc;
         this.isGet = isGet;
         this.count = count;
         this.needNum = needNum;
-        this.otherInfo = otherInfo;
     }
 
 }
 
-class levelAchievements {//每关的 成就信息
-    lv: number;
-    achievements: achievement[]; //当前关卡的所有成就信息
-
-    constructor(lv, achievements) {
-        this.lv = lv;
-        this.achievements = achievements;
-    }
-}
 /**
  * 成就 书签. 只控制成就是否显示
  */
@@ -51,50 +40,47 @@ export default class NewClass extends cc.Component {
 
     achieveManager = AchievementControllor.getAchieveManager();
     // LIFE-CYCLE CALLBACKS:
-
+    itemKey = settingBasic.setting.storageKey.achievement;
+    canvasCtrl: any = null;
     onLoad() {
-        this.achieveManager.setAchieveNode(this);
-
+        this.canvasCtrl = cc.find("Canvas").getComponent("CanvasControllor")
     }
     start() {
-        this.refrush();
+    }
+    update(dt) {
 
     }
-
     //从成就系统获取新的信息
-    public refrush() {
-        //读取所有成就信息
-        let newList: levelAchievements[] = this.achieveManager.getAllAchievements();
+    public refrush(achieves) {
         //不同点
         let differeList: achievement[] = [];
         //对比成就节点  
-        newList.forEach(achieveList => {
-            if (achieveList.lv > 0) {
-                achieveList.achievements.forEach(achieve => {
-                    if (achieve.isGet) { //成就已获得
-                        //和当前记录allAchievements对比
-                        if (this.allAchievements.length > 0) {
-                            let has = false;
-                            for (let index = 0; index < this.allAchievements.length; index++) {
-                                if (this.allAchievements[index].type == achieve.type) {
-                                    has = true;
-                                    break;
-                                }
-                            }
-                            if (!has) {
-                                this.allAchievements.push(achieve);
-                                differeList.push(achieve);
-                            }
-                        } else {
-                            this.allAchievements.push(achieve);
-                            differeList.push(achieve);
+        achieves.forEach((achieve) => {
+            if (achieve.isGet) { //成就已获得
+                //和当前记录allAchievements对比
+                if (this.allAchievements.length > 0) {
+                    let has = false;
+                    for (let index = 0; index < this.allAchievements.length; index++) {
+                        if (this.allAchievements[index].type == achieve.type) {
+                            has = true;
+                            break;
                         }
                     }
-                })
+                    if (!has) {
+                        this.allAchievements.push(achieve);
+                        differeList.push(achieve);
+                    }
+                } else {
+                    this.allAchievements.push(achieve);
+                    differeList.push(achieve);
+                }
             }
-        });
-        this.addAchievement(differeList);
 
+        })
+         this.addAchievement(differeList);
+        this.saveToLocalStorage();
+        //清除
+        this.achieveManager.clearNewAchieveTip();
     }
 
     //新增成就节点
@@ -111,7 +97,15 @@ export default class NewClass extends cc.Component {
             }
         })
     }
-    // update (dt) {}
 
+    //显示所有成就点
+    public showAll() {
+        let allAchieve = this.canvasCtrl.getGameRecords().achievements;
+        this.refrush(allAchieve)
+    }
 
+    //记录到本地存储
+    saveToLocalStorage() {
+        this.canvasCtrl.saveRecords(this.itemKey, this.allAchievements);
+    }
 }

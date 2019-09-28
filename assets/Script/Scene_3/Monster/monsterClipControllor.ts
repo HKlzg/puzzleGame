@@ -3,6 +3,9 @@ const { ccclass, property } = cc._decorator;
 import tools from "../../Tools/toolsBasics";
 import setting from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
+import AchievementControllor from "../../Common/Achievement/achievementControllor";
+import settingBasic from "../../Setting/settingBasic";
+import audioSetting from "../../Common/Audio/audioSetting";
 const personActionType = setting.setting.actionType;
 
 const monsterActionType = cc.Enum({
@@ -21,12 +24,12 @@ export default class NewClass extends LogicBasicComponent {
     angle = 1;
     pos = null;
     @property(cc.Node)
-    player: cc.Node =null;
+    player: cc.Node = null;
     @property(cc.Node)
     canves = null;
     lable = 0
     @property(cc.Animation)
-    playani:cc.Animation = null;
+    playani: cc.Animation = null;
     quiet = false;
     audioManager: any = null;
     currScene = null;
@@ -36,12 +39,14 @@ export default class NewClass extends LogicBasicComponent {
     close = false;
     start() {
         this.audioManager = cc.find("UICamera/audio").getComponent("audioControllor");
-        this.currScene = cc.find("Canvas/"+setting.game.currScene);
+        this.currScene = cc.find("Canvas/" + setting.game.currScene);
     }
 
     logicUpdate(dt) { }
 
     jumpStart() {
+
+        this.audioManager.playAudio(audioSetting.other.lv3.tiger.attack)
         this.getclip();
         if (this.lable == 0 && this.isawake) {
             this.anglefif();
@@ -50,25 +55,25 @@ export default class NewClass extends LogicBasicComponent {
             parent.scaleX = this.angle;
             let playerpos = this.player.convertToWorldSpace(cc.v2(0, 0));
             playerpos = this.canves.convertToNodeSpace(playerpos);
-            let pos = cc.v2(playerpos.x,13);
-            let jump = cc.jumpTo(0.88, pos, parent.position.y +100, 1);
+            let pos = cc.v2(playerpos.x, 13);
+            let jump = cc.jumpTo(0.88, pos, parent.position.y + 100, 1);
             parent.runAction(jump);
             this.lable = 1;
         }
     }
-    
+
     jumpEnd() { //attack End
         this.isJump = false;
         let parent = this.node.parent;
         parent.emit(setting.gameEvent.monsterStopPlayAction, false)
     }
-    walkstart(){
+    walkstart() {
         this.getclip();
     }
 
-    changeStop(stop){
+    changeStop(stop) {
         this.isstop = stop;
-        this.node.parent.stopAction(this.move); 
+        this.node.parent.stopAction(this.move);
     }
 
     standUpEnd() {
@@ -81,26 +86,26 @@ export default class NewClass extends LogicBasicComponent {
     }
 
     walk() {
-        if(this.isawake){
+        if (this.isawake) {
             this.anglefif();
             let parent = this.node.parent;
             parent.scaleX = this.angle;
             this.move = cc.moveTo(1.33, cc.v2(parent.position.x + 200 * this.angle, parent.position.y));
-            parent.runAction(this.move);                   
+            parent.runAction(this.move);
         }
     }
 
-    setIsawake(isawake){
+    setIsawake(isawake) {
         this.isawake = isawake;
     }
 
-    setIsclose(close){
+    setIsclose(close) {
         this.close = close;
         this.node.parent.stopAction(this.move);
     }
 
 
-    anglefif(){
+    anglefif() {
         let playerpos = this.player.convertToWorldSpace(cc.v2(0, 0));
         playerpos = this.canves.convertToNodeSpace(playerpos);
         let parent = this.node.parent;
@@ -112,13 +117,13 @@ export default class NewClass extends LogicBasicComponent {
     }
 
     onCollisionEnter(other, self) {
-        if (this.isawake && other.node.name == "Brother"&&!this.close) {            
-            // this.currScene.emit(setting.gameEvent.gameStateEvent,setting.setting.stateType.REBORN);
-            this.currScene.emit(setting.gameEvent.gameStateEvent,setting.setting.stateType.RESTART);
+        if (this.isawake && other.node.name == "Brother" && !this.close) {
+            AchievementControllor.getAchieveManager().addRecord(settingBasic.setting.achievements.IAmFood)
+            this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.RESTART);
         }
     }
 
-    getclip(){
+    getclip() {
         this.player.emit(setting.gameEvent.getBrotherAction, "", (action) => { //获取的当前人物动作
             if (action == personActionType.QuietlyWalk) {
                 this.quiet = true;

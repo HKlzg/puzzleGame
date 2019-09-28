@@ -1,10 +1,12 @@
 import settingBasic from "../Setting/settingBasic";
+import { gameRecordClass } from "./BasicClass/recordClass";
+import AchievementControllor from "../Common/Achievement/achievementControllor";
 
 const { ccclass, property } = cc._decorator;
 
 //用于初始化 参数
 @ccclass
-export default class NewClass extends cc.Component {
+export default class CanvasControllor extends cc.Component {
 
     @property(cc.Node)
     UIcamera: cc.Node = null;
@@ -14,11 +16,15 @@ export default class NewClass extends cc.Component {
     backMask: cc.Node = null;
 
     scenePerfabList: cc.Prefab[] = [];
-
+    //存储的key
+    recorderKey = settingBasic.setting.storageKey.game;
     sceneList: cc.Node[] = [];
     // LIFE-CYCLE CALLBACKS:
-
+    gameRecord: gameRecordClass = null;
     onLoad() {
+        // this.clearRecord();//test
+        this.loadRecords();
+
         this.UIcamera.active = false;
         this.UIMask.active = false;
         //加载perfab资源
@@ -118,4 +124,54 @@ export default class NewClass extends cc.Component {
         }, 0, "IN");
     }
 
+    //加载记录
+    loadRecords() {
+        let rec = cc.sys.localStorage.getItem(this.recorderKey);
+        if (rec) {
+            let record: gameRecordClass = JSON.parse(rec);
+            if (record) {
+                // console.log("================record=="+JSON.stringify(record)+"  "+record.playerName)
+                this.gameRecord = record;
+                //设置成就记录
+                AchievementControllor.getAchieveManager().setAllAchievements(this.gameRecord.achievements);
+
+            } else {
+                this.gameRecord = new gameRecordClass();
+            }
+        } else {
+            this.gameRecord = new gameRecordClass();
+        }
+    }
+
+    public saveRecords(key, val) {
+        let keys = settingBasic.setting.storageKey;
+        switch (key) {
+            case keys.game:
+                this.gameRecord = val;
+                break;
+            case keys.achievement:
+                this.gameRecord.achievements = val;
+                break;
+            case keys.item:
+                this.gameRecord.items = val;
+                break;
+            default:
+                break;
+        }
+        // console.log("================save=="+JSON.stringify(this.gameRecord))
+        cc.sys.localStorage.setItem(this.recorderKey, JSON.stringify(this.gameRecord));
+
+    }
+
+    public getGameRecords(): gameRecordClass {
+        return this.gameRecord;
+    }
+
+    public clearRecord(){
+        cc.sys.localStorage.removeItem(this.recorderKey)
+    }
+
+    onDestroy() {
+        this.saveRecords(this.recorderKey, this.gameRecord);
+    }
 }

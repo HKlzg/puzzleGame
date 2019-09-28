@@ -148,7 +148,7 @@ export default class NewClass extends LogicBasicComponent {
         this.body.gravityScale = this.gravityScale;
         this.body.type = cc.RigidBodyType.Dynamic;
         //还原为BoxInstante显示
-        this.rigidBody.enabledContactListener = true;
+        this.body.enabledContactListener = true;
         this.node.getComponent(cc.Sprite).enabled = true;
         this.node.angle = this.boxShadow.angle;
         this.phyBoxCollider.sensor = false;

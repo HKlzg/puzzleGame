@@ -156,8 +156,7 @@ export default class NewClass extends cc.Component {
         this.showContent(this.currPageNum);
     }
     achievementMarkOnClick() {
-        //刷新
-        this.achievement.getComponent("achieveMarkControllor").refrush();
+        this.achievement.getComponent("achieveMarkControllor").showAll();
         this.showContent(contentType.achievement);
     }
     mapMarkOnClick() {

@@ -5,6 +5,7 @@ import settingBasic from "../Setting/settingBasic";
 import { LogicBasicComponent } from "./LogicBasic/LogicBasicComponent";
 import AchievementControllor from "./Achievement/achievementControllor";
 import audioSetting from "./Audio/audioSetting";
+import { gameRecordClass } from "./BasicClass/recordClass";
 
 const leveList = settingBasic.setting.level
 
@@ -19,16 +20,9 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
     brotherNode: cc.Node = null;
     UICamera: cc.Node = null;
 
-    //Brother Move 
-    minX: number = 0;
-    minY: number = 0;
-    maxX: number = 0;
-    maxY: number = 0;
-
-
     bookNode: cc.Node = null;
     bookmarkNode: cc.Node = null;
-
+    canvas: cc.Node = null;
     public blackMask: cc.Node = null;
 
     //public 用于给子类调用
@@ -51,6 +45,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
     isRestarting: boolean = false;
     personAudio: [{ actionType: number, name: string }] = null;
     onLoad() {
+        this.canvas = cc.find("Canvas");
         this.audioManager = cc.find("UICamera/audio").getComponent("audioControllor");
         // cc.game.setFrameRate(60);
         this.brotherWalkNode = this.brotherNode.getChildByName("Brother_Walk");
@@ -81,7 +76,7 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
         cc.director.getCollisionManager().enabled = true;
 
         // 绘制碰撞区域
-        var draw = cc.PhysicsManager.DrawBits;
+        // var draw = cc.PhysicsManager.DrawBits;
         // cc.director.getPhysicsManager().debugDrawFlags = draw.e_shapeBit | draw.e_jointBit;
         // cc.director.getCollisionManager().enabledDebugDraw = true; //碰撞区域 
         // cc.director.getCollisionManager().enabledDrawBoundingBox = true;
@@ -100,7 +95,13 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
         this.audioManager.playLoopBGM(currBgm);
         //test
         this.toStart();
-        this.changeGameState(settingBasic.setting.stateType.START);
+        //读取信息
+        let rec: gameRecordClass = this.canvas.getComponent("CanvasControllor").getGameRecords();
+        if (rec.levelRecord["lv" + this.level]) {
+            this.changeGameState(settingBasic.setting.stateType.START);
+        } else {
+            this.changeGameState(settingBasic.setting.stateType.PAUSE);
+        }
 
     };
 
@@ -225,8 +226,6 @@ export abstract class ViewControllorBasic extends LogicBasicComponent {
     //人物移动步骤
     abstract moveStep(setp: number);
 
-    onDestroy() {
-        this.achieveManager.saveToLocalStorage();
-    }
+   
 
 }

@@ -3,6 +3,7 @@ const { ccclass, property } = cc._decorator;
 import setting from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 import settingBasic from "../../Setting/settingBasic";
+import AchievementControllor from "../../Common/Achievement/achievementControllor";
 
 @ccclass
 export default class NewClass extends LogicBasicComponent {
@@ -24,6 +25,7 @@ export default class NewClass extends LogicBasicComponent {
             let ctrl = this.spiderNode.getComponent("spiderControllor");
             let isDead = setting.game.State == setting.setting.stateType.REBORN;
             if (!isDead && ctrl && ctrl.isAttack()) {
+                AchievementControllor.getAchieveManager().addRecord(settingBasic.setting.achievements.Slowly)
                 this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.RESTART);
                 this.isContact = true;
             }

@@ -1,13 +1,20 @@
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 import audioControllor from "../../Common/Audio/audioControllor";
 import audioSetting from "../../Common/Audio/audioSetting";
+import { gameRecordClass } from "../../Common/BasicClass/recordClass";
+import settingBasic from "../../Setting/settingBasic";
+import AchievementControllor from "../../Common/Achievement/achievementControllor";
 
 const { ccclass, property } = cc._decorator;
-const attackType = cc.Enum({
-    attack: 0,
-    fullAttack: 1,
-    fastAttack: 2
-})
+
+class stoneType {
+    isMark: boolean = false;
+    isRec: boolean = false;
+    node: cc.Node;
+    constructor(node) {
+        this.node = node;
+    }
+}
 
 @ccclass
 export default class NewClass extends LogicBasicComponent {
@@ -39,14 +46,59 @@ export default class NewClass extends LogicBasicComponent {
     audioSource: audioControllor = null;
 
     earthkingAnim: cc.Animation = null;
+    stoneList: stoneType[] = []
 
+    //是否已获得此成就
+    isGetachieve_SmartBoy = false;
+    canvasCtrl: any = null;
+    achieveCount: number = 0;
     start() {
         this.earthkingAnim = this.node.getComponent(cc.Animation);
         this.audioSource = cc.find("UICamera/audio").getComponent("audioControllor");
 
+        //获取需要的次数
+        this.canvasCtrl = cc.find("Canvas").getComponent("CanvasControllor");
+        let rec: gameRecordClass = this.canvasCtrl.getGameRecords();
+        if (rec.achievements) {
+            let achieves = rec.achievements;
+            achieves.forEach(e => {
+                if (e.type == settingBasic.setting.achievements.Smartboy) {
+                    this.isGetachieve_SmartBoy = true;
+                }
+            })
+        }
     }
 
-    logicUpdate(dt) { }
+    logicUpdate(dt) {
+        for (let index = 0; index < this.stoneList.length; index++) {
+            let stone = this.stoneList[index];
+            if (stone.node.isValid) {
+                if (!this.isGetachieve_SmartBoy) {
+                    //检测是否快碰到人
+                    let pos1 = stone.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
+                    let pos2 = this.brother.convertToWorldSpaceAR(cc.Vec2.ZERO);
+
+                    if (!stone.isMark && Math.abs(pos1.x - pos2.x) < 100 && pos1.y - pos2.y < 250) {
+                        stone.isMark = true//标记
+                        // console.log("====== Mark ==index=" + index)
+                    }
+                    if (stone.isMark && !stone.isRec && pos1.y - pos2.y < 0) {
+                        let needNum = settingBasic.setting.achievementsInit[settingBasic.setting.achievements.Smartboy].needNum;
+                        // console.log("======achieve +1======= needNum= " + needNum + " ==this.achieveCount=" + this.achieveCount)
+                        if (this.achieveCount < needNum) {
+                            this.achieveCount++;
+                            stone.isRec = true;
+                            AchievementControllor.getAchieveManager().addRecord(settingBasic.setting.achievements.Smartboy)
+                        } else {
+                            this.isGetachieve_SmartBoy = true;
+                        }
+                    }
+                }
+            } else {
+                this.stoneList.splice(index)
+            }
+        }
+    }
 
     attackFinished() {
         this.earthkingNode.getComponent("earthKingControllor").actionFinished();
@@ -66,19 +118,25 @@ export default class NewClass extends LogicBasicComponent {
     }
 
     creatStone() {
+
         for (let index = 0; index < 2; index++) {
             let random = Math.random();
-            let speed_1 = random + 0.3;
-
+            let speed_1 = random;
+            speed_1 = speed_1 > 0.6 ? 0.6 : speed_1 < 0.3 ? 0.3 : speed_1;
             let scale = random;
-            scale = scale > 0.6 ? 0.6 : scale < 0.4 ? 0.4 : scale;
+            scale = scale > 0.4 ? 0.4 : scale < 0.3 ? 0.3 : scale;
+            let angV = random * 100;
+            angV = angV < 3 ? 3 : angV;
+
             let tri = cc.instantiate(this.triangleStone);
             let pos = this.brother.convertToWorldSpace(cc.Vec2.ZERO);
             pos = this.stoneParent.convertToNodeSpace(pos);
             tri.getComponent(cc.RigidBody).gravityScale = speed_1;
+            tri.getComponent(cc.RigidBody).angularVelocity = angV;
             tri.position = cc.v2(pos.x + random * 1000 - 400, pos.y + 900 + random * 1200);
             tri.scale = scale;
             tri.parent = this.stoneParent;
+            this.stoneList.push(new stoneType(tri))
         }
 
     }

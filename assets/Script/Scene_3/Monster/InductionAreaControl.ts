@@ -4,6 +4,8 @@ import audio from "../../Common/Audio//audioControllor"
 import setting from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 import audioSetting from "../../Common/Audio/audioSetting";
+import AchievementControllor from "../../Common/Achievement/achievementControllor";
+import settingBasic from "../../Setting/settingBasic";
 const personActionType = setting.setting.actionType;
 @ccclass
 export default class NewClass extends LogicBasicComponent {
@@ -23,7 +25,6 @@ export default class NewClass extends LogicBasicComponent {
     index = cc.audioEngine.AudioState.STOPPED;
     index2 = cc.audioEngine.AudioState.STOPPED;
     index3 = cc.audioEngine.AudioState.STOPPED;
-    canves = null;
     startpos = null;
     endpos = null;
     @property(cc.Node)
@@ -40,7 +41,6 @@ export default class NewClass extends LogicBasicComponent {
 
     start() {
         this.audioManager = cc.find("UICamera/audio").getComponent("audioControllor");
-        this.canves = cc.find("Canvas");
     }
 
     onCollisionEnter(other, self) {
@@ -121,7 +121,7 @@ export default class NewClass extends LogicBasicComponent {
             }
         } else {
             this.tigerAni.play("CatchClip");
-            this.audioManager.playAudio(audioSetting.other.lv3.tiger.attack)
+            AchievementControllor.getAchieveManager().addRecord(settingBasic.setting.achievements.CuteTiger)
         }
     }
 

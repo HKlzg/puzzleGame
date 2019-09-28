@@ -1,4 +1,5 @@
 import settingBasic from "../Setting/settingBasic";
+import CanvasControllor from "../Common/CanvasControllor";
 
 const { ccclass, property } = cc._decorator;
 const itemID = settingBasic.setting.item.id;
@@ -52,10 +53,12 @@ export default class MapControllor extends cc.Component {
     isLoad: boolean = true;
 
     private itemStorageKey: string = settingBasic.setting.storageKey.item;
+    private canvasCtrl: CanvasControllor = null;
 
 
     onLoad() {
         // this.clearRecords(); //test
+        this.canvasCtrl = cc.find("Canvas").getComponent("CanvasControllor")
 
         let self = this;
         cc.loader.loadResDir('Picture/UI/items', cc.SpriteFrame, function (err, spriteFrameList) {
@@ -101,10 +104,10 @@ export default class MapControllor extends cc.Component {
     }
     refresh() {
         //从本地存储加载记录
-        let records = cc.sys.localStorage.getItem(this.itemStorageKey);
+        let records = this.canvasCtrl.getGameRecords();
         if (records) {
-            let itemlist: itemClass[] = JSON.parse(records);
-            if (itemlist.length > 0) {
+            let itemlist: itemClass[] = records.items;
+            if (itemlist && itemlist.length > 0) {
                 //根据记录来增加item
                 itemlist.forEach(item => {
                     item.isShow ? this.additem(item) : null;
@@ -218,11 +221,7 @@ export default class MapControllor extends cc.Component {
     }
 
     saveRecords() {
-        cc.sys.localStorage.setItem(this.itemStorageKey, JSON.stringify(this.allItemList))
+        this.canvasCtrl.saveRecords(this.itemStorageKey, this.allItemList)
     }
-    clearRecords() {
-        cc.sys.localStorage.removeItem(this.itemStorageKey)
-    }
-
 
 }

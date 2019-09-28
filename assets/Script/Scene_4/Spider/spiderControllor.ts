@@ -5,6 +5,7 @@ import settingBasic from "../../Setting/settingBasic";
 import { LogicBasicComponent } from "../../Common/LogicBasic/LogicBasicComponent";
 import audioControllor from "../../Common/Audio/audioControllor";
 import audioSetting from "../../Common/Audio/audioSetting";
+import AchievementControllor from "../../Common/Achievement/achievementControllor";
 
 const spiderActionType = cc.Enum({
     wait: 0,
@@ -241,11 +242,12 @@ export default class spiderClass extends LogicBasicComponent {
             this.speed = 3;
         }
 
-        //被石头砸中
+        //被石头砸中 杀死蜘蛛
         if (other.node.groupIndex == 12) {
             let body: cc.RigidBody = other.node.getComponent(cc.RigidBody)
             let vy = body.linearVelocity.y;
             if (vy <= -100) {
+                AchievementControllor.getAchieveManager().addRecord(settingBasic.setting.achievements.SpiderHunter)
                 this.currScene.emit(setting.gameEvent.gameStateEvent, setting.setting.stateType.NEXT);
                 this.isStart = false;
             }

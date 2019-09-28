@@ -250,7 +250,7 @@ export default class NewClass extends LogicBasicComponent {
             cc.tween(this.eye_right).to(2, { position: R_pos.pos2, }, { easing: "sineInOut" }).start();
 
             //闪烁
-            cc.tween(this.node).call(() => {
+            cc.tween(this.node).delay(3).call(() => {
                 this.redlightSprite.L.enabled = true;
                 this.redlightSprite.R.enabled = true;
             }).delay(0.1).call(() => {
@@ -275,7 +275,7 @@ export default class NewClass extends LogicBasicComponent {
                     this.redlightSprite.R.enabled = false;
                     this.isRadiation = false;
                 }).start();
-            }).delay(5).call(() => {
+            }).delay(4).call(() => {
                 this.isFlashing = false;
             }).start()
 

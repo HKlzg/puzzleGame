@@ -19,9 +19,10 @@ export default class NewClass extends LogicBasicComponent {
     //碰撞检测 
     onCollisionEnter(other, self) {
         if (other.node.name == "Brother" && !this.isContact) {
-            this.isContact = true;
+            
             let sprite = this.node.getComponent(cc.Sprite);
             if (sprite.enabled) {
+                this.isContact = true;
                 this.currScene.emit(settingBasic.gameEvent.gameStateEvent, settingBasic.setting.stateType.RESTART);
             }
         }

@@ -152,86 +152,78 @@ const settingBasic = {
             Smartboy: 12,
         }),
         //数组顺序和 achievements 对应 //初始值，用于初始化
-        achievementsInit: {
-            lv1: [
-                {
-                    type: 0, name: "采时者",
-                    desc: "超过5分钟还没有灭火",
-                    isGet: false, count: 0, needNum: 1
-                },
-                {
-                    type: 1, name: "悲伤的使者",
-                    desc: "获取隐藏道具书页",
-                    isGet: false, count: 0, needNum: 1
-                }
-            ],
-            lv2: [
-                {
-                    type: 2, name: "鱼腹爱好者",
-                    desc: "被鱼吃死5次",
-                    isGet: false, count: 0, needNum: 5
-                },
-                {
-                    type: 3, name: "我是水鬼",
-                    desc: "被水淹死3次",
-                    isGet: false, count: 0, needNum: 3
-                }
-            ],
-            lv3: [
-                {
-                    type: 4, name: "我是食物",
-                    desc: "葬身虎口3次",
-                    isGet: false, count: 0, needNum: 3
-                },
-                {
-                    type: 5, name: "乖乖虎",
-                    desc: "成功捕捉老虎",
-                    isGet: false, count: 0, needNum: 1
-                },
-            ],
-            lv4: [
-                {
-                    type: 6, name: "蜘蛛猎人",
-                    desc: "杀死蜘蛛",
-                    isGet: false, count: 0, needNum: 1
-                },
-                {
-                    type: 7, name: "慢吞吞的",
-                    desc: "被蜘蛛追上戳死",
-                    isGet: false, count: 0, needNum: 1
-                },
-                {
-                    type: 8, name: "一蹴而就",
-                    desc: "第一次玩当前关卡就通关",
-                    isGet: false, count: 0, needNum: 1
-                },
-            ],
-            lv5: [
-                {
-                    type: 9, name: "大地的恩泽",
-                    desc: "释放了村子里面的人",
-                    isGet: false, count: 0, needNum: 1
-                },
-                {
-                    type: 10, name: "生命永恒",
-                    desc: "复活的生命之树",
-                    isGet: false, count: 0, needNum: 1
-                },
-                {
-                    type: 11, name: "锤下亡魂",
-                    desc: "被大地之王砸死",
-                    isGet: false, count: 0, needNum: 1
-                },
-                {
-                    type: 12, name: "机灵鬼",
-                    desc: "躲避石头三次",
-                    isGet: false, count: 0, needNum: 3
-                },
-            ],
-        },
+        achievementsInit: [
+            {
+                type: 0, name: "采时者",
+                desc: "超过5分钟还没有灭火",
+                isGet: false, count: 0, needNum: 1
+            },
+            {
+                type: 1, name: "悲伤的使者",
+                desc: "获取隐藏道具书页",
+                isGet: false, count: 0, needNum: 1
+            },
+            {
+                type: 2, name: "鱼腹爱好者",
+                desc: "被鱼吃死5次",
+                isGet: false, count: 0, needNum: 5
+            },
+            {
+                type: 3, name: "我是水鬼",
+                desc: "被水淹死3次",
+                isGet: false, count: 0, needNum: 3
+            },
+            {
+                type: 4, name: "我是食物",
+                desc: "葬身虎口3次",
+                isGet: false, count: 0, needNum: 3
+            },
+            {
+                type: 5, name: "乖乖虎",
+                desc: "成功捕捉老虎",
+                isGet: false, count: 0, needNum: 1
+            },
+            {
+                type: 6, name: "蜘蛛猎人",
+                desc: "杀死蜘蛛",
+                isGet: false, count: 0, needNum: 1
+            },
+            {
+                type: 7, name: "慢吞吞的",
+                desc: "被蜘蛛追上戳死",
+                isGet: false, count: 0, needNum: 1
+            },
+            {
+                type: 8, name: "一蹴而就",
+                desc: "第一次玩当前关卡就通关",
+                isGet: false, count: 0, needNum: 1
+            },
+            {
+                type: 9, name: "大地的恩泽",
+                desc: "释放了村子里面的人",
+                isGet: false, count: 0, needNum: 1
+            },
+            {
+                type: 10, name: "生命永恒",
+                desc: "复活的生命之树",
+                isGet: false, count: 0, needNum: 1
+            },
+            {
+                type: 11, name: "锤下亡魂",
+                desc: "被大地之王砸死",
+                isGet: false, count: 0, needNum: 1
+            },
+            {
+                type: 12, name: "机灵鬼",
+                desc: "躲避石头三次",
+                isGet: false, count: 0, needNum: 3
+            },
+
+        ],
 
         //存储到本地记录的 key 
         storageKey: {
+            game: "puzzleGame",
             achievement: "achievementRecords",
             item: "itemStorageKey",
         }
@@ -271,61 +263,6 @@ const settingBasic = {
                     return items[index];
                 }
             }
-        },
-        //存储当前游戏状态
-        saveGameRecord() {
-            //当前关卡存档
-            // let lvRecord: {} = {};
-            // lvRecord["currBoxNum"] = settingBasic.game.currBoxNum;
-            // lvRecord["currDeath"] = settingBasic.game.currDeath;
-            // lvRecord["isShowKeyPos"] = settingBasic.game.isShowKeyPos;
-
-            // let level_key = "currLevelRecords_lv" + settingBasic.game.currLevel;
-            // cc.sys.localStorage.setItem(level_key, JSON.stringify(lvRecord));
-
-            // //游戏总存档
-            // let gameRecord: {} = {};
-            // gameRecord["totalDeath"] = settingBasic.game.totalDeath;
-            // gameRecord["inventory"] = settingBasic.game.inventory;
-
-            // let game_key = "allGameRecords_" + settingBasic.game.version;
-            // cc.sys.localStorage.setItem(game_key, JSON.stringify(gameRecord));
-
-        },
-        //恢复当前游戏状态
-        loadGameRecord() {
-            // let game_key = "allGameRecords_" + settingBasic.game.version;
-            // let level_key = "currLevelRecords_lv" + settingBasic.game.currLevel;
-
-            // if (settingBasic.game.isClearCurrRecord) {
-            //     console.log("level_key==" + level_key + "  " + "remove")
-            //     cc.sys.localStorage.removeItem(level_key);
-            // }
-            // if (settingBasic.game.isClearGameRecord) {
-            //     console.log("game_key==" + level_key + "  " + "remove")
-            //     cc.sys.localStorage.removeItem(game_key);
-            // }
-            // //当前关数据读取
-            // let lvRecordJson = cc.sys.localStorage.getItem(level_key);
-            // if (lvRecordJson) {
-            //     let lvRecord = JSON.parse(lvRecordJson);
-            //     if (lvRecord) {
-            //         settingBasic.game.currBoxNum = lvRecord["currBoxNum"];
-            //         settingBasic.game.currDeath = lvRecord["currDeath"];
-            //         settingBasic.game.isShowKeyPos = lvRecord["isShowKeyPos"];
-            //     }
-            // }
-
-            // //游戏总存档读取
-            // let allGameRecordsJson = cc.sys.localStorage.getItem(game_key);
-
-            // if (allGameRecordsJson) {
-            //     let allGameRecords = JSON.parse(allGameRecordsJson);
-            //     if (allGameRecords) {
-            //         settingBasic.game.totalDeath = allGameRecords["totalDeath"];
-            //         settingBasic.game.inventory = allGameRecords["inventory"];
-            //     }
-            // }
         },
     },
 
